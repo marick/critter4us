@@ -2,10 +2,11 @@
 # controllers
 
 class Controller < Ramaze::Controller
-  layout :default
-  helper :xhtml
-  engine :Etanni
+#  layout :default
+#  helper :xhtml
+#  engine :Etanni
 end
 
 # Here go your requires for subclasses of Controller:
 require 'controller/main'
+require 'controller/json'

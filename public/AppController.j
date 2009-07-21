@@ -52,7 +52,7 @@
     [theWindow orderFront:self];
 }
 
-- (void)OCowMe:(id)sender
+- (void)cowMe:(id)sender
 {
   var command = { "action" : "fetch cows" };
   var content = [CPString JSONFromObject: command];
