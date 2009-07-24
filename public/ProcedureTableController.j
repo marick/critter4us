@@ -1,6 +1,6 @@
 @import <Foundation/CPObject.j>
 
-@implementation ProcedureTableDelegate : CPObject
+@implementation ProcedureTableController : CPObject
 {
   CPMutableArray procedures;
 }
@@ -11,7 +11,6 @@
   var data = [CPURLConnection sendSynchronousRequest: request   
                               returningResponse:nil error:nil]; 
   var str = [data description]; 
-  alert(str)
   var json = [str objectFromJSON];
   procedures = json["procedures"];
   return self;
@@ -29,7 +28,6 @@
 
 - (void)chooseProcedure:(id)sender
 {
-  alert([sender clickedRow]);
 }
 
 @end
