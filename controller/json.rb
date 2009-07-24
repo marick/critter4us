@@ -15,4 +15,15 @@ class JsonController < Ramaze::Controller
       { 'error' => 'API error.' }.to_json 
     end
   end
+
+  def animals
+    response[ 'Content-Type' ] = 'application/json' 
+    if request.get? 
+      list = DB[:animals].map(:name)
+      {'animals' => list}.to_json
+    else 
+      { 'error' => 'API error.' }.to_json 
+    end
+  end
+
 end
