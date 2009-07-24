@@ -8,6 +8,9 @@
   CPWindow theWindow;
   CPDateField date;
   CPButton button;
+  CPObject animalTableController;
+  CPObject procedureTableController;
+  
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -32,6 +35,8 @@
   [self makeProcedureTableIn: contentView];
   [self makeAnimalTableIn: contentView];
 
+  [procedureTableController setHack: animalTableController];
+
   [theWindow orderFront:self];
 }
 
@@ -44,11 +49,14 @@
   [[column headerView] sizeToFit];
   [column setWidth: 80];
   [tableView addTableColumn:column];
-  var controller = [[ProcedureTableController alloc] init];
-  [tableView setDataSource: controller];
-  [tableView setDelegate:controller];
-  [tableView setTarget: controller];
+
+  procedureTableController = [[ProcedureTableController alloc] init];
+  [tableView setDataSource: procedureTableController];
+  [tableView setDelegate:procedureTableController];
+  [tableView setTarget: procedureTableController];
   [tableView setAction: @selector(chooseProcedure:)];
+
+  procedureTableController.table = tableView;
 
   var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(10,110,250,250)];
   [scrollView setDocumentView:tableView];
@@ -63,9 +71,12 @@
   var column = [[CPTableColumn alloc] initWithIdentifier:@"only"];
   [column setWidth: 80];
   [tableView addTableColumn:column];
-  var controller = [[AnimalTableController alloc] init];
-  [tableView setDataSource: controller];
-  [tableView setDelegate:controller];
+
+  animalTableController = [[AnimalTableController alloc] init];
+  [tableView setDataSource: animalTableController];
+  [tableView setDelegate:animalTableController];
+
+  animalTableController.table = tableView;
 
   var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(400,110,250,250)];
   [scrollView setDocumentView:tableView];

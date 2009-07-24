@@ -3,6 +3,8 @@
 @implementation ProcedureTableController : CPObject
 {
   CPMutableArray procedures;
+  id animalTableController;
+  CPTableView table;
 }
 
 - (id)init
@@ -28,6 +30,12 @@
 
 - (void)chooseProcedure:(id)sender
 {
+  [animalTableController filterByProcedure: [procedures objectAtIndex: [table clickedRow]]];
+}
+
+- (void)setHack:(id)aController
+{
+  animalTableController = aController;
 }
 
 @end
