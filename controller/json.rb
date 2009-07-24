@@ -6,16 +6,13 @@ class JsonController < Ramaze::Controller
     { 'error' => 'API error.' }.to_json 
   end
 
-  def cows
+  def procedures
     response[ 'Content-Type' ] = 'application/json' 
     if request.get? 
-      names = DB[:animals].collect { | row | row[:name] }
-      x = { 'cows' => names }.to_json 
-      puts "Sending back #{x.inspect}"
-      x
+      list = DB[:procedures].map(:name)
+      {'procedures' => list}.to_json
     else 
       { 'error' => 'API error.' }.to_json 
-    end 
-  end 
-
+    end
+  end
 end

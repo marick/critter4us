@@ -1,27 +1,76 @@
-/*
- * AppController.j
- * critter4us
- *
- * Created by You on July 17, 2009.
- * Copyright 2009, Your Company All rights reserved.
- */
-
 @import <Foundation/CPObject.j>
+@import "ProcedureTableDelegate.j"
 
 
 @implementation AppController : CPObject
 {
   CPWindow theWindow;
   CPTextField cow1, cow2;
+  CPDateField date;
   CPButton button;
+  CPCollectionView possibleProcedures;
+  CPArray procedures;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
-    theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero()
-    styleMask:CPBorderlessBridgeWindowMask];
-    var contentView = [theWindow contentView];
+  theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero()
+	       styleMask:CPBorderlessBridgeWindowMask];
+  var contentView = [theWindow contentView];
 
+  label = [[CPTextField alloc] initWithFrame:CGRectMake(10, 40, 250, 30)];
+  [label setStringValue: "What date is your lab?"];
+  [contentView addSubview:label];
+
+  date = [[CPTextField alloc] initWithFrame:CGRectMake(10, 70, 250, 30)];
+  [date setEditable:YES];
+  [date setBezeled:YES];
+
+  [date setTarget: self];
+  [date setAction: @selector(newDate:)];
+  [contentView addSubview:date];
+
+  var tableView = [[CPTableView alloc] initWithFrame: CGRectMake(0, 0, 250, 250)];
+  var column = [[CPTableColumn alloc] initWithIdentifier:@"only"];
+  [[column headerView] setStringValue: @"procedure"];
+  [[column headerView] sizeToFit];
+  [column setWidth: 80];
+  [tableView addTableColumn:column];
+  var delegate = [[ProcedureTableDelegate alloc] init];
+  [tableView setDataSource: delegate];
+  [tableView setDelegate:delegate];
+  [tableView setTarget: delegate];
+  [tableView setAction: @selector(chooseProcedure:)];
+
+  var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(10,110,250,250)];
+  [scrollView setDocumentView:tableView];
+  [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+  [contentView addSubview:scrollView];
+
+  [theWindow orderFront:self];
+}
+
+
+- (void)newDate:(id)sender
+{
+}
+
+
+
+
+- (void)cowMe:(id)sender
+{
+  var request = [CPURLRequest requestWithURL: @"http://localhost:7000/json/cows"]; 
+  var data = [CPURLConnection sendSynchronousRequest: request   
+                              returningResponse:nil error:nil]; 
+  var str = [data description]; 
+  var json = [str objectFromJSON];
+  [cow1 setStringValue: json["cows"][0]];
+  [cow2 setStringValue: json["cows"][1]];
+}
+
+- (void)procedures:(id)sender
+{
     cow1 = [[CPTextField alloc] initWithFrame:CGRectMake(100, 40, 250, 30)];
     [cow1 setEditable:YES];
     [cow1 setSelectable:YES];
@@ -34,49 +83,13 @@
     [cow2 setBezeled:YES];
     [contentView addSubview:cow2];
 
-    button = [[CPButton alloc] initWithFrame:CGRectMake(100, 120, 80, 30)];
+   button = [[CPButton alloc] initWithFrame:CGRectMake(100, 120, 80, 30)];
     [button setTitle:"Cow Me!"];
     [button setTarget:self];
     [button setAction:@selector(cowMe:)];
     [contentView addSubview:button];
 
-    var table = [[CPTableView alloc] initWithFrame:CGRectMake(250, 40, 400, 400)];
-    var col = [[CPTableColumn alloc] initWithIdentifier:@"foo"];
-    [col setWidth:100];
-    
-
-    [table addTableColumn:col];
-
-    [contentView addSubview:table];
-
-    [theWindow orderFront:self];
-}
-
-- (void)cowMe:(id)sender
-{
-  var command = { "action" : "fetch cows" };
-  var content = [CPString JSONFromObject: command];
-  var contentLength = [[CPString alloc] initWithFormat:@"%d", [content length]];
-  var request = [[CPURLRequest alloc] initWithURL:@"http://localhost:7000/cows"];
-  [request setHTTPMethod:@"POST"];
-  [request setHTTPBody:content];
-  [request setValue:contentLength forHTTPHeaderField:@"Content-Length"]; 
-  [request setValue:"text/plain;charset=UTF-8" forHTTPHeaderField:@"Content-Type"]; 
-  
-  var connection = [CPURLConnection connectionWithRequest:request delegate:self];
-  [cow1 setStringValue:"cow1"];
-  [cow2 setStringValue:"cow2"];
-}
-
-- (void)cowMe:(id)sender
-{
-  var request = [CPURLRequest requestWithURL: @"http://localhost:7000/json/cows"]; 
-  var data = [CPURLConnection sendSynchronousRequest: request   
-                              returningResponse:nil error:nil]; 
-  var str = [data description]; 
-  var json = [str objectFromJSON];
-  [cow1 setStringValue: json["cows"][0]];
-  [cow2 setStringValue: json["cows"][1]];
+ 
 }
 
 -(void)connection:(CPURLConnection)connection didFailWithError:(id)error
