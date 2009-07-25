@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: (ds)
+comment: 
+full_name: Sequel::Firebird::Database#sequences
+is_singleton: false
+name: sequences
+params: (opts={}) {|ds| ...}
+visibility: public

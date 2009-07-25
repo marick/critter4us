@@ -1,0 +1,23 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Validates acceptance of an attribute. Just checks that the value is equal to the :accept option. This method is unique in that :allow_nil is assumed to be true instead of false.
+- !ruby/struct:SM::Flow::P 
+  body: "Possible Options:"
+- !ruby/object:SM::Flow::LIST 
+  contents: 
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":accept - The value required for the object to be valid (default: '1')"
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":message - The message to use (default: 'is not accepted')"
+  type: :BULLET
+full_name: Sequel::Plugins::ValidationClassMethods::ClassMethods#validates_acceptance_of
+is_singleton: false
+name: validates_acceptance_of
+params: (*atts)
+visibility: public

@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Set the Content-Disposition to &quot;attachment&quot; with the specified filename, instructing the user agents to prompt to save.
+full_name: Sinatra::Helpers#attachment
+is_singleton: false
+name: attachment
+params: (filename=nil)
+visibility: public

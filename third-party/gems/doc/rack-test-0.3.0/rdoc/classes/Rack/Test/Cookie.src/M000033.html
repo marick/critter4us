@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>new (Rack::Test::Cookie)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/rack/test/cookie_jar.rb, line 12</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">raw</span>, <span class="ruby-identifier">uri</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">default_host</span> = <span class="ruby-constant">DEFAULT_HOST</span>)
+        <span class="ruby-ivar">@default_host</span> = <span class="ruby-identifier">default_host</span>
+        <span class="ruby-identifier">uri</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">default_uri</span>
+
+        <span class="ruby-comment cmt"># separate the name / value pair from the cookie options</span>
+        <span class="ruby-ivar">@name_value_raw</span>, <span class="ruby-identifier">options</span> = <span class="ruby-identifier">raw</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp re">/[;,] */n</span>, <span class="ruby-value">2</span>)
+
+        <span class="ruby-ivar">@name</span>, <span class="ruby-ivar">@value</span> = <span class="ruby-identifier">parse_query</span>(<span class="ruby-ivar">@name_value_raw</span>, <span class="ruby-value str">';'</span>).<span class="ruby-identifier">to_a</span>.<span class="ruby-identifier">first</span>
+        <span class="ruby-ivar">@options</span> = <span class="ruby-identifier">parse_query</span>(<span class="ruby-identifier">options</span>, <span class="ruby-value str">';'</span>)
+
+        <span class="ruby-ivar">@options</span>[<span class="ruby-value str">&quot;domain&quot;</span>]  <span class="ruby-operator">||=</span> (<span class="ruby-identifier">uri</span>.<span class="ruby-identifier">host</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">default_host</span>)
+        <span class="ruby-ivar">@options</span>[<span class="ruby-value str">&quot;path&quot;</span>]    <span class="ruby-operator">||=</span> <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">path</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-regexp re">/\/[^\/]*\Z/</span>, <span class="ruby-value str">&quot;&quot;</span>)
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

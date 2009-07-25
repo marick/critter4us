@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Set values that override hash arguments given to insert and update statements. This hash is merged into the hash provided to insert or update.
+full_name: Sequel::Dataset#set_overrides
+is_singleton: false
+name: set_overrides
+params: (hash)
+visibility: public

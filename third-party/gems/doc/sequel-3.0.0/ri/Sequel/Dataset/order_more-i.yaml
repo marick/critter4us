@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Returns a copy of the dataset with the order columns added to the existing order.
+- !ruby/struct:SM::Flow::VERB 
+  body: "  ds.order(:a).order(:b).sql #=&gt; 'SELECT * FROM items ORDER BY b'\n  ds.order(:a).order_more(:b).sql #=&gt; 'SELECT * FROM items ORDER BY a, b'\n"
+full_name: Sequel::Dataset#order_more
+is_singleton: false
+name: order_more
+params: (*columns, &block)
+visibility: public

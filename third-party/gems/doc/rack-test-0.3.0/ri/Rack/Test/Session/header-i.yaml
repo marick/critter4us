@@ -1,0 +1,16 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Set a header to be included on all subsequent requests through the session. Use a value of nil to remove a previously configured header.
+- !ruby/struct:SM::Flow::P 
+  body: "Example:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  header &quot;User-Agent&quot;, &quot;Firefox&quot;\n"
+full_name: Rack::Test::Session#header
+is_singleton: false
+name: header
+params: (name, value)
+visibility: public

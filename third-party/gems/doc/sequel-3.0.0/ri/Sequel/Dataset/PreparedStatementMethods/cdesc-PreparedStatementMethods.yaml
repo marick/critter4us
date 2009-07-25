@@ -1,0 +1,47 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: The bind variable hash to use when substituting
+  name: prepared_args
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: The argument to supply to insert and update, which may use placeholders specified by prepared_args
+  name: prepared_modify_values
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: The type of prepared statement, should be one of :select, :first, :insert, :update, or :delete
+  name: prepared_type
+  rw: RW
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Backbone of the prepared statement support. Grafts bind variable support into datasets by hijacking #literal and using placeholders. By default, emulates prepared statements and bind variables by taking the hash of bind variables and directly substituting them into the query, which works on all databases, as it is no different from using the dataset without bind variables."
+constants: 
+- !ruby/object:RI::Constant 
+  comment: 
+  name: PLACEHOLDER_RE
+  value: /\A\$(.*)\z/
+full_name: Sequel::Dataset::PreparedStatementMethods
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: Sequel::Dataset::UnnumberedArgumentMapper
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: call
+- !ruby/object:RI::MethodSummary 
+  name: inspect
+- !ruby/object:RI::MethodSummary 
+  name: literal
+- !ruby/object:RI::MethodSummary 
+  name: prepared_sql
+- !ruby/object:RI::MethodSummary 
+  name: run
+name: PreparedStatementMethods
+superclass: 

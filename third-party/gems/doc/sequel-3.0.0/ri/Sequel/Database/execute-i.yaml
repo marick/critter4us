@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Executes the given SQL on the database. This method should be overridden in descendants. This method should not be called directly by user code.
+full_name: Sequel::Database#execute
+is_singleton: false
+name: execute
+params: (sql, opts={})
+visibility: public

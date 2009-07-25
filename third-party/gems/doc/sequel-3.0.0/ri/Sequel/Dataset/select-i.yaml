@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Returns a copy of the dataset with the columns selected changed to the given columns. This also takes a virtual row block, similar to filter.
+- !ruby/struct:SM::Flow::VERB 
+  body: "  dataset.select(:a) # SELECT a FROM items\n  dataset.select(:a, :b) # SELECT a, b FROM items\n  dataset.select{|o| o.a, o.sum(:b)} # SELECT a, sum(b) FROM items\n"
+full_name: Sequel::Dataset#select
+is_singleton: false
+name: select
+params: (*columns, &block)
+visibility: public

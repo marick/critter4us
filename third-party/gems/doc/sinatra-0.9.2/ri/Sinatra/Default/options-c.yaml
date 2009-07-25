@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Deprecated. Options are stored directly on the class object.
+full_name: Sinatra::Default::options
+is_singleton: true
+name: options
+params: ()
+visibility: public

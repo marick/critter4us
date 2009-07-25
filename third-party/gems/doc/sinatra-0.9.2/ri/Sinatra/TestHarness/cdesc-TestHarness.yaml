@@ -1,0 +1,17 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+constants: []
+
+full_name: Sinatra::TestHarness
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: Test
+instance_methods: []
+
+name: TestHarness
+superclass: Object

@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: If we are using postgres-pr, use the encode_bytea method from that.
+full_name: PGconn#escape_bytea
+is_singleton: false
+name: escape_bytea
+params: (obj)
+visibility: public

@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Name symbol for the setter association method
+full_name: Sequel::Model::Associations::AssociationReflection#setter_method
+is_singleton: false
+name: setter_method
+params: ()
+visibility: public

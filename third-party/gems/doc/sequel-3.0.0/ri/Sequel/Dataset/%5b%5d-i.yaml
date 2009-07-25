@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Returns the first record matching the conditions. Examples:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  ds[:id=&gt;1] =&gt; {:id=1}\n"
+full_name: Sequel::Dataset#[]
+is_singleton: false
+name: "[]"
+params: (*conditions)
+visibility: public

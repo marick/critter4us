@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Return an SQL array subscript with the given arguments.
+- !ruby/struct:SM::Flow::VERB 
+  body: "  :array.sql_subscript(1) # SQL: array[1]\n  :array.sql_subscript(1, 2) # SQL: array[1, 2]\n"
+full_name: Symbol#sql_subscript
+is_singleton: false
+name: sql_subscript
+params: (*sub)
+visibility: public

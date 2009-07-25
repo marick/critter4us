@@ -1,0 +1,32 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Adds methods that allow you to treat an object as an instance of a specific ComplexExpression subclass. This is useful if another library overrides the methods defined by Sequel.
+- !ruby/struct:SM::Flow::P 
+  body: "For example, if Symbol#/ is overridden to produce a string (for example, to make file system path creation easier), the following code will not do what you want:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  :price/10 &gt; 100\n"
+- !ruby/struct:SM::Flow::P 
+  body: "In that case, you need to do the following:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  :price.sql_number/10 &gt; 100\n"
+constants: []
+
+full_name: Sequel::SQL::ComplexExpressionMethods
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: extract
+- !ruby/object:RI::MethodSummary 
+  name: sql_boolean
+- !ruby/object:RI::MethodSummary 
+  name: sql_number
+- !ruby/object:RI::MethodSummary 
+  name: sql_string
+name: ComplexExpressionMethods
+superclass: 

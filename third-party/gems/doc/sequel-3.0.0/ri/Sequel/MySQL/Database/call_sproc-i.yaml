@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Support stored procedures on MySQL
+full_name: Sequel::MySQL::Database#call_sproc
+is_singleton: false
+name: call_sproc
+params: (name, opts={}, &block)
+visibility: public

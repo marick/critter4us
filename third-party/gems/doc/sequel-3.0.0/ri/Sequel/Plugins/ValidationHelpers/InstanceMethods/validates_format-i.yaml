@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Check the string representation of the attribute value(s) against the regular expression with.
+full_name: Sequel::Plugins::ValidationHelpers::InstanceMethods#validates_format
+is_singleton: false
+name: validates_format
+params: (with, atts, opts={})
+visibility: public

@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Transform this dataset into a stored procedure that you can call multiple times with new arguments.
+full_name: Sequel::Dataset::StoredProcedures#prepare_sproc
+is_singleton: false
+name: prepare_sproc
+params: (type, name)
+visibility: public

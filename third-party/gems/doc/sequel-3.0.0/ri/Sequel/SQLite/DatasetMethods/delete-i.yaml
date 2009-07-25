@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: SQLite performs a TRUNCATE style DELETE if no filter is specified. Since we want to always return the count of records, add a condition that is always true and then delete.
+full_name: Sequel::SQLite::DatasetMethods#delete
+is_singleton: false
+name: delete
+params: ()
+visibility: public

@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Return an array of strings specifying a query explanation for the current dataset.
+full_name: Sequel::Amalgalite::Dataset#explain
+is_singleton: false
+name: explain
+params: ()
+visibility: public

@@ -1,0 +1,34 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Checks that there are no duplicate values in the database for the given attributes. Pass an array of fields instead of multiple fields to specify that the combination of fields must be unique, instead of that each field should have a unique value.
+- !ruby/struct:SM::Flow::P 
+  body: "This means that the code:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  validates_unique([:column1, :column2])\n"
+- !ruby/struct:SM::Flow::P 
+  body: validates the grouping of column1 and column2 while
+- !ruby/struct:SM::Flow::VERB 
+  body: "  validates_unique(:column1, :column2)\n"
+- !ruby/struct:SM::Flow::P 
+  body: validates them separately.
+- !ruby/struct:SM::Flow::P 
+  body: You should also add a unique index in the database, as this suffers from a fairly obvious race condition.
+- !ruby/struct:SM::Flow::P 
+  body: This validation does not respect the :allow_* options that the other validations accept, since it can deals with multiple attributes at once.
+- !ruby/struct:SM::Flow::P 
+  body: "Possible Options:"
+- !ruby/object:SM::Flow::LIST 
+  contents: 
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":message - The message to use (default: 'is already taken')"
+  type: :BULLET
+full_name: Sequel::Plugins::ValidationHelpers::InstanceMethods#validates_unique
+is_singleton: false
+name: validates_unique
+params: (*atts)
+visibility: public

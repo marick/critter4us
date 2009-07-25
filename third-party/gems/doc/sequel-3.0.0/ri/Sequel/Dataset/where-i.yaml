@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Add a condition to the WHERE clause. See #filter for argument types."
+- !ruby/struct:SM::Flow::VERB 
+  body: "  dataset.group(:a).having(:a).filter(:b) # SELECT * FROM items GROUP BY a HAVING a AND b\n  dataset.group(:a).having(:a).where(:b) # SELECT * FROM items WHERE b GROUP BY a HAVING a\n"
+full_name: Sequel::Dataset#where
+is_singleton: false
+name: where
+params: (*cond, &block)
+visibility: public

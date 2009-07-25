@@ -1,0 +1,35 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: 
+- !ruby/object:RI::Constant 
+  comment: 
+  name: TEMPORARY
+  value: "'GLOBAL TEMPORARY '.freeze"
+- !ruby/object:RI::Constant 
+  comment: 
+  name: AUTOINCREMENT
+  value: "''.freeze"
+full_name: Sequel::Oracle::DatabaseMethods
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: create_sequence
+- !ruby/object:RI::MethodSummary 
+  name: create_table
+- !ruby/object:RI::MethodSummary 
+  name: create_trigger
+- !ruby/object:RI::MethodSummary 
+  name: database_type
+- !ruby/object:RI::MethodSummary 
+  name: drop_sequence
+- !ruby/object:RI::MethodSummary 
+  name: table_exists?
+- !ruby/object:RI::MethodSummary 
+  name: tables
+name: DatabaseMethods
+superclass: 

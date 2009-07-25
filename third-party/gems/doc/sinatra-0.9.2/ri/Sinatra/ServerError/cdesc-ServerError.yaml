@@ -1,0 +1,19 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: The ServerError exception is deprecated. Any exception is considered an internal server error.
+constants: []
+
+full_name: Sinatra::ServerError
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: code
+name: ServerError
+superclass: RuntimeError

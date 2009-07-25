@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Delegate other missing methods to @response.
+full_name: Sinatra::Test#method_missing
+is_singleton: false
+name: method_missing
+params: (name, *args, &block)
+visibility: public

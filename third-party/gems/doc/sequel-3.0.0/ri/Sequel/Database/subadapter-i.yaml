@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Return the subadapter type for this database, i.e. sqlite3 for do:sqlite3::memory:.
+full_name: Sequel::Database#subadapter
+is_singleton: false
+name: subadapter
+params: ()
+visibility: public

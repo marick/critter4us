@@ -1,0 +1,26 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: 
+- !ruby/object:RI::Constant 
+  comment: 
+  name: SELECT_CLAUSE_ORDER
+  value: "%w'distinct columns from join where group having compounds order limit'.freeze"
+full_name: Sequel::Oracle::DatasetMethods
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: Dataset::UnsupportedIntersectExceptAll
+- !ruby/object:RI::IncludedModule 
+  name: Dataset::SQLStandardDateFormat
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: distinct
+- !ruby/object:RI::MethodSummary 
+  name: empty?
+- !ruby/object:RI::MethodSummary 
+  name: except
+name: DatasetMethods
+superclass: 

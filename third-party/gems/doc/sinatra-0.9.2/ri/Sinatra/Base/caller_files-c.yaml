@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Like Kernel#caller but excluding certain magic entries and without line / method information; the resulting array contains filenames only.
+full_name: Sinatra::Base::caller_files
+is_singleton: true
+name: caller_files
+params: ()
+visibility: public

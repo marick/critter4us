@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: The version of Sequel you are using, as a string (e.g. &quot;2.11.0&quot;)
+full_name: Sequel::version
+is_singleton: true
+name: version
+params: ()
+visibility: public

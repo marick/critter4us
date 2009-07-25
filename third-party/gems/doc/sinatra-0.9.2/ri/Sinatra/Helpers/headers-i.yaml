@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Set multiple response headers with Hash.
+full_name: Sinatra::Helpers#headers
+is_singleton: false
+name: headers
+params: (hash=nil)
+visibility: public

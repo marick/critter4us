@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Returns a list of migration classes filtered for the migration range and ordered according to the migration direction.
+full_name: Sequel::Migrator::migration_classes
+is_singleton: true
+name: migration_classes
+params: (directory, target, current, direction)
+visibility: public

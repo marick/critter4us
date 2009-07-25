@@ -1,0 +1,23 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Validates the format of an attribute, checking the string representation of the value against the regular expression provided by the :with option.
+- !ruby/struct:SM::Flow::P 
+  body: "Possible Options:"
+- !ruby/object:SM::Flow::LIST 
+  contents: 
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":message - The message to use (default: 'is invalid')"
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":with - The regular expression to validate the value with (required)."
+  type: :BULLET
+full_name: Sequel::Plugins::ValidationClassMethods::ClassMethods#validates_format_of
+is_singleton: false
+name: validates_format_of
+params: (*atts)
+visibility: public

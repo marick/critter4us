@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Add a method for each of the given types that creates a column with that type as a constant. Types given should either already be constants/classes or a capitalized string/symbol with the same name as a constant/class.
+full_name: Sequel::Schema::Generator::add_type_method
+is_singleton: true
+name: add_type_method
+params: (*types)
+visibility: public

@@ -1,0 +1,65 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: ValidationHelpers contains instance method equivalents for most of the previous default validations. The names and APIs have changed, though.
+- !ruby/struct:SM::Flow::P 
+  body: "The validates_unique validation has a unique API, but the other validations have the API explained here:"
+- !ruby/struct:SM::Flow::P 
+  body: "Arguments:"
+- !ruby/object:SM::Flow::LIST 
+  contents: 
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: atts - Single attribute symbol or an array of attribute symbols specifying the attribute(s) to validate.
+  type: :BULLET
+- !ruby/struct:SM::Flow::P 
+  body: "Options:"
+- !ruby/object:SM::Flow::LIST 
+  contents: 
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":allow_blank - Whether to skip the validation if the value is blank. You should make sure all objects respond to blank if you use this option, which you can do by requiring 'sequel/extensions/blank'"
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":allow_missing - Whether to skip the validation if the attribute isn't a key in the values hash. This is different from allow_nil, because Sequel only sends the attributes in the values when doing an insert or update. If the attribute is not present, Sequel doesn't specify it, so the database will use the table's default value. This is different from having an attribute in values with a value of nil, which Sequel will send as NULL. If your database table has a non NULL default, this may be a good option to use. You don't want to use allow_nil, because if the attribute is in values but has a value nil, Sequel will attempt to insert a NULL value into the database, instead of using the database's default."
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":allow_nil - Whether to skip the validation if the value is nil."
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":message - The message to use"
+  type: :BULLET
+constants: []
+
+full_name: Sequel::Plugins::ValidationHelpers::InstanceMethods
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: validates_exact_length
+- !ruby/object:RI::MethodSummary 
+  name: validates_format
+- !ruby/object:RI::MethodSummary 
+  name: validates_includes
+- !ruby/object:RI::MethodSummary 
+  name: validates_integer
+- !ruby/object:RI::MethodSummary 
+  name: validates_length_range
+- !ruby/object:RI::MethodSummary 
+  name: validates_max_length
+- !ruby/object:RI::MethodSummary 
+  name: validates_min_length
+- !ruby/object:RI::MethodSummary 
+  name: validates_not_string
+- !ruby/object:RI::MethodSummary 
+  name: validates_numeric
+- !ruby/object:RI::MethodSummary 
+  name: validates_presence
+- !ruby/object:RI::MethodSummary 
+  name: validates_unique
+name: InstanceMethods
+superclass: 

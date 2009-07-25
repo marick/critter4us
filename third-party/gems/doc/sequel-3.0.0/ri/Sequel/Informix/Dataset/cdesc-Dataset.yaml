@@ -1,0 +1,20 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: 
+- !ruby/object:RI::Constant 
+  comment: 
+  name: SELECT_CLAUSE_ORDER
+  value: "%w'limit distinct columns from join where having group compounds order'.freeze"
+full_name: Sequel::Informix::Dataset
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: UnsupportedIntersectExcept
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: fetch_rows
+name: Dataset
+superclass: Sequel::Dataset

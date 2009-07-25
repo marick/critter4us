@@ -1,0 +1,34 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Empty namespace that plugins should use to store themselves, so they can be loaded via Model.plugin.
+- !ruby/struct:SM::Flow::P 
+  body: "Plugins should be modules with one of the following conditions:"
+- !ruby/object:SM::Flow::LIST 
+  contents: 
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: A singleton method named apply, which takes a model and additional arguments.
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: A module inside the plugin module named InstanceMethods, which will be included in the model class.
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: A module inside the plugin module named ClassMethods, which will extend the model class.
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: A module inside the plugin module named DatasetMethods, which will extend the model's dataset.
+  type: :BULLET
+constants: []
+
+full_name: Sequel::Plugins
+includes: []
+
+instance_methods: []
+
+name: Plugins
+superclass: 

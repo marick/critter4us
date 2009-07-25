@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>hash_for (Rack::Test::CookieJar)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/rack/test/cookie_jar.rb, line 151</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">hash_for</span>(<span class="ruby-identifier">uri</span> = <span class="ruby-keyword kw">nil</span>)
+        <span class="ruby-identifier">cookies</span> = {}
+
+        <span class="ruby-comment cmt"># The cookies are sorted by most specific first. So, we loop through</span>
+        <span class="ruby-comment cmt"># all the cookies in order and add it to a hash by cookie name if</span>
+        <span class="ruby-comment cmt"># the cookie can be sent to the current URI. It's added to the hash</span>
+        <span class="ruby-comment cmt"># so that when we are done, the cookies will be unique by name and</span>
+        <span class="ruby-comment cmt"># we'll have grabbed the most specific to the URI.</span>
+        <span class="ruby-ivar">@cookies</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">cookie</span><span class="ruby-operator">|</span>
+          <span class="ruby-identifier">cookies</span>[<span class="ruby-identifier">cookie</span>.<span class="ruby-identifier">name</span>] = <span class="ruby-identifier">cookie</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">cookie</span>.<span class="ruby-identifier">matches?</span>(<span class="ruby-identifier">uri</span>)
+        <span class="ruby-keyword kw">end</span>
+
+        <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">cookies</span>
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

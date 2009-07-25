@@ -1,0 +1,17 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: The common base class for exceptions raised by Rack::Test
+constants: []
+
+full_name: Rack::Test::Error
+includes: []
+
+instance_methods: []
+
+name: Error
+superclass: StandardError

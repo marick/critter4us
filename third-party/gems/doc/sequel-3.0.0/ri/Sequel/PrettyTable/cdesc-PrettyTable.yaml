@@ -1,0 +1,16 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: print
+comment: 
+constants: []
+
+full_name: Sequel::PrettyTable
+includes: []
+
+instance_methods: []
+
+name: PrettyTable
+superclass: 

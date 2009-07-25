@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Use the contents of the file at <tt>path</tt> as the response body.
+full_name: Sinatra::Helpers#send_file
+is_singleton: false
+name: send_file
+params: (path, opts={})
+visibility: public

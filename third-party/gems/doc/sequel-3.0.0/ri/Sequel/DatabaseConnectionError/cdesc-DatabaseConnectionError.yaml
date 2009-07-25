@@ -1,0 +1,17 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Error raised when the Sequel is unable to connect to the database with the connection parameters it was given.
+constants: []
+
+full_name: Sequel::DatabaseConnectionError
+includes: []
+
+instance_methods: []
+
+name: DatabaseConnectionError
+superclass: DatabaseError

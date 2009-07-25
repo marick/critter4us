@@ -1,0 +1,28 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: The association reflection related to the association dataset
+  name: association_reflection
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: The model object that created the association dataset
+  name: model_object
+  rw: RW
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: This module contains methods added to all association datasets
+constants: []
+
+full_name: Sequel::Model::Associations::AssociationDatasetMethods
+includes: []
+
+instance_methods: []
+
+name: AssociationDatasetMethods
+superclass: 

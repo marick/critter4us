@@ -1,0 +1,16 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Sequel::DBI::Dataset
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: fetch_rows
+name: Dataset
+superclass: Sequel::Dataset

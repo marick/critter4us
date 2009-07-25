@@ -1,0 +1,17 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Adapter, Database, and Dataset support for accessing a PostgreSQL database via DataObjects.
+constants: []
+
+full_name: Sequel::DataObjects::Postgres
+includes: []
+
+instance_methods: []
+
+name: Postgres
+superclass: 

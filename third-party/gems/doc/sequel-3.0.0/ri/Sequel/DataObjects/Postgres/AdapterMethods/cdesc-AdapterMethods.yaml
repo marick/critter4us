@@ -1,0 +1,19 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Methods to add to the DataObjects adapter/connection to allow it to work with the shared PostgreSQL code.
+constants: []
+
+full_name: Sequel::DataObjects::Postgres::AdapterMethods
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: Sequel::Postgres::AdapterMethods
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: execute
+name: AdapterMethods
+superclass: 

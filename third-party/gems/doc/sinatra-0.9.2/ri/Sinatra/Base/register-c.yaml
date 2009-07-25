@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Sinatra::Base::register
+is_singleton: true
+name: register
+params: (*extensions, &block)
+visibility: public

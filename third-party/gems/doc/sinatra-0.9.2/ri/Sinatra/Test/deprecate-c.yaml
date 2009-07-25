@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Sinatra::Test::deprecate
+is_singleton: true
+name: deprecate
+params: (framework)
+visibility: public

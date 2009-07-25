@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: ":api: private"
+full_name: Rack::Test::CookieJar::new
+is_singleton: true
+name: new
+params: (cookies = [], default_host = DEFAULT_HOST)
+visibility: public

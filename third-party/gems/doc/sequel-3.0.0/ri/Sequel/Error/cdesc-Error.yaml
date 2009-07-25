@@ -1,0 +1,36 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: The default exception class for exceptions raised by Sequel. All exception classes defined by Sequel are descendants of this class.
+constants: 
+- !ruby/object:RI::Constant 
+  comment: 
+  name: AdapterNotFound
+  value: Sequel::AdapterNotFound
+- !ruby/object:RI::Constant 
+  comment: 
+  name: InvalidOperation
+  value: Sequel::InvalidOperation
+- !ruby/object:RI::Constant 
+  comment: 
+  name: InvalidValue
+  value: Sequel::InvalidValue
+- !ruby/object:RI::Constant 
+  comment: 
+  name: PoolTimeoutError
+  value: Sequel::PoolTimeout
+- !ruby/object:RI::Constant 
+  comment: 
+  name: Rollback
+  value: Sequel::Rollback
+full_name: Sequel::Error
+includes: []
+
+instance_methods: []
+
+name: Error
+superclass: "::StandardError"

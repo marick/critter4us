@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Whether to set the reciprocal association to self when loading associated records, false by default.
+full_name: Sequel::Model::Associations::AssociationReflection#set_reciprocal_to_self?
+is_singleton: false
+name: set_reciprocal_to_self?
+params: ()
+visibility: public

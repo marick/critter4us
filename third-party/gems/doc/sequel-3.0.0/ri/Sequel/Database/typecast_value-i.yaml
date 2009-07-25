@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Typecast the value to the given column_type. Calls typecast_value_#{column_type} if the method exists, otherwise returns the value. This method should raise Sequel::InvalidValue if assigned value is invalid.
+full_name: Sequel::Database#typecast_value
+is_singleton: false
+name: typecast_value
+params: (column_type, value)
+visibility: public

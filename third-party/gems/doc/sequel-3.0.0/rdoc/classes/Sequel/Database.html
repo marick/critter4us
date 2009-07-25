@@ -1,0 +1,3326 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Sequel::Database</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Sequel::Database</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/lib/sequel/adapters/do_rb.html">
+                lib/sequel/adapters/do.rb
+                </a>
+        <br />
+                <a href="../../files/lib/sequel/adapters/jdbc_rb.html">
+                lib/sequel/adapters/jdbc.rb
+                </a>
+        <br />
+                <a href="../../files/lib/sequel/adapters/shared/mysql_rb.html">
+                lib/sequel/adapters/shared/mysql.rb
+                </a>
+        <br />
+                <a href="../../files/lib/sequel/database/schema_methods_rb.html">
+                lib/sequel/database/schema_methods.rb
+                </a>
+        <br />
+                <a href="../../files/lib/sequel/database/schema_sql_rb.html">
+                lib/sequel/database/schema_sql.rb
+                </a>
+        <br />
+                <a href="../../files/lib/sequel/database_rb.html">
+                lib/sequel/database.rb
+                </a>
+        <br />
+                <a href="../../files/lib/sequel/extensions/query_rb.html">
+                lib/sequel/extensions/query.rb
+                </a>
+        <br />
+                <a href="../../files/lib/sequel/extensions/schema_dumper_rb.html">
+                lib/sequel/extensions/schema_dumper.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                <a href="Database.html">
+                Sequel::Database
+               </a>
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+A <a href="Database.html">Database</a> object represents a virtual
+connection to a database. The <a href="Database.html">Database</a> class is
+meant to be subclassed by database adapters in order to provide the
+functionality needed for executing queries.
+</p>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000610">&lt;&lt;</a>&nbsp;&nbsp;
+      <a href="#M000611">[]</a>&nbsp;&nbsp;
+      <a href="#M000601">adapter_class</a>&nbsp;&nbsp;
+      <a href="#M000602">adapter_scheme</a>&nbsp;&nbsp;
+      <a href="#M000584">add_column</a>&nbsp;&nbsp;
+      <a href="#M000585">add_index</a>&nbsp;&nbsp;
+      <a href="#M000586">alter_table</a>&nbsp;&nbsp;
+      <a href="#M000612">call</a>&nbsp;&nbsp;
+      <a href="#M000573">call_sproc</a>&nbsp;&nbsp;
+      <a href="#M000613">cast_type_literal</a>&nbsp;&nbsp;
+      <a href="#M000564">connect</a>&nbsp;&nbsp;
+      <a href="#M000574">connect</a>&nbsp;&nbsp;
+      <a href="#M000614">connect</a>&nbsp;&nbsp;
+      <a href="#M000603">connect</a>&nbsp;&nbsp;
+      <a href="#M000589">create_or_replace_view</a>&nbsp;&nbsp;
+      <a href="#M000587">create_table</a>&nbsp;&nbsp;
+      <a href="#M000588">create_table!</a>&nbsp;&nbsp;
+      <a href="#M000590">create_view</a>&nbsp;&nbsp;
+      <a href="#M000615">database_type</a>&nbsp;&nbsp;
+      <a href="#M000565">dataset</a>&nbsp;&nbsp;
+      <a href="#M000575">dataset</a>&nbsp;&nbsp;
+      <a href="#M000616">dataset</a>&nbsp;&nbsp;
+      <a href="#M000617">disconnect</a>&nbsp;&nbsp;
+      <a href="#M000591">drop_column</a>&nbsp;&nbsp;
+      <a href="#M000592">drop_index</a>&nbsp;&nbsp;
+      <a href="#M000593">drop_table</a>&nbsp;&nbsp;
+      <a href="#M000594">drop_view</a>&nbsp;&nbsp;
+      <a href="#M000646">dump_indexes_migration</a>&nbsp;&nbsp;
+      <a href="#M000647">dump_schema_migration</a>&nbsp;&nbsp;
+      <a href="#M000648">dump_table_schema</a>&nbsp;&nbsp;
+      <a href="#M000566">execute</a>&nbsp;&nbsp;
+      <a href="#M000576">execute</a>&nbsp;&nbsp;
+      <a href="#M000618">execute</a>&nbsp;&nbsp;
+      <a href="#M000578">execute_ddl</a>&nbsp;&nbsp;
+      <a href="#M000619">execute_ddl</a>&nbsp;&nbsp;
+      <a href="#M000620">execute_dui</a>&nbsp;&nbsp;
+      <a href="#M000567">execute_dui</a>&nbsp;&nbsp;
+      <a href="#M000577">execute_dui</a>&nbsp;&nbsp;
+      <a href="#M000621">execute_insert</a>&nbsp;&nbsp;
+      <a href="#M000579">execute_insert</a>&nbsp;&nbsp;
+      <a href="#M000568">execute_insert</a>&nbsp;&nbsp;
+      <a href="#M000622">fetch</a>&nbsp;&nbsp;
+      <a href="#M000623">from</a>&nbsp;&nbsp;
+      <a href="#M000624">get</a>&nbsp;&nbsp;
+      <a href="#M000625">identifier_input_method</a>&nbsp;&nbsp;
+      <a href="#M000604">identifier_input_method</a>&nbsp;&nbsp;
+      <a href="#M000605">identifier_input_method=</a>&nbsp;&nbsp;
+      <a href="#M000626">identifier_input_method=</a>&nbsp;&nbsp;
+      <a href="#M000606">identifier_output_method</a>&nbsp;&nbsp;
+      <a href="#M000627">identifier_output_method</a>&nbsp;&nbsp;
+      <a href="#M000607">identifier_output_method=</a>&nbsp;&nbsp;
+      <a href="#M000628">identifier_output_method=</a>&nbsp;&nbsp;
+      <a href="#M000580">indexes</a>&nbsp;&nbsp;
+      <a href="#M000629">inspect</a>&nbsp;&nbsp;
+      <a href="#M000630">literal</a>&nbsp;&nbsp;
+      <a href="#M000631">log_info</a>&nbsp;&nbsp;
+      <a href="#M000632">logger=</a>&nbsp;&nbsp;
+      <a href="#M000600">new</a>&nbsp;&nbsp;
+      <a href="#M000572">new</a>&nbsp;&nbsp;
+      <a href="#M000563">new</a>&nbsp;&nbsp;
+      <a href="#M000645">query</a>&nbsp;&nbsp;
+      <a href="#M000633">quote_identifiers=</a>&nbsp;&nbsp;
+      <a href="#M000608">quote_identifiers=</a>&nbsp;&nbsp;
+      <a href="#M000634">quote_identifiers?</a>&nbsp;&nbsp;
+      <a href="#M000596">rename_column</a>&nbsp;&nbsp;
+      <a href="#M000595">rename_table</a>&nbsp;&nbsp;
+      <a href="#M000636">schema</a>&nbsp;&nbsp;
+      <a href="#M000635">select</a>&nbsp;&nbsp;
+      <a href="#M000599">serial_primary_key_options</a>&nbsp;&nbsp;
+      <a href="#M000597">set_column_default</a>&nbsp;&nbsp;
+      <a href="#M000598">set_column_type</a>&nbsp;&nbsp;
+      <a href="#M000609">single_threaded=</a>&nbsp;&nbsp;
+      <a href="#M000637">single_threaded?</a>&nbsp;&nbsp;
+      <a href="#M000569">subadapter</a>&nbsp;&nbsp;
+      <a href="#M000638">synchronize</a>&nbsp;&nbsp;
+      <a href="#M000639">table_exists?</a>&nbsp;&nbsp;
+      <a href="#M000581">tables</a>&nbsp;&nbsp;
+      <a href="#M000640">test_connection</a>&nbsp;&nbsp;
+      <a href="#M000582">transaction</a>&nbsp;&nbsp;
+      <a href="#M000641">transaction</a>&nbsp;&nbsp;
+      <a href="#M000570">transaction</a>&nbsp;&nbsp;
+      <a href="#M000642">typecast_value</a>&nbsp;&nbsp;
+      <a href="#M000571">uri</a>&nbsp;&nbsp;
+      <a href="#M000643">uri</a>&nbsp;&nbsp;
+      <a href="#M000583">uri</a>&nbsp;&nbsp;
+      <a href="#M000644">url</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+    <div id="includes">
+      <h3 class="section-bar">Included Modules</h3>
+
+      <div id="includes-list">
+        <span class="include-name"><a href="Metaprogramming.html">Metaprogramming</a></span>
+      </div>
+    </div>
+
+    <div id="section">
+
+
+    <div id="constants-list">
+      <h3 class="section-bar">Constants</h3>
+
+      <div class="name-list">
+        <table summary="Constants">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">AUTOINCREMENT</td>
+          <td>=</td>
+          <td class="context-item-value">'AUTOINCREMENT'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">CASCADE</td>
+          <td>=</td>
+          <td class="context-item-value">'CASCADE'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">COMMA_SEPARATOR</td>
+          <td>=</td>
+          <td class="context-item-value">', '.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">NO_ACTION</td>
+          <td>=</td>
+          <td class="context-item-value">'NO ACTION'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">NOT_NULL</td>
+          <td>=</td>
+          <td class="context-item-value">' NOT NULL'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">NULL</td>
+          <td>=</td>
+          <td class="context-item-value">' NULL'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">PRIMARY_KEY</td>
+          <td>=</td>
+          <td class="context-item-value">' PRIMARY KEY'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">RESTRICT</td>
+          <td>=</td>
+          <td class="context-item-value">'RESTRICT'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">SET_DEFAULT</td>
+          <td>=</td>
+          <td class="context-item-value">'SET DEFAULT'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">SET_NULL</td>
+          <td>=</td>
+          <td class="context-item-value">'SET NULL'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">TEMPORARY</td>
+          <td>=</td>
+          <td class="context-item-value">'TEMPORARY '.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">UNDERSCORE</td>
+          <td>=</td>
+          <td class="context-item-value">'_'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">UNIQUE</td>
+          <td>=</td>
+          <td class="context-item-value">' UNIQUE'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">UNSIGNED</td>
+          <td>=</td>
+          <td class="context-item-value">' UNSIGNED'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">ADAPTERS</td>
+          <td>=</td>
+          <td class="context-item-value">%w'ado db2 dbi do firebird informix jdbc mysql odbc openbase oracle postgres sqlite'.collect{|x| x.to_sym}</td>
+          <td width="3em">&nbsp;</td>
+          <td class="context-item-desc">
+<a href="../Array.html">Array</a> of supported database adapters
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">SQL_BEGIN</td>
+          <td>=</td>
+          <td class="context-item-value">'BEGIN'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">SQL_COMMIT</td>
+          <td>=</td>
+          <td class="context-item-value">'COMMIT'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">SQL_ROLLBACK</td>
+          <td>=</td>
+          <td class="context-item-value">'ROLLBACK'.freeze</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+    <div id="aliases-list">
+      <h3 class="section-bar">External Aliases</h3>
+
+      <div class="name-list">
+                        <table summary="aliases">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">column_references_sql</td>
+          <td>-&gt;</td>
+          <td class="context-item-value">default_column_references_sql</td>
+        </tr>
+      <tr class="top-aligned-row context-row">
+        <td>&nbsp;</td>
+        <td colspan="2" class="context-item-desc">
+Keep default column_references_sql for add_foreign_key support
+
+</td>
+      </tr>
+                        </table>
+      </div>
+    </div>
+
+
+    <div id="attribute-list">
+      <h3 class="section-bar">Attributes</h3>
+
+      <div class="name-list">
+        <table>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">converted_exceptions</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc">
+Convert the given exceptions to <a href="../Sequel.html">Sequel</a>:Errors,
+necessary because DO raises errors specific to database types in certain
+cases.
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">database_type</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc">
+The type of database we are connecting to
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">default_schema</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc">
+The default <a href="Database.html#M000636">schema</a> to use, generally
+should be nil.
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">loggers</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc">
+<a href="../Array.html">Array</a> of <a href="SQL.html">SQL</a> loggers to
+use for this database
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">opts</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc">
+The options for this database
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">pool</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc">
+The connection pool for this database
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">prepared_statements</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc">
+The prepared statement objects for this database, keyed by name
+
+</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000601" class="method-detail">
+        <a name="M000601"></a>
+
+        <div class="method-heading">
+          <a href="#M000601" class="method-signature">
+          <span class="method-name">adapter_class</span><span class="method-args">(scheme)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The <a href="Database.html">Database</a> subclass for the given adapter
+scheme. Raises <a href="AdapterNotFound.html">Sequel::AdapterNotFound</a>
+if the adapter could not be loaded.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000601-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000601-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 93</span>
+ 93:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">adapter_class</span>(<span class="ruby-identifier">scheme</span>)
+ 94:       <span class="ruby-identifier">scheme</span> = <span class="ruby-identifier">scheme</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-value str">'-'</span>, <span class="ruby-value str">'_'</span>).<span class="ruby-identifier">to_sym</span>
+ 95:       
+ 96:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">klass</span> = <span class="ruby-constant">ADAPTER_MAP</span>[<span class="ruby-identifier">scheme</span>]
+ 97:         <span class="ruby-comment cmt"># attempt to load the adapter file</span>
+ 98:         <span class="ruby-keyword kw">begin</span>
+ 99:           <span class="ruby-constant">Sequel</span>.<span class="ruby-identifier">require</span> <span class="ruby-node">&quot;adapters/#{scheme}&quot;</span>
+100:         <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">LoadError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+101:           <span class="ruby-identifier">raise</span> <span class="ruby-constant">AdapterNotFound</span>, <span class="ruby-node">&quot;Could not load #{scheme} adapter:\n  #{e.message}&quot;</span>
+102:         <span class="ruby-keyword kw">end</span>
+103:         
+104:         <span class="ruby-comment cmt"># make sure we actually loaded the adapter</span>
+105:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">klass</span> = <span class="ruby-constant">ADAPTER_MAP</span>[<span class="ruby-identifier">scheme</span>]
+106:           <span class="ruby-identifier">raise</span> <span class="ruby-constant">AdapterNotFound</span>, <span class="ruby-node">&quot;Could not load #{scheme} adapter&quot;</span>
+107:         <span class="ruby-keyword kw">end</span>
+108:       <span class="ruby-keyword kw">end</span>
+109:       <span class="ruby-identifier">klass</span>
+110:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000602" class="method-detail">
+        <a name="M000602"></a>
+
+        <div class="method-heading">
+          <a href="#M000602" class="method-signature">
+          <span class="method-name">adapter_scheme</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the scheme for the <a href="Database.html">Database</a> class.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000602-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000602-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 113</span>
+113:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">adapter_scheme</span>
+114:       <span class="ruby-ivar">@scheme</span>
+115:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000603" class="method-detail">
+        <a name="M000603"></a>
+
+        <div class="method-heading">
+          <a href="#M000603" class="method-signature">
+          <span class="method-name">connect</span><span class="method-args">(conn_string, opts = {}) {|db = c.new(opts)| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Connects to a database. See <a
+href="../Sequel.html#M000065">Sequel.connect</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000603-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000603-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 118</span>
+118:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">connect</span>(<span class="ruby-identifier">conn_string</span>, <span class="ruby-identifier">opts</span> = {}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+119:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">conn_string</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>)
+120:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">match</span> = <span class="ruby-regexp re">/\A(jdbc|do):/o</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">conn_string</span>)
+121:           <span class="ruby-identifier">c</span> = <span class="ruby-identifier">adapter_class</span>(<span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_sym</span>)
+122:           <span class="ruby-identifier">opts</span> = {<span class="ruby-identifier">:uri=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">conn_string</span>}.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>)
+123:         <span class="ruby-keyword kw">else</span>
+124:           <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">conn_string</span>)
+125:           <span class="ruby-identifier">scheme</span> = <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">scheme</span>
+126:           <span class="ruby-identifier">scheme</span> = <span class="ruby-identifier">:dbi</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">scheme</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/\Adbi-/</span>
+127:           <span class="ruby-identifier">c</span> = <span class="ruby-identifier">adapter_class</span>(<span class="ruby-identifier">scheme</span>)
+128:           <span class="ruby-identifier">uri_options</span> = {}
+129:           <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">query</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">'&amp;'</span>).<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">'='</span>)}.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">uri_options</span>[<span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-identifier">v</span>} <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">query</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">empty?</span>
+130:           <span class="ruby-identifier">opts</span> = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">:uri_to_options</span>, <span class="ruby-identifier">uri</span>).<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">uri_options</span>).<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>)
+131:         <span class="ruby-keyword kw">end</span>
+132:       <span class="ruby-keyword kw">else</span>
+133:         <span class="ruby-identifier">opts</span> = <span class="ruby-identifier">conn_string</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>)
+134:         <span class="ruby-identifier">c</span> = <span class="ruby-identifier">adapter_class</span>(<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:adapter</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">opts</span>[<span class="ruby-value str">'adapter'</span>])
+135:       <span class="ruby-keyword kw">end</span>
+136:       <span class="ruby-comment cmt"># process opts a bit</span>
+137:       <span class="ruby-identifier">opts</span> = <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">inject</span>({}) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">m</span>, <span class="ruby-identifier">kv</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span> = <span class="ruby-operator">*</span><span class="ruby-identifier">kv</span>
+138:         <span class="ruby-identifier">k</span> = <span class="ruby-identifier">:user</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'username'</span>
+139:         <span class="ruby-identifier">m</span>[<span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-identifier">v</span>
+140:         <span class="ruby-identifier">m</span>
+141:       <span class="ruby-keyword kw">end</span>
+142:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block</span>
+143:         <span class="ruby-keyword kw">begin</span>
+144:           <span class="ruby-keyword kw">yield</span>(<span class="ruby-identifier">db</span> = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">opts</span>))
+145:         <span class="ruby-keyword kw">ensure</span>
+146:           <span class="ruby-identifier">db</span>.<span class="ruby-identifier">disconnect</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">db</span>
+147:           <span class="ruby-operator">::</span><span class="ruby-constant">Sequel</span><span class="ruby-operator">::</span><span class="ruby-constant">DATABASES</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">db</span>)
+148:         <span class="ruby-keyword kw">end</span>
+149:         <span class="ruby-keyword kw">nil</span>
+150:       <span class="ruby-keyword kw">else</span>
+151:         <span class="ruby-identifier">c</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">opts</span>)
+152:       <span class="ruby-keyword kw">end</span>
+153:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000604" class="method-detail">
+        <a name="M000604"></a>
+
+        <div class="method-heading">
+          <a href="#M000604" class="method-signature">
+          <span class="method-name">identifier_input_method</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The method to <a href="Database.html#M000612">call</a> on identifiers going
+into the database
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000604-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000604-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 156</span>
+156:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">identifier_input_method</span>
+157:       <span class="ruby-ivar">@@identifier_input_method</span>
+158:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000605" class="method-detail">
+        <a name="M000605"></a>
+
+        <div class="method-heading">
+          <a href="#M000605" class="method-signature">
+          <span class="method-name">identifier_input_method=</span><span class="method-args">(v)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the method to <a href="Database.html#M000612">call</a> on identifiers
+going into the database See Sequel.identifier_input_method=.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000605-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000605-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 162</span>
+162:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">identifier_input_method=</span>(<span class="ruby-identifier">v</span>)
+163:       <span class="ruby-ivar">@@identifier_input_method</span> = <span class="ruby-identifier">v</span> <span class="ruby-operator">||</span> <span class="ruby-value str">&quot;&quot;</span>
+164:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000606" class="method-detail">
+        <a name="M000606"></a>
+
+        <div class="method-heading">
+          <a href="#M000606" class="method-signature">
+          <span class="method-name">identifier_output_method</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The method to <a href="Database.html#M000612">call</a> on identifiers
+coming <a href="Database.html#M000623">from</a> the database
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000606-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000606-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 167</span>
+167:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">identifier_output_method</span>
+168:       <span class="ruby-ivar">@@identifier_output_method</span>
+169:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000607" class="method-detail">
+        <a name="M000607"></a>
+
+        <div class="method-heading">
+          <a href="#M000607" class="method-signature">
+          <span class="method-name">identifier_output_method=</span><span class="method-args">(v)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the method to <a href="Database.html#M000612">call</a> on identifiers
+coming <a href="Database.html#M000623">from</a> the database See
+Sequel.identifier_output_method=.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000607-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000607-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 173</span>
+173:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">identifier_output_method=</span>(<span class="ruby-identifier">v</span>)
+174:       <span class="ruby-ivar">@@identifier_output_method</span> = <span class="ruby-identifier">v</span> <span class="ruby-operator">||</span> <span class="ruby-value str">&quot;&quot;</span>
+175:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000600" class="method-detail">
+        <a name="M000600"></a>
+
+        <div class="method-heading">
+          <a href="#M000600" class="method-signature">
+          <span class="method-name">new</span><span class="method-args">(opts = {}, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Constructs a <a href="Database.html#M000563">new</a> instance of a database
+connection with the specified options hash.
+</p>
+<p>
+<a href="Database.html">Sequel::Database</a> is an abstract class that is
+not useful by itself.
+</p>
+<p>
+Takes the following options:
+</p>
+<ul>
+<li>:default_schema : The default <a href="Database.html#M000636">schema</a> to
+use, should generally be nil
+
+</li>
+<li>:disconnection_proc: A proc used to <a
+href="Database.html#M000617">disconnect</a> the connection.
+
+</li>
+<li>:<a href="Database.html#M000604">identifier_input_method</a>: A string
+method symbol to <a href="Database.html#M000612">call</a> on identifiers
+going into the database
+
+</li>
+<li>:<a href="Database.html#M000606">identifier_output_method</a>: A string
+method symbol to <a href="Database.html#M000612">call</a> on identifiers
+coming <a href="Database.html#M000623">from</a> the database
+
+</li>
+<li>:loggers : An array of loggers to use.
+
+</li>
+<li>:quote_identifiers : Whether to quote identifiers
+
+</li>
+<li>:single_threaded : Whether to use a single-threaded connection pool
+
+</li>
+</ul>
+<p>
+All options given are also passed to the <a
+href="ConnectionPool.html">ConnectionPool</a>. If a block is given, it is
+used as the connection_proc for the <a
+href="ConnectionPool.html">ConnectionPool</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000600-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000600-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 69</span>
+69:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">opts</span> = {}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+70:       <span class="ruby-ivar">@opts</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">opts</span>
+71:       
+72:       <span class="ruby-ivar">@single_threaded</span> = <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">:single_threaded</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:single_threaded</span>] <span class="ruby-operator">:</span> <span class="ruby-ivar">@@single_threaded</span>
+73:       <span class="ruby-ivar">@schemas</span> = <span class="ruby-keyword kw">nil</span>
+74:       <span class="ruby-ivar">@default_schema</span> = <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">:default_schema</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:default_schema</span>] <span class="ruby-operator">:</span> <span class="ruby-identifier">default_schema_default</span>
+75:       <span class="ruby-ivar">@prepared_statements</span> = {}
+76:       <span class="ruby-ivar">@transactions</span> = []
+77:       <span class="ruby-ivar">@identifier_input_method</span> = <span class="ruby-keyword kw">nil</span>
+78:       <span class="ruby-ivar">@identifier_output_method</span> = <span class="ruby-keyword kw">nil</span>
+79:       <span class="ruby-ivar">@quote_identifiers</span> = <span class="ruby-keyword kw">nil</span>
+80:       <span class="ruby-ivar">@pool</span> = (<span class="ruby-ivar">@single_threaded</span> <span class="ruby-operator">?</span> <span class="ruby-constant">SingleThreadedPool</span> <span class="ruby-operator">:</span> <span class="ruby-constant">ConnectionPool</span>).<span class="ruby-identifier">new</span>(<span class="ruby-identifier">connection_pool_default_options</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>), <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+81:       <span class="ruby-ivar">@pool</span>.<span class="ruby-identifier">connection_proc</span> = <span class="ruby-identifier">proc</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">server</span><span class="ruby-operator">|</span> <span class="ruby-identifier">connect</span>(<span class="ruby-identifier">server</span>)} <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">block</span>
+82:       <span class="ruby-ivar">@pool</span>.<span class="ruby-identifier">disconnection_proc</span> = <span class="ruby-identifier">proc</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">conn</span><span class="ruby-operator">|</span> <span class="ruby-identifier">disconnect_connection</span>(<span class="ruby-identifier">conn</span>)} <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:disconnection_proc</span>]
+83: 
+84:       <span class="ruby-ivar">@loggers</span> = <span class="ruby-constant">Array</span>(<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:logger</span>]) <span class="ruby-operator">+</span> <span class="ruby-constant">Array</span>(<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:loggers</span>])
+85:       <span class="ruby-operator">::</span><span class="ruby-constant">Sequel</span><span class="ruby-operator">::</span><span class="ruby-constant">DATABASES</span>.<span class="ruby-identifier">push</span>(<span class="ruby-keyword kw">self</span>)
+86:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000572" class="method-detail">
+        <a name="M000572"></a>
+
+        <div class="method-heading">
+          <a href="#M000572" class="method-signature">
+          <span class="method-name">new</span><span class="method-args">(opts)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Call the DATABASE_SETUP proc directly after initialization, so the object
+always uses sub adapter specific code. Also, raise an error immediately if
+the connection doesn&#8216;t have a <a
+href="Database.html#M000571">uri</a>, since <a href="JDBC.html">JDBC</a>
+requires one.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000572-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000572-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/jdbc.rb, line 95</span>
+ 95:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">opts</span>)
+ 96:         <span class="ruby-ivar">@opts</span> = <span class="ruby-identifier">opts</span>
+ 97:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span>, <span class="ruby-value str">&quot;No connection string specified&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">uri</span>
+ 98:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">match</span> = <span class="ruby-regexp re">/\Ajdbc:([^:]+)/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">uri</span>) <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">prok</span> = <span class="ruby-constant">DATABASE_SETUP</span>[<span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">to_sym</span>]
+ 99:           <span class="ruby-identifier">prok</span>.<span class="ruby-identifier">call</span>(<span class="ruby-keyword kw">self</span>)
+100:         <span class="ruby-keyword kw">end</span>
+101:         <span class="ruby-keyword kw">super</span>(<span class="ruby-identifier">opts</span>)
+102:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000563" class="method-detail">
+        <a name="M000563"></a>
+
+        <div class="method-heading">
+          <a href="#M000563" class="method-signature">
+          <span class="method-name">new</span><span class="method-args">(opts)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Call the DATABASE_SETUP proc directly after initialization, so the object
+always uses sub adapter specific code. Also, raise an error immediately if
+the connection doesn&#8216;t have a <a
+href="Database.html#M000571">uri</a>, since <a
+href="DataObjects.html">DataObjects</a> requires one.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000563-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000563-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/adapters/do.rb, line 53</span>
+53:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">opts</span>)
+54:         <span class="ruby-ivar">@opts</span> = <span class="ruby-identifier">opts</span>
+55:         <span class="ruby-ivar">@converted_exceptions</span> = []
+56:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span>, <span class="ruby-value str">&quot;No connection string specified&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">uri</span>
+57:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">prok</span> = <span class="ruby-constant">DATABASE_SETUP</span>[<span class="ruby-identifier">subadapter</span>.<span class="ruby-identifier">to_sym</span>]
+58:           <span class="ruby-identifier">prok</span>.<span class="ruby-identifier">call</span>(<span class="ruby-keyword kw">self</span>)
+59:         <span class="ruby-keyword kw">end</span>
+60:         <span class="ruby-keyword kw">super</span>(<span class="ruby-identifier">opts</span>)
+61:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000608" class="method-detail">
+        <a name="M000608"></a>
+
+        <div class="method-heading">
+          <a href="#M000608" class="method-signature">
+          <span class="method-name">quote_identifiers=</span><span class="method-args">(value)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sets the default quote_identifiers mode for <a
+href="Database.html#M000563">new</a> databases. See
+Sequel.quote_identifiers=.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000608-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000608-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 179</span>
+179:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">quote_identifiers=</span>(<span class="ruby-identifier">value</span>)
+180:       <span class="ruby-ivar">@@quote_identifiers</span> = <span class="ruby-identifier">value</span>
+181:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000609" class="method-detail">
+        <a name="M000609"></a>
+
+        <div class="method-heading">
+          <a href="#M000609" class="method-signature">
+          <span class="method-name">single_threaded=</span><span class="method-args">(value)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sets the default single_threaded mode for <a
+href="Database.html#M000563">new</a> databases. See
+Sequel.single_threaded=.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000609-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000609-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 185</span>
+185:     <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">single_threaded=</span>(<span class="ruby-identifier">value</span>)
+186:       <span class="ruby-ivar">@@single_threaded</span> = <span class="ruby-identifier">value</span>
+187:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000610" class="method-detail">
+        <a name="M000610"></a>
+
+        <div class="method-heading">
+          <a href="#M000610" class="method-signature">
+          <span class="method-name">&lt;&lt;</span><span class="method-args">(sql)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Executes the supplied <a href="SQL.html">SQL</a> statement string.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000610-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000610-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 223</span>
+223:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-identifier">sql</span>)
+224:       <span class="ruby-identifier">execute_ddl</span>(<span class="ruby-identifier">sql</span>)
+225:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000611" class="method-detail">
+        <a name="M000611"></a>
+
+        <div class="method-heading">
+          <a href="#M000611" class="method-signature">
+          <span class="method-name">[]</span><span class="method-args">(*args)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns a <a href="Database.html#M000565">dataset</a> <a
+href="Database.html#M000623">from</a> the database. If the first argument
+is a string, the method acts as an alias for <a
+href="Database.html#M000622">Database#fetch</a>, returning a <a
+href="Database.html#M000565">dataset</a> for arbitrary <a
+href="SQL.html">SQL</a>:
+</p>
+<pre>
+  DB['SELECT * FROM items WHERE name = ?', my_name].all
+</pre>
+<p>
+Otherwise, acts as an alias for <a
+href="Database.html#M000623">Database#from</a>, setting the primary table
+for the <a href="Database.html#M000565">dataset</a>:
+</p>
+<pre>
+  DB[:items].sql #=&gt; &quot;SELECT * FROM items&quot;
+</pre>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000611-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000611-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 237</span>
+237:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+238:       (<span class="ruby-constant">String</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">fetch</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">from</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+239:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000584" class="method-detail">
+        <a name="M000584"></a>
+
+        <div class="method-heading">
+          <a href="#M000584" class="method-signature">
+          <span class="method-name">add_column</span><span class="method-args">(table, *args)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Adds a column to the specified table. This method expects a column name, a
+datatype and optionally a hash with additional constraints and options:
+</p>
+<pre>
+  DB.add_column :items, :name, :text, :unique =&gt; true, :null =&gt; false
+  DB.add_column :items, :category, :text, :default =&gt; 'ruby'
+</pre>
+<p>
+See <a href="Database.html#M000586">alter_table</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000584-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000584-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 10</span>
+10:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_column</span>(<span class="ruby-identifier">table</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+11:       <span class="ruby-identifier">alter_table</span>(<span class="ruby-identifier">table</span>) {<span class="ruby-identifier">add_column</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)}
+12:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000585" class="method-detail">
+        <a name="M000585"></a>
+
+        <div class="method-heading">
+          <a href="#M000585" class="method-signature">
+          <span class="method-name">add_index</span><span class="method-args">(table, *args)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Adds an index to a table for the given columns:
+</p>
+<pre>
+  DB.add_index :posts, :title
+  DB.add_index :posts, [:author, :title], :unique =&gt; true
+</pre>
+<p>
+See <a href="Database.html#M000586">alter_table</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000585-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000585-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 20</span>
+20:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_index</span>(<span class="ruby-identifier">table</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+21:       <span class="ruby-identifier">alter_table</span>(<span class="ruby-identifier">table</span>) {<span class="ruby-identifier">add_index</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)}
+22:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000586" class="method-detail">
+        <a name="M000586"></a>
+
+        <div class="method-heading">
+          <a href="#M000586" class="method-signature">
+          <span class="method-name">alter_table</span><span class="method-args">(name, generator=nil, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alters the given table with the specified block. Example:
+</p>
+<pre>
+  DB.alter_table :items do
+    add_column :category, :text, :default =&gt; 'ruby'
+    drop_column :category
+    rename_column :cntr, :counter
+    set_column_type :value, :float
+    set_column_default :value, :float
+    add_index [:group, :category]
+    drop_index [:group, :category]
+  end
+</pre>
+<p>
+Note that <a href="Database.html#M000584">add_column</a> accepts all the
+options available for column definitions using <a
+href="Database.html#M000587">create_table</a>, and <a
+href="Database.html#M000585">add_index</a> accepts all the options
+available for index definition.
+</p>
+<p>
+See <a
+href="Schema/AlterTableGenerator.html">Schema::AlterTableGenerator</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000586-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000586-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 41</span>
+41:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">alter_table</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">generator</span>=<span class="ruby-keyword kw">nil</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+42:       <span class="ruby-identifier">remove_cached_schema</span>(<span class="ruby-identifier">name</span>)
+43:       <span class="ruby-identifier">generator</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Schema</span><span class="ruby-operator">::</span><span class="ruby-constant">AlterTableGenerator</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+44:       <span class="ruby-identifier">alter_table_sql_list</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">generator</span>.<span class="ruby-identifier">operations</span>).<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">each</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">sql</span><span class="ruby-operator">|</span> <span class="ruby-identifier">execute_ddl</span>(<span class="ruby-identifier">sql</span>)}
+45:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000612" class="method-detail">
+        <a name="M000612"></a>
+
+        <div class="method-heading">
+          <a href="#M000612" class="method-signature">
+          <span class="method-name">call</span><span class="method-args">(ps_name, hash={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Call the prepared statement with the given name with the given hash of
+arguments.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000612-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000612-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 243</span>
+243:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">call</span>(<span class="ruby-identifier">ps_name</span>, <span class="ruby-identifier">hash</span>={})
+244:       <span class="ruby-identifier">prepared_statements</span>[<span class="ruby-identifier">ps_name</span>].<span class="ruby-identifier">call</span>(<span class="ruby-identifier">hash</span>)
+245:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000573" class="method-detail">
+        <a name="M000573"></a>
+
+        <div class="method-heading">
+          <a href="#M000573" class="method-signature">
+          <span class="method-name">call_sproc</span><span class="method-args">(name, opts = {}) {|cps.executeQuery| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Execute the given stored procedure with the give name. If a block is given,
+the stored procedure should return rows.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000573-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000573-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/jdbc.rb, line 106</span>
+106:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">call_sproc</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">opts</span> = {})
+107:         <span class="ruby-identifier">args</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:args</span>] <span class="ruby-operator">||</span> []
+108:         <span class="ruby-identifier">sql</span> = <span class="ruby-node">&quot;{call #{name}(#{args.map{'?'}.join(',')})}&quot;</span>
+109:         <span class="ruby-identifier">synchronize</span>(<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:server</span>]) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conn</span><span class="ruby-operator">|</span>
+110:           <span class="ruby-identifier">cps</span> = <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">prepareCall</span>(<span class="ruby-identifier">sql</span>)
+111: 
+112:           <span class="ruby-identifier">i</span> = <span class="ruby-value">0</span>
+113:           <span class="ruby-identifier">args</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">arg</span><span class="ruby-operator">|</span> <span class="ruby-identifier">set_ps_arg</span>(<span class="ruby-identifier">cps</span>, <span class="ruby-identifier">arg</span>, <span class="ruby-identifier">i</span><span class="ruby-operator">+=</span><span class="ruby-value">1</span>)}
+114: 
+115:           <span class="ruby-keyword kw">begin</span>
+116:             <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+117:               <span class="ruby-keyword kw">yield</span> <span class="ruby-identifier">cps</span>.<span class="ruby-identifier">executeQuery</span>
+118:             <span class="ruby-keyword kw">else</span>
+119:               <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:type</span>]
+120:               <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:insert</span>
+121:                 <span class="ruby-identifier">cps</span>.<span class="ruby-identifier">executeUpdate</span>
+122:                 <span class="ruby-identifier">last_insert_id</span>(<span class="ruby-identifier">conn</span>, <span class="ruby-identifier">opts</span>)
+123:               <span class="ruby-keyword kw">else</span>
+124:                 <span class="ruby-identifier">cps</span>.<span class="ruby-identifier">executeUpdate</span>
+125:               <span class="ruby-keyword kw">end</span>
+126:             <span class="ruby-keyword kw">end</span>
+127:           <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">NativeException</span>, <span class="ruby-constant">JavaSQL</span><span class="ruby-operator">::</span><span class="ruby-constant">SQLException</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+128:             <span class="ruby-identifier">raise_error</span>(<span class="ruby-identifier">e</span>)
+129:           <span class="ruby-keyword kw">ensure</span>
+130:             <span class="ruby-identifier">cps</span>.<span class="ruby-identifier">close</span>
+131:           <span class="ruby-keyword kw">end</span>
+132:         <span class="ruby-keyword kw">end</span>
+133:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000613" class="method-detail">
+        <a name="M000613"></a>
+
+        <div class="method-heading">
+          <a href="#M000613" class="method-signature">
+          <span class="method-name">cast_type_literal</span><span class="method-args">(type)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Cast the given type to a <a href="Database.html#M000630">literal</a> type
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000613-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000613-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 248</span>
+248:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cast_type_literal</span>(<span class="ruby-identifier">type</span>)
+249:       <span class="ruby-identifier">type_literal</span>(<span class="ruby-identifier">:type=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">type</span>)
+250:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000564" class="method-detail">
+        <a name="M000564"></a>
+
+        <div class="method-heading">
+          <a href="#M000564" class="method-signature">
+          <span class="method-name">connect</span><span class="method-args">(server)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Setup a DataObjects::Connection to the database.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000564-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000564-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/adapters/do.rb, line 64</span>
+64:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">connect</span>(<span class="ruby-identifier">server</span>)
+65:         <span class="ruby-identifier">setup_connection</span>(<span class="ruby-operator">::</span><span class="ruby-constant">DataObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">Connection</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">uri</span>(<span class="ruby-identifier">server_opts</span>(<span class="ruby-identifier">server</span>))))
+66:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000574" class="method-detail">
+        <a name="M000574"></a>
+
+        <div class="method-heading">
+          <a href="#M000574" class="method-signature">
+          <span class="method-name">connect</span><span class="method-args">(server)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Connect to the database using JavaSQL::DriverManager.getConnection.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000574-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000574-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/jdbc.rb, line 136</span>
+136:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">connect</span>(<span class="ruby-identifier">server</span>)
+137:         <span class="ruby-identifier">setup_connection</span>(<span class="ruby-constant">JavaSQL</span><span class="ruby-operator">::</span><span class="ruby-constant">DriverManager</span>.<span class="ruby-identifier">getConnection</span>(<span class="ruby-identifier">uri</span>(<span class="ruby-identifier">server_opts</span>(<span class="ruby-identifier">server</span>))))
+138:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000614" class="method-detail">
+        <a name="M000614"></a>
+
+        <div class="method-heading">
+          <a href="#M000614" class="method-signature">
+          <span class="method-name">connect</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Connects to the database. This method should be overridden by descendants.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000614-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000614-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 253</span>
+253:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">connect</span>
+254:       <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, <span class="ruby-value str">&quot;#connect should be overridden by adapters&quot;</span>
+255:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000589" class="method-detail">
+        <a name="M000589"></a>
+
+        <div class="method-heading">
+          <a href="#M000589" class="method-signature">
+          <span class="method-name">create_or_replace_view</span><span class="method-args">(name, source)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Creates a view, replacing it if it already exists:
+</p>
+<pre>
+  DB.create_or_replace_view(:cheap_items, &quot;SELECT * FROM items WHERE price &lt; 100&quot;)
+  DB.create_or_replace_view(:ruby_items, DB[:items].filter(:category =&gt; 'ruby'))
+</pre>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000589-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000589-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 77</span>
+77:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_or_replace_view</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">source</span>)
+78:       <span class="ruby-identifier">remove_cached_schema</span>(<span class="ruby-identifier">name</span>)
+79:       <span class="ruby-identifier">source</span> = <span class="ruby-identifier">source</span>.<span class="ruby-identifier">sql</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">source</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Dataset</span>)
+80:       <span class="ruby-identifier">execute_ddl</span>(<span class="ruby-node">&quot;CREATE OR REPLACE VIEW #{quote_schema_table(name)} AS #{source}&quot;</span>)
+81:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000587" class="method-detail">
+        <a name="M000587"></a>
+
+        <div class="method-heading">
+          <a href="#M000587" class="method-signature">
+          <span class="method-name">create_table</span><span class="method-args">(name, options={}, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Creates a table with the columns given in the provided block:
+</p>
+<pre>
+  DB.create_table :posts do
+    primary_key :id
+    column :title, :text
+    String :content
+    index :title
+  end
+</pre>
+<p>
+Options:
+</p>
+<ul>
+<li>:temp - Create the table as a temporary table.
+
+</li>
+</ul>
+<p>
+See <a href="Schema/Generator.html">Schema::Generator</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000587-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000587-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 60</span>
+60:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_table</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">options</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+61:       <span class="ruby-identifier">options</span> = {<span class="ruby-identifier">:generator=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">options</span>} <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Schema</span><span class="ruby-operator">::</span><span class="ruby-constant">Generator</span>)
+62:       <span class="ruby-identifier">generator</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:generator</span>] <span class="ruby-operator">||</span> <span class="ruby-constant">Schema</span><span class="ruby-operator">::</span><span class="ruby-constant">Generator</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+63:       <span class="ruby-identifier">execute_ddl</span>(<span class="ruby-identifier">create_table_sql</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">generator</span>, <span class="ruby-identifier">options</span>))
+64:       <span class="ruby-identifier">index_sql_list</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">generator</span>.<span class="ruby-identifier">indexes</span>).<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">sql</span><span class="ruby-operator">|</span> <span class="ruby-identifier">execute_ddl</span>(<span class="ruby-identifier">sql</span>)}
+65:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000588" class="method-detail">
+        <a name="M000588"></a>
+
+        <div class="method-heading">
+          <a href="#M000588" class="method-signature">
+          <span class="method-name">create_table!</span><span class="method-args">(name, options={}, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Forcibly creates a table, attempting to drop it unconditionally (and
+catching any errors), then creating it.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000588-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000588-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 68</span>
+68:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_table!</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">options</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+69:       <span class="ruby-identifier">drop_table</span>(<span class="ruby-identifier">name</span>) <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">nil</span>
+70:       <span class="ruby-identifier">create_table</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+71:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000590" class="method-detail">
+        <a name="M000590"></a>
+
+        <div class="method-heading">
+          <a href="#M000590" class="method-signature">
+          <span class="method-name">create_view</span><span class="method-args">(name, source)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Creates a view based on a <a href="Database.html#M000565">dataset</a> or an
+<a href="SQL.html">SQL</a> string:
+</p>
+<pre>
+  DB.create_view(:cheap_items, &quot;SELECT * FROM items WHERE price &lt; 100&quot;)
+  DB.create_view(:ruby_items, DB[:items].filter(:category =&gt; 'ruby'))
+</pre>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000590-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000590-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 87</span>
+87:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_view</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">source</span>)
+88:       <span class="ruby-identifier">source</span> = <span class="ruby-identifier">source</span>.<span class="ruby-identifier">sql</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">source</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Dataset</span>)
+89:       <span class="ruby-identifier">execute_ddl</span>(<span class="ruby-node">&quot;CREATE VIEW #{quote_schema_table(name)} AS #{source}&quot;</span>)
+90:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000615" class="method-detail">
+        <a name="M000615"></a>
+
+        <div class="method-heading">
+          <a href="#M000615" class="method-signature">
+          <span class="method-name">database_type</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The database type for this database object, the same as the adapter scheme
+by default. Should be overridden in adapters (especially shared adapters)
+to be the correct type, so that even if two separate <a
+href="Database.html">Database</a> objects are using different adapters you
+can tell that they are using the same database type. Even better, you can
+tell that two <a href="Database.html">Database</a> objects that are using
+the same adapter are connecting to different database types (think <a
+href="JDBC.html">JDBC</a> or <a href="DataObjects.html">DataObjects</a>).
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000615-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000615-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 264</span>
+264:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">database_type</span>
+265:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">adapter_scheme</span>
+266:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000565" class="method-detail">
+        <a name="M000565"></a>
+
+        <div class="method-heading">
+          <a href="#M000565" class="method-signature">
+          <span class="method-name">dataset</span><span class="method-args">(opts = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return a <a href="Dataset.html">Sequel::DataObjects::Dataset</a> object for
+this database.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000565-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000565-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/adapters/do.rb, line 69</span>
+69:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">dataset</span>(<span class="ruby-identifier">opts</span> = <span class="ruby-keyword kw">nil</span>)
+70:         <span class="ruby-constant">DataObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">opts</span>)
+71:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000575" class="method-detail">
+        <a name="M000575"></a>
+
+        <div class="method-heading">
+          <a href="#M000575" class="method-signature">
+          <span class="method-name">dataset</span><span class="method-args">(opts = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return instances of <a href="Dataset.html">JDBC::Dataset</a> with the given
+opts.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000575-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000575-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/jdbc.rb, line 141</span>
+141:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">dataset</span>(<span class="ruby-identifier">opts</span> = <span class="ruby-keyword kw">nil</span>)
+142:         <span class="ruby-constant">JDBC</span><span class="ruby-operator">::</span><span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">opts</span>)
+143:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000616" class="method-detail">
+        <a name="M000616"></a>
+
+        <div class="method-heading">
+          <a href="#M000616" class="method-signature">
+          <span class="method-name">dataset</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns a blank <a href="Database.html#M000565">dataset</a> for this
+database
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000616-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000616-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 269</span>
+269:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">dataset</span>
+270:       <span class="ruby-identifier">ds</span> = <span class="ruby-constant">Sequel</span><span class="ruby-operator">::</span><span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>)
+271:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000617" class="method-detail">
+        <a name="M000617"></a>
+
+        <div class="method-heading">
+          <a href="#M000617" class="method-signature">
+          <span class="method-name">disconnect</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Disconnects all available connections <a
+href="Database.html#M000623">from</a> the connection pool. Any connections
+currently in use will not be disconnected.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000617-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000617-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 275</span>
+275:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">disconnect</span>
+276:       <span class="ruby-identifier">pool</span>.<span class="ruby-identifier">disconnect</span>
+277:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000591" class="method-detail">
+        <a name="M000591"></a>
+
+        <div class="method-heading">
+          <a href="#M000591" class="method-signature">
+          <span class="method-name">drop_column</span><span class="method-args">(table, *args)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Removes a column <a href="Database.html#M000623">from</a> the specified
+table:
+</p>
+<pre>
+  DB.drop_column :items, :category
+</pre>
+<p>
+See <a href="Database.html#M000586">alter_table</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000591-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000591-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 97</span>
+97:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">drop_column</span>(<span class="ruby-identifier">table</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+98:       <span class="ruby-identifier">alter_table</span>(<span class="ruby-identifier">table</span>) {<span class="ruby-identifier">drop_column</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)}
+99:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000592" class="method-detail">
+        <a name="M000592"></a>
+
+        <div class="method-heading">
+          <a href="#M000592" class="method-signature">
+          <span class="method-name">drop_index</span><span class="method-args">(table, columns, options={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Removes an index for the given table and column/s:
+</p>
+<pre>
+  DB.drop_index :posts, :title
+  DB.drop_index :posts, [:author, :title]
+</pre>
+<p>
+See <a href="Database.html#M000586">alter_table</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000592-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000592-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 107</span>
+107:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">drop_index</span>(<span class="ruby-identifier">table</span>, <span class="ruby-identifier">columns</span>, <span class="ruby-identifier">options</span>={})
+108:       <span class="ruby-identifier">alter_table</span>(<span class="ruby-identifier">table</span>){<span class="ruby-identifier">drop_index</span>(<span class="ruby-identifier">columns</span>, <span class="ruby-identifier">options</span>)}
+109:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000593" class="method-detail">
+        <a name="M000593"></a>
+
+        <div class="method-heading">
+          <a href="#M000593" class="method-signature">
+          <span class="method-name">drop_table</span><span class="method-args">(*names)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Drops one or more <a href="Database.html#M000581">tables</a> corresponding
+to the given names:
+</p>
+<pre>
+  DB.drop_table(:posts, :comments)
+</pre>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000593-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000593-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 114</span>
+114:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">drop_table</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">names</span>)
+115:       <span class="ruby-identifier">names</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span>
+116:         <span class="ruby-identifier">remove_cached_schema</span>(<span class="ruby-identifier">n</span>)
+117:         <span class="ruby-identifier">execute_ddl</span>(<span class="ruby-identifier">drop_table_sql</span>(<span class="ruby-identifier">n</span>))
+118:       <span class="ruby-keyword kw">end</span>
+119:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000594" class="method-detail">
+        <a name="M000594"></a>
+
+        <div class="method-heading">
+          <a href="#M000594" class="method-signature">
+          <span class="method-name">drop_view</span><span class="method-args">(*names)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Drops one or more views corresponding to the given names:
+</p>
+<pre>
+  DB.drop_view(:cheap_items)
+</pre>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000594-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000594-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 124</span>
+124:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">drop_view</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">names</span>)
+125:       <span class="ruby-identifier">names</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span>
+126:         <span class="ruby-identifier">remove_cached_schema</span>(<span class="ruby-identifier">n</span>)
+127:         <span class="ruby-identifier">execute_ddl</span>(<span class="ruby-node">&quot;DROP VIEW #{quote_schema_table(n)}&quot;</span>)
+128:       <span class="ruby-keyword kw">end</span>
+129:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000646" class="method-detail">
+        <a name="M000646"></a>
+
+        <div class="method-heading">
+          <a href="#M000646" class="method-signature">
+          <span class="method-name">dump_indexes_migration</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Dump <a href="Database.html#M000580">indexes</a> for all <a
+href="Database.html#M000581">tables</a> as a migration. This complements
+the :indexes=&gt;false option to <a
+href="Database.html#M000647">dump_schema_migration</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000646-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000646-source">
+<pre>
+   <span class="ruby-comment cmt"># File lib/sequel/extensions/schema_dumper.rb, line 5</span>
+5:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">dump_indexes_migration</span>
+6:       <span class="ruby-identifier">ts</span> = <span class="ruby-identifier">tables</span>
+7:       <span class="ruby-value str">&quot;Class.new(Sequel::Migration) do\n  def up\n\#{ts.map{|t| dump_table_indexes(t, :add_index)}.reject{|x| x == ''}.join(\&quot;\\n\\n\&quot;).gsub(/^/o, '    ')}\n  end\n  \n  def down\n\#{ts.map{|t| dump_table_indexes(t, :drop_index)}.reject{|x| x == ''}.join(\&quot;\\n\\n\&quot;).gsub(/^/o, '    ')}\n  end\nend\n&quot;</span>
+8:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000647" class="method-detail">
+        <a name="M000647"></a>
+
+        <div class="method-heading">
+          <a href="#M000647" class="method-signature">
+          <span class="method-name">dump_schema_migration</span><span class="method-args">(options={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return a string that contains a <a
+href="Migration.html">Sequel::Migration</a> subclass that when run would
+recreate the database structure. Options:
+</p>
+<ul>
+<li>:same_db - Don&#8216;t attempt to translate database types to ruby types.
+If this isn&#8216;t set to true, all database types will be translated to
+ruby types, but there is no guarantee that the migration generated will
+yield the same type. Without this set, types that aren&#8216;t recognized
+will be translated to a string-like type.
+
+</li>
+<li>:<a href="Database.html#M000580">indexes</a> - If set to false, don&#8216;t
+dump <a href="Database.html#M000580">indexes</a> (they can be added later
+via dump_index_migration).
+
+</li>
+</ul>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000647-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000647-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/extensions/schema_dumper.rb, line 30</span>
+30:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">dump_schema_migration</span>(<span class="ruby-identifier">options</span>={})
+31:       <span class="ruby-identifier">ts</span> = <span class="ruby-identifier">tables</span>
+32:       <span class="ruby-value str">&quot;Class.new(Sequel::Migration) do\n  def up\n\#{ts.map{|t| dump_table_schema(t, options)}.join(\&quot;\\n\\n\&quot;).gsub(/^/o, '    ')}\n  end\n  \n  def down\n    drop_table(\#{ts.inspect[1...-1]})\n  end\nend\n&quot;</span>
+33:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000648" class="method-detail">
+        <a name="M000648"></a>
+
+        <div class="method-heading">
+          <a href="#M000648" class="method-signature">
+          <span class="method-name">dump_table_schema</span><span class="method-args">(table, options={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return a string with a create table block that will recreate the given
+table&#8216;s <a href="Database.html#M000636">schema</a>. Takes the same
+options as <a href="Database.html#M000647">dump_schema_migration</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000648-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000648-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/extensions/schema_dumper.rb, line 48</span>
+48:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">dump_table_schema</span>(<span class="ruby-identifier">table</span>, <span class="ruby-identifier">options</span>={})
+49:       <span class="ruby-identifier">s</span> = <span class="ruby-identifier">schema</span>(<span class="ruby-identifier">table</span>).<span class="ruby-identifier">dup</span>
+50:       <span class="ruby-identifier">pks</span> = <span class="ruby-identifier">s</span>.<span class="ruby-identifier">find_all</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">last</span>[<span class="ruby-identifier">:primary_key</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword kw">true</span>}.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">first</span>}
+51:       <span class="ruby-identifier">options</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">:single_pk=</span><span class="ruby-operator">&gt;</span><span class="ruby-keyword kw">true</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">pks</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+52:       <span class="ruby-identifier">m</span> = <span class="ruby-identifier">method</span>(<span class="ruby-identifier">:column_schema_to_generator_opts</span>)
+53:       <span class="ruby-identifier">im</span> = <span class="ruby-identifier">method</span>(<span class="ruby-identifier">:index_to_generator_opts</span>)
+54:       <span class="ruby-identifier">indexes</span> = <span class="ruby-identifier">indexes</span>(<span class="ruby-identifier">table</span>).<span class="ruby-identifier">sort_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_s</span>} <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:indexes</span>] <span class="ruby-operator">!=</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:indexes</span>)
+55:       <span class="ruby-identifier">gen</span> = <span class="ruby-constant">Schema</span><span class="ruby-operator">::</span><span class="ruby-constant">Generator</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>) <span class="ruby-keyword kw">do</span>
+56:         <span class="ruby-identifier">s</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">info</span><span class="ruby-operator">|</span> <span class="ruby-identifier">send</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">m</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">info</span>, <span class="ruby-identifier">options</span>))}
+57:         <span class="ruby-identifier">primary_key</span>(<span class="ruby-identifier">pks</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@primary_key</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">pks</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+58:         <span class="ruby-identifier">indexes</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">iname</span>, <span class="ruby-identifier">iopts</span><span class="ruby-operator">|</span> <span class="ruby-identifier">send</span>(<span class="ruby-identifier">:index</span>, <span class="ruby-identifier">iopts</span>[<span class="ruby-identifier">:columns</span>], <span class="ruby-identifier">im</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">table</span>, <span class="ruby-identifier">iname</span>, <span class="ruby-identifier">iopts</span>))} <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">indexes</span>
+59:       <span class="ruby-keyword kw">end</span>
+60:       <span class="ruby-identifier">commands</span> = [<span class="ruby-identifier">gen</span>.<span class="ruby-identifier">dump_columns</span>, <span class="ruby-identifier">gen</span>.<span class="ruby-identifier">dump_constraints</span>, <span class="ruby-identifier">gen</span>.<span class="ruby-identifier">dump_indexes</span>].<span class="ruby-identifier">reject</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span> <span class="ruby-operator">==</span> <span class="ruby-value str">''</span>}.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;\n\n&quot;</span>)
+61:       <span class="ruby-node">&quot;create_table(#{table.inspect}) do\n#{commands.gsub(/^/o, '  ')}\nend&quot;</span>
+62:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000566" class="method-detail">
+        <a name="M000566"></a>
+
+        <div class="method-heading">
+          <a href="#M000566" class="method-signature">
+          <span class="method-name">execute</span><span class="method-args">(sql, opts={}) {|res| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Execute the given <a href="SQL.html">SQL</a>. If a block is given, the
+DataObjects::Reader created is yielded to it. A block should not be
+provided unless a a SELECT statement is being used (or something else that
+returns rows). Otherwise, the return value is the insert id if opts[:type]
+is :insert, or the number of affected rows, otherwise.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000566-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000566-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/adapters/do.rb, line 78</span>
+78:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>={})
+79:         <span class="ruby-identifier">log_info</span>(<span class="ruby-identifier">sql</span>)
+80:         <span class="ruby-identifier">synchronize</span>(<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:server</span>]) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conn</span><span class="ruby-operator">|</span>
+81:           <span class="ruby-keyword kw">begin</span>
+82:             <span class="ruby-identifier">command</span> = <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">create_command</span>(<span class="ruby-identifier">sql</span>)
+83:             <span class="ruby-identifier">res</span> = <span class="ruby-identifier">block_given?</span> <span class="ruby-value">? </span><span class="ruby-identifier">command</span>.<span class="ruby-identifier">execute_reader</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">command</span>.<span class="ruby-identifier">execute_non_query</span>
+84:           <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+85:             <span class="ruby-identifier">raise_error</span>(<span class="ruby-identifier">e</span>, <span class="ruby-identifier">:classes=</span><span class="ruby-operator">&gt;</span><span class="ruby-ivar">@converted_exceptions</span>)
+86:           <span class="ruby-keyword kw">end</span>
+87:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+88:             <span class="ruby-keyword kw">begin</span>
+89:               <span class="ruby-keyword kw">yield</span>(<span class="ruby-identifier">res</span>)
+90:             <span class="ruby-keyword kw">ensure</span>
+91:              <span class="ruby-identifier">res</span>.<span class="ruby-identifier">close</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">res</span>
+92:             <span class="ruby-keyword kw">end</span>
+93:           <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:type</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">:insert</span>
+94:             <span class="ruby-identifier">res</span>.<span class="ruby-identifier">insert_id</span>
+95:           <span class="ruby-keyword kw">else</span>
+96:             <span class="ruby-identifier">res</span>.<span class="ruby-identifier">affected_rows</span>
+97:           <span class="ruby-keyword kw">end</span>
+98:         <span class="ruby-keyword kw">end</span>
+99:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000576" class="method-detail">
+        <a name="M000576"></a>
+
+        <div class="method-heading">
+          <a href="#M000576" class="method-signature">
+          <span class="method-name">execute</span><span class="method-args">(sql, opts={}) {|stmt.executeQuery(sql)| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Execute the given <a href="SQL.html">SQL</a>. If a block is given, if
+should be a SELECT statement or something else that returns rows.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000576-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000576-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/jdbc.rb, line 147</span>
+147:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+148:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">call_sproc</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:sproc</span>]
+149:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">execute_prepared_statement</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>) <span class="ruby-keyword kw">if</span> [<span class="ruby-constant">Symbol</span>, <span class="ruby-constant">Dataset</span>].<span class="ruby-identifier">any?</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-identifier">sql</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-identifier">c</span>)}
+150:         <span class="ruby-identifier">log_info</span>(<span class="ruby-identifier">sql</span>)
+151:         <span class="ruby-identifier">synchronize</span>(<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:server</span>]) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conn</span><span class="ruby-operator">|</span>
+152:           <span class="ruby-identifier">stmt</span> = <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">createStatement</span>
+153:           <span class="ruby-keyword kw">begin</span>
+154:             <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+155:               <span class="ruby-keyword kw">yield</span> <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">executeQuery</span>(<span class="ruby-identifier">sql</span>)
+156:             <span class="ruby-keyword kw">else</span>
+157:               <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:type</span>]
+158:               <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:ddl</span>
+159:                 <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>)
+160:               <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:insert</span>
+161:                 <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">executeUpdate</span>(<span class="ruby-identifier">sql</span>)
+162:                 <span class="ruby-identifier">last_insert_id</span>(<span class="ruby-identifier">conn</span>, <span class="ruby-identifier">opts</span>)
+163:               <span class="ruby-keyword kw">else</span>
+164:                 <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">executeUpdate</span>(<span class="ruby-identifier">sql</span>)
+165:               <span class="ruby-keyword kw">end</span>
+166:             <span class="ruby-keyword kw">end</span>
+167:           <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">NativeException</span>, <span class="ruby-constant">JavaSQL</span><span class="ruby-operator">::</span><span class="ruby-constant">SQLException</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+168:             <span class="ruby-identifier">raise_error</span>(<span class="ruby-identifier">e</span>)
+169:           <span class="ruby-keyword kw">ensure</span>
+170:             <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">close</span>
+171:           <span class="ruby-keyword kw">end</span>
+172:         <span class="ruby-keyword kw">end</span>
+173:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000618" class="method-detail">
+        <a name="M000618"></a>
+
+        <div class="method-heading">
+          <a href="#M000618" class="method-signature">
+          <span class="method-name">execute</span><span class="method-args">(sql, opts={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Executes the given <a href="SQL.html">SQL</a> on the database. This method
+should be overridden in descendants. This method should not be called
+directly by user code.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000618-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000618-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 281</span>
+281:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>={})
+282:       <span class="ruby-identifier">raise</span> <span class="ruby-constant">NotImplementedError</span>, <span class="ruby-value str">&quot;#execute should be overridden by adapters&quot;</span>
+283:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000578" class="method-detail">
+        <a name="M000578"></a>
+
+        <div class="method-heading">
+          <a href="#M000578" class="method-signature">
+          <span class="method-name">execute_ddl</span><span class="method-args">(sql, opts={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Execute the given DDL <a href="SQL.html">SQL</a>, which should not return
+any values or rows.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000578-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000578-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/jdbc.rb, line 178</span>
+178:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">execute_ddl</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>={})
+179:         <span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>, {<span class="ruby-identifier">:type=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">:ddl</span>}.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>))
+180:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000619" class="method-detail">
+        <a name="M000619"></a>
+
+        <div class="method-heading">
+          <a href="#M000619" class="method-signature">
+          <span class="method-name">execute_ddl</span><span class="method-args">(sql, opts={}, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Method that should be used when submitting any DDL (Data Definition
+Language) <a href="SQL.html">SQL</a>. By default, calls <a
+href="Database.html#M000567">execute_dui</a>. This method should not be
+called directly by user code.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000619-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000619-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 288</span>
+288:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">execute_ddl</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+289:       <span class="ruby-identifier">execute_dui</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+290:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000620" class="method-detail">
+        <a name="M000620"></a>
+
+        <div class="method-heading">
+          <a href="#M000620" class="method-signature">
+          <span class="method-name">execute_dui</span><span class="method-args">(sql, opts={}, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Method that should be used when issuing a DELETE, UPDATE, or INSERT
+statement. By default, calls <a href="Database.html#M000566">execute</a>.
+This method should not be called directly by user code.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000620-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000620-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 295</span>
+295:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">execute_dui</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+296:       <span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+297:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000567" class="method-detail">
+        <a name="M000567"></a>
+
+        <div class="method-heading">
+          <a href="#M000567" class="method-signature">
+          <span class="method-name">execute_dui</span><span class="method-args">(sql, opts={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Execute the <a href="SQL.html">SQL</a> on the this database, returning the
+number of affected rows.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000567-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000567-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/do.rb, line 103</span>
+103:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">execute_dui</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>={})
+104:         <span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>)
+105:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000577" class="method-detail">
+        <a name="M000577"></a>
+
+        <div class="method-heading">
+          <span class="method-name">execute_dui</span><span class="method-args">(sql, opts={})</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Database.html#M000566">execute</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000621" class="method-detail">
+        <a name="M000621"></a>
+
+        <div class="method-heading">
+          <a href="#M000621" class="method-signature">
+          <span class="method-name">execute_insert</span><span class="method-args">(sql, opts={}, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Method that should be used when issuing a INSERT statement. By default,
+calls <a href="Database.html#M000567">execute_dui</a>. This method should
+not be called directly by user code.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000621-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000621-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 302</span>
+302:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">execute_insert</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+303:       <span class="ruby-identifier">execute_dui</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+304:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000579" class="method-detail">
+        <a name="M000579"></a>
+
+        <div class="method-heading">
+          <a href="#M000579" class="method-signature">
+          <span class="method-name">execute_insert</span><span class="method-args">(sql, opts={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Execute the given INSERT <a href="SQL.html">SQL</a>, returning the last
+inserted row id.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000579-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000579-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/jdbc.rb, line 184</span>
+184:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">execute_insert</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>={})
+185:         <span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>, {<span class="ruby-identifier">:type=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">:insert</span>}.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>))
+186:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000568" class="method-detail">
+        <a name="M000568"></a>
+
+        <div class="method-heading">
+          <a href="#M000568" class="method-signature">
+          <span class="method-name">execute_insert</span><span class="method-args">(sql, opts={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Execute the <a href="SQL.html">SQL</a> on this database, returning the
+primary key of the table being inserted to.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000568-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000568-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/do.rb, line 109</span>
+109:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">execute_insert</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>={})
+110:         <span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">:type=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">:insert</span>))
+111:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000622" class="method-detail">
+        <a name="M000622"></a>
+
+        <div class="method-heading">
+          <a href="#M000622" class="method-signature">
+          <span class="method-name">fetch</span><span class="method-args">(sql, *args, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Fetches records for an arbitrary <a href="SQL.html">SQL</a> statement. If a
+block is given, it is used to iterate over the records:
+</p>
+<pre>
+  DB.fetch('SELECT * FROM items'){|r| p r}
+</pre>
+<p>
+The method returns a <a href="Database.html#M000565">dataset</a> instance:
+</p>
+<pre>
+  DB.fetch('SELECT * FROM items').all
+</pre>
+<p>
+Fetch can also perform parameterized queries for protection against <a
+href="SQL.html">SQL</a> injection:
+</p>
+<pre>
+  DB.fetch('SELECT * FROM items WHERE name = ?', my_name).all
+</pre>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000622-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000622-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 319</span>
+319:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">fetch</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+320:       <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">with_sql</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+321:       <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">each</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block</span>
+322:       <span class="ruby-identifier">ds</span>
+323:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000623" class="method-detail">
+        <a name="M000623"></a>
+
+        <div class="method-heading">
+          <a href="#M000623" class="method-signature">
+          <span class="method-name">from</span><span class="method-args">(*args, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns a <a href="Database.html#M000563">new</a> <a
+href="Database.html#M000565">dataset</a> with the <a
+href="Database.html#M000623">from</a> method invoked. If a block is given,
+it is used as a filter on the <a href="Database.html#M000565">dataset</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000623-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000623-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 327</span>
+327:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">from</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+328:       <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">from</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+329:       <span class="ruby-identifier">block</span> <span class="ruby-value">? </span><span class="ruby-identifier">ds</span>.<span class="ruby-identifier">filter</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">ds</span>
+330:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000624" class="method-detail">
+        <a name="M000624"></a>
+
+        <div class="method-heading">
+          <a href="#M000624" class="method-signature">
+          <span class="method-name">get</span><span class="method-args">(*args, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns a single value <a href="Database.html#M000623">from</a> the
+database, e.g.:
+</p>
+<pre>
+  # SELECT 1
+  DB.get(1) #=&gt; 1
+
+  # SELECT version()
+  DB.get(:version.sql_function) #=&gt; ...
+</pre>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000624-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000624-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 339</span>
+339:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+340:       <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">get</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+341:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000625" class="method-detail">
+        <a name="M000625"></a>
+
+        <div class="method-heading">
+          <a href="#M000625" class="method-signature">
+          <span class="method-name">identifier_input_method</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The method to <a href="Database.html#M000612">call</a> on identifiers going
+into the database
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000625-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000625-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 344</span>
+344:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">identifier_input_method</span>
+345:       <span class="ruby-keyword kw">case</span> <span class="ruby-ivar">@identifier_input_method</span>
+346:       <span class="ruby-keyword kw">when</span> <span class="ruby-keyword kw">nil</span>
+347:         <span class="ruby-ivar">@identifier_input_method</span> = <span class="ruby-ivar">@opts</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">:identifier_input_method</span>) <span class="ruby-operator">?</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-identifier">:identifier_input_method</span>] <span class="ruby-operator">:</span> (<span class="ruby-ivar">@@identifier_input_method</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-value">? </span><span class="ruby-identifier">identifier_input_method_default</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@@identifier_input_method</span>)
+348:         <span class="ruby-ivar">@identifier_input_method</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;&quot;</span> <span class="ruby-operator">?</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@identifier_input_method</span>
+349:       <span class="ruby-keyword kw">when</span> <span class="ruby-value str">&quot;&quot;</span>
+350:         <span class="ruby-keyword kw">nil</span>
+351:       <span class="ruby-keyword kw">else</span>
+352:         <span class="ruby-ivar">@identifier_input_method</span>
+353:       <span class="ruby-keyword kw">end</span>
+354:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000626" class="method-detail">
+        <a name="M000626"></a>
+
+        <div class="method-heading">
+          <a href="#M000626" class="method-signature">
+          <span class="method-name">identifier_input_method=</span><span class="method-args">(v)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the method to <a href="Database.html#M000612">call</a> on identifiers
+going into the database
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000626-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000626-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 357</span>
+357:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">identifier_input_method=</span>(<span class="ruby-identifier">v</span>)
+358:       <span class="ruby-identifier">reset_schema_utility_dataset</span>
+359:       <span class="ruby-ivar">@identifier_input_method</span> = <span class="ruby-identifier">v</span> <span class="ruby-operator">||</span> <span class="ruby-value str">&quot;&quot;</span>
+360:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000627" class="method-detail">
+        <a name="M000627"></a>
+
+        <div class="method-heading">
+          <a href="#M000627" class="method-signature">
+          <span class="method-name">identifier_output_method</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The method to <a href="Database.html#M000612">call</a> on identifiers
+coming <a href="Database.html#M000623">from</a> the database
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000627-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000627-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 363</span>
+363:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">identifier_output_method</span>
+364:       <span class="ruby-keyword kw">case</span> <span class="ruby-ivar">@identifier_output_method</span>
+365:       <span class="ruby-keyword kw">when</span> <span class="ruby-keyword kw">nil</span>
+366:         <span class="ruby-ivar">@identifier_output_method</span> = <span class="ruby-ivar">@opts</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">:identifier_output_method</span>) <span class="ruby-operator">?</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-identifier">:identifier_output_method</span>] <span class="ruby-operator">:</span> (<span class="ruby-ivar">@@identifier_output_method</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-value">? </span><span class="ruby-identifier">identifier_output_method_default</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@@identifier_output_method</span>)
+367:         <span class="ruby-ivar">@identifier_output_method</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;&quot;</span> <span class="ruby-operator">?</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@identifier_output_method</span>
+368:       <span class="ruby-keyword kw">when</span> <span class="ruby-value str">&quot;&quot;</span>
+369:         <span class="ruby-keyword kw">nil</span>
+370:       <span class="ruby-keyword kw">else</span>
+371:         <span class="ruby-ivar">@identifier_output_method</span>
+372:       <span class="ruby-keyword kw">end</span>
+373:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000628" class="method-detail">
+        <a name="M000628"></a>
+
+        <div class="method-heading">
+          <a href="#M000628" class="method-signature">
+          <span class="method-name">identifier_output_method=</span><span class="method-args">(v)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the method to <a href="Database.html#M000612">call</a> on identifiers
+coming <a href="Database.html#M000623">from</a> the database
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000628-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000628-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 376</span>
+376:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">identifier_output_method=</span>(<span class="ruby-identifier">v</span>)
+377:       <span class="ruby-identifier">reset_schema_utility_dataset</span>
+378:       <span class="ruby-ivar">@identifier_output_method</span> = <span class="ruby-identifier">v</span> <span class="ruby-operator">||</span> <span class="ruby-value str">&quot;&quot;</span>
+379:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000580" class="method-detail">
+        <a name="M000580"></a>
+
+        <div class="method-heading">
+          <a href="#M000580" class="method-signature">
+          <span class="method-name">indexes</span><span class="method-args">(table)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return a hash containing index information. <a href="../Hash.html">Hash</a>
+keys are index name symbols. Values are subhashes with two keys, :columns
+and :unique. The value of :columns is an array of symbols of column names.
+The value of :unique is true or false depending on if the index is unique.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000580-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000580-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/jdbc.rb, line 192</span>
+192:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">indexes</span>(<span class="ruby-identifier">table</span>)
+193:         <span class="ruby-identifier">indexes</span> = {}
+194:         <span class="ruby-identifier">m</span> = <span class="ruby-identifier">output_identifier_meth</span>
+195:         <span class="ruby-identifier">metadata</span>(<span class="ruby-identifier">:getIndexInfo</span>, <span class="ruby-keyword kw">nil</span>, <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">input_identifier_meth</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">table</span>), <span class="ruby-keyword kw">false</span>, <span class="ruby-keyword kw">true</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span>
+196:           <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">name</span> = <span class="ruby-identifier">r</span>[<span class="ruby-identifier">:column_name</span>]
+197:           <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:primary_key_index_re</span>, <span class="ruby-keyword kw">true</span>) <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">r</span>[<span class="ruby-identifier">:index_name</span>] <span class="ruby-operator">=~</span> <span class="ruby-identifier">primary_key_index_re</span> 
+198:           <span class="ruby-identifier">i</span> = <span class="ruby-identifier">indexes</span>[<span class="ruby-identifier">m</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">r</span>[<span class="ruby-identifier">:index_name</span>])] <span class="ruby-operator">||=</span> {<span class="ruby-identifier">:columns=</span><span class="ruby-operator">&gt;</span>[], <span class="ruby-identifier">:unique=</span><span class="ruby-operator">&gt;</span><span class="ruby-operator">!</span><span class="ruby-identifier">r</span>[<span class="ruby-identifier">:non_unique</span>]}
+199:           <span class="ruby-identifier">i</span>[<span class="ruby-identifier">:columns</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">m</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">name</span>)
+200:         <span class="ruby-keyword kw">end</span>
+201:         <span class="ruby-identifier">indexes</span>
+202:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000629" class="method-detail">
+        <a name="M000629"></a>
+
+        <div class="method-heading">
+          <a href="#M000629" class="method-signature">
+          <span class="method-name">inspect</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns a string representation of the database object including the class
+name and the connection URI (or the opts if the URI cannot be constructed).
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000629-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000629-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 384</span>
+384:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inspect</span>
+385:       <span class="ruby-node">&quot;#&lt;#{self.class}: #{(uri rescue opts).inspect}&gt;&quot;</span> 
+386:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000630" class="method-detail">
+        <a name="M000630"></a>
+
+        <div class="method-heading">
+          <a href="#M000630" class="method-signature">
+          <span class="method-name">literal</span><span class="method-args">(v)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Proxy the <a href="Database.html#M000630">literal</a> <a
+href="Database.html#M000612">call</a> to the <a
+href="Database.html#M000565">dataset</a>, used for default values.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000630-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000630-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 389</span>
+389:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">literal</span>(<span class="ruby-identifier">v</span>)
+390:       <span class="ruby-identifier">schema_utility_dataset</span>.<span class="ruby-identifier">literal</span>(<span class="ruby-identifier">v</span>)
+391:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000631" class="method-detail">
+        <a name="M000631"></a>
+
+        <div class="method-heading">
+          <a href="#M000631" class="method-signature">
+          <span class="method-name">log_info</span><span class="method-args">(message, args=nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Log a message at level info to all loggers. All <a href="SQL.html">SQL</a>
+logging goes through this method.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000631-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000631-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 395</span>
+395:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">log_info</span>(<span class="ruby-identifier">message</span>, <span class="ruby-identifier">args</span>=<span class="ruby-keyword kw">nil</span>)
+396:       <span class="ruby-identifier">message</span> = <span class="ruby-node">&quot;#{message}; #{args.inspect}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">args</span>
+397:       <span class="ruby-ivar">@loggers</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">logger</span><span class="ruby-operator">|</span> <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span>(<span class="ruby-identifier">message</span>)}
+398:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000632" class="method-detail">
+        <a name="M000632"></a>
+
+        <div class="method-heading">
+          <a href="#M000632" class="method-signature">
+          <span class="method-name">logger=</span><span class="method-args">(logger)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Remove any existing loggers and just use the given logger.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000632-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000632-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 401</span>
+401:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">logger=</span>(<span class="ruby-identifier">logger</span>)
+402:       <span class="ruby-ivar">@loggers</span> = <span class="ruby-constant">Array</span>(<span class="ruby-identifier">logger</span>)
+403:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000645" class="method-detail">
+        <a name="M000645"></a>
+
+        <div class="method-heading">
+          <a href="#M000645" class="method-signature">
+          <span class="method-name">query</span><span class="method-args">(&amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return a <a href="Database.html#M000565">dataset</a> modified by the <a
+href="Database.html#M000645">query</a> block
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000645-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000645-source">
+<pre>
+   <span class="ruby-comment cmt"># File lib/sequel/extensions/query.rb, line 4</span>
+4:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">query</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+5:       <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">query</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+6:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000633" class="method-detail">
+        <a name="M000633"></a>
+
+        <div class="method-heading">
+          <a href="#M000633" class="method-signature">
+          <span class="method-name">quote_identifiers=</span><span class="method-args">(v)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Whether to quote identifiers (columns and <a
+href="Database.html#M000581">tables</a>) for this database
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000633-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000633-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 406</span>
+406:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">quote_identifiers=</span>(<span class="ruby-identifier">v</span>)
+407:       <span class="ruby-identifier">reset_schema_utility_dataset</span>
+408:       <span class="ruby-ivar">@quote_identifiers</span> = <span class="ruby-identifier">v</span>
+409:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000634" class="method-detail">
+        <a name="M000634"></a>
+
+        <div class="method-heading">
+          <a href="#M000634" class="method-signature">
+          <span class="method-name">quote_identifiers?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns true if the database quotes identifiers.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000634-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000634-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 412</span>
+412:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">quote_identifiers?</span>
+413:       <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@quote_identifiers</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@quote_identifiers</span>.<span class="ruby-identifier">nil?</span>
+414:       <span class="ruby-ivar">@quote_identifiers</span> = <span class="ruby-ivar">@opts</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">:quote_identifiers</span>) <span class="ruby-operator">?</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-identifier">:quote_identifiers</span>] <span class="ruby-operator">:</span> (<span class="ruby-ivar">@@quote_identifiers</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-value">? </span><span class="ruby-identifier">quote_identifiers_default</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@@quote_identifiers</span>)
+415:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000596" class="method-detail">
+        <a name="M000596"></a>
+
+        <div class="method-heading">
+          <a href="#M000596" class="method-signature">
+          <span class="method-name">rename_column</span><span class="method-args">(table, *args)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Renames a column in the specified table. This method expects the current
+column name and the <a href="Database.html#M000563">new</a> column name:
+</p>
+<pre>
+  DB.rename_column :items, :cntr, :counter
+</pre>
+<p>
+See <a href="Database.html#M000586">alter_table</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000596-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000596-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 147</span>
+147:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rename_column</span>(<span class="ruby-identifier">table</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+148:       <span class="ruby-identifier">alter_table</span>(<span class="ruby-identifier">table</span>) {<span class="ruby-identifier">rename_column</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)}
+149:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000595" class="method-detail">
+        <a name="M000595"></a>
+
+        <div class="method-heading">
+          <a href="#M000595" class="method-signature">
+          <span class="method-name">rename_table</span><span class="method-args">(name, new_name)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Renames a table:
+</p>
+<pre>
+  DB.tables #=&gt; [:items]
+  DB.rename_table :items, :old_items
+  DB.tables #=&gt; [:old_items]
+</pre>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000595-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000595-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 136</span>
+136:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rename_table</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">new_name</span>)
+137:       <span class="ruby-identifier">remove_cached_schema</span>(<span class="ruby-identifier">name</span>)
+138:       <span class="ruby-identifier">execute_ddl</span>(<span class="ruby-identifier">rename_table_sql</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">new_name</span>))
+139:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000636" class="method-detail">
+        <a name="M000636"></a>
+
+        <div class="method-heading">
+          <a href="#M000636" class="method-signature">
+          <span class="method-name">schema</span><span class="method-args">(table, opts={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Parse the <a href="Database.html#M000636">schema</a> <a
+href="Database.html#M000623">from</a> the database. Returns the <a
+href="Database.html#M000636">schema</a> for the given table as an array
+with all members being arrays of length 2, the first member being the
+column name, and the second member being a hash of column information.
+Available options are:
+</p>
+<ul>
+<li>:reload - Get fresh information <a href="Database.html#M000623">from</a>
+the database, instead of using cached information. If table_name is blank,
+:reload should be used unless you are sure that <a
+href="Database.html#M000636">schema</a> has not been called before with a
+table_name, otherwise you may only getting the schemas for <a
+href="Database.html#M000581">tables</a> that have been requested
+explicitly.
+
+</li>
+<li>:<a href="Database.html#M000636">schema</a> - An explicit <a
+href="Database.html#M000636">schema</a> to use. It may also be implicitly
+provided via the table name.
+
+</li>
+</ul>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000636-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000636-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 434</span>
+434:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">schema</span>(<span class="ruby-identifier">table</span>, <span class="ruby-identifier">opts</span>={})
+435:       <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span>, <span class="ruby-value str">'schema parsing is not implemented on this database'</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:schema_parse_table</span>, <span class="ruby-keyword kw">true</span>)
+436: 
+437:       <span class="ruby-identifier">sch</span>, <span class="ruby-identifier">table_name</span> = <span class="ruby-identifier">schema_and_table</span>(<span class="ruby-identifier">table</span>)
+438:       <span class="ruby-identifier">quoted_name</span> = <span class="ruby-identifier">quote_schema_table</span>(<span class="ruby-identifier">table</span>)
+439:       <span class="ruby-identifier">opts</span> = <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">:schema=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">sch</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">sch</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">opts</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">:schema</span>)
+440: 
+441:       <span class="ruby-ivar">@schemas</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">quoted_name</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:reload</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@schemas</span>
+442:       <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@schemas</span>[<span class="ruby-identifier">quoted_name</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@schemas</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@schemas</span>[<span class="ruby-identifier">quoted_name</span>]
+443: 
+444:       <span class="ruby-ivar">@schemas</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Hash</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">h</span>,<span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
+445:         <span class="ruby-identifier">quote_name</span> = <span class="ruby-identifier">quote_schema_table</span>(<span class="ruby-identifier">k</span>)
+446:         <span class="ruby-identifier">h</span>[<span class="ruby-identifier">quote_name</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">h</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">quote_name</span>)
+447:       <span class="ruby-keyword kw">end</span>
+448: 
+449:       <span class="ruby-identifier">cols</span> = <span class="ruby-identifier">schema_parse_table</span>(<span class="ruby-identifier">table_name</span>, <span class="ruby-identifier">opts</span>)
+450:       <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span>, <span class="ruby-value str">'schema parsing returned no columns, table probably doesn\'t exist'</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">cols</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">cols</span>.<span class="ruby-identifier">empty?</span>
+451:       <span class="ruby-ivar">@schemas</span>[<span class="ruby-identifier">quoted_name</span>] = <span class="ruby-identifier">cols</span>
+452:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000635" class="method-detail">
+        <a name="M000635"></a>
+
+        <div class="method-heading">
+          <a href="#M000635" class="method-signature">
+          <span class="method-name">select</span><span class="method-args">(*args, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns a <a href="Database.html#M000563">new</a> <a
+href="Database.html#M000565">dataset</a> with the <a
+href="Database.html#M000635">select</a> method invoked.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000635-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000635-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 418</span>
+418:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+419:       <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">select</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+420:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000599" class="method-detail">
+        <a name="M000599"></a>
+
+        <div class="method-heading">
+          <a href="#M000599" class="method-signature">
+          <span class="method-name">serial_primary_key_options</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Default serial primary key options.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000599-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000599-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/database/schema_sql.rb, line 19</span>
+19:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">serial_primary_key_options</span>
+20:       {<span class="ruby-identifier">:primary_key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>, <span class="ruby-identifier">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Integer</span>, <span class="ruby-identifier">:auto_increment</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>}
+21:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000597" class="method-detail">
+        <a name="M000597"></a>
+
+        <div class="method-heading">
+          <a href="#M000597" class="method-signature">
+          <span class="method-name">set_column_default</span><span class="method-args">(table, *args)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sets the default value for the given column in the given table:
+</p>
+<pre>
+  DB.set_column_default :items, :category, 'perl!'
+</pre>
+<p>
+See <a href="Database.html#M000586">alter_table</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000597-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000597-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 156</span>
+156:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_column_default</span>(<span class="ruby-identifier">table</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+157:       <span class="ruby-identifier">alter_table</span>(<span class="ruby-identifier">table</span>) {<span class="ruby-identifier">set_column_default</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)}
+158:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000598" class="method-detail">
+        <a name="M000598"></a>
+
+        <div class="method-heading">
+          <a href="#M000598" class="method-signature">
+          <span class="method-name">set_column_type</span><span class="method-args">(table, *args)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the data type for the given column in the given table:
+</p>
+<pre>
+  DB.set_column_type :items, :price, :float
+</pre>
+<p>
+See <a href="Database.html#M000586">alter_table</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000598-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000598-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_methods.rb, line 165</span>
+165:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_column_type</span>(<span class="ruby-identifier">table</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+166:       <span class="ruby-identifier">alter_table</span>(<span class="ruby-identifier">table</span>) {<span class="ruby-identifier">set_column_type</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)}
+167:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000637" class="method-detail">
+        <a name="M000637"></a>
+
+        <div class="method-heading">
+          <a href="#M000637" class="method-signature">
+          <span class="method-name">single_threaded?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns true if the database is using a single-threaded connection pool.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000637-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000637-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 455</span>
+455:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">single_threaded?</span>
+456:       <span class="ruby-ivar">@single_threaded</span>
+457:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000569" class="method-detail">
+        <a name="M000569"></a>
+
+        <div class="method-heading">
+          <a href="#M000569" class="method-signature">
+          <span class="method-name">subadapter</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the <a href="Database.html#M000569">subadapter</a> type for this
+database, i.e. sqlite3 for do:sqlite3::memory:.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000569-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000569-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/do.rb, line 115</span>
+115:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">subadapter</span>
+116:         <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">&quot;:&quot;</span>).<span class="ruby-identifier">first</span>
+117:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000638" class="method-detail">
+        <a name="M000638"></a>
+
+        <div class="method-heading">
+          <a href="#M000638" class="method-signature">
+          <span class="method-name">synchronize</span><span class="method-args">(server=nil, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Acquires a database connection, yielding it to the passed block.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000638-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000638-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 460</span>
+460:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">synchronize</span>(<span class="ruby-identifier">server</span>=<span class="ruby-keyword kw">nil</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+461:       <span class="ruby-ivar">@pool</span>.<span class="ruby-identifier">hold</span>(<span class="ruby-identifier">server</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">:default</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+462:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000639" class="method-detail">
+        <a name="M000639"></a>
+
+        <div class="method-heading">
+          <a href="#M000639" class="method-signature">
+          <span class="method-name">table_exists?</span><span class="method-args">(name)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns true if a table with the given name exists. This requires a <a
+href="Database.html#M000645">query</a> to the database unless this database
+object already has the <a href="Database.html#M000636">schema</a> for the
+given table name.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000639-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000639-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 467</span>
+467:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">table_exists?</span>(<span class="ruby-identifier">name</span>)
+468:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@schemas</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@schemas</span>[<span class="ruby-identifier">name</span>]
+469:         <span class="ruby-keyword kw">true</span>
+470:       <span class="ruby-keyword kw">else</span>
+471:         <span class="ruby-keyword kw">begin</span> 
+472:           <span class="ruby-identifier">from</span>(<span class="ruby-identifier">name</span>).<span class="ruby-identifier">first</span>
+473:           <span class="ruby-keyword kw">true</span>
+474:         <span class="ruby-keyword kw">rescue</span>
+475:           <span class="ruby-keyword kw">false</span>
+476:         <span class="ruby-keyword kw">end</span>
+477:       <span class="ruby-keyword kw">end</span>
+478:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000581" class="method-detail">
+        <a name="M000581"></a>
+
+        <div class="method-heading">
+          <a href="#M000581" class="method-signature">
+          <span class="method-name">tables</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+All <a href="Database.html#M000581">tables</a> in this database
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000581-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000581-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/jdbc.rb, line 205</span>
+205:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">tables</span>
+206:         <span class="ruby-identifier">ts</span> = []
+207:         <span class="ruby-identifier">m</span> = <span class="ruby-identifier">output_identifier_meth</span>
+208:         <span class="ruby-identifier">metadata</span>(<span class="ruby-identifier">:getTables</span>, <span class="ruby-keyword kw">nil</span>, <span class="ruby-keyword kw">nil</span>, <span class="ruby-keyword kw">nil</span>, [<span class="ruby-value str">'TABLE'</span>].<span class="ruby-identifier">to_java</span>(<span class="ruby-identifier">:string</span>)){<span class="ruby-operator">|</span><span class="ruby-identifier">h</span><span class="ruby-operator">|</span> <span class="ruby-identifier">ts</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">m</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">h</span>[<span class="ruby-identifier">:table_name</span>])}
+209:         <span class="ruby-identifier">ts</span>
+210:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000640" class="method-detail">
+        <a name="M000640"></a>
+
+        <div class="method-heading">
+          <a href="#M000640" class="method-signature">
+          <span class="method-name">test_connection</span><span class="method-args">(server=nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Attempts to acquire a database connection. Returns true if successful. Will
+probably raise an error if unsuccessful.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000640-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000640-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 482</span>
+482:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">test_connection</span>(<span class="ruby-identifier">server</span>=<span class="ruby-keyword kw">nil</span>)
+483:       <span class="ruby-identifier">synchronize</span>(<span class="ruby-identifier">server</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">conn</span><span class="ruby-operator">|</span>}
+484:       <span class="ruby-keyword kw">true</span>
+485:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000582" class="method-detail">
+        <a name="M000582"></a>
+
+        <div class="method-heading">
+          <a href="#M000582" class="method-signature">
+          <span class="method-name">transaction</span><span class="method-args">(opts={}) {|conn| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Default <a href="Database.html#M000570">transaction</a> method that should
+work on most <a href="JDBC.html">JDBC</a> databases. Does not use the <a
+href="JDBC.html">JDBC</a> <a href="Database.html#M000570">transaction</a>
+methods, uses <a href="SQL.html">SQL</a> BEGIN/ROLLBACK/COMMIT statements
+instead.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000582-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000582-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/jdbc.rb, line 215</span>
+215:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">transaction</span>(<span class="ruby-identifier">opts</span>={})
+216:         <span class="ruby-identifier">synchronize</span>(<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:server</span>]) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conn</span><span class="ruby-operator">|</span>
+217:           <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">yield</span>(<span class="ruby-identifier">conn</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@transactions</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>)
+218:           <span class="ruby-identifier">stmt</span> = <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">createStatement</span>
+219:           <span class="ruby-keyword kw">begin</span>
+220:             <span class="ruby-identifier">log_info</span>(<span class="ruby-identifier">begin_transaction_sql</span>)
+221:             <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">begin_transaction_sql</span>)
+222:             <span class="ruby-ivar">@transactions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>
+223:             <span class="ruby-keyword kw">yield</span>(<span class="ruby-identifier">conn</span>)
+224:           <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+225:             <span class="ruby-identifier">log_info</span>(<span class="ruby-identifier">rollback_transaction_sql</span>)
+226:             <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">rollback_transaction_sql</span>)
+227:             <span class="ruby-identifier">transaction_error</span>(<span class="ruby-identifier">e</span>)
+228:           <span class="ruby-keyword kw">ensure</span>
+229:             <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">e</span>
+230:               <span class="ruby-identifier">log_info</span>(<span class="ruby-identifier">commit_transaction_sql</span>)
+231:               <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">commit_transaction_sql</span>)
+232:             <span class="ruby-keyword kw">end</span>
+233:             <span class="ruby-identifier">stmt</span>.<span class="ruby-identifier">close</span>
+234:             <span class="ruby-ivar">@transactions</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>)
+235:           <span class="ruby-keyword kw">end</span>
+236:         <span class="ruby-keyword kw">end</span>
+237:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000641" class="method-detail">
+        <a name="M000641"></a>
+
+        <div class="method-heading">
+          <a href="#M000641" class="method-signature">
+          <span class="method-name">transaction</span><span class="method-args">(opts={}) {|conn| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+A simple implementation of <a href="SQL.html">SQL</a> transactions. Nested
+transactions are not supported - calling <a
+href="Database.html#M000570">transaction</a> within a <a
+href="Database.html#M000570">transaction</a> will reuse the current <a
+href="Database.html#M000570">transaction</a>. Should be overridden for
+databases that support nested transactions.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000641-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000641-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 491</span>
+491:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">transaction</span>(<span class="ruby-identifier">opts</span>={})
+492:       <span class="ruby-identifier">synchronize</span>(<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:server</span>]) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conn</span><span class="ruby-operator">|</span>
+493:         <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">yield</span>(<span class="ruby-identifier">conn</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@transactions</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>)
+494:         <span class="ruby-identifier">log_info</span>(<span class="ruby-identifier">begin_transaction_sql</span>)
+495:         <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">begin_transaction_sql</span>)
+496:         <span class="ruby-keyword kw">begin</span>
+497:           <span class="ruby-ivar">@transactions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>
+498:           <span class="ruby-keyword kw">yield</span>(<span class="ruby-identifier">conn</span>)
+499:         <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+500:           <span class="ruby-identifier">log_info</span>(<span class="ruby-identifier">rollback_transaction_sql</span>)
+501:           <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">rollback_transaction_sql</span>)
+502:           <span class="ruby-identifier">transaction_error</span>(<span class="ruby-identifier">e</span>)
+503:         <span class="ruby-keyword kw">ensure</span>
+504:           <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">e</span>
+505:             <span class="ruby-identifier">log_info</span>(<span class="ruby-identifier">commit_transaction_sql</span>)
+506:             <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">commit_transaction_sql</span>)
+507:           <span class="ruby-keyword kw">end</span>
+508:           <span class="ruby-ivar">@transactions</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>)
+509:         <span class="ruby-keyword kw">end</span>
+510:       <span class="ruby-keyword kw">end</span>
+511:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000570" class="method-detail">
+        <a name="M000570"></a>
+
+        <div class="method-heading">
+          <a href="#M000570" class="method-signature">
+          <span class="method-name">transaction</span><span class="method-args">(opts={}) {|conn| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Use DataObject&#8216;s <a href="Database.html#M000570">transaction</a>
+support for transactions. This only supports single level transactions, and
+it always prepares transactions and commits them immediately after.
+It&#8216;s wasteful, but required by DataObject&#8216;s API.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000570-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000570-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/do.rb, line 123</span>
+123:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">transaction</span>(<span class="ruby-identifier">opts</span>={})
+124:         <span class="ruby-identifier">th</span> = <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>
+125:         <span class="ruby-identifier">synchronize</span>(<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:server</span>]) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conn</span><span class="ruby-operator">|</span>
+126:           <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">yield</span>(<span class="ruby-identifier">conn</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@transactions</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">th</span>)
+127:           <span class="ruby-identifier">t</span> = <span class="ruby-operator">::</span><span class="ruby-constant">DataObjects</span><span class="ruby-operator">::</span><span class="ruby-constant">Transaction</span>.<span class="ruby-identifier">create_for_uri</span>(<span class="ruby-identifier">uri</span>)
+128:           <span class="ruby-identifier">t</span>.<span class="ruby-identifier">instance_variable_get</span>(<span class="ruby-identifier">:@connection</span>).<span class="ruby-identifier">close</span>
+129:           <span class="ruby-identifier">t</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-identifier">:@connection</span>, <span class="ruby-identifier">conn</span>)
+130:           <span class="ruby-keyword kw">begin</span>
+131:             <span class="ruby-identifier">log_info</span>(<span class="ruby-value str">&quot;Transaction.begin&quot;</span>)
+132:             <span class="ruby-identifier">t</span>.<span class="ruby-identifier">begin</span>
+133:             <span class="ruby-ivar">@transactions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">th</span>
+134:             <span class="ruby-keyword kw">yield</span>(<span class="ruby-identifier">conn</span>)
+135:           <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+136:             <span class="ruby-identifier">log_info</span>(<span class="ruby-value str">&quot;Transaction.rollback&quot;</span>)
+137:             <span class="ruby-identifier">t</span>.<span class="ruby-identifier">rollback</span>
+138:             <span class="ruby-identifier">transaction_error</span>(<span class="ruby-identifier">e</span>)
+139:           <span class="ruby-keyword kw">ensure</span>
+140:             <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">e</span>
+141:               <span class="ruby-identifier">log_info</span>(<span class="ruby-value str">&quot;Transaction.commit&quot;</span>)
+142:               <span class="ruby-identifier">t</span>.<span class="ruby-identifier">prepare</span>
+143:               <span class="ruby-identifier">t</span>.<span class="ruby-identifier">commit</span> 
+144:             <span class="ruby-keyword kw">end</span>
+145:             <span class="ruby-ivar">@transactions</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">th</span>)
+146:           <span class="ruby-keyword kw">end</span>
+147:         <span class="ruby-keyword kw">end</span>
+148:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000642" class="method-detail">
+        <a name="M000642"></a>
+
+        <div class="method-heading">
+          <a href="#M000642" class="method-signature">
+          <span class="method-name">typecast_value</span><span class="method-args">(column_type, value)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Typecast the value to the given column_type. Calls
+typecast_value_#{column_type} if the method exists, otherwise returns the
+value. This method should raise <a
+href="InvalidValue.html">Sequel::InvalidValue</a> if assigned value is
+invalid.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000642-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000642-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 518</span>
+518:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">typecast_value</span>(<span class="ruby-identifier">column_type</span>, <span class="ruby-identifier">value</span>)
+519:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">nil?</span>
+520:       <span class="ruby-identifier">meth</span> = <span class="ruby-node">&quot;typecast_value_#{column_type}&quot;</span>
+521:       <span class="ruby-keyword kw">begin</span>
+522:         <span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">meth</span>, <span class="ruby-keyword kw">true</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">send</span>(<span class="ruby-identifier">meth</span>, <span class="ruby-identifier">value</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">value</span>
+523:       <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-constant">TypeError</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">exp</span>
+524:         <span class="ruby-identifier">e</span> = <span class="ruby-constant">Sequel</span><span class="ruby-operator">::</span><span class="ruby-constant">InvalidValue</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;#{exp.class} #{exp.message}&quot;</span>)
+525:         <span class="ruby-identifier">e</span>.<span class="ruby-identifier">set_backtrace</span>(<span class="ruby-identifier">exp</span>.<span class="ruby-identifier">backtrace</span>)
+526:         <span class="ruby-identifier">raise</span> <span class="ruby-identifier">e</span>
+527:       <span class="ruby-keyword kw">end</span>
+528:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000571" class="method-detail">
+        <a name="M000571"></a>
+
+        <div class="method-heading">
+          <a href="#M000571" class="method-signature">
+          <span class="method-name">uri</span><span class="method-args">(opts={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the <a href="DataObjects.html">DataObjects</a> URI for the <a
+href="../Sequel.html">Sequel</a> URI, removing the do: prefix.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000571-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000571-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/do.rb, line 152</span>
+152:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">uri</span>(<span class="ruby-identifier">opts</span>={})
+153:         <span class="ruby-identifier">opts</span> = <span class="ruby-ivar">@opts</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>)
+154:         (<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:uri</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:url</span>]).<span class="ruby-identifier">sub</span>(<span class="ruby-regexp re">/\Ado:/</span>, <span class="ruby-value str">''</span>)
+155:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000643" class="method-detail">
+        <a name="M000643"></a>
+
+        <div class="method-heading">
+          <a href="#M000643" class="method-signature">
+          <span class="method-name">uri</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the URI identifying the database. This method can raise an error if
+the database used options instead of a connection string.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000643-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000643-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 533</span>
+533:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">uri</span>
+534:       <span class="ruby-identifier">uri</span> = <span class="ruby-constant">URI</span><span class="ruby-operator">::</span><span class="ruby-constant">Generic</span>.<span class="ruby-identifier">new</span>(
+535:         <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">adapter_scheme</span>.<span class="ruby-identifier">to_s</span>,
+536:         <span class="ruby-keyword kw">nil</span>,
+537:         <span class="ruby-ivar">@opts</span>[<span class="ruby-identifier">:host</span>],
+538:         <span class="ruby-ivar">@opts</span>[<span class="ruby-identifier">:port</span>],
+539:         <span class="ruby-keyword kw">nil</span>,
+540:         <span class="ruby-node">&quot;/#{@opts[:database]}&quot;</span>,
+541:         <span class="ruby-keyword kw">nil</span>,
+542:         <span class="ruby-keyword kw">nil</span>,
+543:         <span class="ruby-keyword kw">nil</span>
+544:       )
+545:       <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">user</span> = <span class="ruby-ivar">@opts</span>[<span class="ruby-identifier">:user</span>]
+546:       <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">password</span> = <span class="ruby-ivar">@opts</span>[<span class="ruby-identifier">:password</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">user</span>
+547:       <span class="ruby-identifier">uri</span>.<span class="ruby-identifier">to_s</span>
+548:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000583" class="method-detail">
+        <a name="M000583"></a>
+
+        <div class="method-heading">
+          <a href="#M000583" class="method-signature">
+          <span class="method-name">uri</span><span class="method-args">(opts={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The <a href="Database.html#M000571">uri</a> for this connection. You can
+specify the <a href="Database.html#M000571">uri</a> using the :<a
+href="Database.html#M000571">uri</a>, :<a
+href="Database.html#M000644">url</a>, or :database options. You don&#8216;t
+need to worry about this if you use <a
+href="../Sequel.html#M000065">Sequel.connect</a> with the <a
+href="JDBC.html">JDBC</a> connectrion strings.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000583-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000583-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/jdbc.rb, line 243</span>
+243:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">uri</span>(<span class="ruby-identifier">opts</span>={})
+244:         <span class="ruby-identifier">opts</span> = <span class="ruby-ivar">@opts</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>)
+245:         <span class="ruby-identifier">ur</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:uri</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:url</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:database</span>]
+246:         <span class="ruby-identifier">ur</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^\Ajdbc:/</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">ur</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;jdbc:#{ur}&quot;</span>
+247:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000644" class="method-detail">
+        <a name="M000644"></a>
+
+        <div class="method-heading">
+          <a href="#M000644" class="method-signature">
+          <span class="method-name">url</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Explicit alias of <a href="Database.html#M000571">uri</a> for easier
+subclassing.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000644-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000644-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database.rb, line 551</span>
+551:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">url</span>
+552:       <span class="ruby-identifier">uri</span>
+553:     <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

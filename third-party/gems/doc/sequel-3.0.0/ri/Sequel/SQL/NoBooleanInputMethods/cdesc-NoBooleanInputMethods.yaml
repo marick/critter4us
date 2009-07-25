@@ -1,0 +1,18 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: This module augments the default initalize method for the ComplexExpression subclass it is included in, so that attempting to use boolean input when initializing a NumericExpression or StringExpression results in an error.
+constants: []
+
+full_name: Sequel::SQL::NoBooleanInputMethods
+includes: []
+
+instance_methods: []
+
+name: NoBooleanInputMethods
+superclass: 

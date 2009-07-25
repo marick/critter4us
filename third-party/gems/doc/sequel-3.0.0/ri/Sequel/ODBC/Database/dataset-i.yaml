@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Sequel::ODBC::Database#dataset
+is_singleton: false
+name: dataset
+params: (opts = nil)
+visibility: public

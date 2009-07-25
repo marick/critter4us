@@ -1,0 +1,11 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: 
+- !ruby/object:RI::AliasName 
+  name: query
+block_params: c.cursor(sql)}
+comment: 
+full_name: Sequel::Informix::Database#execute
+is_singleton: false
+name: execute
+params: (sql, opts={}) {|c.cursor(sql)}| ...}
+visibility: public

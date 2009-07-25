@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Changes the database in use by issuing a USE statement. I would be very careful if I used this.
+full_name: Sequel::MySQL::DatabaseMethods#use
+is_singleton: false
+name: use
+params: (db_name)
+visibility: public

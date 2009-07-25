@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Set the method to call on identifiers going into the database
+full_name: Sequel::Database#identifier_input_method=
+is_singleton: false
+name: identifier_input_method=
+params: (v)
+visibility: public

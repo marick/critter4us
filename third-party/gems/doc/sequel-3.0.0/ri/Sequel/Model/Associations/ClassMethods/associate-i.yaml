@@ -1,0 +1,181 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Associates a related model with the current model. The following types are supported:"
+- !ruby/object:SM::Flow::LIST 
+  contents: 
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":many_to_one - Foreign key in current model's table points to associated model's primary key. Each associated model object can be associated with more than one current model objects. Each current model object can be associated with only one associated model object."
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":one_to_many - Foreign key in associated model's table points to this model's primary key. Each current model object can be associated with more than one associated model objects. Each associated model object can be associated with only one current model object."
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":many_to_many - A join table is used that has a foreign key that points to this model's primary key and a foreign key that points to the associated model's primary key. Each current model object can be associated with many associated model objects, and each associated model object can be associated with many current model objects."
+  type: :BULLET
+- !ruby/struct:SM::Flow::P 
+  body: A one to one relationship can be set up with a many_to_one association on the table with the foreign key, and a one_to_many association with the :one_to_one option specified on the table without the foreign key. The two associations will operate similarly, except that the many_to_one association setter doesn't update the database until you call save manually. Also, in most cases you need to specify the plural association name when using one_to_many with the :one_to_one option.
+- !ruby/struct:SM::Flow::P 
+  body: "The following options can be supplied:"
+- !ruby/object:SM::Flow::LIST 
+  contents: 
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: "*ALL types*:"
+  - !ruby/object:SM::Flow::LIST 
+    contents: 
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":after_add - Symbol, Proc, or array of both/either specifying a callback to call after a new item is added to the association."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":after_load - Symbol, Proc, or array of both/either specifying a callback to call after the associated record(s) have been retrieved from the database. Not called when eager loading via eager_graph, but called when eager loading via eager."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":after_remove - Symbol, Proc, or array of both/either specifying a callback to call after an item is removed from the association."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":allow_eager - If set to false, you cannot load the association eagerly via eager or eager_graph"
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":before_add - Symbol, Proc, or array of both/either specifying a callback to call before a new item is added to the association."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":before_remove - Symbol, Proc, or array of both/either specifying a callback to call before an item is removed from the association."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":class - The associated class or its name. If not given, uses the association's name, which is camelized (and singularized unless the type is :many_to_one)"
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":clone - Merge the current options and block into the options and block used in defining the given association. Can be used to DRY up a bunch of similar associations that all share the same options such as :class and :key, while changing the order and block used."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":conditions - The conditions to use to filter the association, can be any argument passed to filter."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":dataset - A proc that is instance_evaled to get the base dataset to use for the _dataset method (before the other options are applied)."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":eager - The associations to eagerly load via #eager when loading the associated object(s). For many_to_one associations, this is ignored unless this association is being eagerly loaded, as it doesn't save queries unless multiple objects can be loaded at once."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":eager_block - If given, use the block instead of the default block when eagerly loading. To not use a block when eager loading (when one is used normally), set to nil."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":eager_graph - The associations to eagerly load via #eager_graph when loading the associated object(s). For many_to_one associations, this is ignored unless this association is being eagerly loaded, as it doesn't save queries unless multiple objects can be loaded at once."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":eager_grapher - A proc to use to implement eager loading via eager graph, overriding the default. Takes three arguments, a dataset, an alias to use for the table to graph for this association, and the alias that was used for the current table (since you can cascade associations), Should return a copy of the dataset with the association graphed into it."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":eager_loader - A proc to use to implement eager loading, overriding the default. Takes three arguments, a key hash (used solely to enhance performance), an array of records, and a hash of dependent associations. The associated records should be queried from the database and the associations cache for each record should be populated for this to work correctly."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":extend - A module or array of modules to extend the dataset with."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":graph_block - The block to pass to join_table when eagerly loading the association via eager_graph."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":graph_conditions - The additional conditions to use on the SQL join when eagerly loading the association via eager_graph. Should be a hash or an array of all two pairs. If not specified, the :conditions option is used if it is a hash or array of all two pairs."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":graph_join_type - The type of SQL join to use when eagerly loading the association via eager_graph. Defaults to :left_outer."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":graph_only_conditions - The conditions to use on the SQL join when eagerly loading the association via eager_graph, instead of the default conditions specified by the foreign/primary keys. This option causes the :graph_conditions option to be ignored."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":graph_select - A column or array of columns to select from the associated table when eagerly loading the association via eager_graph. Defaults to all columns in the associated table."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":limit - Limit the number of records to the provided value. Use an array with two arguments for the value to specify a limit and an offset."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":order - the column(s) by which to order the association dataset. Can be a singular column or an array."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":order_eager_graph - Whether to add the order to the dataset's order when graphing via eager graph. Defaults to true, so set to false to disable."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":read_only - Do not add a setter method (for many_to_one or one_to_many with :one_to_one), or add_/remove_/remove_all_ methods (for one_to_many, many_to_many)"
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":reciprocal - the symbol name of the reciprocal association, if it exists. By default, sequel will try to determine it by looking at the associated model's assocations for a association that matches the current association's key(s). Set to nil to not use a reciprocal."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":select - the attributes to select. Defaults to the associated class's table_name.* in a many_to_many association, which means it doesn't include the attributes from the join table. If you want to include the join table attributes, you can use this option, but beware that the join table attributes can clash with attributes from the model table, so you should alias any attributes that have the same name in both the join table and the associated table."
+    type: :BULLET
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":many_to_one:"
+  - !ruby/object:SM::Flow::LIST 
+    contents: 
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":key - foreign_key in current model's table that references associated model's primary key, as a symbol. Defaults to :&quot;#{name}_id&quot;."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":primary_key - column in the associated table that :key option references, as a symbol. Defaults to the primary key of the associated table."
+    type: :BULLET
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":one_to_many:"
+  - !ruby/object:SM::Flow::LIST 
+    contents: 
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":key - foreign key in associated model's table that references current model's primary key, as a symbol. Defaults to :&quot;#{self.name.underscore}_id&quot;."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":one_to_one: Create a getter and setter similar to those of many_to_one associations. The getter returns a singular matching record, or raises an error if multiple records match. The setter updates the record given and removes associations with all other records. When this option is used, the other association methods usually added are either removed or made private, so using this is similar to using many_to_one, in terms of the methods it adds, the main difference is that the foreign key is in the associated table instead of the current table. Note that using this option still requires you to use a plural name when creating and using the association (e.g. for reflections, eager loading, etc.)."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":primary_key - column in the current table that :key option references, as a symbol. Defaults to primary key of the current table."
+    type: :BULLET
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":many_to_many:"
+  - !ruby/object:SM::Flow::LIST 
+    contents: 
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":graph_join_table_block - The block to pass to join_table for the join table when eagerly loading the association via eager_graph."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":graph_join_table_conditions - The additional conditions to use on the SQL join for the join table when eagerly loading the association via eager_graph. Should be a hash or an array of all two pairs."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":graph_join_table_join_type - The type of SQL join to use for the join table when eagerly loading the association via eager_graph. Defaults to the :graph_join_type option or :left_outer."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":graph_join_table_only_conditions - The conditions to use on the SQL join for the join table when eagerly loading the association via eager_graph, instead of the default conditions specified by the foreign/primary keys. This option causes the :graph_join_table_conditions option to be ignored."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":join_table - name of table that includes the foreign keys to both the current model and the associated model, as a symbol. Defaults to the name of current model and name of associated model, pluralized, underscored, sorted, and joined with '_'."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":left_key - foreign key in join table that points to current model's primary key, as a symbol. Defaults to :&quot;#{self.name.underscore}_id&quot;."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":left_primary_key - column in current table that :left_key points to, as a symbol. Defaults to primary key of current table."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":right_key - foreign key in join table that points to associated model's primary key, as a symbol. Defaults to Defaults to :&quot;#{name.to_s.singularize}_id&quot;."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":right_primary_key - column in associated table that :right_key points to, as a symbol. Defaults to primary key of the associated table."
+    - !ruby/struct:SM::Flow::LI 
+      label: "-"
+      body: ":uniq - Adds a after_load callback that makes the array of objects unique."
+    type: :BULLET
+  type: :BULLET
+full_name: Sequel::Model::Associations::ClassMethods#associate
+is_singleton: false
+name: associate
+params: (type, name, opts = {}, &block)
+visibility: public

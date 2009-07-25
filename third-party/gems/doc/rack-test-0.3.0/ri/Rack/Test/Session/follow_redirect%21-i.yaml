@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Rack::Test will not follow any redirects automatically. This method will follow the redirect returned in the last response. If the last response was not a redirect, an error will be raised.
+full_name: Rack::Test::Session#follow_redirect!
+is_singleton: false
+name: follow_redirect!
+params: ()
+visibility: public

@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Adds an further filter to an existing filter using AND. If no filter exists an error is raised. This method is identical to #filter except it expects an existing filter."
+- !ruby/struct:SM::Flow::VERB 
+  body: "  ds.filter(:a).and(:b) # SQL: WHERE a AND b\n"
+full_name: Sequel::Dataset#and
+is_singleton: false
+name: and
+params: (*cond, &block)
+visibility: public

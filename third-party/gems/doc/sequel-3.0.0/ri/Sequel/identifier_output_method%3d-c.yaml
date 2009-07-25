@@ -1,0 +1,20 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Set the method to call on identifiers coming out of the database. This affects the literalization of identifiers by calling this method on them when they are retrieved from the database. Sequel downcases identifiers retrieved for most databases, so to turn that off:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  Sequel.identifier_output_method = nil\n"
+- !ruby/struct:SM::Flow::P 
+  body: "to upcase instead:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  Sequel.identifier_output_method = :upcase\n"
+- !ruby/struct:SM::Flow::P 
+  body: Other String instance methods work as well.
+full_name: Sequel::identifier_output_method=
+is_singleton: true
+name: identifier_output_method=
+params: (value)
+visibility: public

@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Pass control to the next matching route. If there are no more matching routes, Sinatra will return a 404 response.
+full_name: Sinatra::Base#pass
+is_singleton: false
+name: pass
+params: ()
+visibility: public

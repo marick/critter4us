@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Rack::Reloader::Stat#safe_stat
+is_singleton: false
+name: safe_stat
+params: (file)
+visibility: public

@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Remove a column from the DDL for the table.
+full_name: Sequel::Schema::AlterTableGenerator#drop_column
+is_singleton: false
+name: drop_column
+params: (name)
+visibility: public

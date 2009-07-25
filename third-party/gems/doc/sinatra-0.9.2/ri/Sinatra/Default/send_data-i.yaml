@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Deprecated. Use the #attachment helper and return the data as a String or Array."
+full_name: Sinatra::Default#send_data
+is_singleton: false
+name: send_data
+params: (data, options={})
+visibility: public

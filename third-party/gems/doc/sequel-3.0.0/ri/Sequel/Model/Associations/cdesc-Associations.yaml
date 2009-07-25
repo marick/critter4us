@@ -1,0 +1,23 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: apply
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Associations are used in order to specify relationships between model classes that reflect relations between tables in the database using foreign keys.
+constants: 
+- !ruby/object:RI::Constant 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: Map of association type symbols to association reflection classes.
+  name: ASSOCIATION_TYPES
+  value: "{}"
+full_name: Sequel::Model::Associations
+includes: []
+
+instance_methods: []
+
+name: Associations
+superclass: 

@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: (conn)
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Use the native driver transaction method if there isn't already a transaction in progress on the connection, always yielding a connection inside a transaction transaction.
+full_name: Sequel::Amalgalite::Database#transaction
+is_singleton: false
+name: transaction
+params: (opts={}) {|conn| ...}
+visibility: public

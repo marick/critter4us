@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Return a Sequel::SQL::CaseExpression with this hash as the conditions and the given default value. Note that the order of the conditions will be arbitrary, so all conditions should be orthogonal.
+- !ruby/struct:SM::Flow::VERB 
+  body: "  {{:a=&gt;[2,3]}=&gt;1}.case(0) # SQL: CASE WHEN a IN (2, 3) THEN 1 ELSE 0 END\n  {:a=&gt;1, {:b=&gt;2}].case(:d, :c) # SQL: CASE c WHEN a THEN 1 WHEN b THEN 2 ELSE d END\n                                #  or: CASE c WHEN b THEN 2 WHEN a THEN 1 ELSE d END\n"
+full_name: Hash#case
+is_singleton: false
+name: case
+params: (default, expression = nil)
+visibility: public

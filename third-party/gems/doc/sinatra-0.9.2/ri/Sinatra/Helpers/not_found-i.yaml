@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Halt processing and return a 404 Not Found.
+full_name: Sinatra::Helpers#not_found
+is_singleton: false
+name: not_found
+params: (body=nil)
+visibility: public

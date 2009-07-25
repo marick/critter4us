@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Deprecated. Use: Sinatra::Application"
+full_name: Sinatra::application
+is_singleton: true
+name: application
+params: ()
+visibility: public

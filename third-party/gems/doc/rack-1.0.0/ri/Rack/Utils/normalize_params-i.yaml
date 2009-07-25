@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Rack::Utils#normalize_params
+is_singleton: false
+name: normalize_params
+params: (params, name, v = nil)
+visibility: public

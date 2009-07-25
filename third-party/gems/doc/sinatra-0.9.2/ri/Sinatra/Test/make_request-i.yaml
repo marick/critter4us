@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: "@request if block_given?"
+comment: 
+full_name: Sinatra::Test#make_request
+is_singleton: false
+name: make_request
+params: (verb, path, body=nil, options={}) {|@request if block_given?| ...}
+visibility: public

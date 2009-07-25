@@ -1,0 +1,28 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: 
+- !ruby/object:RI::Constant 
+  comment: 
+  name: SELECT_CLAUSE_ORDER
+  value: "%w'limit distinct columns from with join where group order having compounds'.freeze"
+full_name: Sequel::MSSQL::DatasetMethods
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: Dataset::UnsupportedIntersectExcept
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: complex_expression_sql
+- !ruby/object:RI::MethodSummary 
+  name: full_text_search
+- !ruby/object:RI::MethodSummary 
+  name: multi_insert_sql
+- !ruby/object:RI::MethodSummary 
+  name: nolock
+- !ruby/object:RI::MethodSummary 
+  name: quoted_identifier
+name: DatasetMethods
+superclass: 

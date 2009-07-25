@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Update all values using the entries in the hash, except for the keys given in except.
+full_name: Sequel::Model::InstanceMethods#update_except
+is_singleton: false
+name: update_except
+params: (hash, *except)
+visibility: public

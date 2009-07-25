@@ -1,0 +1,21 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Rack::Test::Utils
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: Rack::Utils
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: multipart_body
+- !ruby/object:RI::MethodSummary 
+  name: multipart_requestify
+- !ruby/object:RI::MethodSummary 
+  name: requestify
+name: Utils
+superclass: 

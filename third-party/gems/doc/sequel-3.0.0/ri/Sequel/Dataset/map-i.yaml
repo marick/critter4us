@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Maps column values for each record in the dataset (if a column name is given), or performs the stock mapping functionality of Enumerable. Raises an error if both an argument and block are given. Examples:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  ds.map(:id) =&gt; [1, 2, 3, ...]\n  ds.map{|r| r[:id] * 2} =&gt; [2, 4, 6, ...]\n"
+full_name: Sequel::Dataset#map
+is_singleton: false
+name: map
+params: (column=nil, &block)
+visibility: public

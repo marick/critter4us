@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: deflater.deflate(part) }
+comment: 
+full_name: Rack::Deflater::DeflateStream#each
+is_singleton: false
+name: each
+params: () {|deflater.deflate(part) }| ...}
+visibility: public

@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Copy the sti_key and sti_dataset to the subclasses, and filter the subclass's dataset so it is restricted to rows where the key column matches the subclass's name.
+full_name: Sequel::Plugins::SingleTableInheritance::ClassMethods#inherited
+is_singleton: false
+name: inherited
+params: (subclass)
+visibility: public

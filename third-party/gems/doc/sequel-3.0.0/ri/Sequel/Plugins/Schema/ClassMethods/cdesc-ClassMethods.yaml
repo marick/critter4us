@@ -1,0 +1,26 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Sequel::Plugins::Schema::ClassMethods
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: create_table
+- !ruby/object:RI::MethodSummary 
+  name: create_table!
+- !ruby/object:RI::MethodSummary 
+  name: drop_table
+- !ruby/object:RI::MethodSummary 
+  name: schema
+- !ruby/object:RI::MethodSummary 
+  name: set_schema
+- !ruby/object:RI::MethodSummary 
+  name: table_exists?
+name: ClassMethods
+superclass: 

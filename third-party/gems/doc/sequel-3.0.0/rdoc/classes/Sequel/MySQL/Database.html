@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Sequel::MySQL::Database</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Sequel::MySQL::Database</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../../files/lib/sequel/adapters/mysql_rb.html">
+                lib/sequel/adapters/mysql.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                <a href="../Database.html">
+                Sequel::Database
+               </a>
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+<a href="Database.html">Database</a> class for <a
+href="../MySQL.html">MySQL</a> databases used with <a
+href="../../Sequel.html">Sequel</a>.
+</p>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000376">call_sproc</a>&nbsp;&nbsp;
+      <a href="#M000377">connect</a>&nbsp;&nbsp;
+      <a href="#M000378">dataset</a>&nbsp;&nbsp;
+      <a href="#M000379">execute</a>&nbsp;&nbsp;
+      <a href="#M000380">server_version</a>&nbsp;&nbsp;
+      <a href="#M000381">transaction</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+    <div id="includes">
+      <h3 class="section-bar">Included Modules</h3>
+
+      <div id="includes-list">
+        <span class="include-name"><a href="DatabaseMethods.html">Sequel::MySQL::DatabaseMethods</a></span>
+      </div>
+    </div>
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000376" class="method-detail">
+        <a name="M000376"></a>
+
+        <div class="method-heading">
+          <a href="#M000376" class="method-signature">
+          <span class="method-name">call_sproc</span><span class="method-args">(name, opts={}, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Support stored procedures on <a href="../MySQL.html">MySQL</a>
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000376-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000376-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/adapters/mysql.rb, line 61</span>
+61:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">call_sproc</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+62:         <span class="ruby-identifier">args</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:args</span>] <span class="ruby-operator">||</span> [] 
+63:         <span class="ruby-identifier">execute</span>(<span class="ruby-node">&quot;CALL #{name}#{args.empty? ? '()' : literal(args)}&quot;</span>, <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">:sproc=</span><span class="ruby-operator">&gt;</span><span class="ruby-keyword kw">false</span>), <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+64:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000377" class="method-detail">
+        <a name="M000377"></a>
+
+        <div class="method-heading">
+          <a href="#M000377" class="method-signature">
+          <span class="method-name">connect</span><span class="method-args">(server)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Connect to the database. In addition to the usual database options, the
+following options have effect:
+</p>
+<ul>
+<li>:auto_is_null - Set to true to use <a href="../MySQL.html">MySQL</a>
+default behavior of having a filter for an autoincrement column equals NULL
+to return the last inserted row.
+
+</li>
+<li>:charset - Same as :encoding (:encoding takes precendence)
+
+</li>
+<li>:compress - Set to false to not compress results from the server
+
+</li>
+<li>:encoding - Set all the related character sets for this connection
+(connection, client, database, server, and results).
+
+</li>
+<li>:socket - Use a unix socket file instead of connecting via TCP/IP.
+
+</li>
+<li>:timeout - Set the timeout in seconds before the server will disconnect
+this connection.
+
+</li>
+</ul>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000377-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000377-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/mysql.rb, line 79</span>
+ 79:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">connect</span>(<span class="ruby-identifier">server</span>)
+ 80:         <span class="ruby-identifier">opts</span> = <span class="ruby-identifier">server_opts</span>(<span class="ruby-identifier">server</span>)
+ 81:         <span class="ruby-identifier">conn</span> = <span class="ruby-constant">Mysql</span>.<span class="ruby-identifier">init</span>
+ 82:         <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">options</span>(<span class="ruby-constant">Mysql</span><span class="ruby-operator">::</span><span class="ruby-constant">OPT_LOCAL_INFILE</span>, <span class="ruby-value str">&quot;client&quot;</span>)
+ 83:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">encoding</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:encoding</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:charset</span>]
+ 84:           <span class="ruby-comment cmt"># set charset _before_ the connect. using an option instead of &quot;SET (NAMES|CHARACTER_SET_*)&quot; works across reconnects</span>
+ 85:           <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">options</span>(<span class="ruby-constant">Mysql</span><span class="ruby-operator">::</span><span class="ruby-constant">SET_CHARSET_NAME</span>, <span class="ruby-identifier">encoding</span>)
+ 86:         <span class="ruby-keyword kw">end</span>
+ 87:         <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">real_connect</span>(
+ 88:           <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:host</span>] <span class="ruby-operator">||</span> <span class="ruby-value str">'localhost'</span>,
+ 89:           <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:user</span>],
+ 90:           <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:password</span>],
+ 91:           <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:database</span>],
+ 92:           <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:port</span>],
+ 93:           <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:socket</span>],
+ 94:           <span class="ruby-constant">Mysql</span><span class="ruby-operator">::</span><span class="ruby-constant">CLIENT_MULTI_RESULTS</span> <span class="ruby-operator">+</span>
+ 95:           <span class="ruby-constant">Mysql</span><span class="ruby-operator">::</span><span class="ruby-constant">CLIENT_MULTI_STATEMENTS</span> <span class="ruby-operator">+</span>
+ 96:           (<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:compress</span>] <span class="ruby-operator">==</span> <span class="ruby-keyword kw">false</span> <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> <span class="ruby-constant">Mysql</span><span class="ruby-operator">::</span><span class="ruby-constant">CLIENT_COMPRESS</span>)
+ 97:         )
+ 98: 
+ 99:         <span class="ruby-comment cmt"># increase timeout so mysql server doesn't disconnect us</span>
+100:         <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">query</span>(<span class="ruby-node">&quot;set @@wait_timeout = #{opts[:timeout] || 2592000}&quot;</span>)
+101: 
+102:         <span class="ruby-comment cmt"># By default, MySQL 'where id is null' selects the last inserted id</span>
+103:         <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">query</span>(<span class="ruby-value str">&quot;set SQL_AUTO_IS_NULL=0&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:auto_is_null</span>]
+104: 
+105:         <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">query_with_result</span> = <span class="ruby-keyword kw">false</span>
+106:         <span class="ruby-keyword kw">class</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">conn</span>
+107:           <span class="ruby-identifier">attr_accessor</span> <span class="ruby-identifier">:prepared_statements</span>
+108:         <span class="ruby-keyword kw">end</span>
+109:         <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">prepared_statements</span> = {}
+110:         <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">reconnect</span> = <span class="ruby-keyword kw">true</span>
+111:         <span class="ruby-identifier">conn</span>
+112:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000378" class="method-detail">
+        <a name="M000378"></a>
+
+        <div class="method-heading">
+          <a href="#M000378" class="method-signature">
+          <span class="method-name">dataset</span><span class="method-args">(opts = nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns instance of <a href="Dataset.html">Sequel::MySQL::Dataset</a> with
+the given options.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000378-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000378-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/mysql.rb, line 115</span>
+115:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">dataset</span>(<span class="ruby-identifier">opts</span> = <span class="ruby-keyword kw">nil</span>)
+116:         <span class="ruby-constant">MySQL</span><span class="ruby-operator">::</span><span class="ruby-constant">Dataset</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">opts</span>)
+117:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000379" class="method-detail">
+        <a name="M000379"></a>
+
+        <div class="method-heading">
+          <a href="#M000379" class="method-signature">
+          <span class="method-name">execute</span><span class="method-args">(sql, opts={}, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Executes the given <a href="../SQL.html">SQL</a> using an available
+connection, yielding the connection if the block is given.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000379-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000379-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/mysql.rb, line 121</span>
+121:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+122:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">call_sproc</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:sproc</span>]
+123:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">execute_prepared_statement</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Symbol</span> <span class="ruby-operator">===</span> <span class="ruby-identifier">sql</span>
+124:         <span class="ruby-keyword kw">begin</span>
+125:           <span class="ruby-identifier">synchronize</span>(<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:server</span>]){<span class="ruby-operator">|</span><span class="ruby-identifier">conn</span><span class="ruby-operator">|</span> <span class="ruby-identifier">_execute</span>(<span class="ruby-identifier">conn</span>, <span class="ruby-identifier">sql</span>, <span class="ruby-identifier">opts</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)}
+126:         <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Mysql</span><span class="ruby-operator">::</span><span class="ruby-constant">Error</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+127:           <span class="ruby-identifier">raise_error</span>(<span class="ruby-identifier">e</span>)
+128:         <span class="ruby-keyword kw">end</span>
+129:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000380" class="method-detail">
+        <a name="M000380"></a>
+
+        <div class="method-heading">
+          <a href="#M000380" class="method-signature">
+          <span class="method-name">server_version</span><span class="method-args">(server=nil)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return the version of the <a href="../MySQL.html">MySQL</a> server two
+which we are connecting.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000380-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000380-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/mysql.rb, line 132</span>
+132:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">server_version</span>(<span class="ruby-identifier">server</span>=<span class="ruby-keyword kw">nil</span>)
+133:         <span class="ruby-ivar">@server_version</span> <span class="ruby-operator">||=</span> (<span class="ruby-identifier">synchronize</span>(<span class="ruby-identifier">server</span>){<span class="ruby-operator">|</span><span class="ruby-identifier">conn</span><span class="ruby-operator">|</span> <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">server_version</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:server_version</span>)} <span class="ruby-operator">||</span> <span class="ruby-keyword kw">super</span>)
+134:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000381" class="method-detail">
+        <a name="M000381"></a>
+
+        <div class="method-heading">
+          <a href="#M000381" class="method-signature">
+          <span class="method-name">transaction</span><span class="method-args">(opts={}) {|conn| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Support single level transactions on <a href="../MySQL.html">MySQL</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000381-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000381-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/mysql.rb, line 137</span>
+137:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">transaction</span>(<span class="ruby-identifier">opts</span>={})
+138:         <span class="ruby-identifier">synchronize</span>(<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:server</span>]) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">conn</span><span class="ruby-operator">|</span>
+139:           <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">yield</span>(<span class="ruby-identifier">conn</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@transactions</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>)
+140:           <span class="ruby-identifier">log_info</span>(<span class="ruby-identifier">begin_transaction_sql</span>)
+141:           <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">begin_transaction_sql</span>)
+142:           <span class="ruby-keyword kw">begin</span>
+143:             <span class="ruby-ivar">@transactions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>
+144:             <span class="ruby-keyword kw">yield</span>(<span class="ruby-identifier">conn</span>)
+145:           <span class="ruby-keyword kw">rescue</span> <span class="ruby-operator">::</span><span class="ruby-constant">Exception</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+146:             <span class="ruby-identifier">log_info</span>(<span class="ruby-identifier">rollback_transaction_sql</span>)
+147:             <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">rollback_transaction_sql</span>)
+148:             <span class="ruby-identifier">transaction_error</span>(<span class="ruby-identifier">e</span>, <span class="ruby-constant">Mysql</span><span class="ruby-operator">::</span><span class="ruby-constant">Error</span>)
+149:           <span class="ruby-keyword kw">ensure</span>
+150:             <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">e</span>
+151:               <span class="ruby-identifier">log_info</span>(<span class="ruby-identifier">commit_transaction_sql</span>)
+152:               <span class="ruby-identifier">conn</span>.<span class="ruby-identifier">query</span>(<span class="ruby-identifier">commit_transaction_sql</span>)
+153:             <span class="ruby-keyword kw">end</span>
+154:             <span class="ruby-ivar">@transactions</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-constant">Thread</span>.<span class="ruby-identifier">current</span>)
+155:           <span class="ruby-keyword kw">end</span>
+156:         <span class="ruby-keyword kw">end</span>
+157:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

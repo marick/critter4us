@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Alias for #order"
+full_name: Sequel::Dataset#order_by
+is_singleton: false
+name: order_by
+params: (*columns, &block)
+visibility: public

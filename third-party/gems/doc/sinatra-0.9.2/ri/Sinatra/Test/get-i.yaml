@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Sinatra::Test#get
+is_singleton: false
+name: get
+params: (path, *args, &b)
+visibility: public

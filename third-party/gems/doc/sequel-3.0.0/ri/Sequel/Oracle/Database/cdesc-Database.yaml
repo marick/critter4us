@@ -1,0 +1,32 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: 
+- !ruby/object:RI::Constant 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: "ORA-00028: your session has been killed ORA-01012: not logged on ORA-03113: end-of-file on communication channel ORA-03114: not connected to ORACLE"
+  name: CONNECTION_ERROR_CODES
+  value: "[ 28, 1012, 3113, 3114 ]"
+full_name: Sequel::Oracle::Database
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: DatabaseMethods
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: connect
+- !ruby/object:RI::MethodSummary 
+  name: dataset
+- !ruby/object:RI::MethodSummary 
+  name: do
+- !ruby/object:RI::MethodSummary 
+  name: execute
+- !ruby/object:RI::MethodSummary 
+  name: schema_parse_table
+- !ruby/object:RI::MethodSummary 
+  name: transaction
+name: Database
+superclass: Sequel::Database

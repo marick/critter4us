@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Reloads attributes from database and returns self. Also clears all cached association and changed_columns information. Raises an Error if the record no longer exists in the database.
+full_name: Sequel::Model::InstanceMethods#refresh
+is_singleton: false
+name: refresh
+params: ()
+visibility: public

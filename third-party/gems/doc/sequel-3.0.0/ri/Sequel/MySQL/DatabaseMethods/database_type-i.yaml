@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: MySQL uses the :mysql database type
+full_name: Sequel::MySQL::DatabaseMethods#database_type
+is_singleton: false
+name: database_type
+params: ()
+visibility: public

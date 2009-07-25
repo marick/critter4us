@@ -1,0 +1,28 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: oid
+  rw: R
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "A class developed out of the request to use OpenID as an authentication middleware. The request will be sent to the OpenID instance unless the block evaluates to true. For example in rackup, you can use it as such:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  use Rack::Session::Pool\n  use Rack::Auth::OpenIDAuth, realm, openid_options do |env|\n    env['rack.session'][:authkey] == a_string\n  end\n  run RackApp\n"
+- !ruby/struct:SM::Flow::P 
+  body: "Or simply:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  app = Rack::Auth::OpenIDAuth.new app, realm, openid_options, &amp;auth\n"
+constants: []
+
+full_name: Rack::Auth::OpenIDAuth
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: call
+name: OpenIDAuth
+superclass: Rack::Auth::AbstractHandler

@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Sequel::Oracle::Database#schema_parse_table
+is_singleton: false
+name: schema_parse_table
+params: (table, opts={})
+visibility: public

@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: H2 uses an IDENTITY type
+full_name: Sequel::JDBC::H2::DatabaseMethods#serial_primary_key_options
+is_singleton: false
+name: serial_primary_key_options
+params: ()
+visibility: public

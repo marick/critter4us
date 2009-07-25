@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Sequel::Firebird::Dataset</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Sequel::Firebird::Dataset</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../../files/lib/sequel/adapters/firebird_rb.html">
+                lib/sequel/adapters/firebird.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                <a href="../Dataset.html">
+                Sequel::Dataset
+               </a>
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+<a href="Dataset.html">Dataset</a> class for <a
+href="../Firebird.html">Firebird</a> datasets
+</p>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000279">fetch_rows</a>&nbsp;&nbsp;
+      <a href="#M000280">insert</a>&nbsp;&nbsp;
+      <a href="#M000281">insert_returning_pk_sql</a>&nbsp;&nbsp;
+      <a href="#M000282">insert_returning_sql</a>&nbsp;&nbsp;
+      <a href="#M000283">insert_select</a>&nbsp;&nbsp;
+      <a href="#M000284">select_clause_order</a>&nbsp;&nbsp;
+      <a href="#M000285">select_limit_sql</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+    <div id="includes">
+      <h3 class="section-bar">Included Modules</h3>
+
+      <div id="includes-list">
+        <span class="include-name">UnsupportedIntersectExcept</span>
+      </div>
+    </div>
+
+    <div id="section">
+
+
+    <div id="constants-list">
+      <h3 class="section-bar">Constants</h3>
+
+      <div class="name-list">
+        <table summary="Constants">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BOOL_TRUE</td>
+          <td>=</td>
+          <td class="context-item-value">'1'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">BOOL_FALSE</td>
+          <td>=</td>
+          <td class="context-item-value">'0'.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">NULL</td>
+          <td>=</td>
+          <td class="context-item-value">LiteralString.new('NULL').freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">COMMA_SEPARATOR</td>
+          <td>=</td>
+          <td class="context-item-value">', '.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">FIREBIRD_TIMESTAMP_FORMAT</td>
+          <td>=</td>
+          <td class="context-item-value">&quot;TIMESTAMP '%Y-%m-%d %H:%M:%S&quot;.freeze</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">SELECT_CLAUSE_ORDER</td>
+          <td>=</td>
+          <td class="context-item-value">%w'distinct limit columns from join where group having compounds order'.freeze</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000279" class="method-detail">
+        <a name="M000279"></a>
+
+        <div class="method-heading">
+          <a href="#M000279" class="method-signature">
+          <span class="method-name">fetch_rows</span><span class="method-args">(sql) {|h| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Yield all rows returned by executing the given <a
+href="../SQL.html">SQL</a> and converting the types.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000279-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000279-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/firebird.rb, line 229</span>
+229:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">fetch_rows</span>(<span class="ruby-identifier">sql</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+230:         <span class="ruby-identifier">execute</span>(<span class="ruby-identifier">sql</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span>
+231:           <span class="ruby-keyword kw">begin</span>
+232:             <span class="ruby-ivar">@columns</span> = <span class="ruby-identifier">s</span>.<span class="ruby-identifier">fields</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> <span class="ruby-identifier">output_identifier</span>(<span class="ruby-identifier">c</span>.<span class="ruby-identifier">name</span>)}
+233:             <span class="ruby-identifier">s</span>.<span class="ruby-identifier">fetchall</span>(<span class="ruby-identifier">:symbols_hash</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span>
+234:               <span class="ruby-identifier">h</span> = {}
+235:               <span class="ruby-identifier">r</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span> <span class="ruby-identifier">h</span>[<span class="ruby-identifier">output_identifier</span>(<span class="ruby-identifier">k</span>)] = <span class="ruby-identifier">v</span>}
+236:               <span class="ruby-keyword kw">yield</span> <span class="ruby-identifier">h</span>
+237:             <span class="ruby-keyword kw">end</span>
+238:           <span class="ruby-keyword kw">ensure</span>
+239:             <span class="ruby-identifier">s</span>.<span class="ruby-identifier">close</span>
+240:           <span class="ruby-keyword kw">end</span>
+241:         <span class="ruby-keyword kw">end</span>
+242:         <span class="ruby-keyword kw">self</span>
+243:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000280" class="method-detail">
+        <a name="M000280"></a>
+
+        <div class="method-heading">
+          <a href="#M000280" class="method-signature">
+          <span class="method-name">insert</span><span class="method-args">(*values)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Insert given values into the database.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000280-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000280-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/firebird.rb, line 246</span>
+246:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">insert</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">values</span>)
+247:         <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@opts</span>[<span class="ruby-identifier">:sql</span>]
+248:           <span class="ruby-identifier">clone</span>(<span class="ruby-identifier">default_server_opts</span>(<span class="ruby-identifier">:sql=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">insert_returning_pk_sql</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">values</span>))).<span class="ruby-identifier">single_value</span>
+249:         <span class="ruby-keyword kw">else</span>
+250:           <span class="ruby-identifier">execute_insert</span>(<span class="ruby-identifier">insert_sql</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">values</span>), <span class="ruby-identifier">:table=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:from</span>].<span class="ruby-identifier">first</span>,
+251:             <span class="ruby-identifier">:values=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">values</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">values</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">values</span>)
+252:         <span class="ruby-keyword kw">end</span>
+253:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000281" class="method-detail">
+        <a name="M000281"></a>
+
+        <div class="method-heading">
+          <a href="#M000281" class="method-signature">
+          <span class="method-name">insert_returning_pk_sql</span><span class="method-args">(*values)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Use the RETURNING clause to return the primary key of the inserted record,
+if it exists
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000281-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000281-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/firebird.rb, line 256</span>
+256:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">insert_returning_pk_sql</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">values</span>)
+257:         <span class="ruby-identifier">pk</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">primary_key</span>(<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:from</span>].<span class="ruby-identifier">first</span>)
+258:         <span class="ruby-identifier">insert_returning_sql</span>(<span class="ruby-identifier">pk</span> <span class="ruby-value">? </span><span class="ruby-constant">Sequel</span><span class="ruby-operator">::</span><span class="ruby-constant">SQL</span><span class="ruby-operator">::</span><span class="ruby-constant">Identifier</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">pk</span>) <span class="ruby-operator">:</span> <span class="ruby-constant">NULL</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">values</span>)
+259:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000282" class="method-detail">
+        <a name="M000282"></a>
+
+        <div class="method-heading">
+          <a href="#M000282" class="method-signature">
+          <span class="method-name">insert_returning_sql</span><span class="method-args">(returning, *values)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Use the RETURNING clause to return the columns listed in returning.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000282-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000282-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/firebird.rb, line 262</span>
+262:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">insert_returning_sql</span>(<span class="ruby-identifier">returning</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">values</span>)
+263:         <span class="ruby-node">&quot;#{insert_sql(*values)} RETURNING #{column_list(Array(returning))}&quot;</span>
+264:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000283" class="method-detail">
+        <a name="M000283"></a>
+
+        <div class="method-heading">
+          <a href="#M000283" class="method-signature">
+          <span class="method-name">insert_select</span><span class="method-args">(*values)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Insert a record returning the record inserted
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000283-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000283-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/firebird.rb, line 267</span>
+267:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">insert_select</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">values</span>)
+268:         <span class="ruby-identifier">naked</span>.<span class="ruby-identifier">clone</span>(<span class="ruby-identifier">default_server_opts</span>(<span class="ruby-identifier">:sql=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">insert_returning_sql</span>(<span class="ruby-keyword kw">nil</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">values</span>))).<span class="ruby-identifier">single_record</span>
+269:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000284" class="method-detail">
+        <a name="M000284"></a>
+
+        <div class="method-heading">
+          <a href="#M000284" class="method-signature">
+          <span class="method-name">select_clause_order</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The order of clauses in the SELECT <a href="../SQL.html">SQL</a> statement
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000284-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000284-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/firebird.rb, line 272</span>
+272:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_clause_order</span>
+273:         <span class="ruby-constant">SELECT_CLAUSE_ORDER</span>
+274:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000285" class="method-detail">
+        <a name="M000285"></a>
+
+        <div class="method-heading">
+          <a href="#M000285" class="method-signature">
+          <span class="method-name">select_limit_sql</span><span class="method-args">(sql)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000285-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000285-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/adapters/firebird.rb, line 276</span>
+276:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_limit_sql</span>(<span class="ruby-identifier">sql</span>)
+277:         <span class="ruby-identifier">sql</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; FIRST #{@opts[:limit]}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-identifier">:limit</span>]
+278:         <span class="ruby-identifier">sql</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; SKIP #{@opts[:offset]}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@opts</span>[<span class="ruby-identifier">:offset</span>]
+279:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

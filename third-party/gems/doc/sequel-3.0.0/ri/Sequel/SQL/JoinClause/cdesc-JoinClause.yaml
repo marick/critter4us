@@ -1,0 +1,35 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: The type of join to do
+  name: join_type
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: The actual table to join
+  name: table
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: The table alias to use for the join, if any
+  name: table_alias
+  rw: R
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Represents an SQL JOIN clause, used for joining tables.
+constants: []
+
+full_name: Sequel::SQL::JoinClause
+includes: []
+
+instance_methods: []
+
+name: JoinClause
+superclass: Expression

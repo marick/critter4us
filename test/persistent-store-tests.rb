@@ -1,6 +1,5 @@
-$LOAD_PATH.unshift('..')
-require 'testutil/requires'
-require 'testutil/config'
+require 'test/testutil/requires'
+require 'test/testutil/config'
 
 require 'persistent-store'
 require 'admin/tables'

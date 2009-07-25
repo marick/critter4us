@@ -1,0 +1,39 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: configures
+- !ruby/object:RI::MethodSummary 
+  name: default_options
+- !ruby/object:RI::MethodSummary 
+  name: env
+- !ruby/object:RI::MethodSummary 
+  name: env=
+- !ruby/object:RI::MethodSummary 
+  name: options
+- !ruby/object:RI::MethodSummary 
+  name: set_option
+- !ruby/object:RI::MethodSummary 
+  name: set_options
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Base class for classic style (top-level) applications.
+constants: []
+
+full_name: Sinatra::Default
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: entity_tag
+- !ruby/object:RI::MethodSummary 
+  name: header
+- !ruby/object:RI::MethodSummary 
+  name: render
+- !ruby/object:RI::MethodSummary 
+  name: send_data
+- !ruby/object:RI::MethodSummary 
+  name: stop
+name: Default
+superclass: Base

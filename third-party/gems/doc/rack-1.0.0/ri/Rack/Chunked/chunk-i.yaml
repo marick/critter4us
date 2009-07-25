@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Rack::Chunked#chunk
+is_singleton: false
+name: chunk
+params: (status, headers, body)
+visibility: public

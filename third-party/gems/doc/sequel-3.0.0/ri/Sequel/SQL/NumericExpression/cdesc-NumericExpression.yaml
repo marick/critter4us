@@ -1,0 +1,24 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Subclass of ComplexExpression where the expression results in a numeric value in SQL.
+constants: []
+
+full_name: Sequel::SQL::NumericExpression
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: BitwiseMethods
+- !ruby/object:RI::IncludedModule 
+  name: NumericMethods
+- !ruby/object:RI::IncludedModule 
+  name: InequalityMethods
+- !ruby/object:RI::IncludedModule 
+  name: NoBooleanInputMethods
+instance_methods: []
+
+name: NumericExpression
+superclass: ComplexExpression

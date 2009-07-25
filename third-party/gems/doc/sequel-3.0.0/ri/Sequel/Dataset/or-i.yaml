@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Adds an alternate filter to an existing filter using OR. If no filter exists an error is raised.
+- !ruby/struct:SM::Flow::VERB 
+  body: "  dataset.filter(:a).or(:b) # SQL: SELECT * FROM items WHERE a OR b\n"
+full_name: Sequel::Dataset#or
+is_singleton: false
+name: or
+params: (*cond, &block)
+visibility: public

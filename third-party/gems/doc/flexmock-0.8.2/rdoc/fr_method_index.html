@@ -1,0 +1,149 @@
+
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+
+    Methods
+
+  -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Methods</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="rdoc-style.css" type="text/css" />
+  <base target="docwin" />
+</head>
+<body>
+<div id="index">
+  <h1 class="section-bar">Methods</h1>
+  <div id="index-entries">
+    <a href="classes/FlexMock/ExpectationDirector.html#M000106"><< (FlexMock::ExpectationDirector)</a><br />
+    <a href="classes/FlexMock/AnyMatcher.html#M000121">=== (FlexMock::AnyMatcher)</a><br />
+    <a href="classes/FlexMock/ProcMatcher.html#M000093">=== (FlexMock::ProcMatcher)</a><br />
+    <a href="classes/FlexMock/EqualMatcher.html#M000111">=== (FlexMock::EqualMatcher)</a><br />
+    <a href="classes/FlexMock/CompositeExpectation.html#M000042">add (FlexMock::CompositeExpectation)</a><br />
+    <a href="classes/FlexMock/PartialMockProxy.html#M000052">add_mock_method (FlexMock::PartialMockProxy)</a><br />
+    <a href="classes/FlexMock/MockContainerHelper.html#M000119">add_model_methods (FlexMock::MockContainerHelper)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000078">and_raise (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000072">and_return (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000074">and_return_undefined (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000080">and_throw (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000076">and_yield (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/ArgumentTypes.html#M000030">any (FlexMock::ArgumentTypes)</a><br />
+    <a href="classes/FlexMock/PartialMockProxy.html#M000048">any_instance (FlexMock::PartialMockProxy)</a><br />
+    <a href="classes/FlexMock/ExpectationRecorder.html#M000109">apply (FlexMock::ExpectationRecorder)</a><br />
+    <a href="classes/FlexMock/DefaultFrameworkAdapter.html#M000033">assert_block (FlexMock::DefaultFrameworkAdapter)</a><br />
+    <a href="classes/FlexMock/RSpecFrameworkAdapter.html#M000101">assert_block (FlexMock::RSpecFrameworkAdapter)</a><br />
+    <a href="classes/FlexMock/RSpecFrameworkAdapter.html#M000102">assert_equal (FlexMock::RSpecFrameworkAdapter)</a><br />
+    <a href="classes/FlexMock/DefaultFrameworkAdapter.html#M000034">assert_equal (FlexMock::DefaultFrameworkAdapter)</a><br />
+    <a href="classes/FlexMock/DefaultFrameworkAdapter.html#M000035">assertion_failed_error (FlexMock::DefaultFrameworkAdapter)</a><br />
+    <a href="classes/FlexMock/TestUnitFrameworkAdapter.html#M000100">assertion_failed_error (FlexMock::TestUnitFrameworkAdapter)</a><br />
+    <a href="classes/FlexMock/RSpecFrameworkAdapter.html#M000103">assertion_failed_error (FlexMock::RSpecFrameworkAdapter)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000087">at_least (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000088">at_most (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000091">by_default (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock.html#M000008">by_default (FlexMock)</a><br />
+    <a href="classes/FlexMock/ExpectationDirector.html#M000105">call (FlexMock::ExpectationDirector)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000065">call_count_constrained? (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Undefined.html#M000116">clone (FlexMock::Undefined)</a><br />
+    <a href="classes/FlexMock/Undefined.html#M000117">coerce (FlexMock::Undefined)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000064">eligible? (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/AtLeastCountValidator.html#M000097">eligible? (FlexMock::AtLeastCountValidator)</a><br />
+    <a href="classes/FlexMock/CountValidator.html#M000099">eligible? (FlexMock::CountValidator)</a><br />
+    <a href="classes/FlexMock/ArgumentTypes.html#M000031">eq (FlexMock::ArgumentTypes)</a><br />
+    <a href="classes/FlexMock/MockContainer.html#M000019">flexmock (FlexMock::MockContainer)</a><br />
+    <a href="classes/FlexMock/Ordering.html#M000025">flexmock_allocate_order (FlexMock::Ordering)</a><br />
+    <a href="classes/FlexMock/MockContainer.html#M000018">flexmock_close (FlexMock::MockContainer)</a><br />
+    <a href="classes/FlexMock/PartialMockProxy.html#M000056">flexmock_container (FlexMock::PartialMockProxy)</a><br />
+    <a href="classes/FlexMock/PartialMockProxy.html#M000057">flexmock_container= (FlexMock::PartialMockProxy)</a><br />
+    <a href="classes/FlexMock/Ordering.html#M000027">flexmock_current_order (FlexMock::Ordering)</a><br />
+    <a href="classes/FlexMock/Ordering.html#M000028">flexmock_current_order= (FlexMock::Ordering)</a><br />
+    <a href="classes/Module.html#M000001">flexmock_deprecate (Module)</a><br />
+    <a href="classes/FlexMock/PartialMockProxy.html#M000058">flexmock_expectations_for (FlexMock::PartialMockProxy)</a><br />
+    <a href="classes/FlexMock/PartialMockProxy.html#M000050">flexmock_get (FlexMock::PartialMockProxy)</a><br />
+    <a href="classes/FlexMock/Ordering.html#M000026">flexmock_groups (FlexMock::Ordering)</a><br />
+    <a href="classes/FlexMock/MockContainer.html#M000021">flexmock_remember (FlexMock::MockContainer)</a><br />
+    <a href="classes/FlexMock.html#M000005">flexmock_teardown (FlexMock)</a><br />
+    <a href="classes/FlexMock/PartialMockProxy.html#M000055">flexmock_teardown (FlexMock::PartialMockProxy)</a><br />
+    <a href="classes/FlexMock/MockContainer.html#M000016">flexmock_teardown (FlexMock::MockContainer)</a><br />
+    <a href="classes/FlexMock/Ordering.html#M000029">flexmock_validate_order (FlexMock::Ordering)</a><br />
+    <a href="classes/FlexMock.html#M000004">flexmock_verify (FlexMock)</a><br />
+    <a href="classes/FlexMock/MockContainer.html#M000017">flexmock_verify (FlexMock::MockContainer)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000066">flexmock_verify (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/PartialMockProxy.html#M000054">flexmock_verify (FlexMock::PartialMockProxy)</a><br />
+    <a href="classes/FlexMock/MockContainer.html#M000020">flexstub (FlexMock::MockContainer)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000090">globally (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock.html#M000003">inspect (FlexMock)</a><br />
+    <a href="classes/FlexMock/Undefined.html#M000115">inspect (FlexMock::Undefined)</a><br />
+    <a href="classes/FlexMock/EqualMatcher.html#M000112">inspect (FlexMock::EqualMatcher)</a><br />
+    <a href="classes/FlexMock/AnyMatcher.html#M000122">inspect (FlexMock::AnyMatcher)</a><br />
+    <a href="classes/FlexMock/ProcMatcher.html#M000094">inspect (FlexMock::ProcMatcher)</a><br />
+    <a href="classes/FlexMock/MockContainerHelper.html#M000120">make_partial_proxy (FlexMock::MockContainerHelper)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000068">match_arg (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000067">match_args (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock.html#M000011">method (FlexMock)</a><br />
+    <a href="classes/FlexMock/ExpectationRecorder.html#M000108">method_missing (FlexMock::ExpectationRecorder)</a><br />
+    <a href="classes/FlexMock/Undefined.html#M000113">method_missing (FlexMock::Undefined)</a><br />
+    <a href="classes/FlexMock/CompositeExpectation.html#M000043">method_missing (FlexMock::CompositeExpectation)</a><br />
+    <a href="classes/FlexMock.html#M000009">method_missing (FlexMock)</a><br />
+    <a href="classes/FlexMock/Recorder.html#M000039">method_missing (FlexMock::Recorder)</a><br />
+    <a href="classes/FlexMock/CompositeExpectation.html#M000045">mock (FlexMock::CompositeExpectation)</a><br />
+    <a href="classes/FlexMock.html#M000007">mock_ignore_missing (FlexMock)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000084">never (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000061">new (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Recorder.html#M000036">new (FlexMock::Recorder)</a><br />
+    <a href="classes/FlexMock/UseContainer.html#M000059">new (FlexMock::UseContainer)</a><br />
+    <a href="classes/FlexMock/EqualMatcher.html#M000110">new (FlexMock::EqualMatcher)</a><br />
+    <a href="classes/FlexMock/CountValidator.html#M000098">new (FlexMock::CountValidator)</a><br />
+    <a href="classes/FlexMock/PartialMockProxy.html#M000049">new (FlexMock::PartialMockProxy)</a><br />
+    <a href="classes/FlexMock.html#M000002">new (FlexMock)</a><br />
+    <a href="classes/FlexMock/ExpectationDirector.html#M000104">new (FlexMock::ExpectationDirector)</a><br />
+    <a href="classes/FlexMock/CompositeExpectation.html#M000041">new (FlexMock::CompositeExpectation)</a><br />
+    <a href="classes/FlexMock/ExpectationRecorder.html#M000107">new (FlexMock::ExpectationRecorder)</a><br />
+    <a href="classes/FlexMock/ProcMatcher.html#M000092">new (FlexMock::ProcMatcher)</a><br />
+    <a href="classes/FlexMock/PartialMockProxy.html#M000053">new_instances (FlexMock::PartialMockProxy)</a><br />
+    <a href="classes/FlexMock/MockContainerHelper.html#M000118">next_id (FlexMock::MockContainerHelper)</a><br />
+    <a href="classes/FlexMock/ArgumentTypes.html#M000032">on (FlexMock::ArgumentTypes)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000085">once (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/CompositeExpectation.html#M000044">order_number (FlexMock::CompositeExpectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000089">ordered (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/UseContainer.html#M000060">passed? (FlexMock::UseContainer)</a><br />
+    <a href="classes/FlexMock/MockContainer.html#M000022">rails_version (FlexMock::MockContainer)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000079">raises (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock.html#M000010">respond_to? (FlexMock)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000073">returns (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000075">returns_undefined (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Recorder.html#M000037">should_be_strict (FlexMock::Recorder)</a><br />
+    <a href="classes/FlexMock.html#M000013">should_expect (FlexMock)</a><br />
+    <a href="classes/FlexMock.html#M000006">should_ignore_missing (FlexMock)</a><br />
+    <a href="classes/FlexMock.html#M000012">should_receive (FlexMock)</a><br />
+    <a href="classes/FlexMock/CompositeExpectation.html#M000046">should_receive (FlexMock::CompositeExpectation)</a><br />
+    <a href="classes/FlexMock/PartialMockProxy.html#M000051">should_receive (FlexMock::PartialMockProxy)</a><br />
+    <a href="classes/FlexMock/MockContainer.html#M000023">should_render_view (FlexMock::MockContainer)</a><br />
+    <a href="classes/FlexMock/Recorder.html#M000038">strict? (FlexMock::Recorder)</a><br />
+    <a href="classes/FlexMock/TestCase.html#M000024">teardown (FlexMock::TestCase)</a><br />
+    <a href="classes/Test/Unit/TestCase.html#M000123">teardown (Test::Unit::TestCase)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000081">throws (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000083">times (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Undefined.html#M000114">to_s (FlexMock::Undefined)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000062">to_s (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/CompositeExpectation.html#M000047">to_s (FlexMock::CompositeExpectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000086">twice (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock.html#M000015">undefined (FlexMock)</a><br />
+    <a href="classes/FlexMock.html#M000014">use (FlexMock)</a><br />
+    <a href="classes/FlexMock/ExactCountValidator.html#M000040">validate (FlexMock::ExactCountValidator)</a><br />
+    <a href="classes/FlexMock/AtLeastCountValidator.html#M000096">validate (FlexMock::AtLeastCountValidator)</a><br />
+    <a href="classes/FlexMock/AtMostCountValidator.html#M000095">validate (FlexMock::AtMostCountValidator)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000063">verify_call (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000069">with (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000071">with_any_args (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000070">with_no_args (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000077">yields (FlexMock::Expectation)</a><br />
+    <a href="classes/FlexMock/Expectation.html#M000082">zero_or_more_times (FlexMock::Expectation)</a><br />
+  </div>
+</div>
+</body>
+</html>

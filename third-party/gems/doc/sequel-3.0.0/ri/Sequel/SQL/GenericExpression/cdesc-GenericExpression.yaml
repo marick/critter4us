@@ -1,0 +1,32 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: The base class for expressions that can be used in multiple places in the SQL query.
+constants: []
+
+full_name: Sequel::SQL::GenericExpression
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: AliasMethods
+- !ruby/object:RI::IncludedModule 
+  name: CastMethods
+- !ruby/object:RI::IncludedModule 
+  name: OrderMethods
+- !ruby/object:RI::IncludedModule 
+  name: ComplexExpressionMethods
+- !ruby/object:RI::IncludedModule 
+  name: BooleanMethods
+- !ruby/object:RI::IncludedModule 
+  name: NumericMethods
+- !ruby/object:RI::IncludedModule 
+  name: StringMethods
+- !ruby/object:RI::IncludedModule 
+  name: InequalityMethods
+instance_methods: []
+
+name: GenericExpression
+superclass: Expression

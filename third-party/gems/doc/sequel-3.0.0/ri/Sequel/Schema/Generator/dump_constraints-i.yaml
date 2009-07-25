@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Dump this generator's constraints to a string that could be evaled inside another instance to represent the same constraints
+full_name: Sequel::Schema::Generator#dump_constraints
+is_singleton: false
+name: dump_constraints
+params: ()
+visibility: public

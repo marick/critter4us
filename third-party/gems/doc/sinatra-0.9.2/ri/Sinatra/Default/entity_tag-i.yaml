@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Deprecated. Use: etag"
+full_name: Sinatra::Default#entity_tag
+is_singleton: false
+name: entity_tag
+params: (*args, &block)
+visibility: public

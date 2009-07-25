@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Set the sti_key column to the name of the model.
+full_name: Sequel::Plugins::SingleTableInheritance::InstanceMethods#before_create
+is_singleton: false
+name: before_create
+params: ()
+visibility: public

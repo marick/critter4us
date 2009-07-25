@@ -1,0 +1,17 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Raised on an invalid operation, such as trying to update or delete a joined or grouped dataset.
+constants: []
+
+full_name: Sequel::InvalidOperation
+includes: []
+
+instance_methods: []
+
+name: InvalidOperation
+superclass: Error

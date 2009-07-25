@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Remove the object from the cache when updating
+full_name: Sequel::Plugins::Caching::InstanceMethods#before_update
+is_singleton: false
+name: before_update
+params: ()
+visibility: public

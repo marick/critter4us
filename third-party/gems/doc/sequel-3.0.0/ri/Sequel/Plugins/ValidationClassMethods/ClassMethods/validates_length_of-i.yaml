@@ -1,0 +1,41 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Validates the length of an attribute.
+- !ruby/struct:SM::Flow::P 
+  body: "Possible Options:"
+- !ruby/object:SM::Flow::LIST 
+  contents: 
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":is - The exact size required for the value to be valid (no default)"
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":maximum - The maximum size allowed for the value (no default)"
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":message - The message to use (no default, overrides :too_long, :too_short, and :wrong_length options if present)"
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":minimum - The minimum size allowed for the value (no default)"
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":too_long - The message to use use if it the value is too long (default: 'is too long')"
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":too_short - The message to use use if it the value is too short (default: 'is too short')"
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":within - The array/range that must include the size of the value for it to be valid (no default)"
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":wrong_length - The message to use use if it the value is not valid (default: 'is the wrong length')"
+  type: :BULLET
+full_name: Sequel::Plugins::ValidationClassMethods::ClassMethods#validates_length_of
+is_singleton: false
+name: validates_length_of
+params: (*atts)
+visibility: public

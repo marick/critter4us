@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: MySQL's cast rules are restrictive in that you can't just cast to any possible database type.
+full_name: Sequel::MySQL::DatabaseMethods#cast_type_literal
+is_singleton: false
+name: cast_type_literal
+params: (type)
+visibility: public

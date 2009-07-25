@@ -1,0 +1,20 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: This module should be included in the dataset class for all databases that don't support INTERSECT or EXCEPT.
+constants: []
+
+full_name: Sequel::Dataset::UnsupportedIntersectExcept
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: except
+- !ruby/object:RI::MethodSummary 
+  name: intersect
+name: UnsupportedIntersectExcept
+superclass: 

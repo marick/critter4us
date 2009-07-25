@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: The order of clauses in the SELECT SQL statement
+full_name: Sequel::Firebird::Dataset#select_clause_order
+is_singleton: false
+name: select_clause_order
+params: ()
+visibility: public

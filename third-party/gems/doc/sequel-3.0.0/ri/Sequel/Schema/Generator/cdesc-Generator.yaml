@@ -1,0 +1,73 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: Return the columns created by this generator
+  name: columns
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: Return the constraints created by this generator
+  name: constraints
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: Return the indexes created by this generator
+  name: indexes
+  rw: R
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: add_type_method
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Schema::Generator is an internal class that the user is not expected to instantiate directly. Instances are created by Database#create_table. It is used to specify table creation parameters. It takes a Database object and a block of column/index/constraint specifications, and gives the Database a table description, which the database uses to create a table.
+- !ruby/struct:SM::Flow::P 
+  body: Schema::Generator has some methods but also includes method_missing, allowing users to specify column type as a method instead of using the column method, which makes for a nicer DSL.
+constants: 
+- !ruby/object:RI::Constant 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: Classes specifying generic types that Sequel will convert to database-specific types.
+  name: GENERIC_TYPES
+  value: "[String, Integer, Fixnum, Bignum, Float, Numeric, BigDecimal,       Date, DateTime, Time, File, TrueClass, FalseClass]"
+full_name: Sequel::Schema::Generator
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: check
+- !ruby/object:RI::MethodSummary 
+  name: column
+- !ruby/object:RI::MethodSummary 
+  name: constraint
+- !ruby/object:RI::MethodSummary 
+  name: dump_columns
+- !ruby/object:RI::MethodSummary 
+  name: dump_constraints
+- !ruby/object:RI::MethodSummary 
+  name: dump_indexes
+- !ruby/object:RI::MethodSummary 
+  name: foreign_key
+- !ruby/object:RI::MethodSummary 
+  name: full_text_index
+- !ruby/object:RI::MethodSummary 
+  name: has_column?
+- !ruby/object:RI::MethodSummary 
+  name: index
+- !ruby/object:RI::MethodSummary 
+  name: method_missing
+- !ruby/object:RI::MethodSummary 
+  name: primary_key
+- !ruby/object:RI::MethodSummary 
+  name: primary_key_name
+- !ruby/object:RI::MethodSummary 
+  name: spatial_index
+- !ruby/object:RI::MethodSummary 
+  name: unique
+name: Generator
+superclass: Object

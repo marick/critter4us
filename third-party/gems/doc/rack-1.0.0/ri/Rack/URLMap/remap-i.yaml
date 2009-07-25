@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Rack::URLMap#remap
+is_singleton: false
+name: remap
+params: (map)
+visibility: public

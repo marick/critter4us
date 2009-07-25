@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Updates the instance with the supplied values with support for virtual attributes, raising an exception if a value is used that doesn't have a setter method (or ignoring it if strict_param_setting = false). Does not save the record.
+full_name: Sequel::Model::InstanceMethods#set
+is_singleton: false
+name: set
+params: (hash)
+visibility: public

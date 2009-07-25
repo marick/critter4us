@@ -1,5 +1,4 @@
-$LOAD_PATH.unshift('..')
-require 'testutil/requires'
+require 'test/testutil/requires'
 
 require 'controller'
 require 'persistent-store'

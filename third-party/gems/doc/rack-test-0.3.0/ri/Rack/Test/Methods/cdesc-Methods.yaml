@@ -1,0 +1,21 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: 
+- !ruby/object:RI::Constant 
+  comment: 
+  name: METHODS
+  value: "[         :request,          # HTTP verbs         :get,         :post,         :put,         :delete,         :head,          # Redirects         :follow_redirect!,          # Header-related features         :header,         :set_cookie,         :clear_cookies,         :authorize,         :basic_authorize,         :digest_authorize,          # Expose the last request and response         :last_response,         :last_request"
+full_name: Rack::Test::Methods
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: rack_mock_session
+- !ruby/object:RI::MethodSummary 
+  name: rack_test_session
+name: Methods
+superclass: 

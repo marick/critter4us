@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Rack::Request#openid_request
+is_singleton: false
+name: openid_request
+params: ()
+visibility: public

@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Makes the methods defined in the block and in the Modules given in `extensions` available to the handlers and templates
+full_name: Sinatra::Base::helpers
+is_singleton: true
+name: helpers
+params: (*extensions, &block)
+visibility: public

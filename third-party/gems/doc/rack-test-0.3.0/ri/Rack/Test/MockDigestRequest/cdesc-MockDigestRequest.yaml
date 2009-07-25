@@ -1,0 +1,21 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+constants: []
+
+full_name: Rack::Test::MockDigestRequest
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: method
+- !ruby/object:RI::MethodSummary 
+  name: method_missing
+- !ruby/object:RI::MethodSummary 
+  name: response
+name: MockDigestRequest
+superclass: Object

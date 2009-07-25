@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Dump indexes for all tables as a migration. This complements the :indexes=&gt;false option to dump_schema_migration.
+full_name: Sequel::Database#dump_indexes_migration
+is_singleton: false
+name: dump_indexes_migration
+params: ()
+visibility: public

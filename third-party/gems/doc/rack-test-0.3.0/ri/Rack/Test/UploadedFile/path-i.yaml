@@ -1,0 +1,11 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: 
+- !ruby/object:RI::AliasName 
+  name: local_path
+block_params: 
+comment: 
+full_name: Rack::Test::UploadedFile#path
+is_singleton: false
+name: path
+params: ()
+visibility: public

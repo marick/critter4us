@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Sequel::Oracle::DatabaseMethods#create_trigger
+is_singleton: false
+name: create_trigger
+params: (*args)
+visibility: public

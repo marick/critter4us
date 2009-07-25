@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Delete rows matching this dataset
+full_name: Sequel::MySQL::Dataset#delete
+is_singleton: false
+name: delete
+params: ()
+visibility: public

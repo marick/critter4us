@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Also check @response since we delegate there.
+full_name: Sinatra::Test#respond_to?
+is_singleton: false
+name: respond_to?
+params: (symbol, include_private=false)
+visibility: public

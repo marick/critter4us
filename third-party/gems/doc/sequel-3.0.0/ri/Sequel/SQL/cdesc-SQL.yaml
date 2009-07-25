@@ -1,0 +1,17 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: The SQL module holds classes whose instances represent SQL fragments. It also holds modules that are included in core ruby classes that make Sequel a friendly DSL.
+constants: []
+
+full_name: Sequel::SQL
+includes: []
+
+instance_methods: []
+
+name: SQL
+superclass: 

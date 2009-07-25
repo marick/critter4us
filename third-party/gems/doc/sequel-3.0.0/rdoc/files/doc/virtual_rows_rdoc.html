@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: virtual_rows.rdoc</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+  <div id="fileHeader">
+    <h1>virtual_rows.rdoc</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>doc/virtual_rows.rdoc
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Sat Jul 25 16:28:14 -0500 2009</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <h1>Virtual Row Blocks</h1>
+<p>
+Dataset methods filter, order, and select all take blocks that yield
+instances of <a
+href="../../classes/Sequel/SQL/VirtualRow.html">Sequel::SQL::VirtualRow</a>.
+These are referred to as virtual row blocks. Many other dataset methods
+pass the blocks they are given into one of those three methods, so there
+are actually many <a href="../../classes/Sequel.html">Sequel</a> methods
+that take virtual row blocks.
+</p>
+<p>
+VirtualRow is a class that returns SQL::Indentifiers,
+SQL::QualifiedIdentifiers, or SQL::Functions depending on how it is called.
+This is best shown by example:
+</p>
+<pre>
+  ds = DB[:items]
+  ds.filter{|o| o.column &gt; 1}        # column &gt; 1
+  ds.filter{|o| o.table__column &gt; 1} # table.column &gt; 1
+  ds.filter{|o| o.function(1) &gt; 1}   # function(1) &gt; 1
+</pre>
+<p>
+Basically, the rules are:
+</p>
+<ul>
+<li>If there are arguments, an SQL::Function is returned with the name of the
+method used and the arguments given.
+
+</li>
+<li>If there are no arguments and the method contains a double underscore,
+split on the double underscore and return an SQL::QualifiedIdentifier with
+the table and column.
+
+</li>
+<li>Otherwise, create an SQL::Identifier with the name of the method.
+
+</li>
+</ul>
+<p>
+One of the consequences of these rules is that you cannot create an
+SQL::Function that takes no arguments using a VirtualRow instance.
+</p>
+<p>
+In <a href="../../classes/Sequel.html">Sequel</a> 2.12, the following is
+deprecated by default, as virtual row blocks are required to accept an
+argument:
+</p>
+<pre>
+  ds.filter{:column &gt; 1}                     # column &gt; 1
+  ds.filter{:table__column &gt; 1}              # table.column &gt; 1
+  ds.filter{:function.sql_function(1) &gt; 1}   # function(1) &gt; 1
+</pre>
+<p>
+This is to keep backwards compatibility while notifying people to change
+their code. In <a href="../../classes/Sequel.html">Sequel</a> 3.0, you will
+be able to do:
+</p>
+<pre>
+  ds.filter{column &gt; 1}        # column &gt; 1
+  ds.filter{table__column &gt; 1} # table.column &gt; 1
+  ds.filter{function(1) &gt; 1}   # function(1) &gt; 1
+</pre>
+<p>
+<a href="../../classes/Sequel.html">Sequel</a> 3.0 will change the virtual
+row block support to use instance_eval if the block doesn&#8216;t take an
+argument. This breaks backward compatibility because instance methods
+called inside the block will now have a virtual row instance as a receiver
+instead of the receiver where the block was defined. You can still use
+local variables in the enclosing scope inside the block, as they take on
+their usual meaning.
+</p>
+<p>
+If you find yourself needing to call instance methods for the current
+receiver inside a virtual row block, you should change the block to accept
+an argument, and use that argument whenever you need the virtual row
+support.
+</p>
+<p>
+You can get the <a href="../../classes/Sequel.html">Sequel</a> 3.0 behavior
+in <a href="../../classes/Sequel.html">Sequel</a> 2.12 using the following
+method:
+</p>
+<pre>
+  Sequel.virtual_row_instance_eval = true
+</pre>
+
+    </div>
+
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

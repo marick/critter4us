@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Look up a media type by file extension in Rack's mime registry.
+full_name: Sinatra::Helpers#media_type
+is_singleton: false
+name: media_type
+params: (type)
+visibility: public

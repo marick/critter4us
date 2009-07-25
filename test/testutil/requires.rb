@@ -1,3 +1,5 @@
+require 'path-setting'
+
 require 'rack/test'
 require 'test/unit'
 require 'shoulda'

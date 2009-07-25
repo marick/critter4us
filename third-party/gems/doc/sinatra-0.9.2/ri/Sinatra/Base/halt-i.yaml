@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Exit the current block, halts any further processing of the request, and returns the specified response.
+full_name: Sinatra::Base#halt
+is_singleton: false
+name: halt
+params: (*response)
+visibility: public

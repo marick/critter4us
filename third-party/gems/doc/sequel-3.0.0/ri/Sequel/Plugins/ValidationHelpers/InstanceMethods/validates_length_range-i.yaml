@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Check that the attribute values length is in the specified range.
+full_name: Sequel::Plugins::ValidationHelpers::InstanceMethods#validates_length_range
+is_singleton: false
+name: validates_length_range
+params: (range, atts, opts={})
+visibility: public

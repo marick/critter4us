@@ -1,0 +1,19 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Default implementation for an argument mapper that uses unnumbered SQL placeholder arguments. Keeps track of which arguments have been used, and allows arguments to be used more than once.
+constants: []
+
+full_name: Sequel::Dataset::UnnumberedArgumentMapper
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: ArgumentMapper
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: map_to_prepared_args
+name: UnnumberedArgumentMapper
+superclass: 

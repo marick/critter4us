@@ -1,0 +1,24 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: apply
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Sequel's built in Single Table Inheritance plugin makes subclasses of this model only load rows where the given key field matches the subclass's name. If the key given has a NULL value or there are any problems looking up the class, uses the current class.
+- !ruby/struct:SM::Flow::P 
+  body: You should only use this in the parent class, not in the subclasses.
+- !ruby/struct:SM::Flow::P 
+  body: You shouldn't call set_dataset in the model after applying this plugin, otherwise subclasses might use the wrong dataset.
+- !ruby/struct:SM::Flow::P 
+  body: The filters and row_proc that sti_key sets up in subclasses may not work correctly if those subclasses have further subclasses. For those middle subclasses, you may need to call set_dataset manually with the correct filter and row_proc.
+constants: []
+
+full_name: Sequel::Plugins::SingleTableInheritance
+includes: []
+
+instance_methods: []
+
+name: SingleTableInheritance
+superclass: 

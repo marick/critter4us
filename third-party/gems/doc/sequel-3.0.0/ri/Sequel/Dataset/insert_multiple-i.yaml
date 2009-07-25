@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Inserts multiple values. If a block is given it is invoked for each item in the given array before inserting it. See #multi_insert as a possible faster version that inserts multiple records in one SQL statement."
+full_name: Sequel::Dataset#insert_multiple
+is_singleton: false
+name: insert_multiple
+params: (array, &block)
+visibility: public

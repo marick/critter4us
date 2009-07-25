@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: 1.0.txt</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+  <div id="fileHeader">
+    <h1>1.0.txt</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>doc/release_notes/1.0.txt
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Sat Jul 25 16:28:14 -0500 2009</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <h3>New code organization</h3>
+<p>
+<a href="../../../classes/Sequel.html">Sequel</a> is now divided into two
+parts: sequel_core and sequel_model. These two parts are distributed as two
+separate gems. The sequel gem bundles sequel_core and sequel_model
+together. If you don&#8216;t use <a
+href="../../../classes/Sequel/Model.html">Sequel::Model</a> in your code,
+you can just install and use sequel_core.
+</p>
+<h3>New model hooks implementation</h3>
+<p>
+The hooks implementation have been rewritten from scratch, is much more
+robust and offers a few new features:
+</p>
+<ul>
+<li>More ways to define hooks: hooks can now be defined by supplying a
+
+</li>
+</ul>
+<p>
+block or a method name, or by overriding the hook instance method.
+</p>
+<ul>
+<li>Inheritable hooks: Hooks can now be inherited, which means that you
+
+</li>
+</ul>
+<p>
+can define general hooks in a model superclass, and use them in subclasses.
+You can also define global hooks on <a
+href="../../../classes/Sequel/Model.html">Sequel::Model</a> that will be
+invoked for all model classes.
+</p>
+<ul>
+<li>Hook chains can be broken by returning false from within the hook.
+
+</li>
+<li>New after_initialize hook, invoked after instance initialization.
+
+</li>
+<li>The hook invocation order can no longer be changed. Hooks are
+
+</li>
+</ul>
+<p>
+invoked in order of definition, from the top of the class hierarchy (that
+is, from <a href="../../../classes/Sequel/Model.html">Sequel::Model</a>)
+down to the specific class.
+</p>
+<h3>Miscellanea</h3>
+<ul>
+<li>Removed deprecated adapter stubs, and all other deprecations in both
+
+</li>
+</ul>
+<p>
+sequel_core and sequel_model.
+</p>
+<ul>
+<li>Fixed <a href="../../../classes/String.html#M000057">String#to_time</a> to
+raise error correctly for invalid time
+
+</li>
+</ul>
+<p>
+stamps.
+</p>
+<ul>
+<li>Fixed error behavior when parse_tree or ruby2ruby are not available.
+
+</li>
+</ul>
+
+    </div>
+
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

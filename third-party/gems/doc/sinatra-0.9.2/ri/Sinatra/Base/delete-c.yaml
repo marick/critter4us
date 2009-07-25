@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Sinatra::Base::delete
+is_singleton: true
+name: delete
+params: (path, opts={}, &bk)
+visibility: public

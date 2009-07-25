@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Add a mutation method to this dataset instance.
+full_name: Sequel::Dataset#def_mutation_method
+is_singleton: false
+name: def_mutation_method
+params: (*meths)
+visibility: public

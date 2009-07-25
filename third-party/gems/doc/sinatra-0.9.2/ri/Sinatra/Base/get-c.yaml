@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Defining a `GET` handler also automatically defines a `HEAD` handler.
+full_name: Sinatra::Base::get
+is_singleton: true
+name: get
+params: (path, opts={}, &block)
+visibility: public

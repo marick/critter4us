@@ -1,0 +1,52 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: convert_invalid_date_time
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: Set the default options used for CREATE TABLE
+  name: default_charset
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: Set the default options used for CREATE TABLE
+  name: default_collate
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: Set the default options used for CREATE TABLE
+  name: default_engine
+  rw: RW
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: convert_date_time
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Module for holding all MySQL-related classes and modules for Sequel.
+- !ruby/struct:SM::Flow::P 
+  body: A class level convert_invalid_date_time accessor exists if the native adapter is used. If set to nil or :nil, the adapter treats dates like 0000-00-00 and times like 838:00:00 as nil values. If set to :string, it returns the strings as is. If is false by default, which means that invalid dates and times will raise errors.
+constants: 
+- !ruby/object:RI::Constant 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: Mapping of type numbers to conversion procs
+  name: MYSQL_TYPES
+  value: "{}"
+- !ruby/object:RI::Constant 
+  comment: 
+  - !ruby/struct:SM::Flow::P 
+    body: Use only a single proc for each type to save on memory
+  name: MYSQL_TYPE_PROCS
+  value: "{       [0, 246]  => lambda{|v| BigDecimal.new(v)},                       # decimal       [1, 2, 3, 8, 9, 13, 247, 248]  => lambda{|v| v.to_i},             # integer       [4, 5]  => lambda{|v| v.to_f},                                    # float       [10, 14]  => lambda{|v| convert_date_time(:string_to_date, v)},   # date       [7, 12] => lambda{|v| convert_date_time(:string_to_datetime, v)}, # datetime       [11]  => lambda{|v| convert_date_time(:string_to_time, v)},       # time       [249, 250, 251, 252]  => lambda{|v| Sequel::SQL::Blob.new(v)}"
+full_name: Sequel::MySQL
+includes: []
+
+instance_methods: []
+
+name: MySQL
+superclass: 

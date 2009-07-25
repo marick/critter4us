@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Returns the average value for the given column.
+full_name: Sequel::Dataset#avg
+is_singleton: false
+name: avg
+params: (column)
+visibility: public

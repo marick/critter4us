@@ -1,0 +1,33 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Connect to the database. In addition to the usual database options, the following options have effect:"
+- !ruby/object:SM::Flow::LIST 
+  contents: 
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":auto_is_null - Set to true to use MySQL default behavior of having a filter for an autoincrement column equals NULL to return the last inserted row."
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":charset - Same as :encoding (:encoding takes precendence)"
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":compress - Set to false to not compress results from the server"
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":encoding - Set all the related character sets for this connection (connection, client, database, server, and results)."
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":socket - Use a unix socket file instead of connecting via TCP/IP."
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":timeout - Set the timeout in seconds before the server will disconnect this connection."
+  type: :BULLET
+full_name: Sequel::MySQL::Database#connect
+is_singleton: false
+name: connect
+params: (server)
+visibility: public

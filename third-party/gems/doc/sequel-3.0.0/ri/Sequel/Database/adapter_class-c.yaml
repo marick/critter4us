@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: The Database subclass for the given adapter scheme. Raises Sequel::AdapterNotFound if the adapter could not be loaded.
+full_name: Sequel::Database::adapter_class
+is_singleton: true
+name: adapter_class
+params: (scheme)
+visibility: public

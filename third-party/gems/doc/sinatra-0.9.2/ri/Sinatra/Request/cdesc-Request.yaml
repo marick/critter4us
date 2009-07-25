@@ -1,0 +1,22 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "The request object. See Rack::Request for more info: http://rack.rubyforge.org/doc/classes/Rack/Request.html"
+constants: []
+
+full_name: Sinatra::Request
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: accept
+- !ruby/object:RI::MethodSummary 
+  name: params
+- !ruby/object:RI::MethodSummary 
+  name: user_agent
+name: Request
+superclass: Rack::Request

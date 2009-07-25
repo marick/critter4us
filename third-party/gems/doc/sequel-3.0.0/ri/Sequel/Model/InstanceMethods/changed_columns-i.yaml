@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: The columns that have been updated. This isn't completely accurate, see Model#[]=.
+full_name: Sequel::Model::InstanceMethods#changed_columns
+is_singleton: false
+name: changed_columns
+params: ()
+visibility: public

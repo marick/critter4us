@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: If no valid bytea unescaping method can be found, create one that raises an error
+full_name: PGconn::unescape_bytea
+is_singleton: true
+name: unescape_bytea
+params: (obj)
+visibility: public

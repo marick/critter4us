@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Sequel::Oracle::DatabaseMethods#drop_sequence
+is_singleton: false
+name: drop_sequence
+params: (name)
+visibility: public

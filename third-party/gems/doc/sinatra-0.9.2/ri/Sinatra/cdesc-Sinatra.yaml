@@ -1,0 +1,37 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: application
+- !ruby/object:RI::MethodSummary 
+  name: application=
+- !ruby/object:RI::MethodSummary 
+  name: build_application
+- !ruby/object:RI::MethodSummary 
+  name: env
+- !ruby/object:RI::MethodSummary 
+  name: helpers
+- !ruby/object:RI::MethodSummary 
+  name: host
+- !ruby/object:RI::MethodSummary 
+  name: new
+- !ruby/object:RI::MethodSummary 
+  name: options
+- !ruby/object:RI::MethodSummary 
+  name: port
+- !ruby/object:RI::MethodSummary 
+  name: register
+comment: 
+constants: 
+- !ruby/object:RI::Constant 
+  comment: 
+  name: VERSION
+  value: "'0.9.2'"
+full_name: Sinatra
+includes: []
+
+instance_methods: []
+
+name: Sinatra
+superclass: 

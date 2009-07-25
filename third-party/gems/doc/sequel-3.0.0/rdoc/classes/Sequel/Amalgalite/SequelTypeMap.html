@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Sequel::Amalgalite::SequelTypeMap</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Sequel::Amalgalite::SequelTypeMap</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../../files/lib/sequel/adapters/amalgalite_rb.html">
+                lib/sequel/adapters/amalgalite.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                ::Amalgalite::TypeMaps::DefaultMap
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Type conversion map class for <a
+href="../../Sequel.html">Sequel</a>&#8216;s use of Amalgamite
+</p>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000199">blob</a>&nbsp;&nbsp;
+      <a href="#M000201">datetime</a>&nbsp;&nbsp;
+      <a href="#M000200">decimal</a>&nbsp;&nbsp;
+      <a href="#M000202">result_value_of</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000199" class="method-detail">
+        <a name="M000199"></a>
+
+        <div class="method-heading">
+          <a href="#M000199" class="method-signature">
+          <span class="method-name">blob</span><span class="method-args">(s)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return blobs as instances of <a
+href="../SQL/Blob.html">Sequel::SQL::Blob</a> instead of Amalgamite::Blob
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000199-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000199-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/adapters/amalgalite.rb, line 20</span>
+20:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">blob</span>(<span class="ruby-identifier">s</span>)
+21:         <span class="ruby-constant">SQL</span><span class="ruby-operator">::</span><span class="ruby-constant">Blob</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">s</span>)
+22:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000201" class="method-detail">
+        <a name="M000201"></a>
+
+        <div class="method-heading">
+          <a href="#M000201" class="method-signature">
+          <span class="method-name">datetime</span><span class="method-args">(s)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return <a href="SequelTypeMap.html#M000201">datetime</a> types as instances
+of Sequel.datetime_class
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000201-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000201-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/adapters/amalgalite.rb, line 31</span>
+31:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">datetime</span>(<span class="ruby-identifier">s</span>)
+32:         <span class="ruby-constant">Sequel</span>.<span class="ruby-identifier">string_to_datetime</span>(<span class="ruby-identifier">s</span>)
+33:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000200" class="method-detail">
+        <a name="M000200"></a>
+
+        <div class="method-heading">
+          <a href="#M000200" class="method-signature">
+          <span class="method-name">decimal</span><span class="method-args">(s)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return numeric/decimal types as instances of BigDecimal instead of Float
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000200-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000200-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/adapters/amalgalite.rb, line 26</span>
+26:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">decimal</span>(<span class="ruby-identifier">s</span>)
+27:         <span class="ruby-constant">BigDecimal</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">s</span>)
+28:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000202" class="method-detail">
+        <a name="M000202"></a>
+
+        <div class="method-heading">
+          <a href="#M000202" class="method-signature">
+          <span class="method-name">result_value_of</span><span class="method-args">(declared_type, value)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Don&#8216;t raise an error if the value is a string and the declared type
+doesn&#8216;t match a known type, just return the value.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000202-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000202-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/adapters/amalgalite.rb, line 37</span>
+37:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">result_value_of</span>(<span class="ruby-identifier">declared_type</span>, <span class="ruby-identifier">value</span>)
+38:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-operator">::</span><span class="ruby-constant">Amalgalite</span><span class="ruby-operator">::</span><span class="ruby-constant">Blob</span>)
+39:           <span class="ruby-constant">SQL</span><span class="ruby-operator">::</span><span class="ruby-constant">Blob</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">value</span>.<span class="ruby-identifier">source</span>)
+40:         <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">value</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">String</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">declared_type</span>
+41:           (<span class="ruby-identifier">meth</span> = <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">sql_to_method</span>(<span class="ruby-identifier">declared_type</span>.<span class="ruby-identifier">downcase</span>)) <span class="ruby-operator">?</span> <span class="ruby-identifier">send</span>(<span class="ruby-identifier">meth</span>, <span class="ruby-identifier">value</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">value</span>
+42:         <span class="ruby-keyword kw">else</span>
+43:           <span class="ruby-keyword kw">super</span>
+44:         <span class="ruby-keyword kw">end</span>
+45:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

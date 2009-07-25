@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Sequel::Schema::AlterTableGenerator</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Sequel::Schema::AlterTableGenerator</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../../files/lib/sequel/database/schema_generator_rb.html">
+                lib/sequel/database/schema_generator.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                <a href="../../Object.html">
+                Object
+               </a>
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+<a href="AlterTableGenerator.html">Schema::AlterTableGenerator</a> is an
+internal class that the user is not expected to instantiate directly.
+Instances are created by <a
+href="../Database.html#M000586">Database#alter_table</a>. It is used to
+specify table alteration parameters. It takes a <a
+href="../Database.html">Database</a> object and a block of operations to
+perform on the table, and gives the <a href="../Database.html">Database</a>
+a table an array of operations, which the database uses to alter a
+table&#8216;s description.
+</p>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000304">add_column</a>&nbsp;&nbsp;
+      <a href="#M000305">add_constraint</a>&nbsp;&nbsp;
+      <a href="#M000307">add_foreign_key</a>&nbsp;&nbsp;
+      <a href="#M000308">add_full_text_index</a>&nbsp;&nbsp;
+      <a href="#M000309">add_index</a>&nbsp;&nbsp;
+      <a href="#M000310">add_primary_key</a>&nbsp;&nbsp;
+      <a href="#M000311">add_spatial_index</a>&nbsp;&nbsp;
+      <a href="#M000306">add_unique_constraint</a>&nbsp;&nbsp;
+      <a href="#M000312">drop_column</a>&nbsp;&nbsp;
+      <a href="#M000313">drop_constraint</a>&nbsp;&nbsp;
+      <a href="#M000314">drop_index</a>&nbsp;&nbsp;
+      <a href="#M000303">new</a>&nbsp;&nbsp;
+      <a href="#M000315">rename_column</a>&nbsp;&nbsp;
+      <a href="#M000318">set_column_allow_null</a>&nbsp;&nbsp;
+      <a href="#M000316">set_column_default</a>&nbsp;&nbsp;
+      <a href="#M000317">set_column_type</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+
+
+    <div id="attribute-list">
+      <h3 class="section-bar">Attributes</h3>
+
+      <div class="name-list">
+        <table>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">operations</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc">
+An array of DDL operations to perform
+
+</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000303" class="method-detail">
+        <a name="M000303"></a>
+
+        <div class="method-heading">
+          <a href="#M000303" class="method-signature">
+          <span class="method-name">new</span><span class="method-args">(db, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the <a href="../Database.html">Database</a> object to which to apply
+the DDL, and evaluate the block in the context of this object.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000303-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000303-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 208</span>
+208:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">db</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+209:         <span class="ruby-ivar">@db</span> = <span class="ruby-identifier">db</span>
+210:         <span class="ruby-ivar">@operations</span> = []
+211:         <span class="ruby-identifier">instance_eval</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block</span>
+212:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000304" class="method-detail">
+        <a name="M000304"></a>
+
+        <div class="method-heading">
+          <a href="#M000304" class="method-signature">
+          <span class="method-name">add_column</span><span class="method-args">(name, type, opts = {})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Add a column with the given name, type, and opts to the DDL for the table.
+See <a href="Generator.html#M000289">Generator#column</a> for the available
+options.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000304-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000304-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 216</span>
+216:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_column</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">opts</span> = {})
+217:         <span class="ruby-ivar">@operations</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-identifier">:op</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:add_column</span>, <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">type</span>}.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>)
+218:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000305" class="method-detail">
+        <a name="M000305"></a>
+
+        <div class="method-heading">
+          <a href="#M000305" class="method-signature">
+          <span class="method-name">add_constraint</span><span class="method-args">(name, *args, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Add a constraint with the given name and args to the DDL for the table. See
+<a href="Generator.html#M000290">Generator#constraint</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000305-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000305-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 222</span>
+222:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_constraint</span>(<span class="ruby-identifier">name</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+223:         <span class="ruby-ivar">@operations</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-identifier">:op</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:add_constraint</span>, <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:check</span>, <span class="ruby-identifier">:check</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">block</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">args</span>}
+224:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000307" class="method-detail">
+        <a name="M000307"></a>
+
+        <div class="method-heading">
+          <a href="#M000307" class="method-signature">
+          <span class="method-name">add_foreign_key</span><span class="method-args">(name, table, opts = {})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Add a foreign key with the given name and referencing the given table to
+the DDL for the table. See <a
+href="Generator.html#M000289">Generator#column</a> for the available
+options.
+</p>
+<p>
+You can also pass an array of column names for creating composite foreign
+keys. In this case, it will assume the columns exists and will only add the
+constraint.
+</p>
+<p>
+NOTE: If you need to add a foreign key constraint to an existing column use
+the composite key syntax even if it is only one column.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000307-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000307-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 239</span>
+239:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_foreign_key</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">table</span>, <span class="ruby-identifier">opts</span> = {})
+240:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">add_composite_foreign_key</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">table</span>, <span class="ruby-identifier">opts</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+241:         <span class="ruby-identifier">add_column</span>(<span class="ruby-identifier">name</span>, <span class="ruby-constant">Integer</span>, {<span class="ruby-identifier">:table=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">table</span>}.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>))
+242:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000308" class="method-detail">
+        <a name="M000308"></a>
+
+        <div class="method-heading">
+          <a href="#M000308" class="method-signature">
+          <span class="method-name">add_full_text_index</span><span class="method-args">(columns, opts = {})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Add a full text index on the given columns to the DDL for the table. See <a
+href="Generator.html#M000294">Generator#index</a> for available options.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000308-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000308-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 246</span>
+246:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_full_text_index</span>(<span class="ruby-identifier">columns</span>, <span class="ruby-identifier">opts</span> = {})
+247:         <span class="ruby-identifier">add_index</span>(<span class="ruby-identifier">columns</span>, {<span class="ruby-identifier">:type=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">:full_text</span>}.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>))
+248:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000309" class="method-detail">
+        <a name="M000309"></a>
+
+        <div class="method-heading">
+          <a href="#M000309" class="method-signature">
+          <span class="method-name">add_index</span><span class="method-args">(columns, opts = {})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Add an index on the given columns to the DDL for the table. See <a
+href="Generator.html#M000294">Generator#index</a> for available options.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000309-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000309-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 252</span>
+252:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_index</span>(<span class="ruby-identifier">columns</span>, <span class="ruby-identifier">opts</span> = {})
+253:         <span class="ruby-ivar">@operations</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-identifier">:op</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:add_index</span>, <span class="ruby-identifier">:columns</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Array</span>(<span class="ruby-identifier">columns</span>)}.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>)
+254:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000310" class="method-detail">
+        <a name="M000310"></a>
+
+        <div class="method-heading">
+          <a href="#M000310" class="method-signature">
+          <span class="method-name">add_primary_key</span><span class="method-args">(name, opts = {})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Add a primary key to the DDL for the table. See <a
+href="Generator.html#M000289">Generator#column</a> for the available
+options.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000310-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000310-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 258</span>
+258:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_primary_key</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">opts</span> = {})
+259:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">add_composite_primary_key</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">opts</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>)
+260:         <span class="ruby-identifier">opts</span> = <span class="ruby-ivar">@db</span>.<span class="ruby-identifier">serial_primary_key_options</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>)
+261:         <span class="ruby-identifier">add_column</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">:type</span>), <span class="ruby-identifier">opts</span>)
+262:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000311" class="method-detail">
+        <a name="M000311"></a>
+
+        <div class="method-heading">
+          <a href="#M000311" class="method-signature">
+          <span class="method-name">add_spatial_index</span><span class="method-args">(columns, opts = {})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Add a spatial index on the given columns to the DDL for the table. See <a
+href="Generator.html#M000294">Generator#index</a> for available options.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000311-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000311-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 266</span>
+266:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_spatial_index</span>(<span class="ruby-identifier">columns</span>, <span class="ruby-identifier">opts</span> = {})
+267:         <span class="ruby-identifier">add_index</span>(<span class="ruby-identifier">columns</span>, {<span class="ruby-identifier">:type=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">:spatial</span>}.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>))
+268:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000306" class="method-detail">
+        <a name="M000306"></a>
+
+        <div class="method-heading">
+          <a href="#M000306" class="method-signature">
+          <span class="method-name">add_unique_constraint</span><span class="method-args">(columns, opts = {})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000306-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000306-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 226</span>
+226:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_unique_constraint</span>(<span class="ruby-identifier">columns</span>, <span class="ruby-identifier">opts</span> = {})
+227:         <span class="ruby-ivar">@operations</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-identifier">:op</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:add_constraint</span>, <span class="ruby-identifier">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:unique</span>, <span class="ruby-identifier">:columns</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Array</span>(<span class="ruby-identifier">columns</span>)}.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>)
+228:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000312" class="method-detail">
+        <a name="M000312"></a>
+
+        <div class="method-heading">
+          <a href="#M000312" class="method-signature">
+          <span class="method-name">drop_column</span><span class="method-args">(name)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Remove a column from the DDL for the table.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000312-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000312-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 271</span>
+271:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">drop_column</span>(<span class="ruby-identifier">name</span>)
+272:         <span class="ruby-ivar">@operations</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-identifier">:op</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:drop_column</span>, <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span>}
+273:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000313" class="method-detail">
+        <a name="M000313"></a>
+
+        <div class="method-heading">
+          <a href="#M000313" class="method-signature">
+          <span class="method-name">drop_constraint</span><span class="method-args">(name)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Remove a constraint from the DDL for the table.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000313-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000313-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 276</span>
+276:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">drop_constraint</span>(<span class="ruby-identifier">name</span>)
+277:         <span class="ruby-ivar">@operations</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-identifier">:op</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:drop_constraint</span>, <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span>}
+278:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000314" class="method-detail">
+        <a name="M000314"></a>
+
+        <div class="method-heading">
+          <a href="#M000314" class="method-signature">
+          <span class="method-name">drop_index</span><span class="method-args">(columns, options={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Remove an index from the DDL for the table.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000314-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000314-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 281</span>
+281:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">drop_index</span>(<span class="ruby-identifier">columns</span>, <span class="ruby-identifier">options</span>={})
+282:         <span class="ruby-ivar">@operations</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-identifier">:op</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:drop_index</span>, <span class="ruby-identifier">:columns</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">Array</span>(<span class="ruby-identifier">columns</span>)}.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">options</span>)
+283:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000315" class="method-detail">
+        <a name="M000315"></a>
+
+        <div class="method-heading">
+          <a href="#M000315" class="method-signature">
+          <span class="method-name">rename_column</span><span class="method-args">(name, new_name, opts = {})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Modify a column&#8216;s name in the DDL for the table.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000315-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000315-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 286</span>
+286:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rename_column</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">new_name</span>, <span class="ruby-identifier">opts</span> = {})
+287:         <span class="ruby-ivar">@operations</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-identifier">:op</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:rename_column</span>, <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">:new_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">new_name</span>}.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>)
+288:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000318" class="method-detail">
+        <a name="M000318"></a>
+
+        <div class="method-heading">
+          <a href="#M000318" class="method-signature">
+          <span class="method-name">set_column_allow_null</span><span class="method-args">(name, allow_null)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Modify a column&#8216;s NOT NULL constraint.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000318-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000318-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 301</span>
+301:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_column_allow_null</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">allow_null</span>)
+302:         <span class="ruby-ivar">@operations</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-identifier">:op</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:set_column_null</span>, <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">:null</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">allow_null</span>}
+303:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000316" class="method-detail">
+        <a name="M000316"></a>
+
+        <div class="method-heading">
+          <a href="#M000316" class="method-signature">
+          <span class="method-name">set_column_default</span><span class="method-args">(name, default)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Modify a column&#8216;s default value in the DDL for the table.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000316-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000316-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 291</span>
+291:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_column_default</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">default</span>)
+292:         <span class="ruby-ivar">@operations</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-identifier">:op</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:set_column_default</span>, <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">:default</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">default</span>}
+293:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000317" class="method-detail">
+        <a name="M000317"></a>
+
+        <div class="method-heading">
+          <a href="#M000317" class="method-signature">
+          <span class="method-name">set_column_type</span><span class="method-args">(name, type, opts={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Modify a column&#8216;s type in the DDL for the table.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000317-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000317-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/database/schema_generator.rb, line 296</span>
+296:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_column_type</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">type</span>, <span class="ruby-identifier">opts</span>={})
+297:         <span class="ruby-ivar">@operations</span> <span class="ruby-operator">&lt;&lt;</span> {<span class="ruby-identifier">:op</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:set_column_type</span>, <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">type</span>}.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">opts</span>)
+298:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

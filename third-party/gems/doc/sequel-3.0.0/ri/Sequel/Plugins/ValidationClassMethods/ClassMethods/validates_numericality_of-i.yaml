@@ -1,0 +1,23 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Validates whether an attribute is a number.
+- !ruby/struct:SM::Flow::P 
+  body: "Possible Options:"
+- !ruby/object:SM::Flow::LIST 
+  contents: 
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":message - The message to use (default: 'is not a number')"
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":only_integer - Whether only integers are valid values (default: false)"
+  type: :BULLET
+full_name: Sequel::Plugins::ValidationClassMethods::ClassMethods#validates_numericality_of
+is_singleton: false
+name: validates_numericality_of
+params: (*atts)
+visibility: public

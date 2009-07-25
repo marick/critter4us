@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Returns an html form page for posting to an Identity Provider if the GET request would exceed the upper URI length limit.
+full_name: Rack::Auth::OpenID#confirm_post_params
+is_singleton: false
+name: confirm_post_params
+params: (oid, realm, return_to, immediate)
+visibility: protected

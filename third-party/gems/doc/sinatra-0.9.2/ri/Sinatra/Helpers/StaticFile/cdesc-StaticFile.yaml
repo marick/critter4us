@@ -1,0 +1,17 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Rack response body used to deliver static files. The file contents are generated iteratively in 8K chunks.
+constants: []
+
+full_name: Sinatra::Helpers::StaticFile
+includes: []
+
+instance_methods: []
+
+name: StaticFile
+superclass: "::File"

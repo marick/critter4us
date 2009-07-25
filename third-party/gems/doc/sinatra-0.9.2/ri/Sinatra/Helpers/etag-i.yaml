@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Set the response entity tag (HTTP 'ETag' header) and halt if conditional GET matches. The <tt>value</tt> argument is an identifier that uniquely identifies the current version of the resource. The <tt>strength</tt> argument indicates whether the etag should be used as a :strong (default) or :weak cache validator.
+- !ruby/struct:SM::Flow::P 
+  body: When the current request includes an 'If-None-Match' header with a matching etag, execution is immediately halted. If the request method is GET or HEAD, a '304 Not Modified' response is sent.
+full_name: Sinatra::Helpers#etag
+is_singleton: false
+name: etag
+params: (value, kind=:strong)
+visibility: public

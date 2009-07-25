@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Rack::Test::Utils#multipart_requestify
+is_singleton: false
+name: multipart_requestify
+params: (params, first=true)
+visibility: public

@@ -1,0 +1,1191 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module: Sequel::Model::ClassMethods</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Module</strong></td>
+          <td class="class-name-in-header">Sequel::Model::ClassMethods</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../../files/lib/sequel/model/base_rb.html">
+                lib/sequel/model/base.rb
+                </a>
+        <br />
+                <a href="../../../files/lib/sequel/model/plugins_rb.html">
+                lib/sequel/model/plugins.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+Class methods for <a href="../Model.html">Sequel::Model</a> that implement
+basic model functionality.
+</p>
+<ul>
+<li>All of the method names in Model::DATASET_METHODS have class methods
+created that call the <a href="../Model.html">Model</a>&#8216;s <a
+href="ClassMethods.html#M000485">dataset</a> with the method of the same
+name with the given arguments.
+
+</li>
+</ul>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000482">[]</a>&nbsp;&nbsp;
+      <a href="#M000483">columns</a>&nbsp;&nbsp;
+      <a href="#M000484">create</a>&nbsp;&nbsp;
+      <a href="#M000485">dataset</a>&nbsp;&nbsp;
+      <a href="#M000501">dataset=</a>&nbsp;&nbsp;
+      <a href="#M000486">db</a>&nbsp;&nbsp;
+      <a href="#M000487">db=</a>&nbsp;&nbsp;
+      <a href="#M000488">db_schema</a>&nbsp;&nbsp;
+      <a href="#M000489">def_dataset_method</a>&nbsp;&nbsp;
+      <a href="#M000490">find</a>&nbsp;&nbsp;
+      <a href="#M000491">find_or_create</a>&nbsp;&nbsp;
+      <a href="#M000493">implicit_table_name</a>&nbsp;&nbsp;
+      <a href="#M000492">inherited</a>&nbsp;&nbsp;
+      <a href="#M000494">load</a>&nbsp;&nbsp;
+      <a href="#M000495">no_primary_key</a>&nbsp;&nbsp;
+      <a href="#M000496">primary_key_hash</a>&nbsp;&nbsp;
+      <a href="#M000497">restrict_primary_key</a>&nbsp;&nbsp;
+      <a href="#M000498">restrict_primary_key?</a>&nbsp;&nbsp;
+      <a href="#M000499">set_allowed_columns</a>&nbsp;&nbsp;
+      <a href="#M000500">set_dataset</a>&nbsp;&nbsp;
+      <a href="#M000502">set_primary_key</a>&nbsp;&nbsp;
+      <a href="#M000503">set_restricted_columns</a>&nbsp;&nbsp;
+      <a href="#M000504">subset</a>&nbsp;&nbsp;
+      <a href="#M000505">table_name</a>&nbsp;&nbsp;
+      <a href="#M000506">unrestrict_primary_key</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+
+    <div id="aliases-list">
+      <h3 class="section-bar">External Aliases</h3>
+
+      <div class="name-list">
+                        <table summary="aliases">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">with_sql</td>
+          <td>-&gt;</td>
+          <td class="context-item-value">fetch</td>
+        </tr>
+      <tr class="top-aligned-row context-row">
+        <td>&nbsp;</td>
+        <td colspan="2" class="context-item-desc">
+Returns a copy of the model&#8216;s <a
+href="ClassMethods.html#M000485">dataset</a> with custom <a
+href="../SQL.html">SQL</a>
+
+</td>
+      </tr>
+                        </table>
+      </div>
+    </div>
+
+
+    <div id="attribute-list">
+      <h3 class="section-bar">Attributes</h3>
+
+      <div class="name-list">
+        <table>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">allowed_columns</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc">
+Which <a href="ClassMethods.html#M000483">columns</a> should be the only <a
+href="ClassMethods.html#M000483">columns</a> allowed in a call to set
+(default: not set, so all <a href="ClassMethods.html#M000483">columns</a>
+not otherwise restricted).
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">dataset_method_modules</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc">
+<a href="../../Array.html">Array</a> of modules that extend this
+model&#8216;s <a href="ClassMethods.html#M000485">dataset</a>. Stored so
+that if the model&#8216;s <a href="ClassMethods.html#M000485">dataset</a>
+is changed, it will be extended with all of these modules.
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">dataset_methods</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc">
+<a href="../../Hash.html">Hash</a> of <a
+href="ClassMethods.html#M000485">dataset</a> methods with method name keys
+and proc values that are stored so when the <a
+href="ClassMethods.html#M000485">dataset</a> changes, methods defined with
+<a href="ClassMethods.html#M000489">def_dataset_method</a> will be applied
+to the new <a href="ClassMethods.html#M000485">dataset</a>.
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">primary_key</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc">
+The primary key for the class. <a href="../../Sequel.html">Sequel</a> can
+determine this automatically for many databases, but not all, so you may
+need to set it manually. If not determined automatically, the default is
+:id.
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">raise_on_save_failure</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc">
+Whether to raise an error instead of returning nil on a failure to
+save/create/save_changes/etc due to a validation failure or a before_* hook
+returning false.
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">raise_on_typecast_failure</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc">
+Whether to raise an error when unable to typecast data for a column
+(default: true). This should be set to false if you want to use validations
+to display nice error messages to the user (e.g. most web applications).
+You can use the validates_not_string validations (from either the
+validation_helpers or validation_class_methods standard plugins) in
+connection with option to check for typecast failures for <a
+href="ClassMethods.html#M000483">columns</a> that aren&#8216;t blobs or
+strings.
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">restricted_columns</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc">
+Which <a href="ClassMethods.html#M000483">columns</a> are specifically
+restricted in a call to set/update/new/etc. (default: not set). Some <a
+href="ClassMethods.html#M000483">columns</a> are restricted regardless of
+this setting, such as the primary key column and <a
+href="ClassMethods.html#M000483">columns</a> in
+Model::RESTRICTED_SETTER_METHODS.
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">simple_pk</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc">
+Should be the literal primary key column name if this <a
+href="../Model.html">Model</a>&#8216;s table has a simple primary key, or
+nil if the model has a compound primary key or no primary key.
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">simple_table</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc">
+Should be the literal table name if this <a
+href="../Model.html">Model</a>&#8216;s <a
+href="ClassMethods.html#M000485">dataset</a> is a simple table (no select,
+order, join, etc.), or nil otherwise. This and simple_pk are used for an
+optimization in <a href="../Model.html">Model</a>.[].
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">strict_param_setting</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc">
+Whether new/set/update and their variants should raise an error if an
+invalid key is used. A key is invalid if no setter method exists for that
+key or the access to the setter method is restricted (e.g. due to it being
+a primary key field). If set to false, silently skip any key where the
+setter method doesn&#8216;t exist or access to it is restricted.
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">typecast_empty_string_to_nil</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc">
+Whether to typecast the empty string (&#8217;&#8217;) to nil for <a
+href="ClassMethods.html#M000483">columns</a> that are not string or blob.
+In most cases the empty string would be the way to specify a NULL <a
+href="../SQL.html">SQL</a> value in string form (nil.to_s ==
+&#8217;&#8217;), and an empty string would not usually be typecast
+correctly for other types, so the default is true.
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">typecast_on_assignment</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc">
+Whether to typecast attribute values on assignment (default: true). If set
+to false, no typecasting is done, so it will be left up to the database to
+typecast the value correctly.
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">use_transactions</td>
+          <td class="context-item-value">&nbsp;[RW]&nbsp;</td>
+          <td class="context-item-desc">
+Whether to use a transaction by default when saving/deleting records
+(default: true). If you are sending database queries in before_* or after_*
+hooks, you shouldn&#8216;t change the default setting without a good
+reason.
+
+</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000482" class="method-detail">
+        <a name="M000482"></a>
+
+        <div class="method-heading">
+          <a href="#M000482" class="method-signature">
+          <span class="method-name">[]</span><span class="method-args">(*args)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the first record from the database matching the conditions. If a
+hash is given, it is used as the conditions. If another object is given, it
+finds the first record whose primary key(s) match the given argument(s).
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000482-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000482-source">
+<pre>
+    <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 87</span>
+87:       <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+88:         <span class="ruby-identifier">args</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">args</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>)
+89:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">dataset</span>[<span class="ruby-identifier">args</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>)
+90:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">t</span> = <span class="ruby-identifier">simple_table</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">p</span> = <span class="ruby-identifier">simple_pk</span>
+91:           <span class="ruby-identifier">with_sql</span>(<span class="ruby-node">&quot;SELECT * FROM #{t} WHERE #{p} = #{dataset.literal(args)}&quot;</span>).<span class="ruby-identifier">first</span>
+92:         <span class="ruby-keyword kw">else</span>
+93:           <span class="ruby-identifier">dataset</span>[<span class="ruby-identifier">primary_key_hash</span>(<span class="ruby-identifier">args</span>)]
+94:         <span class="ruby-keyword kw">end</span>
+95:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000483" class="method-detail">
+        <a name="M000483"></a>
+
+        <div class="method-heading">
+          <a href="#M000483" class="method-signature">
+          <span class="method-name">columns</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the <a href="ClassMethods.html#M000483">columns</a> in the result
+set in their original order. Generally, this will use the <a
+href="ClassMethods.html#M000483">columns</a> determined via the database
+schema, but in certain cases (e.g. models that are based on a joined <a
+href="ClassMethods.html#M000485">dataset</a>) it will use <a
+href="../Dataset.html#M000748">Dataset#columns</a> to <a
+href="ClassMethods.html#M000490">find</a> the <a
+href="ClassMethods.html#M000483">columns</a>, which may be empty if the <a
+href="../Dataset.html">Dataset</a> has no records.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000483-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000483-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 102</span>
+102:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">columns</span>
+103:         <span class="ruby-ivar">@columns</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">set_columns</span>(<span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">naked</span>.<span class="ruby-identifier">columns</span>)
+104:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000484" class="method-detail">
+        <a name="M000484"></a>
+
+        <div class="method-heading">
+          <a href="#M000484" class="method-signature">
+          <span class="method-name">create</span><span class="method-args">(values = {}, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Creates instance using new with the given values and block, and saves it.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000484-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000484-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 107</span>
+107:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>(<span class="ruby-identifier">values</span> = {}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+108:         <span class="ruby-identifier">new</span>(<span class="ruby-identifier">values</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>).<span class="ruby-identifier">save</span>
+109:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000485" class="method-detail">
+        <a name="M000485"></a>
+
+        <div class="method-heading">
+          <a href="#M000485" class="method-signature">
+          <span class="method-name">dataset</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the <a href="ClassMethods.html#M000485">dataset</a> associated with
+the <a href="../Model.html">Model</a> class. Raises an error if there is no
+associated <a href="ClassMethods.html#M000485">dataset</a> for this class.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000485-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000485-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 113</span>
+113:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">dataset</span>
+114:         <span class="ruby-ivar">@dataset</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span>, <span class="ruby-node">&quot;No dataset associated with #{self}&quot;</span>)
+115:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000501" class="method-detail">
+        <a name="M000501"></a>
+
+        <div class="method-heading">
+          <span class="method-name">dataset=</span><span class="method-args">(ds, opts={})</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="ClassMethods.html#M000500">set_dataset</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000486" class="method-detail">
+        <a name="M000486"></a>
+
+        <div class="method-heading">
+          <a href="#M000486" class="method-signature">
+          <span class="method-name">db</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the database associated with the <a href="../Model.html">Model</a>
+class. If this model doesn&#8216;t have a database associated with it,
+assumes the superclass&#8216;s database, or the first object in
+Sequel::DATABASES. If no <a href="../Database.html">Sequel::Database</a>
+object has been created, raises an error.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000486-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000486-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 122</span>
+122:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">db</span>
+123:         <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@db</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@db</span>
+124:         <span class="ruby-ivar">@db</span> = <span class="ruby-keyword kw">self</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Model</span> <span class="ruby-value">? </span><span class="ruby-constant">DATABASES</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">db</span>
+125:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span>, <span class="ruby-node">&quot;No database associated with #{self}&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@db</span>
+126:         <span class="ruby-ivar">@db</span>
+127:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000487" class="method-detail">
+        <a name="M000487"></a>
+
+        <div class="method-heading">
+          <a href="#M000487" class="method-signature">
+          <span class="method-name">db=</span><span class="method-args">(db)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sets the database associated with the <a href="../Model.html">Model</a>
+class. If the model has an associated <a
+href="ClassMethods.html#M000485">dataset</a>, sets the model&#8216;s <a
+href="ClassMethods.html#M000485">dataset</a> to a <a
+href="ClassMethods.html#M000485">dataset</a> on the new database with the
+same options used by the current <a
+href="ClassMethods.html#M000485">dataset</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000487-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000487-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 133</span>
+133:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">db=</span>(<span class="ruby-identifier">db</span>)
+134:         <span class="ruby-ivar">@db</span> = <span class="ruby-identifier">db</span>
+135:         <span class="ruby-identifier">set_dataset</span>(<span class="ruby-identifier">db</span>.<span class="ruby-identifier">dataset</span>(<span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">opts</span>)) <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@dataset</span>
+136:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000488" class="method-detail">
+        <a name="M000488"></a>
+
+        <div class="method-heading">
+          <a href="#M000488" class="method-signature">
+          <span class="method-name">db_schema</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the cached schema information if available or gets it from the
+database.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000488-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000488-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 140</span>
+140:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">db_schema</span>
+141:         <span class="ruby-ivar">@db_schema</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">get_db_schema</span>
+142:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000489" class="method-detail">
+        <a name="M000489"></a>
+
+        <div class="method-heading">
+          <a href="#M000489" class="method-signature">
+          <span class="method-name">def_dataset_method</span><span class="method-args">(*args, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+If a block is given, define a method on the <a
+href="ClassMethods.html#M000485">dataset</a> (if the model has an
+associated <a href="ClassMethods.html#M000485">dataset</a>) with the given
+argument name using the given block as well as a method on the model that
+calls the <a href="ClassMethods.html#M000485">dataset</a> method. Stores
+the method name and block so that it can be reapplied if the model&#8216;s
+<a href="ClassMethods.html#M000485">dataset</a> changes.
+</p>
+<p>
+If a block is not given, define a method on the model for each argument
+that calls the <a href="ClassMethods.html#M000485">dataset</a> method of
+the same argument name.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000489-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000489-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 151</span>
+151:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">def_dataset_method</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+152:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span>, <span class="ruby-value str">&quot;No arguments given&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">empty?</span>
+153:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">block_given?</span>
+154:           <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span>, <span class="ruby-value str">&quot;Defining a dataset method using a block requires only one argument&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">args</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
+155:           <span class="ruby-identifier">meth</span> = <span class="ruby-identifier">args</span>.<span class="ruby-identifier">first</span>
+156:           <span class="ruby-ivar">@dataset_methods</span>[<span class="ruby-identifier">meth</span>] = <span class="ruby-identifier">block</span>
+157:           <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">meta_def</span>(<span class="ruby-identifier">meth</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@dataset</span>
+158:         <span class="ruby-keyword kw">end</span>
+159:         <span class="ruby-identifier">args</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">arg</span><span class="ruby-operator">|</span> <span class="ruby-identifier">instance_eval</span>(<span class="ruby-node">&quot;def #{arg}(*args, &amp;block); dataset.#{arg}(*args, &amp;block) end&quot;</span>, <span class="ruby-keyword kw">__FILE__</span>, <span class="ruby-keyword kw">__LINE__</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">arg</span>)}
+160:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000490" class="method-detail">
+        <a name="M000490"></a>
+
+        <div class="method-heading">
+          <a href="#M000490" class="method-signature">
+          <span class="method-name">find</span><span class="method-args">(*args, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Finds a single record according to the supplied filter, e.g.:
+</p>
+<pre>
+  Ticket.find :author =&gt; 'Sharon' # =&gt; record
+</pre>
+<p>
+You are encouraged to use <a href="../Model.html">Model</a>.[] or
+Model.first instead of this method.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000490-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000490-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 167</span>
+167:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+168:         <span class="ruby-identifier">filter</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>).<span class="ruby-identifier">first</span>
+169:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000491" class="method-detail">
+        <a name="M000491"></a>
+
+        <div class="method-heading">
+          <a href="#M000491" class="method-signature">
+          <span class="method-name">find_or_create</span><span class="method-args">(cond)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Like <a href="ClassMethods.html#M000490">find</a> but invokes <a
+href="ClassMethods.html#M000484">create</a> with given conditions when
+record does not exist.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000491-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000491-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 173</span>
+173:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_or_create</span>(<span class="ruby-identifier">cond</span>)
+174:         <span class="ruby-identifier">find</span>(<span class="ruby-identifier">cond</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">create</span>(<span class="ruby-identifier">cond</span>)
+175:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000493" class="method-detail">
+        <a name="M000493"></a>
+
+        <div class="method-heading">
+          <a href="#M000493" class="method-signature">
+          <span class="method-name">implicit_table_name</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns the implicit table name for the model class.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000493-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000493-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 204</span>
+204:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">implicit_table_name</span>
+205:         <span class="ruby-identifier">pluralize</span>(<span class="ruby-identifier">underscore</span>(<span class="ruby-identifier">demodulize</span>(<span class="ruby-identifier">name</span>))).<span class="ruby-identifier">to_sym</span>
+206:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000492" class="method-detail">
+        <a name="M000492"></a>
+
+        <div class="method-heading">
+          <a href="#M000492" class="method-signature">
+          <span class="method-name">inherited</span><span class="method-args">(subclass)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+If possible, set the <a href="ClassMethods.html#M000485">dataset</a> for
+the model subclass as soon as it is created. Also, make sure the <a
+href="ClassMethods.html#M000492">inherited</a> class instance variables are
+copied into the subclass.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000492-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000492-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 180</span>
+180:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inherited</span>(<span class="ruby-identifier">subclass</span>)
+181:         <span class="ruby-identifier">ivs</span> = <span class="ruby-identifier">subclass</span>.<span class="ruby-identifier">instance_variables</span>.<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">x</span><span class="ruby-operator">|</span> <span class="ruby-identifier">x</span>.<span class="ruby-identifier">to_s</span>}
+182:         <span class="ruby-constant">EMPTY_INSTANCE_VARIABLES</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">iv</span><span class="ruby-operator">|</span> <span class="ruby-identifier">subclass</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-identifier">iv</span>, <span class="ruby-keyword kw">nil</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">ivs</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">iv</span>.<span class="ruby-identifier">to_s</span>)}
+183:         <span class="ruby-constant">INHERITED_INSTANCE_VARIABLES</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">iv</span>, <span class="ruby-identifier">dup</span><span class="ruby-operator">|</span>
+184:           <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ivs</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">iv</span>.<span class="ruby-identifier">to_s</span>)
+185:           <span class="ruby-identifier">sup_class_value</span> = <span class="ruby-identifier">instance_variable_get</span>(<span class="ruby-identifier">iv</span>)
+186:           <span class="ruby-identifier">sup_class_value</span> = <span class="ruby-identifier">sup_class_value</span>.<span class="ruby-identifier">dup</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">dup</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">:dup</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">sup_class_value</span>
+187:           <span class="ruby-identifier">subclass</span>.<span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-identifier">iv</span>, <span class="ruby-identifier">sup_class_value</span>)
+188:         <span class="ruby-keyword kw">end</span>
+189:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">ivs</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;@dataset&quot;</span>)
+190:           <span class="ruby-identifier">db</span>
+191:           <span class="ruby-keyword kw">begin</span>
+192:             <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span> <span class="ruby-operator">==</span> <span class="ruby-constant">Model</span>
+193:               <span class="ruby-identifier">subclass</span>.<span class="ruby-identifier">set_dataset</span>(<span class="ruby-identifier">subclass</span>.<span class="ruby-identifier">implicit_table_name</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">subclass</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">empty?</span>
+194:             <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">ds</span> = <span class="ruby-identifier">instance_variable_get</span>(<span class="ruby-identifier">:@dataset</span>)
+195:               <span class="ruby-identifier">subclass</span>.<span class="ruby-identifier">set_dataset</span>(<span class="ruby-identifier">ds</span>.<span class="ruby-identifier">clone</span>, <span class="ruby-identifier">:inherited=</span><span class="ruby-operator">&gt;</span><span class="ruby-keyword kw">true</span>)
+196:             <span class="ruby-keyword kw">end</span>
+197:           <span class="ruby-keyword kw">rescue</span>
+198:             <span class="ruby-keyword kw">nil</span>
+199:           <span class="ruby-keyword kw">end</span>
+200:         <span class="ruby-keyword kw">end</span>
+201:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000494" class="method-detail">
+        <a name="M000494"></a>
+
+        <div class="method-heading">
+          <a href="#M000494" class="method-signature">
+          <span class="method-name">load</span><span class="method-args">(values)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Initializes a model instance as an existing record. This constructor is
+used by <a href="../../Sequel.html">Sequel</a> to initialize model
+instances when fetching records. <a
+href="ClassMethods.html#M000494">load</a> requires that values be a hash
+where all keys are symbols. It probably should not be used by external
+code.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000494-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000494-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 212</span>
+212:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">load</span>(<span class="ruby-identifier">values</span>)
+213:         <span class="ruby-identifier">new</span>(<span class="ruby-identifier">values</span>, <span class="ruby-keyword kw">true</span>)
+214:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000495" class="method-detail">
+        <a name="M000495"></a>
+
+        <div class="method-heading">
+          <a href="#M000495" class="method-signature">
+          <span class="method-name">no_primary_key</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Mark the model as not having a primary key. Not having a primary key can
+cause issues, among which is that you won&#8216;t be able to update
+records.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000495-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000495-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 218</span>
+218:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">no_primary_key</span>
+219:         <span class="ruby-ivar">@simple_pk</span> = <span class="ruby-ivar">@primary_key</span> = <span class="ruby-keyword kw">nil</span>
+220:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000496" class="method-detail">
+        <a name="M000496"></a>
+
+        <div class="method-heading">
+          <a href="#M000496" class="method-signature">
+          <span class="method-name">primary_key_hash</span><span class="method-args">(value)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns primary key attribute hash. If using a composite primary key value
+such be an array with values for each primary key in the correct order. For
+a standard primary key, value should be an object with a compatible type
+for the key. If the model does not have a primary key, raises an <a
+href="../Error.html">Error</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000496-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000496-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 227</span>
+227:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">primary_key_hash</span>(<span class="ruby-identifier">value</span>)
+228:         <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span>, <span class="ruby-node">&quot;#{self} does not have a primary key&quot;</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">key</span> = <span class="ruby-ivar">@primary_key</span>
+229:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">key</span>
+230:         <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Array</span>
+231:           <span class="ruby-identifier">hash</span> = {}
+232:           <span class="ruby-identifier">key</span>.<span class="ruby-identifier">each_with_index</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">hash</span>[<span class="ruby-identifier">k</span>] = <span class="ruby-identifier">value</span>[<span class="ruby-identifier">i</span>]}
+233:           <span class="ruby-identifier">hash</span>
+234:         <span class="ruby-keyword kw">else</span>
+235:           {<span class="ruby-identifier">key</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">value</span>}
+236:         <span class="ruby-keyword kw">end</span>
+237:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000497" class="method-detail">
+        <a name="M000497"></a>
+
+        <div class="method-heading">
+          <a href="#M000497" class="method-signature">
+          <span class="method-name">restrict_primary_key</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Restrict the setting of the primary key(s) inside new/set/update. Because
+this is the default, this only make sense to use in a subclass where the
+parent class has used <a
+href="ClassMethods.html#M000506">unrestrict_primary_key</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000497-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000497-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 242</span>
+242:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">restrict_primary_key</span>
+243:         <span class="ruby-ivar">@restrict_primary_key</span> = <span class="ruby-keyword kw">true</span>
+244:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000498" class="method-detail">
+        <a name="M000498"></a>
+
+        <div class="method-heading">
+          <a href="#M000498" class="method-signature">
+          <span class="method-name">restrict_primary_key?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Whether or not setting the primary key inside new/set/update is restricted,
+true by default.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000498-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000498-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 248</span>
+248:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">restrict_primary_key?</span>
+249:         <span class="ruby-ivar">@restrict_primary_key</span>
+250:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000499" class="method-detail">
+        <a name="M000499"></a>
+
+        <div class="method-heading">
+          <a href="#M000499" class="method-signature">
+          <span class="method-name">set_allowed_columns</span><span class="method-args">(*cols)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the <a href="ClassMethods.html#M000483">columns</a> to allow in
+new/set/update. Using this means that any <a
+href="ClassMethods.html#M000483">columns</a> not listed here will not be
+modified. If you have any virtual setter methods (methods that end in =)
+that you want to be used in new/set/update, they need to be listed here as
+well (without the =).
+</p>
+<p>
+It may be better to use (set|update)_only instead of this in places where
+only certain <a href="ClassMethods.html#M000483">columns</a> may be
+allowed.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000499-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000499-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 259</span>
+259:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_allowed_columns</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">cols</span>)
+260:         <span class="ruby-ivar">@allowed_columns</span> = <span class="ruby-identifier">cols</span>
+261:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000500" class="method-detail">
+        <a name="M000500"></a>
+
+        <div class="method-heading">
+          <a href="#M000500" class="method-signature">
+          <span class="method-name">set_dataset</span><span class="method-args">(ds, opts={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sets the <a href="ClassMethods.html#M000485">dataset</a> associated with
+the <a href="../Model.html">Model</a> class. ds can be a <a
+href="../../Symbol.html">Symbol</a> (specifying a table name in the current
+database), or a <a href="../Dataset.html">Dataset</a>. If a <a
+href="ClassMethods.html#M000485">dataset</a> is used, the model&#8216;s
+database is changed to the given <a
+href="ClassMethods.html#M000485">dataset</a>. If a symbol is used, a <a
+href="ClassMethods.html#M000485">dataset</a> is created from the current
+database with the table name given. Other arguments raise an <a
+href="../Error.html">Error</a>.
+</p>
+<p>
+This changes the row_proc of the given <a
+href="ClassMethods.html#M000485">dataset</a> to return model objects,
+extends the <a href="ClassMethods.html#M000485">dataset</a> with the
+dataset_method_modules, and defines methods on the <a
+href="ClassMethods.html#M000485">dataset</a> using the dataset_methods. It
+also attempts to determine the database schema for the model, based on the
+given <a href="ClassMethods.html#M000485">dataset</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000500-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000500-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 274</span>
+274:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_dataset</span>(<span class="ruby-identifier">ds</span>, <span class="ruby-identifier">opts</span>={})
+275:         <span class="ruby-identifier">inherited</span> = <span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:inherited</span>]
+276:         <span class="ruby-ivar">@dataset</span> = <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">ds</span>
+277:         <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Symbol</span>
+278:           <span class="ruby-ivar">@simple_table</span> = <span class="ruby-identifier">db</span>.<span class="ruby-identifier">literal</span>(<span class="ruby-identifier">ds</span>)
+279:           <span class="ruby-identifier">db</span>[<span class="ruby-identifier">ds</span>]
+280:         <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Dataset</span>
+281:           <span class="ruby-ivar">@simple_table</span> = <span class="ruby-keyword kw">nil</span>
+282:           <span class="ruby-ivar">@db</span> = <span class="ruby-identifier">ds</span>.<span class="ruby-identifier">db</span>
+283:           <span class="ruby-identifier">ds</span>
+284:         <span class="ruby-keyword kw">else</span>
+285:           <span class="ruby-identifier">raise</span>(<span class="ruby-constant">Error</span>, <span class="ruby-value str">&quot;Model.set_dataset takes a Symbol or a Sequel::Dataset&quot;</span>)
+286:         <span class="ruby-keyword kw">end</span>
+287:         <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">row_proc</span> = <span class="ruby-constant">Proc</span>.<span class="ruby-identifier">new</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span> <span class="ruby-identifier">load</span>(<span class="ruby-identifier">r</span>)}
+288:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">inherited</span>
+289:           <span class="ruby-ivar">@simple_table</span> = <span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">simple_table</span>
+290:           <span class="ruby-ivar">@columns</span> = <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">columns</span> <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">nil</span>
+291:         <span class="ruby-keyword kw">else</span>
+292:           <span class="ruby-ivar">@dataset_method_modules</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">extend</span>(<span class="ruby-identifier">m</span>)} <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@dataset_method_modules</span>
+293:           <span class="ruby-ivar">@dataset_methods</span>.<span class="ruby-identifier">each</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">meth</span>, <span class="ruby-identifier">block</span><span class="ruby-operator">|</span> <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">meta_def</span>(<span class="ruby-identifier">meth</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)} <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@dataset_methods</span>
+294:         <span class="ruby-keyword kw">end</span>
+295:         <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">model</span> = <span class="ruby-keyword kw">self</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@dataset</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:model=</span>)
+296:         <span class="ruby-ivar">@db_schema</span> = (<span class="ruby-identifier">inherited</span> <span class="ruby-value">? </span><span class="ruby-identifier">superclass</span>.<span class="ruby-identifier">db_schema</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">get_db_schema</span>) <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">nil</span>
+297:         <span class="ruby-keyword kw">self</span>
+298:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000502" class="method-detail">
+        <a name="M000502"></a>
+
+        <div class="method-heading">
+          <a href="#M000502" class="method-signature">
+          <span class="method-name">set_primary_key</span><span class="method-args">(*key)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Sets the primary key for this model. You can use either a regular or a
+composite primary key.
+</p>
+<p>
+Example:
+</p>
+<pre>
+  class Tagging &lt; Sequel::Model
+    # composite key
+    set_primary_key :taggable_id, :tag_id
+  end
+
+  class Person &lt; Sequel::Model
+    # regular key
+    set_primary_key :person_id
+  end
+</pre>
+<p>
+You can set it to nil to not have a primary key, but that cause certain
+things not to work, see <a
+href="ClassMethods.html#M000495">no_primary_key</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000502-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000502-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 317</span>
+317:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_primary_key</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">key</span>)
+318:         <span class="ruby-ivar">@simple_pk</span> = <span class="ruby-identifier">key</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">db</span>.<span class="ruby-identifier">literal</span>(<span class="ruby-identifier">key</span>.<span class="ruby-identifier">first</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword kw">nil</span> 
+319:         <span class="ruby-ivar">@primary_key</span> = (<span class="ruby-identifier">key</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">key</span>[<span class="ruby-value">0</span>] <span class="ruby-operator">:</span> <span class="ruby-identifier">key</span>.<span class="ruby-identifier">flatten</span>
+320:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000503" class="method-detail">
+        <a name="M000503"></a>
+
+        <div class="method-heading">
+          <a href="#M000503" class="method-signature">
+          <span class="method-name">set_restricted_columns</span><span class="method-args">(*cols)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Set the <a href="ClassMethods.html#M000483">columns</a> to restrict in
+new/set/update. Using this means that attempts to call setter methods for
+the <a href="ClassMethods.html#M000483">columns</a> listed here will cause
+an exception or be silently skipped (based on the strict_param_setting
+setting. If you have any virtual # setter methods (methods that end in =)
+that you want not to be used in new/set/update, they need to be listed here
+as well (without the =).
+</p>
+<p>
+It may be better to use (set|update)_except instead of this in places where
+only certain <a href="ClassMethods.html#M000483">columns</a> may be
+allowed.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000503-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000503-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 330</span>
+330:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_restricted_columns</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">cols</span>)
+331:         <span class="ruby-ivar">@restricted_columns</span> = <span class="ruby-identifier">cols</span>
+332:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000504" class="method-detail">
+        <a name="M000504"></a>
+
+        <div class="method-heading">
+          <a href="#M000504" class="method-signature">
+          <span class="method-name">subset</span><span class="method-args">(name, *args, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Defines a method that returns a filtered <a
+href="ClassMethods.html#M000485">dataset</a>. Subsets <a
+href="ClassMethods.html#M000484">create</a> <a
+href="ClassMethods.html#M000485">dataset</a> methods, so they can be
+chained for scoping. For example:
+</p>
+<pre>
+  Topic.subset(:joes, :username.like('%joe%'))
+  Topic.subset(:popular){|o| o.num_posts &gt; 100}
+  Topic.subset(:recent){|o| o.created_on &gt; Date.today - 7}
+</pre>
+<p>
+Allows you to do:
+</p>
+<pre>
+  Topic.joes.recent.popular
+</pre>
+<p>
+to get topics with a username that includes joe that have more than 100
+posts and were created less than 7 days ago.
+</p>
+<p>
+Both the args given and the block are passed to <a
+href="../Dataset.html#M000696">Dataset#filter</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000504-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000504-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 351</span>
+351:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">subset</span>(<span class="ruby-identifier">name</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+352:         <span class="ruby-identifier">def_dataset_method</span>(<span class="ruby-identifier">name</span>){<span class="ruby-identifier">filter</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)}
+353:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000505" class="method-detail">
+        <a name="M000505"></a>
+
+        <div class="method-heading">
+          <a href="#M000505" class="method-signature">
+          <span class="method-name">table_name</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns name of primary table for the <a
+href="ClassMethods.html#M000485">dataset</a>.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000505-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000505-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 356</span>
+356:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">table_name</span>
+357:         <span class="ruby-identifier">dataset</span>.<span class="ruby-identifier">opts</span>[<span class="ruby-identifier">:from</span>].<span class="ruby-identifier">first</span>
+358:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+      <div id="method-M000506" class="method-detail">
+        <a name="M000506"></a>
+
+        <div class="method-heading">
+          <a href="#M000506" class="method-signature">
+          <span class="method-name">unrestrict_primary_key</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Allow the setting of the primary key(s) inside new/set/update.
+</p>
+          <p><a class="source-toggle" href="#"
+            onclick="toggleCode('M000506-source');return false;">[Source]</a></p>
+          <div class="method-source-code" id="M000506-source">
+<pre>
+     <span class="ruby-comment cmt"># File lib/sequel/model/base.rb, line 361</span>
+361:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unrestrict_primary_key</span>
+362:         <span class="ruby-ivar">@restrict_primary_key</span> = <span class="ruby-keyword kw">false</span>
+363:       <span class="ruby-keyword kw">end</span>
+</pre>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

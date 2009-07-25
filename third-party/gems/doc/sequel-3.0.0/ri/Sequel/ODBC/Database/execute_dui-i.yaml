@@ -1,0 +1,11 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: 
+- !ruby/object:RI::AliasName 
+  name: do
+block_params: 
+comment: 
+full_name: Sequel::ODBC::Database#execute_dui
+is_singleton: false
+name: execute_dui
+params: (sql, opts={})
+visibility: public

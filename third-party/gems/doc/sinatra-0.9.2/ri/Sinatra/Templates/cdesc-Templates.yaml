@@ -1,0 +1,30 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Template rendering methods. Each method takes a the name of a template to render as a Symbol and returns a String with the rendered output, as well as an optional hash with additional options.
+- !ruby/struct:SM::Flow::P 
+  body: `template` is either the name or path of the template as symbol (Use `:'subdir/myview'` for views in subdirectories), or a string that will be rendered.
+- !ruby/struct:SM::Flow::P 
+  body: "Possible options are:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  :layout       If set to false, no layout is rendered, otherwise\n                the specified layout is used (Ignored for `sass`)\n  :locals       A hash with local variables that should be available\n                in the template\n"
+constants: []
+
+full_name: Sinatra::Templates
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: builder
+- !ruby/object:RI::MethodSummary 
+  name: erb
+- !ruby/object:RI::MethodSummary 
+  name: haml
+- !ruby/object:RI::MethodSummary 
+  name: sass
+name: Templates
+superclass: 

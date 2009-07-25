@@ -1,0 +1,16 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Issue a DELETE request for the given URI. See #get"
+- !ruby/struct:SM::Flow::P 
+  body: "Example:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "  delete &quot;/&quot;\n"
+full_name: Rack::Test::Session#delete
+is_singleton: false
+name: delete
+params: (uri, params = {}, env = {}, &block)
+visibility: public

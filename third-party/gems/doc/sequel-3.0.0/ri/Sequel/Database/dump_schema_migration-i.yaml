@@ -1,0 +1,21 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Return a string that contains a Sequel::Migration subclass that when run would recreate the database structure. Options:"
+- !ruby/object:SM::Flow::LIST 
+  contents: 
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":same_db - Don't attempt to translate database types to ruby types. If this isn't set to true, all database types will be translated to ruby types, but there is no guarantee that the migration generated will yield the same type. Without this set, types that aren't recognized will be translated to a string-like type."
+  - !ruby/struct:SM::Flow::LI 
+    label: "*"
+    body: ":indexes - If set to false, don't dump indexes (they can be added later via dump_index_migration)."
+  type: :BULLET
+full_name: Sequel::Database#dump_schema_migration
+is_singleton: false
+name: dump_schema_migration
+params: (options={})
+visibility: public
