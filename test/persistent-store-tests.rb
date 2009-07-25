@@ -28,7 +28,7 @@ class PersistentStoreTests < Test::Unit::TestCase
 
     @store = PersistentStore.new
     
-    assert { @store.animal_names.sort == ['a', 'b', 'c'] }
+    assert { @store.all_animals.sort == ['a', 'b', 'c'] }
   end
 
 
