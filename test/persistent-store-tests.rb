@@ -20,4 +20,16 @@ class PersistentStoreTests < Test::Unit::TestCase
     
     assert { @store.procedure_names.sort == ['a', 'b', 'c'] }
   end
+
+  should "return animal names" do
+    Animal.create(:name => 'c')
+    Animal.create(:name => 'a')
+    Animal.create(:name => 'b')
+
+    @store = PersistentStore.new
+    
+    assert { @store.animal_names.sort == ['a', 'b', 'c'] }
+  end
+
+
 end
