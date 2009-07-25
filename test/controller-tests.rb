@@ -49,4 +49,30 @@ class JsonGenerationTests < Test::Unit::TestCase
       assert_jsonification_of({'procedures' => ['a', 'b', 'c']})
     end
   end
+
+  context "delivering all animals" do
+    should "use a method on the persistent store" do
+      assert { PersistentStore.instance_methods.include? 'all_animals' }
+    end
+
+    should "return a JSON list of strings" do
+      during { 
+        get '/json/all_animals'
+      }.behold! {
+        @store.should_receive(:all_animals).and_return(['bossie'])
+      }
+      assert_json_response
+      assert_jsonification_of({'animals' => ['bossie']})
+    end
+
+
+    should "also sort the list" do
+      during { 
+        get '/json/all_animals'
+      }.behold! {
+        @store.should_receive(:all_animals).and_return(['bossie', 'betsy'])
+      }
+      assert_jsonification_of({'animals' => ['betsy', 'bossie']})
+    end
+  end
 end
