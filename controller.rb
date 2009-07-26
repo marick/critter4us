@@ -5,11 +5,19 @@ require 'json'
 
 class Controller < Sinatra::Base
 
+  set :static, true
+  set :root, File.dirname(__FILE__)
+
   attr_writer :persistent_store
 
   def initialize(settings = {})
     super()
     @persistent_store = settings[:persistent_store] || PersistentStore.new
+  end
+
+
+  get '/' do
+    File.read(File.join(options.public, 'index.html'))
   end
 
   get '/json/procedures' do
@@ -27,7 +35,6 @@ class Controller < Sinatra::Base
       end
     end
   end
-
 
   private
 

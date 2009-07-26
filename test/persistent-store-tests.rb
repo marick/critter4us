@@ -30,6 +30,4 @@ class PersistentStoreTests < Test::Unit::TestCase
     
     assert { @store.all_animals.sort == ['a', 'b', 'c'] }
   end
-
-
 end
