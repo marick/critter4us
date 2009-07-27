@@ -5,6 +5,7 @@
   CPTableView table;
 
   CPMutableArray animals;
+  CPDictionary exclusions;
 }
 
 - (id)init
@@ -16,15 +17,59 @@
 //  var json = [str objectFromJSON];
 //  return [self initWithAnimalArray: json["animals"]];
 
-  animals = [ "betsy", "ruth"];
+  [self setUpNotifications]
   return self;
 }
 
-- (id)initWithAnimalArray: someAnimals
+- (void) setUpNotifications
 {
-  animals = someAnimals
-  return self;
+  [[CPNotificationCenter defaultCenter]
+   addObserver: self
+   selector: @selector(animalListAvailable:)
+   name: @"animals"
+   object: nil];
+
+  [[CPNotificationCenter defaultCenter]
+   addObserver: self
+   selector: @selector(newExclusions:)
+   name: @"exclusions"
+   object: nil];
+
+  [[CPNotificationCenter defaultCenter]
+   addObserver: self
+   selector: @selector(procedureChosen:)
+   name: @"procedure chosen"
+   object: nil];
 }
+
+
+- (void)stopObserving
+{
+  [[CPNotificationCenter defaultCenter] removeObserver: self];
+}
+
+
+- animalListAvailable: aNotification
+{
+  animals = [aNotification object];
+}
+
+- newExclusions: aNotification
+{
+  exclusions = [aNotification object];
+}
+
+- procedureChosen: aNotification
+{
+  var animalsToRemove = [exclusions objectForKey: [aNotification object]];
+  
+  for(var i = 0; i < [animalsToRemove count]; i++) 
+    {
+      var goner = [animalsToRemove objectAtIndex: i];
+      [animals removeObject: goner];
+    }
+}
+
 
 - (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView
 {
@@ -38,9 +83,11 @@
 
 - (id)tableView:(CPTableView)aTableView objectValueForTableColumn: (CPTableColumn)column row:(CPInteger)rowIndex
 {
-  return animals[rowIndex].name
+  return animals[rowIndex]
 }
 
+
+// DELETEME
 - (void)filterByProcedure:(CPString)aName
 {
   var url = [CPString stringWithFormat: @"http://localhost:7000/json/selected_animals?procedure=%s", aName];
