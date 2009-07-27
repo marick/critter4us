@@ -8,6 +8,7 @@
 - (void)setUp
 {
   controller = [[AnimalTableController alloc] init];
+  [controller awakeFromCib];
 }
 
 - (void)tearDown

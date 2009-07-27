@@ -2,20 +2,15 @@
 
 @implementation ProcedureTableController : CPObject
 {
-  CPMutableArray procedures;
-  id animalTableController;
+  id procedures;
   CPTableView table;
 }
 
-- (id)init
+- (void)awakeFromCib
 {
-  var request = [CPURLRequest requestWithURL: @"http://localhost:7000/json/procedures"]; 
-  var data = [CPURLConnection sendSynchronousRequest: request   
-                              returningResponse:nil error:nil]; 
-  var str = [data description]; 
-  var json = [str objectFromJSON];
-  procedures = json["procedures"];
-  return self;
+  // TEMP
+  procedures = ['procedure 1', 'procedure 2'];
+  [table reloadData];
 }
 
 - (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView
@@ -30,12 +25,7 @@
 
 - (void)chooseProcedure:(id)sender
 {
-  [animalTableController filterByProcedure: [procedures objectAtIndex: [table clickedRow]]];
-}
-
-- (void)setHack:(id)aController
-{
-  animalTableController = aController;
+  alert("Procedure chosen");
 }
 
 @end

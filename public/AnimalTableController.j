@@ -4,21 +4,15 @@
 {
   CPTableView table;
 
-  CPMutableArray animals;
+  id animals;
   CPDictionary exclusions;
 }
 
-- (id)init
+- (void)awakeFromCib
 {
-//  var request = [CPURLRequest requestWithURL: @"http://localhost:7000/json/all_animal_data"]; 
-//  var data = [CPURLConnection sendSynchronousRequest: request   
-//                              returningResponse:nil error:nil]; 
-//  var str = [data description]; 
-//  var json = [str objectFromJSON];
-//  return [self initWithAnimalArray: json["animals"]];
-
-  [self setUpNotifications]
-  return self;
+  animals = ['animal 1', 'animal 2'];
+  [self setUpNotifications];
+  [table reloadData];
 }
 
 - (void) setUpNotifications
@@ -85,20 +79,5 @@
 {
   return animals[rowIndex]
 }
-
-
-// DELETEME
-- (void)filterByProcedure:(CPString)aName
-{
-  var url = [CPString stringWithFormat: @"http://localhost:7000/json/selected_animals?procedure=%s", aName];
-  var request = [CPURLRequest requestWithURL: url]; 
-  var data = [CPURLConnection sendSynchronousRequest: request   
-                              returningResponse:nil error:nil]; 
-  var str = [data description]; 
-  var json = [str objectFromJSON];
-  animals = json["animals"];
-  [table reloadData];
-}
-
 
 @end

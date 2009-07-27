@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CPApplicationDelegateClass</key>
-	<string>AppController</string>
+	<string>App</string>
 	<key>CPBundleName</key>
 	<string>critter4us</string>
 	<key>CPPrincipalClass</key>
