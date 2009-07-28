@@ -3,6 +3,7 @@
 @implementation AnimalTableController : CPObject
 {
   CPTableView table;
+  id persistentStore;
 
   id animals;
   CPDictionary exclusions;
@@ -10,19 +11,13 @@
 
 - (void)awakeFromCib
 {
-  animals = ['animal 1', 'animal 2'];
+  animals = [persistentStore allAnimalNames]
   [self setUpNotifications];
   [table reloadData];
 }
 
 - (void) setUpNotifications
 {
-  [[CPNotificationCenter defaultCenter]
-   addObserver: self
-   selector: @selector(animalListAvailable:)
-   name: @"animals"
-   object: nil];
-
   [[CPNotificationCenter defaultCenter]
    addObserver: self
    selector: @selector(newExclusions:)
@@ -42,11 +37,6 @@
   [[CPNotificationCenter defaultCenter] removeObserver: self];
 }
 
-
-- animalListAvailable: aNotification
-{
-  animals = [aNotification object];
-}
 
 - newExclusions: aNotification
 {

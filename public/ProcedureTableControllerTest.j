@@ -1,42 +1,26 @@
 @import "ProcedureTableController.j"
-
-@implementation PersistentStoreMock : CPObject
-{
-  CPInteger calls;
-}
-
-- (PersistentStoreMock)init
-{
-  [super init];
-  calls = 0;
-  return self;
-}
-
-- (CPArray) allProcedureNames
-{
-  // Although Javascript arrays are identical to CPArrays,
-  // be explicit about what we want.
-  calls += 1;
-  return [CPArray arrayWithArray: ['procedure1', 'procedure2']];
-}
-@end
+@import "Mock.j"
 
 @implementation ProcedureTableControllerTest : OJTestCase
 {
   ProcedureTableController controller;
+  Mock store;
 }
 
 - (void)setUp
 {
   controller = [[ProcedureTableController alloc] init];
-  controller.persistentStore = [[PersistentStoreMock alloc] init];
+  store = [[Mock alloc] init];
+  [store shouldReceive: @selector(allProcedureNames)
+         andReturn: [CPArray arrayWithArray: ['procedure1', 'procedure2']]];
+
+  controller.persistentStore = store 
   [controller awakeFromCib];
 }
 
 - (void)testThatAwakeningFetchesNumberOfProcedures
 {
-  [self assert: 1
-        equals: controller.persistentStore.calls];
+  [self assertTrue: [store wereExpectationsFulfilled]];
 }
 
 - (void)testRowsOfTableEqualsNumberOfProcedures

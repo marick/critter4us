@@ -1,14 +1,17 @@
 @import "AnimalTableController.j"
+@import "Mock.j"
 
 @implementation AnimalTableControllerTest : OJTestCase
 {
   AnimalTableController controller;
+  Mock store;
 }
 
 - (void)setUp
 {
   controller = [[AnimalTableController alloc] init];
-  [controller awakeFromCib];
+  store = [[Mock alloc] init];
+  controller.persistentStore = store 
 }
 
 - (void)tearDown
@@ -16,16 +19,26 @@
   [controller stopObserving];
 }
 
+- (void)testAwakeningFromCibCausesAnimalsToBeLoaded
+{
+  [store shouldReceive: @selector(allAnimalNames)
+         andReturn: [CPArray arrayWithArray: ['one', 'two', 'three']]];
+  [controller awakeFromCib];
+  [self assertTrue: [store wereExpectationsFulfilled]];
+  
+}
+
 - (void)testRowsOfTableEqualsNumberOfAnimals
 {
-  [self notifyOfAnimalArray: ['one', 'two', 'three']];
+  [self startWithStore: ['one', 'two', 'three']];
   [self assert: 3
         equals: [controller numberOfRowsInTableView: 'table view ignored']];
 }
 
 - (void)testObjectValueForTableIsAnimalName
 {
-  [self notifyOfAnimalArray: ['fred', 'betty']];
+  [self startWithStore: ['fred', 'betty']];
+  [controller awakeFromCib];
 
   [self assert: "fred"
         equals: [controller tableView: 'ignored'
@@ -35,7 +48,7 @@
 
 - (void)testAnimalNamesCanBeFilteredByExcludedAnimals
 {
-  [self notifyOfAnimalArray: ['fred', 'betty']];
+  [self startWithStore: ['fred', 'betty']];
   [self notifyOfExclusions: { 'veniculture': ['fred'] }];
   [self notifyOfChosenProcedure: 'veniculture'];
   [self assert: 1
@@ -49,11 +62,11 @@
 
 // Util
 
-
-- (void) notifyOfAnimalArray: (id)aJSArray
+- (void) startWithStore: (id)aJSArray
 {
-  [[CPNotificationCenter defaultCenter] postNotificationName: @"animals"
-                                        object: aJSArray];
+  [store shouldReceive: @selector(allAnimalNames)
+         andReturn: [CPArray arrayWithArray: aJSArray]];
+  [controller awakeFromCib];
 }
 
 - (void) notifyOfChosenProcedure: (id)aString
