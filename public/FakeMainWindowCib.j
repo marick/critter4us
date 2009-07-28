@@ -18,6 +18,7 @@
   var mainWindowController = [[MainWindowController alloc] init];
   var procedureTableController = [[ProcedureTableController alloc] init];
   var animalTableController = [[AnimalTableController alloc] init];
+  var persistentStore = [[PersistentStore alloc] init];
 
   theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero()
 	       styleMask:CPBorderlessBridgeWindowMask];
@@ -35,6 +36,7 @@
   [procedureTable setDelegate:procedureTableController];
   [procedureTable setTarget: procedureTableController];
   [procedureTable setAction: @selector(chooseProcedure:)];
+  procedureTable.persistentStore = persistentStore;
 
   var animalTable = [self makeAnimalTable];
   animalTableController.table = animalTable;
