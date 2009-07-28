@@ -1,12 +1,14 @@
 require 'rubygems' 
+require 'path-setting'
+
 require 'json' 
 require 'sinatra/base'
 
 Sinatra::Base.set :environment, :development
-require '../config'
-require 'tables'
+require 'config'
+require 'admin/tables'
 create_tables
-require '../model'
+require 'model'
 
 
 Procedure.create(:name => 'venipuncture', :days_delay => 14)

@@ -1,3 +1,4 @@
+@import "PersistentStore.j"
 @import "MainWindowController.j"
 @import "ProcedureTableController.j"
 @import "AnimalTableController.j"
@@ -15,10 +16,16 @@
 
 - (void)load
 {
-  var mainWindowController = [[MainWindowController alloc] init];
-  var procedureTableController = [[ProcedureTableController alloc] init];
-  var animalTableController = [[AnimalTableController alloc] init];
   var persistentStore = [[PersistentStore alloc] init];
+
+  var mainWindowController = [[MainWindowController alloc] init];
+
+  var procedureTableController = [[ProcedureTableController alloc] init];
+  procedureTableController.persistentStore = persistentStore;
+
+  var animalTableController = [[AnimalTableController alloc] init];
+  animalTableController.persistentStore = persistentStore;
+
 
   theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero()
 	       styleMask:CPBorderlessBridgeWindowMask];
@@ -36,7 +43,6 @@
   [procedureTable setDelegate:procedureTableController];
   [procedureTable setTarget: procedureTableController];
   [procedureTable setAction: @selector(chooseProcedure:)];
-  procedureTable.persistentStore = persistentStore;
 
   var animalTable = [self makeAnimalTable];
   animalTableController.table = animalTable;
