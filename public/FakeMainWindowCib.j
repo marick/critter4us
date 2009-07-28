@@ -67,6 +67,7 @@
   [date setEditable:YES];
   [date setBezeled:YES];
   [date setStringValue: "2009-07-23"];
+  [contentView addSubview:date];
 
   return date;
 }
