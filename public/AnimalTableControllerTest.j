@@ -70,40 +70,4 @@
 }
 
 
-
-
-
-
-
-- (void)mtestControllerAcceptsNewDates
-{
-  var controller = [[AnimalTableController alloc] initWithAnimalArray: []];
-  var date = new Date(2010, 2, 3);
-
-  [self assertFalse: [controller isTableForDate: date]];
-
-  [[CPNotificationCenter defaultCenter] postNotificationName: @"new date"
-   object: date];
-
-  [self assertTrue: [controller isTableForDate: date]]
-}
-
-
-
-- (void)mtestNewProcedureChoiceFiltersOutAnimalsNotYetAvailable
-{
-  var animals = [
-	     {"name":"ready", 
-	      "procedures": [
-                  {"name":"venipuncture", "available": new Date(2010, 2, 2)}
-			     ]},
-	     {"name":"not ready", 
-	      "procedures": [
-                  {"name":"venipuncture", "available": new Date(2010, 2, 3)}
-			     ]}
-	      
-	     ];
-  var controller = [[AnimalTableController alloc] initWithAnimalArray: animals];
-}
-
 @end	

@@ -2,14 +2,14 @@
 
 @implementation ProcedureTableController : CPObject
 {
+  id persistentStore;
   id procedures;
   CPTableView table;
 }
 
 - (void)awakeFromCib
 {
-  // TEMP
-  procedures = ['procedure 1', 'procedure 2'];
+  procedures = [persistentStore allProcedureNames]
   [table reloadData];
 }
 
