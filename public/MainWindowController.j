@@ -4,11 +4,15 @@
 @implementation MainWindowController : CPObject
 {
   CPWindow theWindow;
+  PersistentStore persistentStore;
 }
 
 - (void)newDate:(id)sender
 {
-  alert('new date');
+  var date = [sender stringValue];
+  var exclusions = [persistentStore exclusionsForDate: date];
+  [[CPNotificationCenter defaultCenter] postNotificationName: @"exclusions"
+                                        object: exclusions];
 }
 
 @end
