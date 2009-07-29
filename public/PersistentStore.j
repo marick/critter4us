@@ -1,8 +1,21 @@
 @import <Foundation/CPObject.j>
 
+@implementation Network : CPObject
+{
+}
+
+- (CPString)jsonStringFromRequest: request
+{
+  var data = [CPURLConnection sendSynchronousRequest: request   
+	      returningResponse:nil error:nil]; 
+  return [data description];
+}
+
+@end
+
 @implementation PersistentStore : CPObject
 {
-  
+  id connection;
 }
 
 - (CPArray) allAnimalNames
@@ -31,9 +44,7 @@
 {
   url = [CPString stringWithFormat: @"http://localhost:7000/json/%s", aString];
   var request = [CPURLRequest requestWithURL: url];
-  var data = [CPURLConnection sendSynchronousRequest: request   
-	      returningResponse:nil error:nil]; 
-  var str = [data description];
+  var str = [connection jsonStringFromRequest: request];
   var json = [str objectFromJSON];
   return json[aKey];
 }

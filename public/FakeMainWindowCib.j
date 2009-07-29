@@ -17,6 +17,7 @@
 - (void)load
 {
   var persistentStore = [[PersistentStore alloc] init];
+  persistentStore.connection = [[Network alloc] init];
 
   var mainWindowController = [[MainWindowController alloc] init];
   mainWindowController.persistentStore = persistentStore;
