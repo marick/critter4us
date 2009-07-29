@@ -49,7 +49,9 @@
 - (void)testAnimalNamesCanBeFilteredByExcludedAnimals
 {
   [self startWithStore: ['fred', 'betty']];
-  [self notifyOfExclusions: { 'veniculture': ['fred'] }];
+  [self notifyOfExclusions: { 'veniculture': ['fred'],
+                              'physical exam': [],
+                              'floating':[]}];
   [self notifyOfChosenProcedure: 'veniculture'];
   [self assert: 1
         equals: [controller numberOfRowsInTableView: 'table view ignored']];

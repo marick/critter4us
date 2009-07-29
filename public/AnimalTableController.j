@@ -52,6 +52,7 @@
       var goner = [animalsToRemove objectAtIndex: i];
       [animals removeObject: goner];
     }
+  [table reloadData];
 }
 
 

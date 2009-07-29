@@ -19,6 +19,7 @@
   var persistentStore = [[PersistentStore alloc] init];
 
   var mainWindowController = [[MainWindowController alloc] init];
+  mainWindowController.persistentStore = persistentStore;
 
   var procedureTableController = [[ProcedureTableController alloc] init];
   procedureTableController.persistentStore = persistentStore;
