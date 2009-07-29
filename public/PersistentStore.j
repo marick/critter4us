@@ -15,6 +15,12 @@
   return [self doRequest: "procedures" forKey: "procedures"];
 }
 
+- (CPDictionary) exclusionsForDate: (CPString)dateString
+{
+  request = [CPString stringWithFormat: "exclusions?date=%s", dateString];
+  return [self doRequest: request forKey: "exclusions"];
+}	
+
 // util
 
 - (CPArray) doRequest: (CPString)aString forKey: (CPString)aKey

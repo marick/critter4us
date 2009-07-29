@@ -75,4 +75,27 @@ class JsonGenerationTests < Test::Unit::TestCase
       assert_jsonification_of({'animals' => ['betsy', 'bossie']})
     end
   end
+
+  context "delivering exclusions" do
+    should "use a method on the persistent store" do
+      assert { PersistentStore.instance_methods.include? 'exclusions_for_date' }
+    end
+
+    should "deliver a date object to the persistent store" do
+      sample_exclusion = {'procedure name' => ['excluded animal']}
+      during {
+        get '/json/exclusions', {:date => '2009-07-23'}
+      }.behold! {
+        @store.should_receive(:exclusions_for_date).
+               with(Date.new(2009, 7, 23)).
+               and_return(sample_exclusion)
+      }
+
+      assert_json_response
+      assert_jsonification_of({'exclusions' => sample_exclusion})
+    end
+
+  end
+
+
 end

@@ -36,6 +36,15 @@ class Controller < Sinatra::Base
     end
   end
 
+  get '/json/exclusions' do
+    jsonically do
+      typing_as 'exclusions' do
+        date = Date.parse(params['date'])
+        @persistent_store.exclusions_for_date(date)
+      end
+    end
+  end
+
   private
 
   def jsonically
