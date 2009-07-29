@@ -38,16 +38,14 @@ class PersistentStoreTests < Test::Unit::TestCase
     end
 
 
-    puts "Note: not sure how boundaries are handled."
-
-    should "have empty exclusion list if outside delay" do 
+    should "have empty exclusion list if at last day of boundary" do 
       procedure = Procedure.create(:name => 'only', :days_delay => 1)
       animal = Animal.create(:name => "bossie");
       Use.create(:animal => animal, :procedure => procedure,
                  :date => Date.new(2002, 12, 1))
 
       expected = { 'only' => [] }
-      assert { @store.exclusions_for_date(Date.new(2002, 12, 3)) == expected }
+      assert { @store.exclusions_for_date(Date.new(2002, 12, 2)) == expected }
     end
 
     should "have excluded animal if within delay" do 
@@ -58,6 +56,60 @@ class PersistentStoreTests < Test::Unit::TestCase
 
       expected = { 'only' => ['bossie'] }
       assert { @store.exclusions_for_date(Date.new(2002, 12, 2)) == expected }
+    end
+
+    should "run a more typical example" do
+      venipuncture = Procedure.create(:name => 'venipuncture', :days_delay => 7)
+      physical_exam = Procedure.create(:name => 'physical exam', :days_delay => 1)
+      
+      veinie = Animal.create(:name => 'veinie')
+      bossie = Animal.create(:name => 'bossie')
+      staggers = Animal.create(:name => 'staggers')
+
+      Use.create(:animal => bossie, :procedure => venipuncture,
+                 :date => Date.new(2009, 8, 31)) # Previous Monday
+      Use.create(:animal => staggers, :procedure => venipuncture,
+                 :date => Date.new(2009, 9, 1))  # Previous Tuesday
+      Use.create(:animal => veinie, :procedure => venipuncture,
+                 :date => Date.new(2009, 9, 7))  # Today, Monday
+      Use.create(:animal => veinie, :procedure => physical_exam,
+                 :date => Date.new(2009, 9, 7))  # Again, Monday
+
+      # What can not be scheduled today?
+      actual = @store.exclusions_for_date(Date.new(2009, 9, 7))
+      assert { actual['venipuncture'].include?('staggers') }
+      assert { actual['venipuncture'].include?('veinie') }
+      deny { actual['venipuncture'].include?('bossie') }
+      assert { actual['physical exam'].include?('veinie') }
+      deny { actual['physical exam'].include?('staggers') }
+      deny { actual['physical exam'].include?('bossie') }
+
+      # What can not be scheduled tomorrow?
+      actual = @store.exclusions_for_date(Date.new(2009, 9, 8))
+      deny { actual['venipuncture'].include?('staggers') }
+      assert { actual['venipuncture'].include?('veinie') }
+      deny { actual['venipuncture'].include?('bossie') }
+      deny { actual['physical exam'].include?('veinie') }
+      deny { actual['physical exam'].include?('staggers') }
+      deny { actual['physical exam'].include?('bossie') }
+
+      # What can not be scheduled next Sunday?
+      actual = @store.exclusions_for_date(Date.new(2009, 9, 13))
+      deny { actual['venipuncture'].include?('staggers') }
+      assert { actual['venipuncture'].include?('veinie') }
+      deny { actual['venipuncture'].include?('bossie') }
+      deny { actual['physical exam'].include?('veinie') }
+      deny { actual['physical exam'].include?('staggers') }
+      deny { actual['physical exam'].include?('bossie') }
+
+      # What can not be scheduled next Monday?
+      actual = @store.exclusions_for_date(Date.new(2009, 9, 14))
+      deny { actual['venipuncture'].include?('staggers') }
+      deny { actual['venipuncture'].include?('veinie') }
+      deny { actual['venipuncture'].include?('bossie') }
+      deny { actual['physical exam'].include?('veinie') }
+      deny { actual['physical exam'].include?('staggers') }
+      deny { actual['physical exam'].include?('bossie') }
     end
 
   end

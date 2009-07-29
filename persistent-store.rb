@@ -9,7 +9,8 @@ class PersistentStore
     DB[:animals].map(:name)
   end
 
-  # Todo: use the silly database the way it was intended.
+  # Note assumption that date being chosen cannot precede
+  # a date of use. (That is, date chosen is in the future.)
   def exclusions_for_date(date)
     date_string = date.to_s
 
@@ -19,9 +20,8 @@ class PersistentStore
         FROM procedures, animals, uses 
         WHERE procedures.id = uses.procedure_id AND 
               animals.id = uses.animal_id AND 
-              uses.date <= ? AND 
-              ? <= ADDDATE(uses.date, procedures.days_delay);
-        ", date_string, date_string].to_a
+              ? < ADDDATE(uses.date, procedures.days_delay);
+        ", date_string].to_a
 
     rows_to_hash(rows)
   end
