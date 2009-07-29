@@ -25,7 +25,9 @@
 
 - (void)chooseProcedure:(id)sender
 {
-  alert("Procedure chosen");
+  var row = [sender clickedRow];
+  var procedure = [procedures objectAtIndex: row];
+  [[CPNotificationCenter defaultCenter] postNotificationName: @"procedure chosen" object: procedure];
 }
 
 @end
