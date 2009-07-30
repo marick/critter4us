@@ -67,6 +67,8 @@
 			    row: 0]];
 }
 
+
+
 - (void)testPickingProcedureCausesNotification
 {
   [controller awakeFromCib];
@@ -94,7 +96,7 @@
   [self assertTrue: [unchosenTable wereExpectationsFulfilled]];
 }
 
-- (void)testPickingProcedureRemovesEntryFromUnchosenTable
+- (void)testPickingUnchosenProcedureRemovesEntryFromUnchosenTable
 {
   [controller awakeFromCib];
   unchosenTable = [[Mock alloc] init];
@@ -114,7 +116,7 @@
   [self assertTrue: [unchosenTable wereExpectationsFulfilled]];
 }
 
--(void)testPickingProcedureAddsEntryToChosenTable
+-(void)testPickingUnchosenProcedureAddsEntryToChosenTable
 {
   [controller awakeFromCib];
   unchosenTable = [[Mock alloc] init];
