@@ -1,9 +1,9 @@
-@import "MainWindowController.j"
+@import "DateInterfaceController.j"
 @import "Mock.j"
 
-@implementation MainWindowControllerTest : OJTestCase
+@implementation DateInterfaceControllerTest : OJTestCase
 {
-  MainWindowController controller;
+  DateInterfaceController controller;
   Mock textField;
   Mock store;
 }
@@ -12,7 +12,7 @@
 {
   textField = [[Mock alloc] init];
 
-  controller = [[MainWindowController alloc] init];
+  controller = [[DateInterfaceController alloc] init];
   store = [[Mock alloc] init];
   controller.persistentStore = store;
 
