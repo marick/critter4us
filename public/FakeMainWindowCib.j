@@ -50,8 +50,8 @@
 
 -(void) loadAndConnectDateInterfaceController
 {  
-  label = [[CPTextField alloc] initWithFrame:CGRectMake(10, 40, 250, 30)];
-  [label setStringValue: "What date is your lab?"];
+  label = [[CPTextField alloc] initWithFrame:CGRectMake(10, 40, 500, 30)];
+  [label setStringValue: "First, type in the date of your lab? (You can just press Return to accept the date shown.)"];
   [[theWindow contentView] addSubview:label];
 
   dateField = [[CPTextField alloc] initWithFrame:CGRectMake(10, 70, 250, 30)];
@@ -59,6 +59,7 @@
   [dateField setBezeled:YES];
   [dateField setStringValue: "2009-07-23"];
   [[theWindow contentView] addSubview:dateField];
+  [theWindow makeFirstResponder: dateField];
 
   var dateController = [[DateInterfaceController alloc] init];
   dateController.persistentStore = persistentStore;
@@ -70,6 +71,22 @@
   
 - (void) loadAndConnectProcedureInterfaceController
 {
+  var contentView = [[CPView alloc] initWithFrame: CGRectMake(10, 140, 400, 400)];
+  [[theWindow contentView] addSubview: contentView];
+  [contentView setHidden:YES];
+
+
+  var label = [[CPTextField alloc] initWithFrame:CGRectMake(0, 0, 500, 30)];
+  [label setStringValue: "Next, click the procedure you want to see which animals are available."];
+  [contentView addSubview:label];
+
+
+  var note = [[CPTextField alloc] initWithFrame:CGRectMake(0, 20, 500, 30)];
+  [note setStringValue: "(Only venipuncture will do anything interesting.)"];
+  [contentView addSubview:note];
+
+
+
   var procedureTable = [[CPTableView alloc] initWithFrame: CGRectMake(0, 0, 250, 250)];
   var column = [[CPTableColumn alloc] initWithIdentifier:@"only"];
   [[column headerView] setStringValue: @"procedure"];
@@ -77,16 +94,16 @@
   [column setWidth: 250];
   [procedureTable addTableColumn:column];
 
-  var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(10,110,250,250)];
+  var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0,60,250,250)];
   [scrollView setDocumentView:procedureTable];
   [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
-  [[theWindow contentView] addSubview:scrollView];
-  [scrollView setHidden:YES];
+  [contentView addSubview:scrollView];
+
 
 
   var procedureController = [[ProcedureInterfaceController alloc] init];
   procedureController.persistentStore = persistentStore;
-  procedureController.containingView = scrollView;
+  procedureController.containingView = contentView;
 
   procedureController.table = procedureTable;
   [procedureTable setDataSource: procedureController];
