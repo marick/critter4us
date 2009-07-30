@@ -40,10 +40,10 @@
   [self assertTrue: [store wereExpectationsFulfilled]];
 }
 
-- (void)testRowsOfTableInitiallyEqualsNumberOfProcedures
+- (void)testRowsOfUnchosenTableInitiallyEqualsNumberOfProcedures
 {
   [self assert: 2
-        equals: [controller numberOfRowsInTableView: 'table view ignored']];
+        equals: [controller numberOfRowsInTableView: 'ignored table']];
 }
 
 - (void)testObjectValueForTableIsProcedureName
@@ -97,6 +97,10 @@
 			    row: 0]];
 
   [self assertTrue: [unchosenTable wereExpectationsFulfilled]];
+}
+
+-(void)testPickingProcedureAddsEntryToChosenTable
+{
 }
 
 @end	
