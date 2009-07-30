@@ -14,8 +14,7 @@
   [store shouldReceive: @selector(allProcedureNames)
          andReturn: [CPArray arrayWithArray: ['procedure1', 'procedure2']]];
 
-  controller.persistentStore = store 
-  [controller awakeFromCib];
+  controller.persistentStore = store;
 }
 
 - (void)tearDown
@@ -27,6 +26,7 @@
 {
   var containingView = [[Mock alloc] init];
   controller.containingView = containingView;
+  [controller awakeFromCib];
 
   [containingView shouldReceive: @selector(setHidden:) with:NO];
 
@@ -37,25 +37,39 @@
 
 - (void)testThatAwakeningFetchesNumberOfProcedures
 {
+  [controller awakeFromCib];
   [self assertTrue: [store wereExpectationsFulfilled]];
 }
 
 - (void)testRowsOfUnchosenTableInitiallyEqualsNumberOfProcedures
 {
+  [controller awakeFromCib];
+  controller.unchosenProcedureTable = [[Mock alloc] init];
+
   [self assert: 2
-        equals: [controller numberOfRowsInTableView: 'ignored table']];
+        equals: [controller numberOfRowsInTableView: controller.unchosenProcedureTable]];
+}
+
+- (void)testChosenTableInitiallyEmpty
+{
+  [controller awakeFromCib];
+  controller.chosenProcedureTable = [[Mock alloc] init];
+  [self assert: 0
+        equals: [controller numberOfRowsInTableView: controller.chosenProcedureTable]];
 }
 
 - (void)testObjectValueForTableIsProcedureName
 {
+  [controller awakeFromCib];
   [self assert: "procedure1"
-        equals: [controller tableView: 'ignored'
+        equals: [controller tableView: controller.unchosenProcedureTable
 	                    objectValueForTableColumn: 'ignored'
 			    row: 0]];
 }
 
 - (void)testPickingProcedureCausesNotification
 {
+  [controller awakeFromCib];
   unchosenTable = [[Mock alloc] init];
   controller.unchosenProcedureTable = unchosenTable;
 
@@ -82,6 +96,7 @@
 
 - (void)testPickingProcedureRemovesEntryFromUnchosenTable
 {
+  [controller awakeFromCib];
   unchosenTable = [[Mock alloc] init];
   controller.unchosenProcedureTable = unchosenTable;
 
@@ -101,6 +116,26 @@
 
 -(void)testPickingProcedureAddsEntryToChosenTable
 {
+  [controller awakeFromCib];
+  unchosenTable = [[Mock alloc] init];
+  controller.unchosenProcedureTable = unchosenTable;
+  chosenTable = [[Mock alloc] init];
+  controller.chosenProcedureTable = chosenTable;
+
+  [unchosenTable shouldReceive: @selector(clickedRow) andReturn: 0];
+  [unchosenTable shouldReceive: @selector(reloadData)];
+
+  [chosenTable shouldReceive: @selector(reloadData)];
+
+  [controller chooseProcedure: unchosenTable];
+  [self assert: 1
+        equals: [controller numberOfRowsInTableView: chosenTable]];
+  [self assert: "procedure1"
+        equals: [controller tableView: chosenTable
+	                    objectValueForTableColumn: 'ignored'
+			    row: 0]];
+
+  [self assertTrue: [chosenTable wereExpectationsFulfilled]];
 }
 
 @end	

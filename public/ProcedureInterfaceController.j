@@ -9,11 +9,13 @@
   id persistentStore;
 
   id unchosenProcedures;
+  id chosenProcedures;
 }
 
 - (void)awakeFromCib
 {
   unchosenProcedures = [persistentStore allProcedureNames];
+  chosenProcedures = [CPArray array];
   [self setUpNotifications];
   [unchosenProcedureTable reloadData];
 }
@@ -39,12 +41,21 @@
 
 - (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView
 {
-  return [unchosenProcedures count];
+  //  CPLog(aTableView);
+  //CPLog(unchosenProcedureTable);
+  //CPLog(chosenProcedureTable);
+  if (aTableView == unchosenProcedureTable)
+    return [unchosenProcedures count];
+  else
+    return [chosenProcedures count];
 }
 
 - (id)tableView:(CPTableView)aTableView objectValueForTableColumn: (CPTableColumn)column row:(CPInteger)rowIndex
 {
-  return [unchosenProcedures objectAtIndex:rowIndex];
+  if (aTableView == unchosenProcedureTable)
+    return [unchosenProcedures objectAtIndex:rowIndex];
+  else
+    return [chosenProcedures objectAtIndex:rowIndex];
 }
 
 - (void)chooseProcedure:(id)sender
@@ -52,9 +63,12 @@
   var row = [unchosenProcedureTable clickedRow];
   var procedure = [unchosenProcedures objectAtIndex: row];
   [unchosenProcedures removeObjectAtIndex: row];
+  [chosenProcedures addObject: procedure];
 
   [[CPNotificationCenter defaultCenter] postNotificationName: @"procedure chosen" object: procedure];
+  [unchosenProcedureTable deselectAll: self];
   [unchosenProcedureTable reloadData];
+  [chosenProcedureTable reloadData];
 }
 
 @end
