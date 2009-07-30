@@ -21,11 +21,6 @@
   return self;
 }
 
-- (BOOL) matchesInvocation: (CPInvocation) anInvocation
-{
-  // Note that this doesn't do argument arity checking. Should it?
-  
-}
 
 @end
 
@@ -77,8 +72,7 @@
   //CPLog([actualities count]);
   if ([expectations count] !== [actualities count])
     {
-      happiness = NO;
-      return happiness;
+      [self noteFailure: [CPString stringWithFormat: "%d expected invocations, got %d", [expectations count], [actualities count]]];
     }
 
   for (var i=0; i < [actualities count]; i++)
@@ -89,11 +83,12 @@
       
       if (expectation == null)
 	{
-	  happiness = NO;
-	  return happiness;
+	  [self noteFailure: [CPString stringWithFormat: "No expectation for %@", selector]];
 	}
-
-      [self compareExpectedArguments: expectation toActual: actuality];
+      else
+	{
+	  [self compareExpectedArguments: expectation toActual: actuality];
+	}
     }
   return happiness;
 }
@@ -107,17 +102,32 @@
     {
       var expected = expectation.args[i];
       var actual = [actuality argumentAtIndex: i+2];
+      var goodArg = NO;
       if (typeof(expected) == "function") 
 	{
-	  if (! expected(actual)) happiness = NO;
+	  goodArg = expected(actual);
 	}
       else
 	{
-	  if (expected !== actual) happiness = NO;
+	  goodArg = (expected === actual);
+	}
+
+      if (! goodArg)
+	{
+	  [self noteFailure: [CPString stringWithFormat: "For %@, expected arg %d to be %@, was %@.", expectation.selector, i, expected, actual]];
 	}
     }
 }
 
+
+-(void)noteFailure: (CPString)aString
+{
+  happiness = NO;
+  if (printErrors)
+    {
+      CPLog(aString,"warn");
+    }
+}
 
 // Method_Missing implementation
 
