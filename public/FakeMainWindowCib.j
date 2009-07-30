@@ -1,7 +1,7 @@
 @import "PersistentStore.j"
 @import "MainWindowController.j"
-@import "ProcedureTableController.j"
-@import "AnimalTableController.j"
+@import "ProcedureInterfaceController.j"
+@import "AnimalInterfaceController.j"
 
 @implementation FakeMainWindowCib : CPObject
 {
@@ -22,11 +22,11 @@
   var mainWindowController = [[MainWindowController alloc] init];
   mainWindowController.persistentStore = persistentStore;
 
-  var procedureTableController = [[ProcedureTableController alloc] init];
-  procedureTableController.persistentStore = persistentStore;
+  var procedureController = [[ProcedureInterfaceController alloc] init];
+  procedureController.persistentStore = persistentStore;
 
-  var animalTableController = [[AnimalTableController alloc] init];
-  animalTableController.persistentStore = persistentStore;
+  var animalController = [[AnimalInterfaceController alloc] init];
+  animalController.persistentStore = persistentStore;
 
 
   theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero()
@@ -40,20 +40,20 @@
   [dateField setAction: @selector(newDate:)];
 
   var procedureTable = [self makeProcedureTable];
-  procedureTableController.table = procedureTable;
-  [procedureTable setDataSource: procedureTableController];
-  [procedureTable setDelegate:procedureTableController];
-  [procedureTable setTarget: procedureTableController];
+  procedureController.table = procedureTable;
+  [procedureTable setDataSource: procedureController];
+  [procedureTable setDelegate:procedureController];
+  [procedureTable setTarget: procedureController];
   [procedureTable setAction: @selector(chooseProcedure:)];
 
   var animalTable = [self makeAnimalTable];
-  animalTableController.table = animalTable;
-  [animalTable setDataSource: animalTableController];
-  [animalTable setDelegate:animalTableController];
+  animalController.table = animalTable;
+  [animalTable setDataSource: animalController];
+  [animalTable setDelegate:animalController];
 
 
-  [procedureTableController awakeFromCib];
-  [animalTableController awakeFromCib];
+  [procedureController awakeFromCib];
+  [animalController awakeFromCib];
   [mainWindowController awakeFromCib];
 
   [theWindow orderFront:self];

@@ -1,15 +1,15 @@
-@import "AnimalTableController.j"
+@import "AnimalInterfaceController.j"
 @import "Mock.j"
 
-@implementation AnimalTableControllerTest : OJTestCase
+@implementation AnimalInterfaceControllerTest : OJTestCase
 {
-  AnimalTableController controller;
+  AnimalInterfaceController controller;
   Mock store;
 }
 
 - (void)setUp
 {
-  controller = [[AnimalTableController alloc] init];
+  controller = [[AnimalInterfaceController alloc] init];
   store = [[Mock alloc] init];
   controller.persistentStore = store 
 }

@@ -1,6 +1,6 @@
 @import <Foundation/CPObject.j>
 
-@implementation ProcedureTableController : CPObject
+@implementation ProcedureInterfaceController : CPObject
 {
   id persistentStore;
   id procedures;

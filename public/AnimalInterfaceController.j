@@ -1,6 +1,6 @@
 @import <Foundation/CPObject.j>
 
-@implementation AnimalTableController : CPObject
+@implementation AnimalInterfaceController : CPObject
 {
   CPTableView table;
   id persistentStore;

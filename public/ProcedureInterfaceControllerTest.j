@@ -1,15 +1,15 @@
-@import "ProcedureTableController.j"
+@import "ProcedureInterfaceController.j"
 @import "Mock.j"
 
-@implementation ProcedureTableControllerTest : OJTestCase
+@implementation ProcedureInterfaceControllerTest : OJTestCase
 {
-  ProcedureTableController controller;
+  ProcedureInterfaceController controller;
   Mock store;
 }
 
 - (void)setUp
 {
-  controller = [[ProcedureTableController alloc] init];
+  controller = [[ProcedureInterfaceController alloc] init];
   store = [[Mock alloc] init];
   [store shouldReceive: @selector(allProcedureNames)
          andReturn: [CPArray arrayWithArray: ['procedure1', 'procedure2']]];
