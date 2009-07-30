@@ -2,15 +2,38 @@
 
 @implementation ProcedureInterfaceController : CPObject
 {
-  id persistentStore;
-  id procedures;
+  // outlets
   CPTableView table;
+  CPView containingView;
+  id persistentStore;
+
+  id procedures;
 }
 
 - (void)awakeFromCib
 {
-  procedures = [persistentStore allProcedureNames]
+  procedures = [persistentStore allProcedureNames];
+  [self setUpNotifications];
   [table reloadData];
+}
+
+- (void) setUpNotifications
+{
+  [[CPNotificationCenter defaultCenter]
+   addObserver: self
+   selector: @selector(dateChosen:)
+   name: @"date chosen"
+   object: nil];
+}
+
+- (void)stopObserving 
+{
+  [[CPNotificationCenter defaultCenter] removeObserver: self];
+}
+
+- (void) dateChosen: aNotification
+{
+  [containingView setHidden:NO];
 }
 
 - (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView

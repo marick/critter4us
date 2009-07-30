@@ -28,6 +28,19 @@
   
 }
 
+- (void)testThatControllerUnhidesWhenDateChosen
+{
+  var containingView = [[Mock alloc] init];
+  controller.containingView = containingView;
+  [controller setUpNotifications];
+
+  [containingView shouldReceive: @selector(setHidden:) with:NO];
+
+  [[CPNotificationCenter defaultCenter] postNotificationName: @"date chosen" object: nil];
+
+  [self assertTrue: [containingView wereExpectationsFulfilled]];
+}
+
 - (void)testRowsOfTableEqualsNumberOfAnimals
 {
   [self startWithStore: ['one', 'two', 'three']];

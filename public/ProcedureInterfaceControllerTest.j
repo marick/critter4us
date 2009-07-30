@@ -18,6 +18,23 @@
   [controller awakeFromCib];
 }
 
+- (void)tearDown
+{
+  [controller stopObserving];
+}
+
+- (void)testThatControllerUnhidesWhenDateChosen
+{
+  var containingView = [[Mock alloc] init];
+  controller.containingView = containingView;
+
+  [containingView shouldReceive: @selector(setHidden:) with:NO];
+
+  [[CPNotificationCenter defaultCenter] postNotificationName: @"date chosen" object: nil];
+
+  [self assertTrue: [containingView wereExpectationsFulfilled]];
+}
+
 - (void)testThatAwakeningFetchesNumberOfProcedures
 {
   [self assertTrue: [store wereExpectationsFulfilled]];

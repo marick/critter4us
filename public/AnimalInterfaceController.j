@@ -2,7 +2,9 @@
 
 @implementation AnimalInterfaceController : CPObject
 {
+  // outlets
   CPTableView table;
+  CPView containingView;
   id persistentStore;
 
   id animals;
@@ -29,6 +31,13 @@
    selector: @selector(procedureChosen:)
    name: @"procedure chosen"
    object: nil];
+
+  [[CPNotificationCenter defaultCenter]
+   addObserver: self
+   selector: @selector(dateChosen:)
+   name: @"date chosen"
+   object: nil];
+
 }
 
 
@@ -37,6 +46,10 @@
   [[CPNotificationCenter defaultCenter] removeObserver: self];
 }
 
+- (void) dateChosen: aNotification
+{
+  [containingView setHidden:NO];
+}
 
 - newExclusions: aNotification
 {

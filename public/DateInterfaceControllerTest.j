@@ -10,10 +10,32 @@
 
 - (void)setUp
 {
-  textField = [[Mock alloc] init];
-
   controller = [[DateInterfaceController alloc] init];
+  textField = [[Mock alloc] init];
   store = [[Mock alloc] init];
+}
+
+
+- (void)testPickingDateNotifiesListenersOfEvent
+{
+  var listener = [[Mock alloc] init];
+  [[CPNotificationCenter defaultCenter]
+   addObserver: listener
+   selector: @selector(dateChosen:)
+   name: @"date chosen"
+   object: nil];
+
+  [listener shouldReceive: @selector(dateChosen:)];
+
+  [[[DateInterfaceController alloc] init] newDate: nil];
+
+
+  [self assertTrue: [listener wereExpectationsFulfilled]];
+}
+
+
+- (void)testPickingDateCausesExclusionsToBeRetrievedAndNotified
+{
   controller.persistentStore = store;
 
   listener = [[Mock alloc] init];
@@ -22,10 +44,8 @@
    selector: @selector(notifyOfExclusions:)
    name: @"exclusions"
    object: nil];
-}
 
-- (void)testPickingDateCausesExclusionsToBeRetrievedAndNotified
-{
+
   [textField shouldReceive: @selector(stringValue) andReturn: @"some date"];
   [store shouldReceive: @selector(exclusionsForDate:) with: [@"some date"] andReturn: @"some exclusions"];
 

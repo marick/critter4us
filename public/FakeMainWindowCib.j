@@ -81,10 +81,12 @@
   [scrollView setDocumentView:procedureTable];
   [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
   [[theWindow contentView] addSubview:scrollView];
+  [scrollView setHidden:YES];
 
 
   var procedureController = [[ProcedureInterfaceController alloc] init];
   procedureController.persistentStore = persistentStore;
+  procedureController.containingView = scrollView;
 
   procedureController.table = procedureTable;
   [procedureTable setDataSource: procedureController];
@@ -106,9 +108,11 @@
   [scrollView setDocumentView:animalTable];
   [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
   [[theWindow contentView] addSubview:scrollView];
+  [scrollView setHidden:YES];
 
   var animalController = [[AnimalInterfaceController alloc] init];
   animalController.persistentStore = persistentStore;
+  animalController.containingView = scrollView;
 
   animalController.table = animalTable;
   [animalTable setDataSource: animalController];
