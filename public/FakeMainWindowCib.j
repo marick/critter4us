@@ -51,7 +51,7 @@
 -(void) loadAndConnectDateInterfaceController
 {  
   label = [[CPTextField alloc] initWithFrame:CGRectMake(10, 40, 500, 30)];
-  [label setStringValue: "First, type in the date of your lab? (You can just press Return to accept the date shown.)"];
+  [label setStringValue: "First, type in the date of your lab. (You can just press Return to accept the date shown.)"];
   [[theWindow contentView] addSubview:label];
 
   dateField = [[CPTextField alloc] initWithFrame:CGRectMake(10, 70, 250, 30)];
@@ -71,7 +71,7 @@
   
 - (void) loadAndConnectProcedureInterfaceController
 {
-  var contentView = [[CPView alloc] initWithFrame: CGRectMake(10, 140, 400, 400)];
+  var contentView = [[CPView alloc] initWithFrame: CGRectMake(10, 140, 600, 400)];
   [[theWindow contentView] addSubview: contentView];
   [contentView setHidden:YES];
 
@@ -87,17 +87,30 @@
 
 
 
-  var procedureTable = [[CPTableView alloc] initWithFrame: CGRectMake(0, 0, 250, 250)];
+  var unchosenProcedureTable = [[CPTableView alloc] initWithFrame: CGRectMake(0, 0, 250, 250)];
   var column = [[CPTableColumn alloc] initWithIdentifier:@"only"];
   [[column headerView] setStringValue: @"procedure"];
   [[column headerView] sizeToFit];
   [column setWidth: 250];
-  [procedureTable addTableColumn:column];
+  [unchosenProcedureTable addTableColumn:column];
 
-  var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0,60,250,250)];
-  [scrollView setDocumentView:procedureTable];
-  [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
-  [contentView addSubview:scrollView];
+  var cscrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0,60,250,250)];
+  [cscrollView setDocumentView:unchosenProcedureTable];
+  [cscrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+  [contentView addSubview:cscrollView];
+
+
+  var chosenProcedureTable = [[CPTableView alloc] initWithFrame: CGRectMake(0, 0, 250, 250)];
+  var column = [[CPTableColumn alloc] initWithIdentifier:@"only"];
+  [[column headerView] setStringValue: @"procedure"];
+  [[column headerView] sizeToFit];
+  [column setWidth: 250];
+  [chosenProcedureTable addTableColumn:column];
+
+  var uscrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(260,60,250,250)];
+  [uscrollView setDocumentView:chosenProcedureTable];
+  [uscrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+  [contentView addSubview:uscrollView];
 
 
 
@@ -105,11 +118,17 @@
   procedureController.persistentStore = persistentStore;
   procedureController.containingView = contentView;
 
-  procedureController.table = procedureTable;
-  [procedureTable setDataSource: procedureController];
-  [procedureTable setDelegate:procedureController];
-  [procedureTable setTarget: procedureController];
-  [procedureTable setAction: @selector(chooseProcedure:)];
+  procedureController.unchosenProcedureTable = unchosenProcedureTable;
+  [unchosenProcedureTable setDataSource: procedureController];
+  [unchosenProcedureTable setDelegate:procedureController];
+  [unchosenProcedureTable setTarget: procedureController];
+  [unchosenProcedureTable setAction: @selector(chooseProcedure:)];
+
+  procedureController.chosenProcedureTable = chosenProcedureTable;
+  [chosenProcedureTable setDataSource: procedureController];
+  [chosenProcedureTable setDelegate:procedureController];
+  [chosenProcedureTable setTarget: procedureController];
+  [chosenProcedureTable setAction: @selector(unchooseProcedure:)];
 
   [customObjectsLoaded addObject:procedureController];
 }
@@ -121,7 +140,7 @@
   [column setWidth: 250];
   [animalTable addTableColumn:column];
 
-  var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(400,110,250,250)];
+  var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(650,200,250,250)];
   [scrollView setDocumentView:animalTable];
   [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
   [[theWindow contentView] addSubview:scrollView];

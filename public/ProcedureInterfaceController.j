@@ -3,18 +3,19 @@
 @implementation ProcedureInterfaceController : CPObject
 {
   // outlets
-  CPTableView table;
+  CPTableView unchosenProcedureTable;
+  CPTableView chosenProcedureTable;
   CPView containingView;
   id persistentStore;
 
-  id procedures;
+  id unchosenProcedures;
 }
 
 - (void)awakeFromCib
 {
-  procedures = [persistentStore allProcedureNames];
+  unchosenProcedures = [persistentStore allProcedureNames];
   [self setUpNotifications];
-  [table reloadData];
+  [unchosenProcedureTable reloadData];
 }
 
 - (void) setUpNotifications
@@ -38,19 +39,22 @@
 
 - (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView
 {
-  return [procedures count];
+  return [unchosenProcedures count];
 }
 
 - (id)tableView:(CPTableView)aTableView objectValueForTableColumn: (CPTableColumn)column row:(CPInteger)rowIndex
 {
-  return [procedures objectAtIndex:rowIndex];
+  return [unchosenProcedures objectAtIndex:rowIndex];
 }
 
 - (void)chooseProcedure:(id)sender
 {
-  var row = [sender clickedRow];
-  var procedure = [procedures objectAtIndex: row];
+  var row = [unchosenProcedureTable clickedRow];
+  var procedure = [unchosenProcedures objectAtIndex: row];
+  [unchosenProcedures removeObjectAtIndex: row];
+
   [[CPNotificationCenter defaultCenter] postNotificationName: @"procedure chosen" object: procedure];
+  [unchosenProcedureTable reloadData];
 }
 
 @end
