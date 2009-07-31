@@ -27,7 +27,7 @@
 -(void) given: given during: during behold: behold andTherefore: result
 {
   given();
-  [sut awakeFromCib];
+  if (! sut.awakened) [sut awakeFromCib];
   behold();
   during();
   [self checkAllExpectations];

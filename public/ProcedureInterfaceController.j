@@ -10,6 +10,9 @@
 
   id unchosenProcedures;
   id chosenProcedures;
+
+  // Test support
+  BOOL awakened;
 }
 
 - (void)awakeFromCib
@@ -20,6 +23,7 @@
   [unchosenProcedureTable reloadData];
   [chosenProcedureTable reloadData];
   [containingView setHidden:YES]; 
+  awakened = YES;
 }
 
 - (void) setUpNotifications
@@ -62,29 +66,39 @@
 
 - (void)chooseProcedure:(id)sender
 {
-  var row = [unchosenProcedureTable clickedRow];
-  var procedure = [unchosenProcedures objectAtIndex: row];
-  [unchosenProcedures removeObjectAtIndex: row];
-  [chosenProcedures addObject: procedure];
-
-  [[CPNotificationCenter defaultCenter] postNotificationName: @"procedures chosen" object: chosenProcedures];
-  [unchosenProcedureTable deselectAll: self];
-  [unchosenProcedureTable reloadData];
-  [chosenProcedureTable reloadData];
+  [self moveProcedureAtIndex: [unchosenProcedureTable clickedRow]
+                        from: unchosenProcedures 
+                          to: chosenProcedures];
+  [self updateEveryoneWhoCaresAboutMovement];
 }
 
-- (void)unchooseProcedure:(id)sender
+
+- (void)unchooseProcedure: (id) sender
 {
-  var row = [chosenProcedureTable clickedRow];
-  var procedure = [chosenProcedures objectAtIndex: row];
-  [chosenProcedures removeObjectAtIndex: row];
-  [unchosenProcedures addObject: procedure];
-
-  [[CPNotificationCenter defaultCenter] postNotificationName: @"procedures chosen" object: chosenProcedures];
-  [chosenProcedureTable deselectAll: self];
-  [chosenProcedureTable reloadData];
-  [unchosenProcedureTable reloadData];
+  [self moveProcedureAtIndex: [chosenProcedureTable clickedRow]
+                        from: chosenProcedures 
+                          to: unchosenProcedures];
+  [self updateEveryoneWhoCaresAboutMovement];
 }
 
 
+
+- (void) moveProcedureAtIndex: index from: fromArray to: toArray
+{
+  var procedure = [fromArray objectAtIndex: index];
+  [fromArray removeObjectAtIndex: index];
+  [toArray addObject: procedure];
+  [toArray sortUsingSelector: @selector(compare:)];
+}
+
+- (void) updateEveryoneWhoCaresAboutMovement
+{
+  [[CPNotificationCenter defaultCenter] 
+         postNotificationName: @"procedures chosen"
+	 object: chosenProcedures];
+  [chosenProcedureTable deselectAll: self];
+  [unchosenProcedureTable deselectAll: self];
+  [chosenProcedureTable reloadData];
+  [unchosenProcedureTable reloadData];
+}
 @end

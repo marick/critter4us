@@ -80,12 +80,58 @@
 }
 
 
+- (void)testPutBackAProcedure
+{
+  [scenario given: function() {
+      [self procedure: "betical"
+            hasBeenSelectedFrom: ["alpha", "betical", "order"]];
+    }
+  during: function() {
+      [self putBackProcedure: "betical"];
+    }
+  behold: function() {
+      [self listenersWillReceiveNotification: @"procedures chosen"
+            containingObject: []];
+      [self tablesWillReloadData];
+    }
+  andTherefore: function() {
+      [self unchosenProcedureTableWillContain: ["alpha", "betical", "order"]];
+      [self chosenProcedureTableWillContain: []];
+    }
+   ];
+}
+
+
+
+
+
+
+
+
+-(void) procedure: aName hasBeenSelectedFrom: anArray
+{
+  [self procedures: anArray];
+  [sut awakeFromCib];
+  [self selectProcedure: aName];
+}
+
+
+
 - (void) selectProcedure: (CPString) aName
 {
-  var index = [procedures indexOfObject: aName];
+  var index = [sut.unchosenProcedures indexOfObject: aName];
   [sut.unchosenProcedureTable shouldReceive: @selector(clickedRow)
                               andReturn: index];
   [sut chooseProcedure: sut.unchosenProcedureTable];
+}
+
+
+- (void) putBackProcedure: (CPString) aName
+{
+  var index = [sut.chosenProcedures indexOfObject: aName];
+  [sut.chosenProcedureTable shouldReceive: @selector(clickedRow)
+                            andReturn: index];
+  [sut unchooseProcedure: sut.chosenProcedureTable];
 }
 
 
@@ -167,8 +213,8 @@
 
 -(void) assertTable: aTable contains: anArray message: aMessage
 {
-  [self assert: [sut numberOfRowsInTableView: aTable]
-        equals: [anArray count]
+  [self assert: [anArray count]
+        equals: [sut numberOfRowsInTableView: aTable]
 	message: aMessage];
   for(var i=0; i<[anArray count]; i++)
     {
