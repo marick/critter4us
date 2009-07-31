@@ -3,6 +3,8 @@
   OJTestCase test;
   id sut;
   CPArray collaboratorNames;
+
+  Mock randomListener;
 }
 
 -(Scenario)initForTest: aTest andSut: aSut
@@ -10,32 +12,54 @@
   test = aTest;
   sut = aSut;
   collaboratorNames = [];
+  randomListener = [[Mock alloc] initWithName: "any old listener"]
   return self;
 }
 
--(void) given: setup during: during behold: behold
+
+
+-(void) during: during behold: behold 
 {
-  setup();
+  given = result = function() {}
+  [self given: given during: during behold: behold andTherefore: result];
+}
+
+-(void) given: given during: during behold: behold andTherefore: result
+{
+  given();
   [sut awakeFromCib];
   behold();
   during();
+  [self checkAllExpectations];
+  result();
 }
 
--(void) given: setup whileAwakening: (id)mockSettings
+
+
+
+-(void) beforeAwakening: setup whileAwakening: (id)mockSettings andTherefore: (id)result
 {
   setup();
+  [self whileAwakening: mockSettings andTherefore: result];
+}
+
+-(void) whileAwakening: (id)mockSettings andTherefore: (id)result
+{
   mockSettings();
   [test.sut awakeFromCib];
+  [self checkAllExpectations];
+  result();
 }
 
 
-- (void)checkExpectations
+- (void)checkAllExpectations
 {
   for(i=0; i<[collaboratorNames count]; i++)
     {
       var name = [collaboratorNames objectAtIndex: i];
       [test assertTrue: [sut[name] wereExpectationsFulfilled]];
     }
+  [randomListener wereExpectationsFulfilled];
 }
 
 - (void)sutHasUpwardCollaborators: anArray

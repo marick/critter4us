@@ -6,6 +6,9 @@
 {
   ProcedureInterfaceController sut;
   Scenario scenario;
+
+  // Temporary storage for tests
+  CPArray procedures;
 }
 
 - (void)setUp
@@ -22,62 +25,95 @@
 - (void)tearDown
 {
   [sut stopObserving];
-  [scenario checkExpectations];
 }
 
 
 
 - (void)testInitialAppearance
 {
-  [scenario given: function() {
-      [self persistentStoreExists];
+  [scenario
+   beforeAwakening: function() {
+      [self procedures: ["one", "two"]];
     }
   whileAwakening: function() {
-      [self tablesAreFilledWithData];
-      // but
-      [self tablesAreMadeHidden];
+      [self tablesWillLoadData];
+      // although
+      [self tablesWillBeMadeHidden];
+    }
+  andTherefore: function() {
+      [self unchosenProcedureTableWillContain: ["one", "two"]];
+      [self chosenProcedureTableWillContain: []];
     }
    ]
 }
 
 - (void)testChoosingADate
 {
-  [scenario given: function() {
-      [self persistentStoreExists];
-    }
-  during: function() {
+  [scenario 
+   during: function() {
       [self sendNotification: "date chosen"];
     }
   behold: function() {
-      [self tablesAreMadeVisible];
+      [self tablesWillBeMadeVisible];
     }
    ];
 }
 
-- (void)xtestChoosingAProcedure
+- (void)testChoosingAProcedure
 {
- [scenario given: function() {
-      [self persistentStoreHasProcedures: ["chosen", "unchosen"]];
-      [self controllerAwakened];
+  [scenario given: function() {
+      [self procedures: ["chosen", "unchosen"]];
     }
   during: function() {
-      [self clickUnchosen: 0];
+      [self selectProcedure: "chosen"];
     }
   behold: function() {
-      
+      [self listenersWillReceiveNotification: @"procedures chosen"
+            containingObject: [@"chosen"]];
+      [self tablesWillReloadData];
     }
-  resultingIn: function() {
+  andTherefore: function() {
+      [self unchosenProcedureTableWillContain: ["unchosen"]];
+      [self chosenProcedureTableWillContain: ["chosen"]];
     }
    ];
 }
 
-- (void) persistentStoreExists
+
+- (void) selectProcedure: (CPString) aName
 {
-  [self persistentStoreHasProcedures: ["don't", "care"]];
+  var index = [procedures indexOfObject: aName];
+  [sut.unchosenProcedureTable shouldReceive: @selector(clickedRow)
+                              andReturn: index];
+  [sut chooseProcedure: sut.unchosenProcedureTable];
 }
 
-- (void) persistentStoreHasProcedures: anArray
+
+- (void) listenersWillReceiveNotification: (CPString) aNotificationName containingObject: (id) anObject
 {
+  
+  var selector = CPSelectorFromString([aNotificationName stringByReplacingOccurrencesOfString: " " withString: ""]);
+
+  [[CPNotificationCenter defaultCenter]
+   addObserver: scenario.randomListener
+   selector: selector
+   name: aNotificationName
+   object: nil];
+
+  [scenario.randomListener shouldReceive: selector
+                           with: function(notification) {
+                                    return [[notification object] isEqual: anObject]
+                                  }];
+}
+
+- (void) thereAreSomeProcedures
+{
+  [self procedures: ["don't", "care"]];
+}
+
+- (void) procedures: (CPArray) anArray
+{
+  procedures = anArray;
   [sut.persistentStore shouldReceive: @selector(allProcedureNames) andReturn: anArray];
 }
 
@@ -88,20 +124,61 @@
 }
 
 
-- (void) tablesAreMadeHidden
+- (void) tablesWillBeMadeHidden
 {
   [sut.containingView shouldReceive: @selector(setHidden:) with: YES];
 }
 
-- (void) tablesAreMadeVisible
+- (void) tablesWillBeMadeVisible
 {
   [sut.containingView shouldReceive: @selector(setHidden:) with: NO];
 }
 
-- (void) tablesAreFilledWithData
+- (void) tablesWillLoadData  // synonym
+{
+  [self tablesWillReloadData];
+}
+
+- (void) tablesWillReloadData
 {
   [sut.unchosenProcedureTable shouldReceive: @selector(reloadData)];
   [sut.chosenProcedureTable shouldReceive: @selector(reloadData)];
 }
+
+
+- (void) table: aTable named: aString willContain: someProcedures
+{
+  [self assertTable: aTable
+        contains: someProcedures
+   message: [CPString stringWithFormat: @"%s should contain %s", aString, [someProcedures description]]];
+}
+
+- (void) unchosenProcedureTableWillContain: (CPArray) someProcedures
+{
+  [self table: sut.unchosenProcedureTable named: @"unchosen procedure table"
+               willContain: someProcedures];
+}
+
+-(void) chosenProcedureTableWillContain: (CPArray) someProcedures
+{
+  [self table: sut.chosenProcedureTable named: @"chosen procedure table"
+        willContain: someProcedures];
+}
+
+-(void) assertTable: aTable contains: anArray message: aMessage
+{
+  [self assert: [sut numberOfRowsInTableView: aTable]
+        equals: [anArray count]
+	message: aMessage];
+  for(var i=0; i<[anArray count]; i++)
+    {
+      [self assert: [anArray objectAtIndex: i]
+            equals: [sut tableView: aTable
+       		         objectValueForTableColumn: 'ignored'
+                 	 row: i]];
+    }
+}
+
+
 
 @end	
