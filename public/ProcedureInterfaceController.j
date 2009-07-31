@@ -18,6 +18,7 @@
   chosenProcedures = [CPArray array];
   [self setUpNotifications];
   [unchosenProcedureTable reloadData];
+  [containingView setHidden:YES]; 
 }
 
 - (void) setUpNotifications
@@ -65,10 +66,24 @@
   [unchosenProcedures removeObjectAtIndex: row];
   [chosenProcedures addObject: procedure];
 
-  [[CPNotificationCenter defaultCenter] postNotificationName: @"procedure chosen" object: procedure];
+  [[CPNotificationCenter defaultCenter] postNotificationName: @"procedures chosen" object: chosenProcedures];
   [unchosenProcedureTable deselectAll: self];
   [unchosenProcedureTable reloadData];
   [chosenProcedureTable reloadData];
 }
+
+- (void)unchooseProcedure:(id)sender
+{
+  var row = [chosenProcedureTable clickedRow];
+  var procedure = [chosenProcedures objectAtIndex: row];
+  [chosenProcedures removeObjectAtIndex: row];
+  [unchosenProcedures addObject: procedure];
+
+  [[CPNotificationCenter defaultCenter] postNotificationName: @"procedures chosen" object: chosenProcedures];
+  [chosenProcedureTable deselectAll: self];
+  [chosenProcedureTable reloadData];
+  [unchosenProcedureTable reloadData];
+}
+
 
 @end

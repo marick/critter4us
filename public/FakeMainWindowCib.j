@@ -73,7 +73,6 @@
 {
   var contentView = [[CPView alloc] initWithFrame: CGRectMake(10, 140, 600, 400)];
   [[theWindow contentView] addSubview: contentView];
-  [contentView setHidden:YES];
 
 
   var label = [[CPTextField alloc] initWithFrame:CGRectMake(0, 0, 500, 30)];

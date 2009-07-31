@@ -61,19 +61,18 @@
 
 - (void)testAnimalNamesCanBeFilteredByExcludedAnimals
 {
-  [self startWithStore: ['fred', 'betty']];
+  [self startWithStore: ['fred', 'betty', 'dave']];
   [self notifyOfExclusions: { 'veniculture': ['fred'],
-                              'physical exam': [],
-                              'floating':[]}];
-  [self notifyOfChosenProcedure: 'veniculture'];
+                              'physical exam': ['betty'],
+                              'floating':['dave']}];
+  [self notifyOfChosenProcedures: ['veniculture', 'physical exam']];
   [self assert: 1
         equals: [controller numberOfRowsInTableView: 'table view ignored']];
-  [self assert: 'betty'
+  [self assert: "dave"
         equals: [controller tableView: 'ignored'
 	                    objectValueForTableColumn: 'ignored'
 			    row: 0]];
 }
-
 
 // Util
 
@@ -84,10 +83,10 @@
   [controller awakeFromCib];
 }
 
-- (void) notifyOfChosenProcedure: (id)aString
+- (void) notifyOfChosenProcedures: (CPArray)anArray
 {
-  [[CPNotificationCenter defaultCenter] postNotificationName: @"procedure chosen"
-                                        object: aString];
+  [[CPNotificationCenter defaultCenter] postNotificationName: @"procedures chosen"
+                                        object: anArray];
 }
 
 - (void) notifyOfExclusions: (id)aJSHash
