@@ -83,4 +83,15 @@
   [self assertTrue: [mock wereExpectationsFulfilled]];
 }
 
+- (void)testUnnamedMocksDescriptionsAreClassNames
+{
+  [self assert: "Mock" equals: [[[Mock alloc] init] description]];
+}
+
+- (void)testNamedMocksHaveNamedDescription
+{
+  [self assert: "Mock fred"
+        equals: [[[Mock alloc] initWithName: "fred"] description]];
+}
+
 @end

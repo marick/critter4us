@@ -35,6 +35,7 @@
   id buildingExpectation;
   BOOL printErrors;
   BOOL happiness;
+  CPString name;
 }
 
 -(Mock)init
@@ -44,6 +45,25 @@
   printErrors = YES;
   happiness = YES;
   return self;
+}
+
+-(Mock)initWithName: (CPString)aString
+{
+  [self init];
+  name = aString;
+  return self;
+}
+
+- (CPString) description
+{
+  if (name)
+    {
+      return [CPString stringWithFormat: "Mock %s", name];
+    }
+  else
+    {
+      return "Mock";
+    }
 }
 
 
@@ -125,7 +145,8 @@
   happiness = NO;
   if (printErrors)
     {
-      CPLog(aString,"warn");
+      CPLog([CPString stringWithFormat: "%s: %s", [self description], aString],
+            "warn");
     }
 }
 
