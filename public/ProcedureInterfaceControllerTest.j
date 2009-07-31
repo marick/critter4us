@@ -5,42 +5,31 @@
 @implementation ProcedureInterfaceControllerTest : OJTestCase
 {
   ProcedureInterfaceController sut;
+  Scenario scenario;
 }
 
 - (void)setUp
 {
   sut = [[ProcedureInterfaceController alloc] init];
-  [self sutHasUpwardCollaborators: ['unchosenProcedureTable',
-				    'chosenProcedureTable',
-				    'containingView']];
-  [self sutHasDownwardCollaborators: ['persistentStore']];
+  scenario = [[Scenario alloc] initForTest: self andSut: sut];
+
+  [scenario sutHasUpwardCollaborators: ['unchosenProcedureTable',
+					'chosenProcedureTable',
+					'containingView']];
+  [scenario sutHasDownwardCollaborators: ['persistentStore']];
 }
 
-- (void)sutHasUpwardCollaborators: anArray
+- (void)tearDown
 {
-  [self sutHasCollaborators: anArray];
-}
-
-- (void)sutHasDownwardCollaborators: anArray
-{
-  [self sutHasCollaborators: anArray];
-}
-
-- (void)sutHasCollaborators: anArray
-{
-  for(i=0; i<[anArray count]; i++)
-    {
-      var collaborator = [anArray objectAtIndex: i];
-      sut[collaborator] = [[Mock alloc] init];
-    }
+  [sut stopObserving];
+  [scenario checkExpectations];
 }
 
 
 
 - (void)testInitialAppearance
 {
-  [[[Scenario alloc] initForTest: self]
-   given: function() {
+  [scenario given: function() {
       [self persistentStoreExists];
     }
   whileAwakening: function() {
@@ -49,6 +38,37 @@
       [self tablesAreMadeHidden];
     }
    ]
+}
+
+- (void)testChoosingADate
+{
+  [scenario given: function() {
+      [self persistentStoreExists];
+    }
+  during: function() {
+      [self sendNotification: "date chosen"];
+    }
+  behold: function() {
+      [self tablesAreMadeVisible];
+    }
+   ];
+}
+
+- (void)xtestChoosingAProcedure
+{
+ [scenario given: function() {
+      [self persistentStoreHasProcedures: ["chosen", "unchosen"]];
+      [self controllerAwakened];
+    }
+  during: function() {
+      [self clickUnchosen: 0];
+    }
+  behold: function() {
+      
+    }
+  resultingIn: function() {
+    }
+   ];
 }
 
 - (void) persistentStoreExists
@@ -61,9 +81,21 @@
   [sut.persistentStore shouldReceive: @selector(allProcedureNames) andReturn: anArray];
 }
 
+- (void) sendNotification: (CPString) aName
+{
+  [[CPNotificationCenter defaultCenter] postNotificationName: @"date chosen"
+                                        object: nil];
+}
+
+
 - (void) tablesAreMadeHidden
 {
   [sut.containingView shouldReceive: @selector(setHidden:) with: YES];
+}
+
+- (void) tablesAreMadeVisible
+{
+  [sut.containingView shouldReceive: @selector(setHidden:) with: NO];
 }
 
 - (void) tablesAreFilledWithData
@@ -72,8 +104,4 @@
   [sut.chosenProcedureTable shouldReceive: @selector(reloadData)];
 }
 
-- (void)tearDown
-{
-  [sut stopObserving];
-}
 @end	

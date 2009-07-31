@@ -18,6 +18,7 @@
   chosenProcedures = [CPArray array];
   [self setUpNotifications];
   [unchosenProcedureTable reloadData];
+  [chosenProcedureTable reloadData];
   [containingView setHidden:YES]; 
 }
 
