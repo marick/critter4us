@@ -30,7 +30,7 @@
 
 @implementation Mock : CPObject
 {
-  id expectations;
+  id expectationDictionary;
   id actualities;
   id buildingExpectation;
   BOOL printErrors;
@@ -41,7 +41,7 @@
 
 -(Mock)init
 {
-  expectations = [[CPMutableDictionary alloc] init];
+  expectationDictionary = [[CPMutableDictionary alloc] init];
   actualities = [[CPArray alloc] init];
   printErrors = YES;
   happiness = YES;
@@ -72,7 +72,7 @@
 - (Mock)shouldReceive: (SEL)aSelector
 {
   buildingExpectation = [[Expectation alloc] initForSelector: aSelector];
-  [expectations setObject: buildingExpectation forKey: aSelector];
+  [expectationDictionary setObject: buildingExpectation forKey: aSelector];
   return self;
 }
 
@@ -90,18 +90,18 @@
 
 - (BOOL)wereExpectationsFulfilled
 {
-  //CPLog([expectations count]);
+  //CPLog([expectationDictionary count]);
   //CPLog([actualities count]);
-  if ([expectations count] !== [actualities count])
+  if ([expectationDictionary count] !== [actualities count])
     {
-      [self noteFailure: [CPString stringWithFormat: "%d expected invocations, got %d", [expectations count], [actualities count]]];
+      [self noteFailure: [CPString stringWithFormat: "%d expected invocations, got %d", [expectationDictionary count], [actualities count]]];
     }
 
   for (var i=0; i < [actualities count]; i++)
     {
       var actuality = actualities[i];
       var selector = [actuality selector];
-      var expectation = [expectations objectForKey: selector];
+      var expectation = [expectationDictionary objectForKey: selector];
       
       if (expectation == null)
 	{
@@ -161,8 +161,7 @@
 
 - (void)forwardInvocation:(CPInvocation)anInvocation
 {
-  // CPLog([anInvocation selector])
-  matchingMethod = [expectations objectForKey: [anInvocation selector]];
+  matchingMethod = [expectationDictionary objectForKey: [anInvocation selector]];
   if (matchingMethod)
     {
       [anInvocation setReturnValue: [matchingMethod returnValue]];
