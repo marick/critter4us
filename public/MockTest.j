@@ -94,4 +94,11 @@
         equals: [[[Mock alloc] initWithName: "fred"] description]];
 }
 
+- (void)testMocksCanBeToldToSwallowUnexpectedMessages
+{
+  mock.failOnUnexpectedSelector = NO;
+  [mock unexpected];
+  [self assertTrue: [mock wereExpectationsFulfilled]];
+}	
+
 @end

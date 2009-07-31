@@ -36,6 +36,7 @@
   BOOL printErrors;
   BOOL happiness;
   CPString name;
+  BOOL failOnUnexpectedSelector;
 }
 
 -(Mock)init
@@ -44,6 +45,7 @@
   actualities = [[CPArray alloc] init];
   printErrors = YES;
   happiness = YES;
+  failOnUnexpectedSelector = YES;
   return self;
 }
 
@@ -166,7 +168,7 @@
       [anInvocation setReturnValue: [matchingMethod returnValue]];
       [actualities addObject: anInvocation];
     }
-  else
+  else if (failOnUnexpectedSelector)
     {
       [super forwardInvocation: anInvocation];
     }
