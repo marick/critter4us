@@ -98,7 +98,10 @@
 
 - (id)tableView:(CPTableView)aTableView objectValueForTableColumn: (CPTableColumn)column row:(CPInteger)rowIndex
 {
-  return availableAnimals[rowIndex]
+  if ([column identifier] == 'names')
+    return availableAnimals[rowIndex];
+  else
+    return NO;
 }
 
 @end

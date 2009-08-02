@@ -135,9 +135,15 @@
 -(void)loadAndConnectAnimalInterfaceController
 {
   var animalTable = [[CPTableView alloc] initWithFrame: CGRectMake(0, 0, 250, 250)];
-  var column = [[CPTableColumn alloc] initWithIdentifier:@"only"];
-  [column setWidth: 250];
-  [animalTable addTableColumn:column];
+  var checkColumn = [[CPTableColumn alloc] initWithIdentifier:@"checks"];
+  [checkColumn setWidth: 20];
+  var checkButton = [[CPCheckBox alloc] init];
+  [checkColumn setDataCell: checkButton]
+  [animalTable addTableColumn:checkColumn];
+
+  var animalColumn = [[CPTableColumn alloc] initWithIdentifier:@"names"];
+  [animalColumn setWidth: 230];
+  [animalTable addTableColumn:animalColumn];
 
   var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(650,200,250,250)];
   [scrollView setDocumentView:animalTable];
@@ -152,6 +158,9 @@
   animalController.table = animalTable;
   [animalTable setDataSource: animalController];
   [animalTable setDelegate:animalController];
+
+  animalController.animalColumn = animalColumn;
+  animalController.checkColumn = checkColumn;
 
   [customObjectsLoaded addObject:animalController];
 }

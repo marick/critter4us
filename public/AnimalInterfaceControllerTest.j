@@ -5,13 +5,15 @@
 {
   AnimalInterfaceController controller;
   Mock store;
+  Mock someColumn;
 }
 
 - (void)setUp
 {
   controller = [[AnimalInterfaceController alloc] init];
   store = [[Mock alloc] init];
-  controller.persistentStore = store 
+  controller.persistentStore = store;
+  someColumn = [[Mock alloc] init];
 }
 
 - (void)tearDown
@@ -48,14 +50,29 @@
         equals: [controller numberOfRowsInTableView: 'table view ignored']];
 }
 
-- (void)testObjectValueForTableIsAnimalName
+- (void)testObjectValueForNameColumnIsAnimalName
+{
+  [self startWithStore: ['fred', 'betty']];
+  [controller awakeFromCib];
+  
+  [someColumn shouldReceive: 'identifier' andReturn: @"names"];
+
+  [self assert: "fred"
+        equals: [controller tableView: 'ignored'
+	                    objectValueForTableColumn: someColumn
+			    row: 0]];
+}
+
+- (void)testObjectValueForChecksColumnIsInitiallyFalse
 {
   [self startWithStore: ['fred', 'betty']];
   [controller awakeFromCib];
 
-  [self assert: "fred"
+  [someColumn shouldReceive: 'identifier' andReturn: @"checks"];
+
+  [self assert: NO
         equals: [controller tableView: 'ignored'
-	                    objectValueForTableColumn: 'ignored'
+	                    objectValueForTableColumn: someColumn
 			    row: 0]];
 }
 
@@ -65,12 +82,18 @@
   [self notifyOfExclusions: { 'veniculture': ['fred'],
                               'physical exam': ['betty'],
                               'floating':['dave']}];
+  [someColumn shouldReceive: 'identifier' andReturn: @"names"];
+
+
+
   [self notifyOfChosenProcedures: ['veniculture', 'physical exam']];
+
+
   [self assert: 1
         equals: [controller numberOfRowsInTableView: 'table view ignored']];
   [self assert: "dave"
         equals: [controller tableView: 'ignored'
-	                    objectValueForTableColumn: 'ignored'
+		 objectValueForTableColumn: someColumn
 			    row: 0]];
 }
 
