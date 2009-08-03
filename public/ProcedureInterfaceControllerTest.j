@@ -1,13 +1,8 @@
 @import "ProcedureInterfaceController.j"
-@import "Mock.j"
-@import "Scenario.j"
+@import "ScenarioTestCase.j"
 
-@implementation ProcedureInterfaceControllerTest : OJTestCase
+@implementation ProcedureInterfaceControllerTest : ScenarioTestCase
 {
-  ProcedureInterfaceController sut;
-  Scenario scenario;
-
-  // Temporary storage for tests
   CPArray procedures;
 }
 
@@ -21,12 +16,6 @@
 					'containingView']];
   [scenario sutHasDownwardCollaborators: ['persistentStore']];
 }
-
-- (void)tearDown
-{
-  [sut stopObserving];
-}
-
 
 
 - (void)testInitialAppearance
@@ -107,6 +96,17 @@
 
 
 
+- (void) thereAreSomeProcedures
+{
+  [self procedures: ["don't", "care"]];
+}
+
+- (void) procedures: (CPArray) anArray
+{
+  procedures = anArray;
+  [sut.persistentStore shouldReceive: @selector(allProcedureNames) andReturn: anArray];
+}
+
 
 -(void) procedure: aName hasBeenSelectedFrom: anArray
 {
@@ -152,28 +152,12 @@
                                   }];
 }
 
-- (void) thereAreSomeProcedures
-{
-  [self procedures: ["don't", "care"]];
-}
-
-- (void) procedures: (CPArray) anArray
-{
-  procedures = anArray;
-  [sut.persistentStore shouldReceive: @selector(allProcedureNames) andReturn: anArray];
-}
-
 - (void) sendNotification: (CPString) aName
 {
   [[CPNotificationCenter defaultCenter] postNotificationName: @"date chosen"
                                         object: nil];
 }
 
-
-- (void) tablesWillBeMadeHidden
-{
-  [sut.containingView shouldReceive: @selector(setHidden:) with: YES];
-}
 
 - (void) tablesWillBeMadeVisible
 {
@@ -192,38 +176,20 @@
 }
 
 
-- (void) table: aTable named: aString willContain: someProcedures
-{
-  [self assertTable: aTable
-        contains: someProcedures
-   message: [CPString stringWithFormat: @"%s should contain %s", aString, [someProcedures description]]];
-}
-
 - (void) unchosenProcedureTableWillContain: (CPArray) someProcedures
 {
-  [self table: sut.unchosenProcedureTable named: @"unchosen procedure table"
-               willContain: someProcedures];
+  [self onlyColumnInTable: sut.unchosenProcedureTable
+	named: @"unchosen procedure table"
+        willContain: someProcedures];
 }
 
 -(void) chosenProcedureTableWillContain: (CPArray) someProcedures
 {
-  [self table: sut.chosenProcedureTable named: @"chosen procedure table"
+  [self onlyColumnInTable: sut.chosenProcedureTable
+	named: @"chosen procedure table"
         willContain: someProcedures];
 }
 
--(void) assertTable: aTable contains: anArray message: aMessage
-{
-  [self assert: [anArray count]
-        equals: [sut numberOfRowsInTableView: aTable]
-	message: aMessage];
-  for(var i=0; i<[anArray count]; i++)
-    {
-      [self assert: [anArray objectAtIndex: i]
-            equals: [sut tableView: aTable
-       		         objectValueForTableColumn: 'ignored'
-                 	 row: i]];
-    }
-}
 
 
 

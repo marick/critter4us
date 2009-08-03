@@ -141,9 +141,9 @@
   [checkColumn setDataCell: checkButton]
   [animalTable addTableColumn:checkColumn];
 
-  var animalColumn = [[CPTableColumn alloc] initWithIdentifier:@"names"];
-  [animalColumn setWidth: 230];
-  [animalTable addTableColumn:animalColumn];
+  var nameColumn = [[CPTableColumn alloc] initWithIdentifier:@"names"];
+  [nameColumn setWidth: 230];
+  [animalTable addTableColumn:nameColumn];
 
   var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(650,200,250,250)];
   [scrollView setDocumentView:animalTable];
@@ -154,13 +154,12 @@
   var animalController = [[AnimalInterfaceController alloc] init];
   animalController.persistentStore = persistentStore;
   animalController.containingView = scrollView;
+  animalController.nameColumn = nameColumn;
+  animalController.checkColumn = checkColumn;
 
   animalController.table = animalTable;
   [animalTable setDataSource: animalController];
   [animalTable setDelegate:animalController];
-
-  animalController.animalColumn = animalColumn;
-  animalController.checkColumn = checkColumn;
 
   [customObjectsLoaded addObject:animalController];
 }

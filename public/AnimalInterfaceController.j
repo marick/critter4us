@@ -4,6 +4,8 @@
 {
   // outlets
   CPTableView table;
+  CPTableColumn nameColumn;
+  CPTableColumn checkColumn;
   CPView containingView;
   id persistentStore;
 
@@ -17,6 +19,7 @@
   allAnimals = [persistentStore allAnimalNames];
   [self makeAllAnimalsAvailable];
   [self setUpNotifications];
+  [containingView setHidden:YES]; 
   [table reloadData];
 }
 
@@ -98,7 +101,7 @@
 
 - (id)tableView:(CPTableView)aTableView objectValueForTableColumn: (CPTableColumn)column row:(CPInteger)rowIndex
 {
-  if ([column identifier] == 'names')
+  if (column == nameColumn)
     return availableAnimals[rowIndex];
   else
     return NO;
