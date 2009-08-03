@@ -16,12 +16,17 @@
   return self;
 }
 
+-(void) given: given sequence: sequence means: consequence
+{
+  nothing = function() { }
+  [self given: given during: sequence behold: nothing andTherefore: consequence];
+}
 
 
 -(void) during: during behold: behold 
 {
-  given = result = function() {}
-  [self given: given during: during behold: behold andTherefore: result];
+  nothing = function() {}
+  [self given: nothing during: during behold: behold andTherefore: nothing];
 }
 
 -(void) given: given during: during behold: behold andTherefore: result

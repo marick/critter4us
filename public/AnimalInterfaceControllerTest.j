@@ -24,13 +24,45 @@
     whileAwakening: function() {
       [self tableWillLoadData];
       //
-      [self tablesWillBeMadeHidden];
+      [self controlsWillBeMadeHidden];
     }
     andTherefore: function() {
 	[self animalTableWillContainNames: ["one", "two"]];
 	[self animalTableWillHaveCorrespondingChecks: [NO, NO]];
     }];
 }
+
+
+- (void)testChoosingADate
+{
+  [scenario 
+   during: function() {
+      [self sendNotification: "date chosen"];
+    }
+  behold: function() {
+      [self controlsWillBeMadeVisible];
+    }
+   ];
+}
+
+- (void)testExcludingAnimalsBecauseOfChosenProcedures
+{
+  [scenario
+   given: function() { 
+      [self animals: ["fred", "betty", "dave"]];
+    }
+   sequence: function() { 
+	[self notifyOfExclusions: { 'veniculture': ['fred'],
+                                    'physical exam': ['betty'],
+                                     'floating':['dave']}];
+	[self notifyOfChosenProcedures: ['veniculture', 'physical exam']];
+    }
+  means: function() {
+      [self animalTableWillContainNames: ["dave"]];
+      [self animalTableWillHaveCorrespondingChecks: [NO]];
+    }];
+}
+
 
 
 -(void) animals: anArray
@@ -57,6 +89,18 @@
         inTable: sut.table
         named: @"animal table checkmarks column"
         willContain: anArray];
+}
+
+- (void) notifyOfExclusions: (id)aJSHash
+{
+  dict = [CPDictionary dictionaryWithJSObject: aJSHash recursively: YES];
+  [self sendNotification:@"exclusions" withObject: dict];
+}
+
+
+- (void) notifyOfChosenProcedures: (CPArray)anArray
+{
+  [self sendNotification: @"procedures chosen" withObject: anArray];
 }
 
 @end	

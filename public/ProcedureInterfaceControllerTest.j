@@ -27,7 +27,7 @@
   whileAwakening: function() {
       [self tablesWillLoadData];
       // although
-      [self tablesWillBeMadeHidden];
+      [self controlsWillBeMadeHidden];
     }
   andTherefore: function() {
       [self unchosenProcedureTableWillContain: ["one", "two"]];
@@ -43,7 +43,7 @@
       [self sendNotification: "date chosen"];
     }
   behold: function() {
-      [self tablesWillBeMadeVisible];
+      [self controlsWillBeMadeVisible];
     }
    ];
 }
@@ -135,34 +135,6 @@
 }
 
 
-- (void) listenersWillReceiveNotification: (CPString) aNotificationName containingObject: (id) anObject
-{
-  
-  var selector = CPSelectorFromString([aNotificationName stringByReplacingOccurrencesOfString: " " withString: ""]);
-
-  [[CPNotificationCenter defaultCenter]
-   addObserver: scenario.randomListener
-   selector: selector
-   name: aNotificationName
-   object: nil];
-
-  [scenario.randomListener shouldReceive: selector
-                           with: function(notification) {
-                                    return [[notification object] isEqual: anObject]
-                                  }];
-}
-
-- (void) sendNotification: (CPString) aName
-{
-  [[CPNotificationCenter defaultCenter] postNotificationName: @"date chosen"
-                                        object: nil];
-}
-
-
-- (void) tablesWillBeMadeVisible
-{
-  [sut.containingView shouldReceive: @selector(setHidden:) with: NO];
-}
 
 - (void) tablesWillLoadData  // synonym
 {
@@ -189,8 +161,5 @@
 	named: @"chosen procedure table"
         willContain: someProcedures];
 }
-
-
-
 
 @end	

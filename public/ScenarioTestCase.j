@@ -13,15 +13,30 @@
 }
 
 
-- (void) tablesWillBeMadeHidden
+- (void) controlsWillBeMadeHidden
 {
   [sut.containingView shouldReceive: @selector(setHidden:) with: YES];
 }
 
-- (void) tableWillBeMadeHidden // synonym
+- (void) controlsWillBeMadeVisible
 {
-  [self tablesWillBeMadeHidden];
+  [sut.containingView shouldReceive: @selector(setHidden:) with: NO];
 }
+
+
+- (void) sendNotification: (CPString) aName
+{
+  [self sendNotification: aName withObject: nil];
+}
+
+- (void) sendNotification: aName withObject: anObject
+{
+  [[CPNotificationCenter defaultCenter] postNotificationName: aName
+                                        object: anObject];
+}
+
+
+
 
 - (void) onlyColumnInTable: aTable named: aString willContain: anArray
 {
@@ -49,5 +64,23 @@
 		         row: i]];
     }
 }
+
+- (void) listenersWillReceiveNotification: (CPString) aNotificationName containingObject: (id) anObject
+{
+  
+  var selector = CPSelectorFromString([aNotificationName stringByReplacingOccurrencesOfString: " " withString: ""]);
+
+  [[CPNotificationCenter defaultCenter]
+   addObserver: scenario.randomListener
+   selector: selector
+   name: aNotificationName
+   object: nil];
+
+  [scenario.randomListener shouldReceive: selector
+                           with: function(notification) {
+                                    return [[notification object] isEqual: anObject]
+                                  }];
+}
+
 
 @end
