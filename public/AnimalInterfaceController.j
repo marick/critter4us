@@ -17,6 +17,7 @@
 - (void)awakeFromCib
 {
   allAnimals = [persistentStore allAnimalNames];
+  [allAnimals sortUsingSelector: @selector(caseInsensitiveCompare:)];
   [self makeAllAnimalsAvailable];
   [self setUpNotifications];
   [containingView setHidden:YES]; 

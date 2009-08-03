@@ -22,7 +22,7 @@
 {
   [scenario
    beforeAwakening: function() {
-      [self procedures: ["one", "two"]];
+      [self procedures: ["B", "a", "c"]];
     }
   whileAwakening: function() {
       [self tablesWillLoadData];
@@ -30,7 +30,7 @@
       [self controlsWillBeMadeHidden];
     }
   andTherefore: function() {
-      [self unchosenProcedureTableWillContain: ["one", "two"]];
+      [self unchosenProcedureTableWillContain: ["a", "B", "c"]];
       [self chosenProcedureTableWillContain: []];
     }
    ]
@@ -72,11 +72,11 @@
 - (void)testPutBackAProcedure
 {
   [scenario given: function() {
-      [self procedure: "betical"
-            hasBeenSelectedFrom: ["alpha", "betical", "order"]];
+      [self procedure: "Betical"
+            hasBeenSelectedFrom: ["alpha", "Betical", "order"]];
     }
   during: function() {
-      [self putBackProcedure: "betical"];
+      [self putBackProcedure: "Betical"];
     }
   behold: function() {
       [self listenersWillReceiveNotification: @"procedures chosen"
@@ -84,7 +84,7 @@
       [self tablesWillReloadData];
     }
   andTherefore: function() {
-      [self unchosenProcedureTableWillContain: ["alpha", "betical", "order"]];
+      [self unchosenProcedureTableWillContain: ["alpha", "Betical", "order"]];
       [self chosenProcedureTableWillContain: []];
     }
    ];

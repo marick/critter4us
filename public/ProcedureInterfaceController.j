@@ -18,6 +18,7 @@
 - (void)awakeFromCib
 {
   unchosenProcedures = [persistentStore allProcedureNames];
+  [unchosenProcedures sortUsingSelector: @selector(caseInsensitiveCompare:)];
   chosenProcedures = [CPArray array];
   [self setUpNotifications];
   [unchosenProcedureTable reloadData];
@@ -88,7 +89,7 @@
   var procedure = [fromArray objectAtIndex: index];
   [fromArray removeObjectAtIndex: index];
   [toArray addObject: procedure];
-  [toArray sortUsingSelector: @selector(compare:)];
+  [toArray sortUsingSelector: @selector(caseInsensitiveCompare:)];
 }
 
 - (void) updateEveryoneWhoCaresAboutMovement

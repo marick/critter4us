@@ -60,7 +60,7 @@ Procedure.create(:name => 'IV catheter placement (cattle)', :days_delay => TWO_W
 Procedure.create(:name => 'blood collection for transfusion', :days_delay => EVERY_TWO_MONTHS)
 Procedure.create(:name => 'transtracheal wash (cattle)', :days_delay => TWO_WEEKS)
                 # Once per lab
-Procedure.create(:name => 'CSF collection (lumbosacral) IGNORE CASE', :days_delay => TWO_WEEKS)
+Procedure.create(:name => 'CSF collection (lumbosacral)', :days_delay => TWO_WEEKS)
                 # Once per lab
 Procedure.create(:name => 'rumen fluid collection (tube)', :days_delay => 0)
 Procedure.create(:name => 'rumen fluid collection (rumenocentesis)', :days_delay => TWO_WEEKS)

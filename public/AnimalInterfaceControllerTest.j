@@ -19,7 +19,7 @@
 {
   [scenario 
    beforeAwakening: function() {
-      [self animals: ["one", "two"]];
+      [self animals: ["Betical", "order", "alpha"]];
     }
     whileAwakening: function() {
       [self tableWillLoadData];
@@ -27,8 +27,8 @@
       [self controlsWillBeMadeHidden];
     }
     andTherefore: function() {
-	[self animalTableWillContainNames: ["one", "two"]];
-	[self animalTableWillHaveCorrespondingChecks: [NO, NO]];
+      [self animalTableWillContainNames: ["alpha", "Betical", "order"]];
+      [self animalTableWillHaveCorrespondingChecks: [NO, NO, NO]];
     }];
 }
 
