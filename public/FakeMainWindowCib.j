@@ -166,6 +166,8 @@
   animalController.checkColumn = checkColumn;
 
   animalController.table = animalTable;
+  [animalTable setTarget: animalController];
+  [animalTable setAction: @selector(toggleAnimal:)];
   [animalTable setDataSource: animalController];
   [animalTable setDelegate:animalController];
 

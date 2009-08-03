@@ -11,11 +11,17 @@
 
   CPArray allAnimals;
   CPArray availableAnimals;
+  CPArray isChosen;
   CPDictionary exclusions;
+
+  // For testing
+  BOOL awakened;
 }
 
 - (void)awakeFromCib
 {
+  if (awakened) return;
+  awakened = YES;
   allAnimals = [persistentStore allAnimalNames];
   [allAnimals sortUsingSelector: @selector(caseInsensitiveCompare:)];
   [self makeAllAnimalsAvailable];
@@ -27,7 +33,13 @@
 - (void)makeAllAnimalsAvailable
 {
   availableAnimals = [CPArray arrayWithArray: allAnimals];
+  isChosen = [CPArray array];
+  for(var i=0; i < [availableAnimals count]; i++)
+    {
+      [isChosen addObject: NO];
+    }
 }
+
 
 - (void) setUpNotifications
 {
@@ -62,12 +74,12 @@
   [containingView setHidden:NO];
 }
 
-- newExclusions: aNotification
+- (void) newExclusions: aNotification
 {
   exclusions = [aNotification object];
 }
 
-- proceduresChosen: aNotification
+- (void) proceduresChosen: aNotification
 {
   var procedures = [aNotification object];
   [self makeAllAnimalsAvailable];
@@ -78,7 +90,7 @@
   [table reloadData];
 }
   
-- filterByProcedure: (CPString) procedure
+- (void) filterByProcedure: (CPString) procedure
 {
   
   var animalsToRemove = [exclusions objectForKey: procedure];
@@ -88,6 +100,13 @@
       var goner = [animalsToRemove objectAtIndex: i];
       [availableAnimals removeObject: goner];
     }
+}
+
+
+- (void) toggleAnimal: (CPTable) sender
+{
+  var index = [sender clickedRow];
+  isChosen[index] = !isChosen[index];
 }
 
 - (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView
@@ -105,7 +124,7 @@
   if (column == nameColumn)
     return availableAnimals[rowIndex];
   else
-    return NO;
+    return isChosen[rowIndex];
 }
 
 @end
