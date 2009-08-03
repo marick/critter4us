@@ -51,7 +51,7 @@
 -(void) loadAndConnectDateInterfaceController
 {  
   label = [[CPTextField alloc] initWithFrame:CGRectMake(10, 40, 500, 30)];
-  [label setStringValue: "First, type in the date of your lab. (You can just press Return to accept the date shown.)"];
+  [label setStringValue: "1. Type in the date of your lab. (You can just press Return to accept the date shown.)"];
   [[theWindow contentView] addSubview:label];
 
   dateField = [[CPTextField alloc] initWithFrame:CGRectMake(10, 70, 250, 30)];
@@ -76,14 +76,12 @@
 
 
   var label = [[CPTextField alloc] initWithFrame:CGRectMake(0, 0, 500, 30)];
-  [label setStringValue: "Next, click the procedure you want to see which animals are available."];
+  [label setStringValue: "2. Click the procedures to be used in the lab."];
   [contentView addSubview:label];
 
-
-  var note = [[CPTextField alloc] initWithFrame:CGRectMake(0, 20, 500, 30)];
-  [note setStringValue: "(Only venipuncture will do anything interesting.)"];
+  var note = [[CPTextField alloc] initWithFrame:CGRectMake(0, 20, 600, 30)];
+  [note setStringValue: "Animals that may not be used for that procedure will be removed from the table on the far right."];
   [contentView addSubview:note];
-
 
 
   var unchosenProcedureTable = [[CPTableView alloc] initWithFrame: CGRectMake(0, 0, 250, 250)];
@@ -134,7 +132,15 @@
 
 -(void)loadAndConnectAnimalInterfaceController
 {
-  var animalTable = [[CPTableView alloc] initWithFrame: CGRectMake(0, 0, 250, 250)];
+  var contentView = [[CPView alloc] initWithFrame: CGRectMake(650, 140, 300, 400)];
+  [[theWindow contentView] addSubview: contentView];
+
+
+  var label = [[CPTextField alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
+  [label setStringValue: "3. Check which animals are to actually be used."];
+  [contentView addSubview:label];
+
+   var animalTable = [[CPTableView alloc] initWithFrame: CGRectMake(0, 0, 250, 250)];
   var checkColumn = [[CPTableColumn alloc] initWithIdentifier:@"checks"];
   [checkColumn setWidth: 20];
   var checkButton = [[CPCheckBox alloc] init];
@@ -145,15 +151,17 @@
   [nameColumn setWidth: 230];
   [animalTable addTableColumn:nameColumn];
 
-  var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(650,200,250,250)];
+  var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0,60,250,250)];
   [scrollView setDocumentView:animalTable];
   [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
-  [[theWindow contentView] addSubview:scrollView];
-  [scrollView setHidden:YES];
+  [contentView addSubview:scrollView];
+  [contentView setHidden:YES];
+
+
 
   var animalController = [[AnimalInterfaceController alloc] init];
   animalController.persistentStore = persistentStore;
-  animalController.containingView = scrollView;
+  animalController.containingView = contentView;
   animalController.nameColumn = nameColumn;
   animalController.checkColumn = checkColumn;
 
