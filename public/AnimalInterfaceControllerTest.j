@@ -79,7 +79,7 @@
     }];
 }
 
-- (void) xtestChoosingTwoAnimalsAccumulates
+- (void) testChoosingTwoAnimalsAccumulates
 {
   [scenario
    given: function() { 
