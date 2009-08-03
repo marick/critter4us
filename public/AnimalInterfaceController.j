@@ -11,7 +11,7 @@
 
   CPArray allAnimals;
   CPArray availableAnimals;
-  CPArray isChosen;
+  CPMutableDictionary isChosen;
   CPDictionary exclusions;
 
   // For testing
@@ -23,21 +23,30 @@
   if (awakened) return;
   awakened = YES;
   allAnimals = [persistentStore allAnimalNames];
-  [allAnimals sortUsingSelector: @selector(caseInsensitiveCompare:)];
-  [self makeAllAnimalsAvailable];
+
+  availableAnimals = [self allAnimalsCopyProperlySorted];
+  isChosen = [self allTheseAnimalsAreUnchosen: availableAnimals];
+
   [self setUpNotifications];
   [containingView setHidden:YES]; 
   [table reloadData];
 }
 
-- (void)makeAllAnimalsAvailable
+- (CPArray)allAnimalsCopyProperlySorted
 {
-  availableAnimals = [CPArray arrayWithArray: allAnimals];
-  isChosen = [CPArray array];
-  for(var i=0; i < [availableAnimals count]; i++)
+  var retval = [CPArray arrayWithArray: allAnimals];
+  [retval sortUsingSelector: @selector(caseInsensitiveCompare:)];
+  return retval;
+}
+
+- (CPDictionary)allTheseAnimalsAreUnchosen: aNameArray
+{
+  var retval = [CPMutableDictionary dictionary];
+  for(var i=0; i < [aNameArray count]; i++)
     {
-      [isChosen addObject: NO];
+      [retval setValue: NO forKey: aNameArray[i]];
     }
+  return retval;
 }
 
 
@@ -81,8 +90,11 @@
 
 - (void) proceduresChosen: aNotification
 {
+
   var procedures = [aNotification object];
-  [self makeAllAnimalsAvailable];
+  availableAnimals = [self allAnimalsCopyProperlySorted];
+  isChosen = [self allTheseAnimalsAreUnchosen: availableAnimals];
+
   for (var i=0; i<[procedures count]; i++)
     {
       [self filterByProcedure: [procedures objectAtIndex: i]];
@@ -110,7 +122,8 @@
 
 - (void) toggleAnimalAtIndex: index
 {
-  isChosen[index] = !isChosen[index];
+  var name = availableAnimals[index];
+  [isChosen setValue: (![isChosen valueForKey: name]) forKey: name];
 }
 
 - (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView
@@ -125,10 +138,11 @@
 
 - (id)tableView:(CPTableView)aTableView objectValueForTableColumn: (CPTableColumn)column row:(CPInteger)rowIndex
 {
+  name = availableAnimals[rowIndex];
   if (column == nameColumn)
-    return availableAnimals[rowIndex];
+    return name;
   else
-    return isChosen[rowIndex];
+    return [isChosen valueForKey: name];
 }
 
 @end

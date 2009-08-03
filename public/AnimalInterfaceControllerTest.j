@@ -95,7 +95,32 @@
     }];
 }
 
-// select animal, then choose a procedure that excludes it.
+
+- (void) testChoosingAnimalsThenAProcedureThatExcludesOne
+{
+  [scenario
+   given: function() { 
+      [self animals: ["alpha",  "delta", "betty"]];
+      [self usingExclusions: { 'veniculture': ['alpha'],
+	                       'physical exam': ['betty'],
+                               'floating':['delta']}];
+      [self alreadySelected: ["betty", "delta"]];
+    }
+  sequence: function() { 
+      [self animalTableWillContainNames: ["alpha", "betty", "delta"]];
+      [self animalTableWillHaveCorrespondingChecks: [NO, YES, YES]];
+      [self notifyOfChosenProcedures: ['veniculture', 'physical exam']];
+
+    }
+  means: function() {
+      [self animalTableWillContainNames: ["delta"]];
+      [self animalTableWillHaveCorrespondingChecks: [YES]];
+    }];
+}
+
+
+
+
 // select two animals, then choose a procedure that excludes it.
 // select animal, exclude it, then unchoose procedure to include it - should be unchecked.
 
@@ -154,6 +179,12 @@
 {
   dict = [CPDictionary dictionaryWithJSObject: aJSHash recursively: YES];
   [self sendNotification:@"exclusions" withObject: dict];
+}
+
+- (void) usingExclusions: (id)aJSHash
+{
+  [sut awakeFromCib];
+  [self notifyOfExclusions: aJSHash];
 }
 
 
