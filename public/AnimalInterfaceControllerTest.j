@@ -49,12 +49,30 @@
 {
   [scenario
    given: function() { 
+      [self animals: ["alpha",  "delta", "betty"]];
+    }
+  sequence: function() { 
+      [self selectAnimal: "betty"];
+    }
+  means: function() {
+      [self animalTableWillContainNames: ["alpha", "betty", "delta"]];
+      [self animalTableWillHaveCorrespondingChecks: [NO, YES, NO]];
+    }];
+}
+
+# select animal, then choose a procedure that excludes it.
+# select animal, exclude it, then unchoose procedure to include it - should be unchecked.
+
+
+
+
+- (void)testChoosingAnAnimal
+{
+  [scenario
+   given: function() { 
       [self animals: ["fred", "betty", "dave"]];
     }
    sequence: function() { 
-	[self notifyOfExclusions: { 'veniculture': ['fred'],
-                                    'physical exam': ['betty'],
-                                     'floating':['dave']}];
 	[self notifyOfChosenProcedures: ['veniculture', 'physical exam']];
     }
   means: function() {
