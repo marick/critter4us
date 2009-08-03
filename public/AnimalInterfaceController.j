@@ -24,29 +24,27 @@
   awakened = YES;
   allAnimals = [persistentStore allAnimalNames];
 
-  availableAnimals = [self allAnimalsCopyProperlySorted];
-  isChosen = [self allTheseAnimalsAreUnchosen: availableAnimals];
+  [self allAnimalsAreAvailable];
+  [self noAnimalsAreChosen]
 
   [self setUpNotifications];
   [containingView setHidden:YES]; 
   [table reloadData];
 }
 
-- (CPArray)allAnimalsCopyProperlySorted
+- (void)allAnimalsAreAvailable
 {
-  var retval = [CPArray arrayWithArray: allAnimals];
-  [retval sortUsingSelector: @selector(caseInsensitiveCompare:)];
-  return retval;
+  availableAnimals = [CPArray arrayWithArray: allAnimals];
+  [availableAnimals sortUsingSelector: @selector(caseInsensitiveCompare:)];
 }
 
-- (CPDictionary)allTheseAnimalsAreUnchosen: aNameArray
+- (void)noAnimalsAreChosen
 {
-  var retval = [CPMutableDictionary dictionary];
-  for(var i=0; i < [aNameArray count]; i++)
+  isChosen = [CPMutableDictionary dictionary];
+  for(var i=0; i < [availableAnimals count]; i++)
     {
-      [retval setValue: NO forKey: aNameArray[i]];
+      [isChosen setValue: NO forKey: availableAnimals[i]];
     }
-  return retval;
 }
 
 
@@ -90,21 +88,28 @@
 
 - (void) proceduresChosen: aNotification
 {
-
   var procedures = [aNotification object];
-  availableAnimals = [self allAnimalsCopyProperlySorted];
-  isChosen = [self allTheseAnimalsAreUnchosen: availableAnimals];
+  [self allAnimalsAreAvailable];
+  [self removeAnimalsExcludedByProcedures: procedures];
 
-  for (var i=0; i<[procedures count]; i++)
-    {
-      [self filterByProcedure: [procedures objectAtIndex: i]];
-    }
+
+  oldIsChosen = [CPMutableDictionary dictionaryWithDictionary: isChosen];
+  [self noAnimalsAreChosen];
+  [self chooseAnimalsAlreadyChosenIn: oldIsChosen];
+
   [table reloadData];
 }
-  
-- (void) filterByProcedure: (CPString) procedure
+
+- (void) removeAnimalsExcludedByProcedures: procedures
 {
+  for (var i=0; i<[procedures count]; i++)
+    {
+      [self removeAnimalsExcludedByProcedure: [procedures objectAtIndex: i]];
+    }
+}
   
+- (void) removeAnimalsExcludedByProcedure: (CPString) procedure
+{
   var animalsToRemove = [exclusions objectForKey: procedure];
   
   for(var i=0; i < [animalsToRemove count]; i++) 
@@ -114,6 +119,15 @@
     }
 }
 
+- (void) chooseAnimalsAlreadyChosenIn: oldIsChosen
+{
+  for (var i=0; i<[availableAnimals count]; i++)
+    {
+      var name = availableAnimals[i];
+      [isChosen setValue: [oldIsChosen valueForKey: name]
+                forKey: name]
+    }
+}
 
 - (void) toggleAnimal: (CPTable) sender
 {
@@ -124,6 +138,7 @@
 {
   var name = availableAnimals[index];
   [isChosen setValue: (![isChosen valueForKey: name]) forKey: name];
+  [table reloadData];
 }
 
 - (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView
@@ -140,9 +155,19 @@
 {
   name = availableAnimals[rowIndex];
   if (column == nameColumn)
-    return name;
+    {
+      return name;
+    }
   else
-    return [isChosen valueForKey: name];
+    {
+      return [isChosen valueForKey: name];
+    }
 }
+
+- (void) tableView: table setObjectValue: value forTableColumn: aColumn row: rowIndex
+{
+  alert("Will do nothing");
+}
+
 
 @end
