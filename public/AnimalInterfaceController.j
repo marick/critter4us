@@ -105,7 +105,11 @@
 
 - (void) toggleAnimal: (CPTable) sender
 {
-  var index = [sender clickedRow];
+  [self toggleAnimalAtIndex: [sender clickedRow]];
+}
+
+- (void) toggleAnimalAtIndex: index
+{
   isChosen[index] = !isChosen[index];
 }
 

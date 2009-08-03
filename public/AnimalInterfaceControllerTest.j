@@ -84,7 +84,7 @@
   [scenario
    given: function() { 
       [self animals: ["alpha",  "delta", "betty"]];
-      [self alreadySelected: "betty"];
+      [self alreadySelected: ["betty"]];
     }
   sequence: function() { 
       [self selectAnimal: "alpha"];
@@ -101,15 +101,25 @@
 
 -(void) selectAnimal: aName
 {
-  [scenario 
-   during: function() { 
-      [sut toggleAnimal: sut.table];
-    }
-  behold: function() {
+  var index = [sut.availableAnimals indexOfObject: aName];
+  [sut.table shouldReceive: @selector(clickedRow) andReturn: index];
+  // Column is irrelevant - allow click on name OR check to count as check.
+  [sut toggleAnimal: sut.table];
+}
+
+
+// This is a really a hack because there's no mechanism in the mocks
+// to sequence two calls of the same method on the same object. At least,
+// I think it's a hack.
+-(void) alreadySelected: animalNames
+{
+  [sut awakeFromCib];
+  for(i=0; i<[animalNames count]; i++)
+    {
+      var aName = animalNames[i];
       var index = [sut.availableAnimals indexOfObject: aName];
-      [sut.table shouldReceive: @selector(clickedRow) andReturn: index];
-      // Column is irrelevant - allow click on name OR check to count as check.
-    }];
+      [sut toggleAnimalAtIndex: index];
+    }
 }
 
 
