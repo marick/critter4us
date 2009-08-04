@@ -10,12 +10,13 @@ GlobalCheckboxTarget = "nothing yet";
 - (id) dataViewForRow: (CPInteger) row
 {
   var retval = [[CritterCheckBox alloc] init];
-  [retval setTarget: [[self dataCell] target]];
+  var target = [[self dataCell] target];
+  [retval setTarget: target];
   [retval setAction: [[self dataCell] action]];
   retval.index = row;
-  checked = [GlobalCheckboxTarget tableView: nil
-	   objectValueForTableColumn: GlobalCheckboxTarget.checkColumn
-	   row: row];
+  checked = [target tableView: nil
+                    objectValueForTableColumn: target.checkColumn
+                    row: row];
   if (checked) [retval setState: CPOnState];
   return retval;
 }
@@ -31,17 +32,6 @@ GlobalCheckboxTarget = "nothing yet";
 {
   return index;
 }
-
-
-// - (void)trackMouse:(CPEvent)anEvent
-// {
-//   [super trackMouse: anEvent];
-//   if (CPLeftMouseUpMask & (1 << [anEvent type]))
-//     {
-      // [self sendAction: [self action] to: [self target]];
-      // [GlobalCheckboxTarget toggleAnimal: self];
-//    }
-//}
 
 - (void) encodeWithCoder: (CPCoder)aCoder
 {
