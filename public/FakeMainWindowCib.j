@@ -136,7 +136,7 @@
   var animalController = [[AnimalInterfaceController alloc] init];
   GlobalCheckboxTarget = animalController;
 
-  var contentView = [[CPView alloc] initWithFrame: CGRectMake(650, 140, 300, 400)];
+  var contentView = [[CPView alloc] initWithFrame: CGRectMake(650, 140, 300, 900)];
   [[theWindow contentView] addSubview: contentView];
 
 
@@ -163,6 +163,16 @@
   [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
   [contentView addSubview:scrollView];
   [contentView setHidden:YES];
+
+  var reserveLabel = [[CPTextField alloc] initWithFrame:CGRectMake(0, 350, 300, 30)];
+  [reserveLabel setStringValue: "4. When you're ready to reserve, just click."];
+  [contentView addSubview:reserveLabel];
+
+  var reserveButton = [[CPButton alloc] initWithFrame:CGRectMake(90, 380, 80, 30)];
+  [reserveButton setTitle: "Reserve"];
+  [reserveButton setTarget: animalController];
+  [reserveButton setAction: @selector(reserveAnimal:)];
+  [contentView addSubview:reserveButton];
 
 
 
