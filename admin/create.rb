@@ -94,14 +94,14 @@ Animal.create(:name => 'pumpkin', :kind => 'equine mare')
 
 
 
-bossy = Animal[:name => 'bossy']
-betsy = Animal[:name => 'betsy']
-suzy = Animal[:name => 'suzy']
-procedure = Procedure[:name => 'venipuncture']
+brooke = Animal[:name => 'brooke']
+#betsy = Animal[:name => 'betsy']
+#suzy = Animal[:name => 'suzy']
+procedure = Procedure[:name => 'artificial insemination']
 
-Use.create(:animal => bossy, :procedure => procedure, :date => Date.today - 3)
-Use.create(:animal => suzy, :procedure => procedure, :date => Date.new(1969))
-Use.create(:animal => betsy, :procedure => procedure, :date => Date.today - 30)
+Use.create(:animal => brooke, :procedure => procedure, :date => Date.new(2009,7,20))
+# Use.create(:animal => suzy, :procedure => procedure, :date => Date.new(1969))
+# Use.create(:animal => betsy, :procedure => procedure, :date => Date.today - 30)
 
 puts procedure.uses_dataset.filter(:date => (Date.new(1969)..(Date.today-14))).inspect
 

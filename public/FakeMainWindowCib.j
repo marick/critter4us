@@ -3,6 +3,7 @@
 @import "DateInterfaceController.j"
 @import "ProcedureInterfaceController.j"
 @import "AnimalInterfaceController.j"
+@import "CheckboxHacks.j"
 
 @implementation FakeMainWindowCib : CPObject
 {
@@ -132,20 +133,27 @@
 
 -(void)loadAndConnectAnimalInterfaceController
 {
+  var animalController = [[AnimalInterfaceController alloc] init];
+  GlobalCheckboxTarget = animalController;
+
   var contentView = [[CPView alloc] initWithFrame: CGRectMake(650, 140, 300, 400)];
   [[theWindow contentView] addSubview: contentView];
 
 
   var label = [[CPTextField alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
-  [label setStringValue: "3. Check which animals are to actually be used."];
+  [label setStringValue: "3. Check which animals are to be reserved."];
   [contentView addSubview:label];
 
    var animalTable = [[CPTableView alloc] initWithFrame: CGRectMake(0, 0, 250, 250)];
-  var checkColumn = [[CPTableColumn alloc] initWithIdentifier:@"checks"];
+  var checkColumn = [[CheckboxTableColumn alloc] initWithIdentifier:@"checks"];
   [checkColumn setWidth: 20];
-  var checkButton = [[CPCheckBox alloc] init];
-  [checkColumn setDataCell: checkButton]
   [animalTable addTableColumn:checkColumn];
+
+  // Given current hackery, this prototype cell is never
+  // actually used. I'm keeping it here because this is how 
+  // you'll do it when checkboxes actually work in tables.
+  var checkButton = [[CritterCheckBox alloc] init];
+  [checkColumn setDataCell: checkButton]
 
   var nameColumn = [[CPTableColumn alloc] initWithIdentifier:@"names"];
   [nameColumn setWidth: 230];
@@ -159,7 +167,6 @@
 
 
 
-  var animalController = [[AnimalInterfaceController alloc] init];
   animalController.persistentStore = persistentStore;
   animalController.containingView = contentView;
   animalController.nameColumn = nameColumn;
