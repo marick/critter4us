@@ -149,10 +149,9 @@
   [checkColumn setWidth: 20];
   [animalTable addTableColumn:checkColumn];
 
-  // Given current hackery, this prototype cell is never
-  // actually used. I'm keeping it here because this is how 
-  // you'll do it when checkboxes actually work in tables.
   var checkButton = [[CritterCheckBox alloc] init];
+  [checkButton setTarget: animalController];
+  [checkButton setAction: @selector(toggleAnimal:)];
   [checkColumn setDataCell: checkButton]
 
   var nameColumn = [[CPTableColumn alloc] initWithIdentifier:@"names"];
