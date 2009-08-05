@@ -39,6 +39,7 @@
 {
   [scenario
    given: function() {
+      [sut awakeFromCib];
       [self notifyOfSomeDate];
     }
    after: function() {
@@ -54,6 +55,7 @@
 {
   [scenario
    given: function() {
+      [sut awakeFromCib];
       [self notifyOfSomeDate];
     }
    after: function() {
@@ -69,6 +71,7 @@
 {
   [scenario
    given: function() {
+      [sut awakeFromCib];
       [self notifyOfSomeDate];
       [self notifyOfSomeProcedures];
     }

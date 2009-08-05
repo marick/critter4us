@@ -8,6 +8,9 @@
   CPButton button;
 
   // State ready
+  CPString date;
+  CPArray procedures;
+  CPArray animals;
 
   // For testing
   BOOL awakened;
@@ -53,15 +56,21 @@
 
 - (void) dateChosen: aNotification
 {
+  date = [aNotification object];
   [containingView setHidden:NO];
+  [self updateButton];
 }
 
 - (void) proceduresChosen: aNotification
 {
+  procedures = [aNotification object];
+  [self updateButton];
 }
 
 - (void) animalsChosen: aNotification
 {
+  animals = [aNotification object];
+  [self updateButton];
 }
 
 - (void) makeReservation: (CPButton) sender
@@ -69,6 +78,15 @@
   alert('click!');
 }
 
+
+
+- (void) updateButton
+{
+  if (date && procedures && animals)
+    {
+      [button setEnabled:YES];
+    }
+}
 
 
 @end

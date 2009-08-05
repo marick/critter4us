@@ -63,7 +63,7 @@
 
 - (void) notifyOfSomeAnimals
 {
-  [self notifyOfChosenAnimals: ["betsy", "barneyy"]];
+  [self notifyOfChosenAnimals: ["betsy", "barney"]];
 }
 
 
