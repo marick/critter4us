@@ -1,64 +1,51 @@
 @import "DateInterfaceController.j"
-@import "Mock.j"
+@import "ScenarioTestCase.j"
 
-@implementation DateInterfaceControllerTest : OJTestCase
+@implementation DateInterfaceControllerTest : ScenarioTestCase
 {
-  DateInterfaceController controller;
-  Mock textField;
-  Mock store;
 }
 
 - (void)setUp
 {
-  controller = [[DateInterfaceController alloc] init];
-  textField = [[Mock alloc] init];
-  store = [[Mock alloc] init];
+  sut = [[DateInterfaceController alloc] init];
+  scenario = [[Scenario alloc] initForTest: self andSut: sut];
+  [scenario sutHasUpwardCollaborators: ['textField']];
+  [scenario sutHasDownwardCollaborators: ['persistentStore']];
 }
 
 
 - (void)testPickingDateNotifiesListenersOfEvent
 {
-  var listener = [[Mock alloc] init];
-  [[CPNotificationCenter defaultCenter]
-   addObserver: listener
-   selector: @selector(dateChosen:)
-   name: @"date chosen"
-   object: nil];
-
-  [listener shouldReceive: @selector(dateChosen:)];
-
-  [[[DateInterfaceController alloc] init] newDate: nil];
-
-
-  [self assertTrue: [listener wereExpectationsFulfilled]];
+  [scenario 
+   during: function() {
+      [self selectDate: "2009-09-03"]
+    }
+  behold: function() {
+      [self listenersWillReceiveNotification: "date chosen" containingObject: "2009-09-03"];
+    }
+   ];
 }
 
 
 - (void)testPickingDateCausesExclusionsToBeRetrievedAndNotified
 {
-  controller.persistentStore = store;
-
-  listener = [[Mock alloc] init];
-  [[CPNotificationCenter defaultCenter]
-   addObserver: listener
-   selector: @selector(notifyOfExclusions:)
-   name: @"exclusions"
-   object: nil];
-
-
-  [textField shouldReceive: @selector(stringValue) andReturn: @"some date"];
-  [store shouldReceive: @selector(exclusionsForDate:) with: [@"some date"] andReturn: @"some exclusions"];
-
-  var objectChecker = function(notification) { 
-    return [notification object] === @"some exclusions";
-  }
-
-  [listener shouldReceive: @selector(notifyOfExclusions:) with: objectChecker];
-
-  [controller newDate: textField];
-
-  [self assertTrue: [textField wereExpectationsFulfilled]];
-  [self assertTrue: [store wereExpectationsFulfilled]];
-  [self assertTrue: [listener wereExpectationsFulfilled]];
+  [scenario
+   during: function() {
+      [self selectDate: "some date"];
+    }
+  behold: function() {
+      [sut.persistentStore shouldReceive: @selector(exclusionsForDate:)
+                           with: [@"some date"]
+                           andReturn: @"some exclusions"];
+      [self listenersWillReceiveNotification: "exclusions" containingObject: "some exclusions"];
+    }
+   ];
 }
 
+- (void) selectDate: (CPString) aDate
+{
+  [sut.textField shouldReceive: @selector(stringValue) andReturn: aDate];
+  [sut newDate: sut.textField];
+}
+
+@end
