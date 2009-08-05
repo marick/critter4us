@@ -196,7 +196,7 @@
   var reserveButton = [[CPButton alloc] initWithFrame:CGRectMake(80, 30, 80, 30)];
   [reserveButton setTitle: "Reserve"];
   [reserveButton setTarget: reservationController];
-  [reserveButton setAction: @selector(reserveAnimal:)];
+  [reserveButton setAction: @selector(makeReservation:)];
   [contentView addSubview:reserveButton];
 
   reservationController.persistentStore = persistentStore;

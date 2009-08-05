@@ -138,9 +138,34 @@
 {
   var name = availableAnimals[index];
   [isChosen setValue: (![isChosen valueForKey: name]) forKey: name];
-  [table reloadData];
+  [self updateEveryoneWhoCaresAboutChange];
 }
 
+- (void) updateEveryoneWhoCaresAboutChange
+{
+  [table reloadData];
+  [[CPNotificationCenter defaultCenter] 
+         postNotificationName: @"animals chosen"
+	 object: [self chosenAnimals]];
+}
+
+- (CPArray) chosenAnimals
+{
+  // allKeysForObject not implemented. Sadness.
+  var retval = [CPArray array];
+  // for .. in produces bizarre results.
+  var keys = [isChosen allKeys];
+  for (var i=0; i< [keys count]; i++)
+    {
+      var key = [keys objectAtIndex: i];
+      if ([isChosen valueForKey: key])
+	{
+	  [retval addObject: key];
+	}
+    }
+  [retval sortUsingSelector: @selector(caseInsensitiveCompare:)];
+  return retval;
+}
 
 - (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView
 {

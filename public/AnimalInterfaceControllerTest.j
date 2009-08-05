@@ -118,11 +118,28 @@
     }];
 }
 
+- (void) testChoosingAnimalsBroadcastsChoice
+{
+  [scenario
+   given: function() { 
+      [self animals: ["alpha",  "delta", "betty"]];
+      [self usingExclusions: { 'veniculture': [],
+	                       'physical exam': [],
+                               'floating':[]}];
+      [self alreadySelected: ["betty"]];
+    }
+  during: function() { 
+      [self selectAnimal: "alpha"];
+    }
+  behold: function() {
+      [self listenersWillReceiveNotification: @"animals chosen"
+            containingObject: ["alpha", "betty"]];
+    }];
+}
 
 
 
-// select two animals, then choose a procedure that excludes it.
-// select animal, exclude it, then unchoose procedure to include it - should be unchecked.
+
 
 -(void) selectAnimal: aName
 {
