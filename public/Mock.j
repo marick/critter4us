@@ -129,7 +129,11 @@
 	{
 	  goodArg = expected(actual);
 	}
-      else
+      else if (expected.isa != undefined) // There is probably a better test.
+	{
+	  goodArg = [expected isEqual: actual];
+	}
+      else  
 	{
 	  goodArg = (expected === actual);
 	}

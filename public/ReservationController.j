@@ -75,7 +75,7 @@
 
 - (void) makeReservation: (CPButton) sender
 {
-  alert('click!');
+  [persistentStore storeDate: date procedures: procedures animals: animals];
 }
 
 

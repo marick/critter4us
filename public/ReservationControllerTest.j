@@ -84,6 +84,27 @@
    ];
 }
 
+
+- (void)testButtonClickSendsDataToPersistentStore
+{
+  [scenario
+   given: function() {
+      [sut awakeFromCib];
+      [self notifyOfChosenDate: '2009-03-05'];
+      [self notifyOfChosenProcedures: ["procedure 1", "procedure 2"]];
+      [self notifyOfChosenAnimals: ["animal 1", "animal 2"]];
+    }
+   during: function() {
+      [sut makeReservation: 'ignored'];
+    }
+   behold: function() {
+      [sut.persistentStore shouldReceive: @selector(storeDate:procedures:animals:)
+       with: ['2009-03-05', ["procedure 1", "procedure 2"], ["animal 1", "animal 2"]]]
+    }
+   ];
+}
+
+
 - (void) thisControlWillBeDisabled: (CPControl) aControl
 {
   [aControl shouldReceive: @selector(setEnabled:) with: NO];
