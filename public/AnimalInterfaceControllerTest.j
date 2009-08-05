@@ -188,9 +188,4 @@
 }
 
 
-- (void) notifyOfChosenProcedures: (CPArray)anArray
-{
-  [self sendNotification: @"procedures chosen" withObject: anArray];
-}
-
 @end	

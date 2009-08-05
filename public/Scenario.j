@@ -22,11 +22,23 @@
   [self given: given during: sequence behold: nothing andTherefore: consequence];
 }
 
+-(void) given: given after: during behold: behold
+{
+  nothing = function() { }
+  [self given: given during: during behold: behold andTherefore: nothing];
+}
+
 
 -(void) during: during behold: behold 
 {
   nothing = function() {}
   [self given: nothing during: during behold: behold andTherefore: nothing];
+}
+
+-(void) given: given during: during behold: behold 
+{
+  nothing = function() {}
+  [self given: given during: during behold: behold andTherefore: nothing];
 }
 
 -(void) given: given during: during behold: behold andTherefore: result
@@ -54,6 +66,11 @@
   [test.sut awakeFromCib];
   [self checkAllExpectations];
   result();
+}
+
+-(void) whileAwakening: (id)mockSettings
+{
+  [self whileAwakening: mockSettings andTherefore:  function(){}];
 }
 
 

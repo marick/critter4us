@@ -141,10 +141,6 @@
   [table reloadData];
 }
 
-- (void) reserveAnimal: (CPButton) sender
-{
-  alert("CLICK!");
-}
 
 - (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView
 {

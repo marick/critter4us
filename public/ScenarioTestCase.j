@@ -35,6 +35,37 @@
                                         object: anObject];
 }
 
+- (void) notifyOfChosenDate: (String) aDate
+{
+  [self sendNotification: @"date chosen" withObject: aDate];
+}
+
+- (void) notifyOfSomeDate
+{
+  [self notifyOfChosenDate: "2009-07-03"];
+}
+
+
+- (void) notifyOfChosenProcedures: (CPArray)anArray
+{
+  [self sendNotification: @"procedures chosen" withObject: anArray];
+}
+
+- (void) notifyOfSomeProcedures
+{
+  [self notifyOfChosenProcedures: ["foo", "bar"]];
+}
+
+- (void) notifyOfChosenAnimals: (CPArray)anArray
+{
+  [self sendNotification: @"animals chosen" withObject: anArray];
+}
+
+- (void) notifyOfSomeAnimals
+{
+  [self notifyOfChosenAnimals: ["betsy", "barneyy"]];
+}
+
 
 
 

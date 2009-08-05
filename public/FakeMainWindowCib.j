@@ -3,6 +3,7 @@
 @import "DateInterfaceController.j"
 @import "ProcedureInterfaceController.j"
 @import "AnimalInterfaceController.j"
+@import "ReservationController.j"
 @import "CheckboxHacks.j"
 
 @implementation FakeMainWindowCib : CPObject
@@ -26,6 +27,7 @@
   [self loadAndConnectDateInterfaceController];
   [self loadAndConnectProcedureInterfaceController];
   [self loadAndConnectAnimalInterfaceController];
+  [self loadAndConnectReservationController];
 
   [self awakenAllObjects];
   [theWindow orderFront:self];
@@ -164,18 +166,6 @@
   [contentView addSubview:scrollView];
   [contentView setHidden:YES];
 
-  var reserveLabel = [[CPTextField alloc] initWithFrame:CGRectMake(0, 350, 300, 30)];
-  [reserveLabel setStringValue: "4. When you're ready to reserve, just click."];
-  [contentView addSubview:reserveLabel];
-
-  var reserveButton = [[CPButton alloc] initWithFrame:CGRectMake(90, 380, 80, 30)];
-  [reserveButton setTitle: "Reserve"];
-  [reserveButton setTarget: animalController];
-  [reserveButton setAction: @selector(reserveAnimal:)];
-  [contentView addSubview:reserveButton];
-
-
-
   animalController.persistentStore = persistentStore;
   animalController.containingView = contentView;
   animalController.nameColumn = nameColumn;
@@ -189,6 +179,33 @@
 
   [customObjectsLoaded addObject:animalController];
 }
+
+
+-(void)loadAndConnectReservationController
+{
+  var reservationController = [[ReservationController alloc] init];
+
+  var contentView = [[CPView alloc] initWithFrame: CGRectMake(650, 480, 300, 100)];
+  [contentView setHidden:YES];
+  [[theWindow contentView] addSubview: contentView];
+
+  var reserveLabel = [[CPTextField alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
+  [reserveLabel setStringValue: "4. When you're ready to reserve, just click."];
+  [contentView addSubview:reserveLabel];
+
+  var reserveButton = [[CPButton alloc] initWithFrame:CGRectMake(80, 30, 80, 30)];
+  [reserveButton setTitle: "Reserve"];
+  [reserveButton setTarget: reservationController];
+  [reserveButton setAction: @selector(reserveAnimal:)];
+  [contentView addSubview:reserveButton];
+
+  reservationController.persistentStore = persistentStore;
+  reservationController.containingView = contentView;
+  reservationController.button = reserveButton;
+
+  [customObjectsLoaded addObject:reservationController];
+}
+
 
 - (void) awakenAllObjects
 {
