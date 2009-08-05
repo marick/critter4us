@@ -1,0 +1,2 @@
+  CPLog("TODO: any tests needed when date is reset (deselect animals).", "warn");
+  CPLog("TODO: disable button when all animals or procedures deselected.", "warn");
