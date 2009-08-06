@@ -3,6 +3,7 @@
   OJTestCase test;
   id sut;
   CPArray collaboratorNames;
+  id result;
 
   Mock randomListener;
 }
@@ -12,7 +13,7 @@
   test = aTest;
   sut = aSut;
   collaboratorNames = [];
-  randomListener = [[Mock alloc] initWithName: "any old listener"]
+  randomListener = [[Mock alloc] initWithName: "any old listener"];
   return self;
 }
 
@@ -41,31 +42,31 @@
   [self given: given during: during behold: behold andTherefore: nothing];
 }
 
--(void) given: given during: during behold: behold andTherefore: result
+-(void) given: given during: during behold: behold andTherefore: consequence
 {
   given();
   if (! sut.awakened) [sut awakeFromCib];
   behold();
-  during();
+  result = during();
   [self checkAllExpectations];
-  result();
+  consequence();
 }
 
 
 
-
--(void) beforeAwakening: setup whileAwakening: (id)mockSettings andTherefore: (id)result
+o
+-(void) beforeAwakening: setup whileAwakening: (id)mockSettings andTherefore: (id)consequence
 {
   setup();
-  [self whileAwakening: mockSettings andTherefore: result];
+  [self whileAwakening: mockSettings andTherefore: consequence];
 }
 
--(void) whileAwakening: (id)mockSettings andTherefore: (id)result
+-(void) whileAwakening: (id)mockSettings andTherefore: (id)consequence
 {
   mockSettings();
   [test.sut awakeFromCib];
   [self checkAllExpectations];
-  result();
+  consequence();
 }
 
 -(void) whileAwakening: (id)mockSettings
