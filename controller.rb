@@ -45,6 +45,13 @@ class Controller < Sinatra::Base
     end
   end
 
+  post '/json/store_reservation' do
+    puts params.inspect
+    data = params['data']
+    hash = JSON.parse(data)
+    "hello, world"
+  end
+
   private
 
   def jsonically
