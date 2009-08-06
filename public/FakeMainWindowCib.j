@@ -31,13 +31,19 @@
 
   [self awakenAllObjects];
   [theWindow orderFront:self];
+
+  //  var webView = [[CPWebView alloc] initWithFrame: CGRectMake(0,0,100,50)];
+
+  //  [webView loadHTMLString:@"<a href=\"http://arxta.net\" target=\"_blank\">Click me!</a>" baseURL: nil];
+
+  //  [[theWindow contentView] addSubview: webView];
 }
 
 
 - (void) loadGlobalPersistentStore
 {
   persistentStore = [[PersistentStore alloc] init];
-  persistentStore.connection = [[Network alloc] init];
+  persistentStore.network = [[NetworkConnection alloc] init];
 }
 
 - (void) loadAndConnectWindowController
