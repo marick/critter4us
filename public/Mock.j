@@ -7,7 +7,7 @@
 
 - (CPString) description
 {
-  return [CPString stringWithFormat: "expectation: %s %@ => %@", selector, args, retval];
+  return [CPString stringWithFormat: "expectation: %s %@ => %@", selector, [args description], retval];
 }
 
 - (id) returnValue
@@ -78,6 +78,14 @@
 
 - (Mock)with: (id)args
 {
+  if (typeof(args) == "function")
+    {
+      args = [args];
+    }
+  if (! [args isKindOfClass: CPArray])
+    {
+      args = [args];
+    }
   buildingExpectation.args = args;
   return self;	
 }
@@ -90,8 +98,6 @@
 
 - (BOOL)wereExpectationsFulfilled
 {
-  //CPLog([expectationDictionary count]);
-  //CPLog([actualities count]);
   if ([expectationDictionary count] !== [actualities count])
     {
       [self noteFailure: [CPString stringWithFormat: "%d expected invocations, got %d", [expectationDictionary count], [actualities count]]];
@@ -102,7 +108,6 @@
       var actuality = actualities[i];
       var selector = [actuality selector];
       var expectation = [expectationDictionary objectForKey: selector];
-      
       if (expectation == null)
 	{
 	  [self noteFailure: [CPString stringWithFormat: "No expectation for %@", selector]];
@@ -187,14 +192,6 @@
 
 - (Mock)shouldReceive: (SEL)aSelector with: (CPArray)args
 {
-  if (typeof(args) == "function")
-    {
-      args = [args];
-    }
-  if (! [args isKindOfClass: CPArray])
-    {
-      args = [args];
-    }
   return [[self shouldReceive: aSelector] with: args];
 }
 

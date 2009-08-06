@@ -60,16 +60,18 @@
 
 - (void)testSingleArgumentsDoNotHaveToBeInArray
 {
-  [mock shouldReceive: @selector(foo:) with: 5];
-  [mock foo: 5];
+  [mock shouldReceive: @selector(foo:) with: "5"];
+  [mock foo: "5"];
   
   [self assertTrue: [mock wereExpectationsFulfilled]];
 }
 
 - (void)testExpectationsCanReceiveAFunctionToExecute
 {
-  [mock shouldReceive: @selector(foo:) with: [function(x) { return x == 100 }]];
-  [mock foo: 100];
+  var hashTester = function(x) { return x['a'] === 'b' };
+  var jsHash = {'a':'b'};
+  [mock shouldReceive: @selector(foo:) with: hashTester];
+  [mock foo: jsHash];
 
   [self assertTrue: [mock wereExpectationsFulfilled]];
 }
