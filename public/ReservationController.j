@@ -1,4 +1,5 @@
 @import <Foundation/CPObject.j>
+@import "Constants.j"
 
 @implementation ReservationController : CPObject
 {
@@ -75,7 +76,8 @@
 
 - (void) makeReservation: (CPButton) sender
 {
-  [persistentStore storeDate: date procedures: procedures animals: animals];
+  var data = {'date':date,'procedures':procedures,'animals':animals}
+  [persistentStore makeReservation: data];
 }
 
 

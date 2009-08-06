@@ -1,6 +1,7 @@
 @import "ReservationController.j"
 @import "ScenarioTestCase.j"
 
+
 @implementation ReservationControllerTest : ScenarioTestCase
 {
 }
@@ -84,7 +85,7 @@
    ];
 }
 
-
+// This is a pretty dumb test.
 - (void)testButtonClickSendsDataToPersistentStore
 {
   [scenario
@@ -98,10 +99,15 @@
       [sut makeReservation: 'ignored'];
     }
    behold: function() {
-      [sut.persistentStore shouldReceive: @selector(storeDate:procedures:animals:)
-       with: ['2009-03-05', ["procedure 1", "procedure 2"], ["animal 1", "animal 2"]]]
-    }
-   ];
+      var hashTester = function (h) {
+	[self assert: h['date'] equals: '2009-03-05'];
+	[self assert: h['procedures'] equals: ["procedure 1", "procedure 2"]];
+	[self assert: h['animals'] equals: ["animal 1", "animal 2"]];
+ 	return YES
+      }
+      [sut.persistentStore shouldReceive: @selector(makeReservation:)
+                                    with: hashTester]
+    }];
 }
 
 
@@ -120,7 +126,5 @@
   aControl.failOnUnexpectedSelector = YES;
 }
 						    
-
-
  
 @end
