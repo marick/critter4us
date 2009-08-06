@@ -1,52 +1,79 @@
 @import <Foundation/CPObject.j>
+@import "Controller.j"
 
-@implementation Network : CPObject
+@implementation NetworkConnection : CPObject
 {
 }
 
-- (CPString)jsonStringFromRequest: request
+- (CPString)GETJsonFromURL: (CPString) url
 {
+  var request = [CPURLRequest requestWithURL: url];
   var data = [CPURLConnection sendSynchronousRequest: request   
 	      returningResponse:nil error:nil]; 
   return [data description];
 }
 
+
+
+
+- (CPString)POSTFormData: request withFormData: content
+{
+  [request setHTTPMethod:@"POST"]; 
+  [request setHTTPBody:content]; 
+  [request setValue:"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; 
+
+  var data = [CPURLConnection sendSynchronousRequest: request   
+	      returningResponse:nil error:nil]; 
+  alert([data description]);
+}
+
+
 @end
 
-@implementation PersistentStore : CPObject
+@implementation PersistentStore : Controller
 {
-  id connection;
+  id network;
 }
 
 - (CPArray) allAnimalNames
 {
-  var retval = [self doRequest: "all_animals" forKey: "animals"];
-  return [CPArray arrayWithArray: retval];
+  return [self valueForKey: 'animals' atRoute: AllAnimalsRoute];
 }
 
 - (CPArray) allProcedureNames
 {
-  var retval = [self doRequest: "procedures" forKey: "procedures"];
-  return [CPArray arrayWithArray: retval];
+  return [self valueForKey: 'procedures' atRoute: AllProceduresRoute];
 }
 
 - (CPDictionary) exclusionsForDate: (CPString)dateString
 {
-  var request = [CPString stringWithFormat: "exclusions?date=%s", dateString];
-  var retval =  [self doRequest: request forKey: "exclusions"];
-  return [CPDictionary dictionaryWithJSObject: retval
-                       recursively: YES];
+  var jsHash = [self valueForKey: 'exclusions' atRoute: ExclusionsRoute+"?date=" + dateString];
+  var retval = [CPDictionary dictionaryWithJSObject: jsHash recursively: YES];
+  return retval;
 }	
 
-// util
-
-- (CPArray) doRequest: (CPString)aString forKey: (CPString)aKey
+- (void) makeReservation: jsData
 {
-  url = [CPString stringWithFormat: @"http://localhost:7000/json/%s", aString];
-  var request = [CPURLRequest requestWithURL: url];
-  var str = [connection jsonStringFromRequest: request];
-  var json = [str objectFromJSON];
-  return json[aKey];
+  alert("making reservation");
+  var dataString = encodeURIComponent([CPString JSONFromObject: jsData]);
+  var content = [CPString stringWithFormat:@"data=%s", dataString];
+  alert(content);
+
+  var request = [CPURLRequest requestWithURL:@"http://localhost:7000/json/store_reservation"];
+  alert("about to POST");
+  [network POSTFormData: request withFormData: content];
+}
+
+// util
+- (CPArray) valueForKey: (CPString)aKey atRoute: route
+{
+  var url = jsonURI(route);
+  alert("value for key " + url);
+  var jsonString = [network GETJsonFromURL: url];
+  alert("jsonstring is " + jsonString);
+  var jsHash =  [jsonString objectFromJSON];
+  var result = jsHash[aKey];
+  return result;
 }
 
 @end

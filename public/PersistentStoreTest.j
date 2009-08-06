@@ -1,41 +1,66 @@
 @import "PersistentStore.j"
-@import "Mock.j"
+@import "ScenarioTestCase.j"
 
-@implementation PersistentStoreTest : OJTestCase
+@implementation PersistentStoreTest : ScenarioTestCase
 {
-  PersistentStore store;
-  Mock network;
 }
 
 - (void)setUp
 {
-  store = [[PersistentStore alloc] init];
-  network = [[Mock alloc] init];
-  store.connection = network;
+  sut = [[PersistentStore alloc] init];
+  scenario = [[Scenario alloc] initForTest: self andSut: sut];
+ [scenario sutHasDownwardCollaborators: ['network']];
 }
 
-- (void)testParsesJsonIntoAnimalList
+
+- (void)testFetchesAnimalNamesIntoArray
 {
-  [network shouldReceive: @selector(jsonStringFromRequest:)
-   andReturn: '{"animals":["betsy"]}'];
-  
-  [self assert: ['betsy'] equals: [store allAnimalNames]];
+  [scenario
+   during: function() {
+      return [sut allAnimalNames];
+   }
+  behold: function() {
+      [sut.network shouldReceive: @selector(GETJsonFromURL:)
+       with: jsonURI(AllAnimalsRoute)
+       andReturn: '{"animals":["betsy"]}'];
+    }]
+  [self assert: ['betsy'] equals: scenario.result];
 }
 
-- (void)testParsesJsonIntoExclusionHash
+- (void)testFetchesProcedureNamesIntoArray
 {
-  [network shouldReceive: @selector(jsonStringFromRequest:)
-   andReturn: '{"exclusions":{"veniculture":["one"],"aquaculture":["2","3"]}}'];
-  
-  actual = [store exclusionsForDate:"2008-02-12"];
-  [self assert: 2 equals: [[actual allKeys] count]];
-  [self assert: ["one"]
-                equals: [actual objectForKey: "veniculture"]];
-  [self assert: ["2","3"]
-                equals: [actual objectForKey: "aquaculture"]];
-
+  [scenario
+   during: function() {
+      return [sut allProcedureNames];
+   }
+  behold: function() {
+      [sut.network shouldReceive: @selector(GETJsonFromURL:)
+       with: jsonURI(AllProceduresRoute)
+       andReturn: '{"procedures":["1", "2"]}'];
+    }]
+    [self assert: ['1', '2'] equals: scenario.result];
 }
 
+- (void)testFetchesJsonExclusions
+{
+  [scenario
+   during: function() {
+      return [sut exclusionsForDate:"2009-02-23"];
+    }
+  behold: function() {
+      [sut.network shouldReceive: @selector(GETJsonFromURL:)
+       with: jsonURI(ExclusionsRoute) + "?date=2009-02-23"
+       andReturn: '{"exclusions":{"veniculture":["one"],"aquaculture":["2","3"]}}'];
+    }
+   ];
+    
+  var expected = [CPDictionary dictionaryWithJSObject: {"veniculture":["one"],"aquaculture":["2","3"]}];
+  [self assertTrue: [expected isEqualToDictionary: scenario.result]];
+}
 
+-(void)xtestPostingOfReservation
+{
+  [network shouldReceive: @selector(POSTjsonForm:)];
+}
 
 @end
