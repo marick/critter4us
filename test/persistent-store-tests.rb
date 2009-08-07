@@ -41,8 +41,9 @@ class PersistentStoreTests < Test::Unit::TestCase
     should "have empty exclusion list if at last day of boundary" do 
       procedure = Procedure.create(:name => 'only', :days_delay => 1)
       animal = Animal.create(:name => "bossie");
-      Use.create(:animal => animal, :procedure => procedure,
-                 :date => Date.new(2002, 12, 1))
+      reservation = Reservation.create(:date => Date.new(2002, 12, 1))
+      Use.create(:animal => animal, :procedure => procedure, :reservation => reservation);
+
 
       expected = { 'only' => [] }
       assert { @store.exclusions_for_date(Date.new(2002, 12, 2)) == expected }
@@ -51,8 +52,8 @@ class PersistentStoreTests < Test::Unit::TestCase
     should "have excluded animal if within delay" do 
       procedure = Procedure.create(:name => 'only', :days_delay => 2)
       animal = Animal.create(:name => "bossie");
-      Use.create(:animal => animal, :procedure => procedure,
-                 :date => Date.new(2002, 12, 1))
+      reservation = Reservation.create(:date => Date.new(2002, 12, 1))
+      Use.create(:animal => animal, :procedure => procedure, :reservation => reservation)
 
       expected = { 'only' => ['bossie'] }
       assert { @store.exclusions_for_date(Date.new(2002, 12, 2)) == expected }
@@ -66,14 +67,18 @@ class PersistentStoreTests < Test::Unit::TestCase
       bossie = Animal.create(:name => 'bossie')
       staggers = Animal.create(:name => 'staggers')
 
+      eight31 = Reservation.create(:date => Date.new(2009, 8, 31)) # Previous Monday
+      nine1 = Reservation.create(:date => Date.new(2009, 9, 1))  # Previous Tuesday
+      nine7 = Reservation.create(:date => Date.new(2009, 9, 7))  # Today, Monday
+
       Use.create(:animal => bossie, :procedure => venipuncture,
-                 :date => Date.new(2009, 8, 31)) # Previous Monday
+                 :reservation => eight31);
       Use.create(:animal => staggers, :procedure => venipuncture,
-                 :date => Date.new(2009, 9, 1))  # Previous Tuesday
+                 :reservation => nine1);
       Use.create(:animal => veinie, :procedure => venipuncture,
-                 :date => Date.new(2009, 9, 7))  # Today, Monday
+                 :reservation => nine7);
       Use.create(:animal => veinie, :procedure => physical_exam,
-                 :date => Date.new(2009, 9, 7))  # Again, Monday
+                 :reservation => nine7);
 
       # What can not be scheduled today?
       actual = @store.exclusions_for_date(Date.new(2009, 9, 7))

@@ -25,7 +25,7 @@ GlobalCheckboxTarget = "nothing yet";
 
 @implementation CritterCheckBox : CPCheckBox
 {
-  (CPInteger) index;
+  (CPInteger) index;  // TODO: Should probably use the tag instead.
 }
 
 - (CPInteger) clickedRow

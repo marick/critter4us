@@ -91,17 +91,28 @@ Animal.create(:name => 'pumpkin', :kind => 'equine mare')
 #
 #
 
-
-
-
+reservation = Reservation.create(:date => Date.new(2009,7,20))
 brooke = Animal[:name => 'brooke']
-#betsy = Animal[:name => 'betsy']
-#suzy = Animal[:name => 'suzy']
+sunny = Animal[:name => 'sunny']
 procedure = Procedure[:name => 'artificial insemination']
 
-Use.create(:animal => brooke, :procedure => procedure, :date => Date.new(2009,7,20))
-# Use.create(:animal => suzy, :procedure => procedure, :date => Date.new(1969))
-# Use.create(:animal => betsy, :procedure => procedure, :date => Date.today - 30)
+
+
+Use.create(:animal => brooke, :procedure => procedure, :reservation => reservation)
+Use.create(:animal => sunny, :procedure => procedure, :reservation => reservation)
+
+# puts Reservation[1].uses_dataset.filter(:animal_id => suzy.id).inspect
+
+# puts DB[:uses, :reservations].filter(:uses__animal_id => 1).all.inspect
+
+# puts DB[:uses].filter(:procedure_id => brooke.id).sql
+# puts Animal.filter(:name => 'brooke').first.name
+# puts Use.filter(:reservation_id => reservation.id).all
+
+puts Reservation.dataset.max(:id)
+puts Use.filter(:reservation_id => 1).all.inspect
+
+exit
 
 puts procedure.uses_dataset.filter(:date => (Date.new(1969)..(Date.today-14))).inspect
 
