@@ -4,9 +4,10 @@ DateChosenNews = "date chosen";
 
 
 // Route names
-AllAnimalsRoute = @"all_animals"
-AllProceduresRoute = @"procedures"
-ExclusionsRoute = @"exclusions"
+AllAnimalsRoute = @"all_animals";
+AllProceduresRoute = @"procedures";
+ExclusionsRoute = @"exclusions";
+StoreReservationRoute = @"store_reservation";
 
 // URI
 Site = "http://localhost:7000"

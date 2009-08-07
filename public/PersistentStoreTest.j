@@ -58,9 +58,29 @@
   [self assertTrue: [expected isEqualToDictionary: scenario.result]];
 }
 
--(void)xtestPostingOfReservation
+-(void)testPostingOfReservation
 {
-  [network shouldReceive: @selector(POSTjsonForm:)];
+  [scenario 
+   during: function() {
+      var data = {'date':'2009-03-23',
+		  'animals':["betsy"],
+		  'procedures':["rhinoscopy (cows)"]};
+      return [sut makeReservation: data];
+    }
+  behold: function() { 
+      [sut.network shouldReceive: @selector(POSTFormDataTo:withContent:)
+       with: [jsonURI(StoreReservationRoute), 
+	      function(content) {
+		  [self assertTrue: content.match("animals%22%3A")];
+		  // Can't get the regex to escape a paren.
+		  r = /rhinoscopy%20.cows./;
+		  [self assertTrue: content.match(r)];
+		  [self assertTrue: content.match(/date.*2009/)];
+		  return YES;
+	      }]
+       andReturn: "a string"];
+    }
+   ];
 }
 
 @end

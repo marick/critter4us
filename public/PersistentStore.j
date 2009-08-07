@@ -13,18 +13,18 @@
   return [data description];
 }
 
-
-
-
-- (CPString)POSTFormData: request withFormData: content
+- (CPString)POSTFormDataTo: (CPString) url withContent: content
 {
+  var request = [CPURLRequest requestWithURL: url];
   [request setHTTPMethod:@"POST"]; 
   [request setHTTPBody:content]; 
-  [request setValue:"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"]; 
+  [request setValue:"application/x-www-form-urlencoded"
+           forHTTPHeaderField:@"Content-Type"]; 
 
   var data = [CPURLConnection sendSynchronousRequest: request   
 	      returningResponse:nil error:nil]; 
   alert([data description]);
+  return [data description];
 }
 
 
@@ -54,23 +54,17 @@
 
 - (void) makeReservation: jsData
 {
-  alert("making reservation");
   var dataString = encodeURIComponent([CPString JSONFromObject: jsData]);
   var content = [CPString stringWithFormat:@"data=%s", dataString];
-  alert(content);
-
-  var request = [CPURLRequest requestWithURL:@"http://localhost:7000/json/store_reservation"];
-  alert("about to POST");
-  [network POSTFormData: request withFormData: content];
+  url = jsonURI(StoreReservationRoute);
+  [network POSTFormDataTo: url withContent: content];
 }
 
 // util
 - (CPArray) valueForKey: (CPString)aKey atRoute: route
 {
   var url = jsonURI(route);
-  alert("value for key " + url);
   var jsonString = [network GETJsonFromURL: url];
-  alert("jsonstring is " + jsonString);
   var jsHash =  [jsonString objectFromJSON];
   var result = jsHash[aKey];
   return result;
