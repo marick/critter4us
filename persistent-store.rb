@@ -38,22 +38,7 @@ class PersistentStore
              :animals__name.as(:animal_name),
              :reservations__date).all   # including date for debugging.
 
-=begin
-    pp '0------'
-    rows.each do | row | 
-      puts "On #{row[:date]}, #{row[:animal_name]} had #{row[:procedure_name]}."
-    end
-    pp rows_to_hash(rows)
-=end
-    rows_to_hash(rows)
-  end
-
-  def rows_to_hash(rows)
-    retval = self.empty_procedure_map
-    rows.each do | row |
-      retval[row[:procedure_name]] << row[:animal_name]
-    end
-    retval
+    hash_with_procedure_keys(rows)
   end
 
   def empty_procedure_map
@@ -61,6 +46,20 @@ class PersistentStore
     pairs = procedures.inject([]) { | so_far, name | so_far + [name, []] }
     Hash[*pairs]
   end
-                  
+
+  def create_reservation(date, animal_procedure_pairs = [])
+    Reservation.create(:date => date)
+  end
+
+private
+
+  def hash_with_procedure_keys(rows)
+    retval = self.empty_procedure_map
+    rows.each do | row |
+      retval[row[:procedure_name]] << row[:animal_name]
+    end
+    retval
+  end
+
 
 end

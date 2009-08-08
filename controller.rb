@@ -1,20 +1,13 @@
 require 'rubygems'
 require 'sinatra/base'
 require 'json'
+require 'model'
 
 
 class Controller < Sinatra::Base
 
   set :static, true
   set :root, File.dirname(__FILE__)
-
-  attr_writer :persistent_store
-
-  def initialize(settings = {})
-    super()
-    @persistent_store = settings[:persistent_store] || PersistentStore.new
-  end
-
 
   get '/' do
     File.read(File.join(options.public, 'index.html'))
@@ -23,15 +16,15 @@ class Controller < Sinatra::Base
   get '/json/procedures' do
     jsonically do 
       typing_as 'procedures' do
-        @persistent_store.procedure_names.sort
+        Procedure.names.sort
       end
     end
   end
 
   get '/json/all_animals' do
     jsonically do 
-      typing_as 'animals' do 
-        @persistent_store.all_animals.sort
+      typing_as 'animals' do
+        Animal.names.sort
       end
     end
   end
@@ -40,15 +33,17 @@ class Controller < Sinatra::Base
     jsonically do
       typing_as 'exclusions' do
         date = Date.parse(params['date'])
-        @persistent_store.exclusions_for_date(date)
+        ExclusionMap.new(date).to_hash
       end
     end
   end
 
   post '/json/store_reservation' do
-    puts params.inspect
     data = params['data']
     hash = JSON.parse(data)
+    Reservation.create_with_uses(hash['date'],
+                                 hash['procedures'],
+                                 hash['animals'])
     "hello, world"
   end
 
