@@ -6,4 +6,5 @@ require 'shoulda'
 require 'assert2'
 require 'flexmock'
 require 'test/testutil/mock-talk'
+require 'test/testutil/config'
 
