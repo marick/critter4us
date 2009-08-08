@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra/base'
 require 'json'
 require 'model'
+require 'view'
 
 
 class Controller < Sinatra::Base
@@ -41,10 +42,19 @@ class Controller < Sinatra::Base
   post '/json/store_reservation' do
     data = params['data']
     hash = JSON.parse(data)
-    Reservation.create_with_uses(hash['date'],
-                                 hash['procedures'],
-                                 hash['animals'])
-    "hello, world"
+    reservation = Reservation.create_with_uses(hash['date'],
+                                               hash['procedures'],
+                                               hash['animals'])
+    jsonically do
+      typing_as "reservation" do 
+        reservation.id
+      end
+    end
+  end
+
+  get '/reservation/:number' do
+    number = params[:number]
+    ReservationDescription.new(:reservation => Reservation[number]).to_s
   end
 
   private

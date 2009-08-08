@@ -73,16 +73,32 @@ class JsonGenerationTests < Test::Unit::TestCase
   end
 
   context "adding a reservation" do 
-    should "create the required uses" do
+
+    setup do 
       create(Animal, 'hum', 'bug')
       create(Procedure, 'sloop', 'slop')
-      data = {'date' => '2009-02-03',
-	      'procedures' => ['sloop', 'slop'],
-	      'animals' => ['hum', 'bug']}
 
-      post '/json/store_reservation', :data => data.to_json
+      @data = {'date' => '2009-02-03',
+ 	      'procedures' => ['sloop', 'slop'],
+	      'animals' => ['hum', 'bug']}
+    end
+
+    should "create the required uses" do
+      post '/json/store_reservation', :data => @data.to_json
       r = Reservation[:date => Date.new(2009, 02, 03)]
       assert { r.uses.size == 4 }
+      assert do 
+        r.uses.find do | u | 
+          u.animal.name == 'hum' && u.procedure.name == 'slop'
+        end
+      end
+    end
+
+    should "return the reservation number" do
+      post '/json/store_reservation', :data => @data.to_json
+      assert_json_response
+      r = Reservation[:date => Date.new(2009, 02, 03)]
+      assert_jsonification_of({'reservation' => r.id})
     end
   end
 end
