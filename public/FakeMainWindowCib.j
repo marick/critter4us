@@ -4,6 +4,7 @@
 @import "ProcedureInterfaceController.j"
 @import "AnimalInterfaceController.j"
 @import "ReservationController.j"
+@import "ResultController.j"
 @import "CheckboxHacks.j"
 
 @implementation FakeMainWindowCib : CPObject
@@ -28,15 +29,10 @@
   [self loadAndConnectProcedureInterfaceController];
   [self loadAndConnectAnimalInterfaceController];
   [self loadAndConnectReservationController];
+  [self loadAndConnectResultController];
 
   [self awakenAllObjects];
   [theWindow orderFront:self];
-
-  //  var webView = [[CPWebView alloc] initWithFrame: CGRectMake(0,0,100,50)];
-
-  //  [webView loadHTMLString:@"<a href=\"http://arxta.net\" target=\"_blank\">Click me!</a>" baseURL: nil];
-
-  //  [[theWindow contentView] addSubview: webView];
 }
 
 
@@ -212,6 +208,22 @@
   [customObjectsLoaded addObject:reservationController];
 }
 
+-(void) loadAndConnectResultController
+{
+  var resultController = [[ResultController alloc] init];
+  var contentView = [[CPView alloc] initWithFrame: CGRectMake(600,50,400,50)];
+  [contentView setHidden:YES];
+  [[theWindow contentView] addSubview: contentView];
+  resultController.containingView = contentView;
+
+  var webView = [[CPWebView alloc] initWithFrame: CGRectMake(0,0,400,50)];
+  [contentView addSubview: webView];
+  //[webView loadHTMLString:@"<a href=\"http://arxta.net\" target=\"_blank\">Click me!</a>" baseURL: nil];
+
+  resultController.link = webView;
+
+  [customObjectsLoaded addObject: resultController];
+}
 
 - (void) awakenAllObjects
 {
