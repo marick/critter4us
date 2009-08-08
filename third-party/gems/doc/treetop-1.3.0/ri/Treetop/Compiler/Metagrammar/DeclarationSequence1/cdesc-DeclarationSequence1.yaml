@@ -1,0 +1,18 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::Metagrammar::DeclarationSequence1
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: head
+- !ruby/object:RI::MethodSummary 
+  name: tail
+name: DeclarationSequence1
+superclass: 

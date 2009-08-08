@@ -1,0 +1,34 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: expected_string
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: index
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: index
+  rw: R
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: new
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+constants: []
+
+full_name: Treetop::Runtime::TerminalParseFailure
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: expected_string
+- !ruby/object:RI::MethodSummary 
+  name: to_s
+- !ruby/object:RI::MethodSummary 
+  name: to_s
+name: TerminalParseFailure
+superclass: Object

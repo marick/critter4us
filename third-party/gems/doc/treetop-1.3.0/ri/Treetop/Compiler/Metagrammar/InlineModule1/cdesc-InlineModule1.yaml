@@ -1,0 +1,15 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::Metagrammar::InlineModule1
+includes: []
+
+instance_methods: []
+
+name: InlineModule1
+superclass: 

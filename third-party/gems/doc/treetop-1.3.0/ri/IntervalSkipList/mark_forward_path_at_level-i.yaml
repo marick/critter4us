@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: IntervalSkipList#mark_forward_path_at_level
+is_singleton: false
+name: mark_forward_path_at_level
+params: (node, level, marker)
+visibility: protected

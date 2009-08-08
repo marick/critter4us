@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::Metagrammar::LabeledSequencePrimary1#compile
+is_singleton: false
+name: compile
+params: (lexical_address, builder)
+visibility: public

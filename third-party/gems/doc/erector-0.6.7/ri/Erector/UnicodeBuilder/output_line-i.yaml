@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Erector::UnicodeBuilder#output_line
+is_singleton: false
+name: output_line
+params: (line)
+visibility: public

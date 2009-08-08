@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Erector::Widget#indent_for_open_tag
+is_singleton: false
+name: indent_for_open_tag
+params: (tag_name)
+visibility: protected

@@ -1,0 +1,41 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Erector::RailsWidget
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: ActionController::UrlWriter
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: __in_erb_template
+- !ruby/object:RI::MethodSummary 
+  name: capture_with_helpers
+- !ruby/object:RI::MethodSummary 
+  name: controller
+- !ruby/object:RI::MethodSummary 
+  name: cycle
+- !ruby/object:RI::MethodSummary 
+  name: error_messages_for
+- !ruby/object:RI::MethodSummary 
+  name: flash
+- !ruby/object:RI::MethodSummary 
+  name: javascript_include_merged
+- !ruby/object:RI::MethodSummary 
+  name: output
+- !ruby/object:RI::MethodSummary 
+  name: pluralize
+- !ruby/object:RI::MethodSummary 
+  name: session
+- !ruby/object:RI::MethodSummary 
+  name: simple_format
+- !ruby/object:RI::MethodSummary 
+  name: stylesheet_link_merged
+- !ruby/object:RI::MethodSummary 
+  name: time_ago_in_words
+name: RailsWidget
+superclass: Widget

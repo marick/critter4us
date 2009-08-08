@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>insert_node (IntervalSkipList)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/treetop/runtime/interval_skip_list/interval_skip_list.rb, line 102</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">insert_node</span>(<span class="ruby-identifier">key</span>)
+    <span class="ruby-identifier">path</span> = <span class="ruby-identifier">make_path</span>
+    <span class="ruby-identifier">found_node</span> = <span class="ruby-identifier">find</span>(<span class="ruby-identifier">key</span>, <span class="ruby-identifier">path</span>)
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">found_node</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">found_node</span>.<span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">key</span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">found_node</span>
+    <span class="ruby-keyword kw">else</span>
+      <span class="ruby-keyword kw">return</span> <span class="ruby-constant">Node</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">key</span>, <span class="ruby-identifier">next_node_height</span>, <span class="ruby-identifier">path</span>)
+    <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

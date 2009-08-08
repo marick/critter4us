@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>compile (Treetop::Compiler::Sequence)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/treetop/compiler/node_classes/sequence.rb, line 4</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">compile</span>(<span class="ruby-identifier">address</span>, <span class="ruby-identifier">builder</span>, <span class="ruby-identifier">parent_expression</span> = <span class="ruby-keyword kw">nil</span>)
+        <span class="ruby-keyword kw">super</span>
+        <span class="ruby-identifier">begin_comment</span>(<span class="ruby-keyword kw">self</span>)
+        <span class="ruby-identifier">use_vars</span> <span class="ruby-identifier">:result</span>, <span class="ruby-identifier">:start_index</span>, <span class="ruby-identifier">:accumulator</span>
+        <span class="ruby-identifier">compile_sequence_elements</span>(<span class="ruby-identifier">sequence_elements</span>)
+        <span class="ruby-identifier">builder</span>.<span class="ruby-identifier">if__</span> <span class="ruby-node">&quot;#{accumulator_var}.last&quot;</span> <span class="ruby-keyword kw">do</span>
+          <span class="ruby-identifier">assign_result</span> <span class="ruby-node">&quot;instantiate_node(#{node_class_name},input, #{start_index_var}...index, #{accumulator_var})&quot;</span>
+          <span class="ruby-identifier">extend_result</span> <span class="ruby-identifier">sequence_element_accessor_module_name</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">sequence_element_accessor_module_name</span>
+          <span class="ruby-identifier">extend_result_with_inline_module</span>
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-identifier">builder</span>.<span class="ruby-identifier">else_</span> <span class="ruby-keyword kw">do</span>
+          <span class="ruby-identifier">reset_index</span>
+          <span class="ruby-identifier">assign_failure</span> <span class="ruby-identifier">start_index_var</span>
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-identifier">end_comment</span>(<span class="ruby-keyword kw">self</span>)
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

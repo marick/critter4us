@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Runtime::SyntaxNode#text_value
+is_singleton: false
+name: text_value
+params: ()
+visibility: public

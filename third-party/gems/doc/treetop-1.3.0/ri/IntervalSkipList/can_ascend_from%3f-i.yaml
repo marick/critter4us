@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: IntervalSkipList#can_ascend_from?
+is_singleton: false
+name: can_ascend_from?
+params: (node, level)
+visibility: protected

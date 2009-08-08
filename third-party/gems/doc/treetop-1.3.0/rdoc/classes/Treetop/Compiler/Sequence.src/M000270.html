@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>compile_sequence_elements (Treetop::Compiler::Sequence)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/treetop/compiler/node_classes/sequence.rb, line 25</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">compile_sequence_elements</span>(<span class="ruby-identifier">elements</span>)
+        <span class="ruby-identifier">obtain_new_subexpression_address</span>
+        <span class="ruby-identifier">elements</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">compile</span>(<span class="ruby-identifier">subexpression_address</span>, <span class="ruby-identifier">builder</span>)
+        <span class="ruby-identifier">accumulate_subexpression_result</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">elements</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
+          <span class="ruby-identifier">builder</span>.<span class="ruby-identifier">if_</span> <span class="ruby-identifier">subexpression_success?</span> <span class="ruby-keyword kw">do</span>
+            <span class="ruby-identifier">compile_sequence_elements</span>(<span class="ruby-identifier">elements</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>])
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

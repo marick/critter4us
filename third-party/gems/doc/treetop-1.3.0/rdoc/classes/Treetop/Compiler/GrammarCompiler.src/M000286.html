@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>ruby_source_from_string (Treetop::Compiler::GrammarCompiler)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/treetop/compiler/grammar_compiler.rb, line 16</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ruby_source_from_string</span>(<span class="ruby-identifier">s</span>)
+        <span class="ruby-identifier">parser</span> = <span class="ruby-constant">MetagrammarParser</span>.<span class="ruby-identifier">new</span>
+        <span class="ruby-identifier">result</span> = <span class="ruby-identifier">parser</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">s</span>)
+        <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">result</span>
+          <span class="ruby-identifier">raise</span> <span class="ruby-constant">RuntimeError</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">parser</span>.<span class="ruby-identifier">failure_reason</span>)
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-identifier">result</span>.<span class="ruby-identifier">compile</span>
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

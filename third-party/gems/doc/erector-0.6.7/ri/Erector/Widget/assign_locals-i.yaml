@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Erector::Widget#assign_locals
+is_singleton: false
+name: assign_locals
+params: (local_assigns)
+visibility: public

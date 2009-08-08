@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: ""
+comment: 
+full_name: Treetop::Compiler::RubyBuilder#indented
+is_singleton: false
+name: indented
+params: (depth = 2) {|| ...}
+visibility: public

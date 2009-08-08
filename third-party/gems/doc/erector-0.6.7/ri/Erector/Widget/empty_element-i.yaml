@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Internal method used to emit a self-closing HTML/XML element, including a tag name and optional attributes (passed in via the default hash).
+- !ruby/struct:SM::Flow::P 
+  body: "Using the arcane powers of Ruby, there are magic methods that call <tt>empty_element</tt> for all the standard HTML tags, like <tt>img</tt>, <tt>br</tt>, and so forth. Look at the source of #empty_tags for the full list. Unfortunately, this big mojo confuses rdoc, so we can't see each method in this rdoc page, but trust us, they're there."
+full_name: Erector::Widget#empty_element
+is_singleton: false
+name: empty_element
+params: (*args, &block)
+visibility: public

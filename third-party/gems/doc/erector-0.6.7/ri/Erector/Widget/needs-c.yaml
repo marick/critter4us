@@ -1,0 +1,34 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Class method by which widget classes can declare that they need certain parameters. If needed parameters are not passed in to #new, then an exception will be thrown (with a hopefully useful message about which parameters are missing). This is intended to catch silly bugs like passing in a parameter called 'name' to a widget that expects a parameter called 'title'. Every variable declared in 'needs' will get an attr_reader accessor declared for it."
+- !ruby/struct:SM::Flow::P 
+  body: "You can also declare default values for parameters using hash syntax. You can put #needs declarations on multiple lines or on the same line; the only caveat is that if there are default values, they all have to be at the end of the line (so they go into the magic hash parameter)."
+- !ruby/struct:SM::Flow::P 
+  body: "If a widget has no #needs declaration then it will accept any combination of parameters (and make accessors for them) just like normal. In that case there will be no 'attr_reader's declared. If a widget wants to declare that it takes no parameters, use the special incantation &quot;needs nil&quot; (and don't declare any other needs, or kittens will cry)."
+- !ruby/struct:SM::Flow::P 
+  body: "Usage:"
+- !ruby/struct:SM::Flow::VERB 
+  body: "   class FancyForm &lt; Erector::Widget\n     needs :title, :show_okay =&gt; true, :show_cancel =&gt; false\n     ...\n   end\n"
+- !ruby/struct:SM::Flow::P 
+  body: That means that
+- !ruby/struct:SM::Flow::VERB 
+  body: "  FancyForm.new(:title =&gt; 'Login')\n"
+- !ruby/struct:SM::Flow::P 
+  body: will succeed, as will
+- !ruby/struct:SM::Flow::VERB 
+  body: "  FancyForm.new(:title =&gt; 'Login', :show_cancel =&gt; true)\n"
+- !ruby/struct:SM::Flow::P 
+  body: but
+- !ruby/struct:SM::Flow::VERB 
+  body: "  FancyForm.new(:name =&gt; 'Login')\n"
+- !ruby/struct:SM::Flow::P 
+  body: will fail.
+full_name: Erector::Widget::needs
+is_singleton: true
+name: needs
+params: (*args)
+visibility: public

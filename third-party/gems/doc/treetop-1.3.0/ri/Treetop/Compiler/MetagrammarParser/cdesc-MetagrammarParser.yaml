@@ -1,0 +1,16 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::MetagrammarParser
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: Metagrammar
+instance_methods: []
+
+name: MetagrammarParser
+superclass: Treetop::Runtime::CompiledParser

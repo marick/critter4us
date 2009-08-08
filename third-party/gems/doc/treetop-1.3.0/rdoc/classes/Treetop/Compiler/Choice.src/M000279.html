@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>compile_alternatives (Treetop::Compiler::Choice)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/treetop/compiler/node_classes/choice.rb, line 12</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">compile_alternatives</span>(<span class="ruby-identifier">alternatives</span>)
+        <span class="ruby-identifier">obtain_new_subexpression_address</span>
+        <span class="ruby-identifier">alternatives</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">compile</span>(<span class="ruby-identifier">subexpression_address</span>, <span class="ruby-identifier">builder</span>)
+        <span class="ruby-identifier">builder</span>.<span class="ruby-identifier">if__</span> <span class="ruby-identifier">subexpression_success?</span> <span class="ruby-keyword kw">do</span>
+          <span class="ruby-identifier">assign_result</span> <span class="ruby-identifier">subexpression_result_var</span>
+          <span class="ruby-identifier">extend_result_with_declared_module</span>
+          <span class="ruby-identifier">extend_result_with_inline_module</span>
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-identifier">builder</span>.<span class="ruby-identifier">else_</span> <span class="ruby-keyword kw">do</span>
+          <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">alternatives</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+            <span class="ruby-identifier">reset_index</span>
+            <span class="ruby-identifier">assign_failure</span> <span class="ruby-identifier">start_index_var</span>
+          <span class="ruby-keyword kw">else</span>
+            <span class="ruby-identifier">compile_alternatives</span>(<span class="ruby-identifier">alternatives</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>])
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,19 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::InlineModule
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: InlineModuleMixin
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: compile
+- !ruby/object:RI::MethodSummary 
+  name: ruby_code
+name: InlineModule
+superclass: Runtime::SyntaxNode

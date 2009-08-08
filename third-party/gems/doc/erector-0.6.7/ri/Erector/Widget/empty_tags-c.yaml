@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Tags which are always self-closing. Click &quot;[Source]&quot; to see the full list.
+full_name: Erector::Widget::empty_tags
+is_singleton: true
+name: empty_tags
+params: ()
+visibility: public

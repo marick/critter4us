@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::ParsingExpression#extend_result_with_declared_module
+is_singleton: false
+name: extend_result_with_declared_module
+params: ()
+visibility: public

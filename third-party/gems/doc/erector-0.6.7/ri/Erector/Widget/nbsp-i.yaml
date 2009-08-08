@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Returns a copy of value with spaces replaced by non-breaking space characters. With no arguments, return a single non-breaking space. The output uses the escaping format '&amp;#160;' since that works in both HTML and XML (as opposed to '&amp;nbsp;' which only works in HTML).
+full_name: Erector::Widget#nbsp
+is_singleton: false
+name: nbsp
+params: (value = " ")
+visibility: public

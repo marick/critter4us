@@ -1,0 +1,140 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: after_initialize
+- !ruby/object:RI::MethodSummary 
+  name: after_initialize_parts
+- !ruby/object:RI::MethodSummary 
+  name: all_tags
+- !ruby/object:RI::MethodSummary 
+  name: empty_tags
+- !ruby/object:RI::MethodSummary 
+  name: full_tags
+- !ruby/object:RI::MethodSummary 
+  name: get_needs
+- !ruby/object:RI::MethodSummary 
+  name: needs
+- !ruby/object:RI::MethodSummary 
+  name: new
+- !ruby/object:RI::MethodSummary 
+  name: prettyprint_default=
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: A Widget is the center of the Erector universe.
+- !ruby/struct:SM::Flow::P 
+  body: To create a widget, extend Erector::Widget and implement the <tt>content</tt> method. Inside this method you may call any of the tag methods like <tt>span</tt> or <tt>p</tt> to emit HTML/XML tags.
+- !ruby/struct:SM::Flow::P 
+  body: You can also define a widget on the fly by passing a block to <tt>new</tt>. This block will get executed when the widget's <tt>content</tt> method is called.
+- !ruby/struct:SM::Flow::P 
+  body: To render a widget from the outside, instantiate it and call its <tt>to_s</tt> method.
+- !ruby/struct:SM::Flow::P 
+  body: A widget's <tt>new</tt> method optionally accepts an options hash. Entries in this hash are converted to instance variables, and <tt>attr_reader</tt> accessors are defined for each.
+- !ruby/struct:SM::Flow::P 
+  body: "You can add runtime input checking via the <tt>needs</tt> macro. See #needs. This mechanism is meant to ameliorate development-time confusion about exactly what parameters are supported by a given widget, avoiding confusing runtime NilClass errors."
+- !ruby/struct:SM::Flow::P 
+  body: To call one widget from another, inside the parent widget's <tt>content</tt> method, instantiate the child widget and call the <tt>widget</tt> method. This assures that the same output stream is used, which gives better performance than using <tt>capture</tt> or <tt>to_s</tt>. It also preserves the indentation and helpers of the enclosing class.
+- !ruby/struct:SM::Flow::P 
+  body: In this documentation we've tried to keep the distinction clear between methods that <b>emit</b> text and those that <b>return</b> text. &quot;Emit&quot; means that it writes to the output stream; &quot;return&quot; means that it returns a string like a normal method and leaves it up to the caller to emit that string if it wants.
+constants: 
+- !ruby/object:RI::Constant 
+  comment: 
+  name: NON_NEWLINEY
+  value: "{'i' => true, 'b' => true, 'small' => true,       'img' => true, 'span' => true, 'a' => true,       'input' => true, 'textarea' => true, 'button' => true, 'select' => true"
+- !ruby/object:RI::Constant 
+  comment: 
+  name: SPACES_PER_INDENT
+  value: "2"
+- !ruby/object:RI::Constant 
+  comment: 
+  name: RESERVED_INSTANCE_VARS
+  value: "[:helpers, :assigns, :block, :parent, :output, :prettyprint, :indentation, :at_start_of_line]"
+full_name: Erector::Widget
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: __element__
+- !ruby/object:RI::MethodSummary 
+  name: __empty_element__
+- !ruby/object:RI::MethodSummary 
+  name: _newline
+- !ruby/object:RI::MethodSummary 
+  name: _render
+- !ruby/object:RI::MethodSummary 
+  name: any_are_needed?
+- !ruby/object:RI::MethodSummary 
+  name: assign_local
+- !ruby/object:RI::MethodSummary 
+  name: assign_locals
+- !ruby/object:RI::MethodSummary 
+  name: capture
+- !ruby/object:RI::MethodSummary 
+  name: character
+- !ruby/object:RI::MethodSummary 
+  name: close_tag
+- !ruby/object:RI::MethodSummary 
+  name: content
+- !ruby/object:RI::MethodSummary 
+  name: context
+- !ruby/object:RI::MethodSummary 
+  name: css
+- !ruby/object:RI::MethodSummary 
+  name: element
+- !ruby/object:RI::MethodSummary 
+  name: empty_element
+- !ruby/object:RI::MethodSummary 
+  name: format_attributes
+- !ruby/object:RI::MethodSummary 
+  name: format_sorted
+- !ruby/object:RI::MethodSummary 
+  name: h
+- !ruby/object:RI::MethodSummary 
+  name: html_escape
+- !ruby/object:RI::MethodSummary 
+  name: indent
+- !ruby/object:RI::MethodSummary 
+  name: indent_for_open_tag
+- !ruby/object:RI::MethodSummary 
+  name: inspect
+- !ruby/object:RI::MethodSummary 
+  name: instruct
+- !ruby/object:RI::MethodSummary 
+  name: javascript
+- !ruby/object:RI::MethodSummary 
+  name: join
+- !ruby/object:RI::MethodSummary 
+  name: method_missing
+- !ruby/object:RI::MethodSummary 
+  name: nbsp
+- !ruby/object:RI::MethodSummary 
+  name: newliney
+- !ruby/object:RI::MethodSummary 
+  name: open_tag
+- !ruby/object:RI::MethodSummary 
+  name: prettyprint_default
+- !ruby/object:RI::MethodSummary 
+  name: raw
+- !ruby/object:RI::MethodSummary 
+  name: rawtext
+- !ruby/object:RI::MethodSummary 
+  name: sort_for_xml_declaration
+- !ruby/object:RI::MethodSummary 
+  name: sorted
+- !ruby/object:RI::MethodSummary 
+  name: text
+- !ruby/object:RI::MethodSummary 
+  name: to_a
+- !ruby/object:RI::MethodSummary 
+  name: to_pretty
+- !ruby/object:RI::MethodSummary 
+  name: to_s
+- !ruby/object:RI::MethodSummary 
+  name: url
+- !ruby/object:RI::MethodSummary 
+  name: widget
+- !ruby/object:RI::MethodSummary 
+  name: write_via
+name: Widget
+superclass: Object

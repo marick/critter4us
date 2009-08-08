@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: IntervalSkipList#next_node_height
+is_singleton: false
+name: next_node_height
+params: ()
+visibility: protected

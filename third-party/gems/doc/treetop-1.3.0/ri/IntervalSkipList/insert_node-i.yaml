@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: IntervalSkipList#insert_node
+is_singleton: false
+name: insert_node
+params: (key)
+visibility: protected

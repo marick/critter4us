@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Erector::Widget#__empty_element__
+is_singleton: false
+name: __empty_element__
+params: (tag_name, attributes={})
+visibility: protected

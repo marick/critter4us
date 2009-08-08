@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>new (Erector::Erect)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/erector/erect.rb, line 8</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">args</span>)
+      <span class="ruby-ivar">@verbose</span> = <span class="ruby-keyword kw">true</span>
+      <span class="ruby-ivar">@mode</span> = <span class="ruby-identifier">:to_erector</span>
+      <span class="ruby-ivar">@output_dir</span> = <span class="ruby-keyword kw">nil</span>
+      
+      <span class="ruby-identifier">opts</span> = <span class="ruby-constant">OptionParser</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">opts</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">banner</span> = <span class="ruby-value str">&quot;Usage: erector [options] [file|dir]*&quot;</span>
+
+        <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">separator</span> <span class="ruby-value str">&quot;Converts from html/rhtml files to erector widgets, or from erector widgets to html files&quot;</span>
+        <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">separator</span> <span class="ruby-value str">&quot;&quot;</span>
+        <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">separator</span> <span class="ruby-value str">&quot;Options:&quot;</span>
+
+        <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-value str">&quot;-q&quot;</span>, <span class="ruby-value str">&quot;--quiet&quot;</span>,
+                <span class="ruby-value str">&quot;Operate silently except in case of error&quot;</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">quiet</span><span class="ruby-operator">|</span>
+          <span class="ruby-ivar">@verbose</span> = <span class="ruby-operator">!</span><span class="ruby-identifier">quiet</span>
+        <span class="ruby-keyword kw">end</span>
+        
+        <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-value str">&quot;--to-erector&quot;</span>, <span class="ruby-value str">&quot;(default) Convert from html/rhtml to erector classes&quot;</span>) <span class="ruby-keyword kw">do</span>
+          <span class="ruby-ivar">@mode</span> = <span class="ruby-identifier">:to_erector</span>
+        <span class="ruby-keyword kw">end</span>
+
+        <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-value str">&quot;--to-html&quot;</span>, <span class="ruby-value str">&quot;Convert from erector to html&quot;</span>) <span class="ruby-keyword kw">do</span>
+          <span class="ruby-ivar">@mode</span> = <span class="ruby-identifier">:to_html</span>
+        <span class="ruby-keyword kw">end</span>
+        
+        <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on</span>(<span class="ruby-value str">&quot;-o&quot;</span>, <span class="ruby-value str">&quot;--output-dir DIRECTORY&quot;</span>, <span class="ruby-value str">&quot;Output files to DIRECTORY (default: output files go next to input files)&quot;</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">dir</span><span class="ruby-operator">|</span>
+          <span class="ruby-ivar">@output_dir</span> = <span class="ruby-identifier">dir</span>
+        <span class="ruby-keyword kw">end</span>
+
+        <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on_tail</span>(<span class="ruby-value str">&quot;-h&quot;</span>, <span class="ruby-value str">&quot;--help&quot;</span>, <span class="ruby-value str">&quot;Show this message&quot;</span>) <span class="ruby-keyword kw">do</span>
+          <span class="ruby-ivar">@mode</span> = <span class="ruby-identifier">:help</span>
+          <span class="ruby-identifier">puts</span> <span class="ruby-identifier">opts</span>
+          <span class="ruby-identifier">exit</span>
+        <span class="ruby-keyword kw">end</span>
+
+        <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">on_tail</span>(<span class="ruby-value str">&quot;-v&quot;</span>, <span class="ruby-value str">&quot;--version&quot;</span>, <span class="ruby-value str">&quot;Show version&quot;</span>) <span class="ruby-keyword kw">do</span>
+          <span class="ruby-identifier">puts</span> <span class="ruby-constant">Erector</span><span class="ruby-operator">::</span><span class="ruby-constant">VERSION</span>
+          <span class="ruby-identifier">exit</span>
+        <span class="ruby-keyword kw">end</span>
+        
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-identifier">opts</span>.<span class="ruby-identifier">parse!</span>(<span class="ruby-identifier">args</span>)
+      <span class="ruby-ivar">@files</span> = <span class="ruby-identifier">args</span>
+      <span class="ruby-identifier">explode_dirs</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

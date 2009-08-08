@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Runtime::CompiledParser#terminal_parse_failure
+is_singleton: false
+name: terminal_parse_failure
+params: (expected_string)
+visibility: protected

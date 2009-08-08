@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Runtime::CompiledParser#reset_index
+is_singleton: false
+name: reset_index
+params: ()
+visibility: protected

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>File: bootstrap_gen_1_metagrammar.rb</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+  <div id="fileHeader">
+    <h1>bootstrap_gen_1_metagrammar.rb</h1>
+    <table class="header-table">
+    <tr class="top-aligned-row">
+      <td><strong>Path:</strong></td>
+      <td>lib/treetop/bootstrap_gen_1_metagrammar.rb
+      </td>
+    </tr>
+    <tr class="top-aligned-row">
+      <td><strong>Last Update:</strong></td>
+      <td>Sat Aug 08 13:24:07 -0500 2009</td>
+    </tr>
+    </table>
+  </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+This file&#8216;s job is to load a <a
+href="../../../classes/Treetop/Compiler/Metagrammar.html">Treetop::Compiler::Metagrammar</a>
+and <a
+href="../../../classes/Treetop/Compiler/MetagrammarParser.html">Treetop::Compiler::MetagrammarParser</a>
+into the environment by compiling the current metagrammar.treetop using a
+trusted version of Treetop.
+</p>
+
+    </div>
+
+    <div id="requires-list">
+      <h3 class="section-bar">Required files</h3>
+
+      <div class="name-list">
+      rubygems&nbsp;&nbsp;
+      </div>
+    </div>
+
+   </div>
+
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+    <div id="constants-list">
+      <h3 class="section-bar">Constants</h3>
+
+      <div class="name-list">
+        <table summary="Constants">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">TREETOP_VERSION_REQUIRED_TO_BOOTSTRAP</td>
+          <td>=</td>
+          <td class="context-item-value">'&gt;= 1.1.5'</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">Trusted</td>
+          <td>=</td>
+          <td class="context-item-value">Module.new</td>
+          <td width="3em">&nbsp;</td>
+          <td class="context-item-desc">
+Relocating trusted version of Treetop to Trusted::Treetop
+
+</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">Treetop</td>
+          <td>=</td>
+          <td class="context-item-value">Treetop</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">METAGRAMMAR_PATH</td>
+          <td>=</td>
+          <td class="context-item-value">File.join(TREETOP_ROOT, 'compiler', 'metagrammar.treetop')</td>
+          <td width="3em">&nbsp;</td>
+          <td class="context-item-desc">
+Compile and evaluate freshly generated metagrammar source
+
+</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+
+
+      
+
+
+    <!-- if method_list -->
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

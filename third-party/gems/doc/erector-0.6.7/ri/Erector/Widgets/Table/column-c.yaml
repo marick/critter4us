@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Define a column, optionally specifying the name (the heading that the user sees) and a block which renders the cell given a row object. If the block is not specified, the cell contains the result of calling a method whose name is id.
+- !ruby/struct:SM::Flow::P 
+  body: The name can be a string or a proc.
+full_name: Erector::Widgets::Table::column
+is_singleton: true
+name: column
+params: (id, name=id.to_s.titleize, &cell_proc)
+visibility: public

@@ -1,0 +1,16 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::Metagrammar::SingleQuotedString1
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: string
+name: SingleQuotedString1
+superclass: 

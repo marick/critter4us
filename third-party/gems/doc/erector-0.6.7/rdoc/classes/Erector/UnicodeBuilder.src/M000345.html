@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>process_line (Erector::UnicodeBuilder)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/erector/unicode_builder.rb, line 42</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">process_line</span>(<span class="ruby-identifier">line</span>)
+    <span class="ruby-identifier">fields</span> = <span class="ruby-identifier">line</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">';'</span>)
+    <span class="ruby-identifier">code_point</span> = <span class="ruby-identifier">fields</span>[<span class="ruby-value">0</span>]
+    <span class="ruby-identifier">name</span> = <span class="ruby-identifier">fields</span>[<span class="ruby-value">1</span>]
+    <span class="ruby-identifier">alternate_name</span> = <span class="ruby-identifier">fields</span>[<span class="ruby-value">10</span>]
+
+    <span class="ruby-keyword kw">if</span> <span class="ruby-regexp re">/^&lt;/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">name</span>)
+      <span class="ruby-keyword kw">return</span> <span class="ruby-value str">&quot;&quot;</span>
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-identifier">output</span> <span class="ruby-identifier">name</span>, <span class="ruby-identifier">code_point</span>
+    <span class="ruby-keyword kw">if</span> (<span class="ruby-operator">!</span><span class="ruby-identifier">alternate_name</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">alternate_name</span> <span class="ruby-operator">!=</span> <span class="ruby-value str">&quot;&quot;</span>)
+      <span class="ruby-identifier">output</span> <span class="ruby-identifier">alternate_name</span>, <span class="ruby-identifier">code_point</span>
+    <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

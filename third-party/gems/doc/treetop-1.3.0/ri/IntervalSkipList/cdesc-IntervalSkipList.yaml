@@ -1,0 +1,68 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: head
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: probability
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: ranges
+  rw: R
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+constants: []
+
+full_name: IntervalSkipList
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: can_ascend_from?
+- !ruby/object:RI::MethodSummary 
+  name: can_descend_from?
+- !ruby/object:RI::MethodSummary 
+  name: containing
+- !ruby/object:RI::MethodSummary 
+  name: containing_with_node
+- !ruby/object:RI::MethodSummary 
+  name: delete
+- !ruby/object:RI::MethodSummary 
+  name: delete_node
+- !ruby/object:RI::MethodSummary 
+  name: empty?
+- !ruby/object:RI::MethodSummary 
+  name: expire
+- !ruby/object:RI::MethodSummary 
+  name: find
+- !ruby/object:RI::MethodSummary 
+  name: insert
+- !ruby/object:RI::MethodSummary 
+  name: insert_node
+- !ruby/object:RI::MethodSummary 
+  name: make_path
+- !ruby/object:RI::MethodSummary 
+  name: mark_forward_path_at_level
+- !ruby/object:RI::MethodSummary 
+  name: max_height
+- !ruby/object:RI::MethodSummary 
+  name: next_node_at_level_inside_range?
+- !ruby/object:RI::MethodSummary 
+  name: next_node_at_level_outside_range?
+- !ruby/object:RI::MethodSummary 
+  name: next_node_height
+- !ruby/object:RI::MethodSummary 
+  name: node_inside_range?
+- !ruby/object:RI::MethodSummary 
+  name: nodes
+- !ruby/object:RI::MethodSummary 
+  name: overlapping
+- !ruby/object:RI::MethodSummary 
+  name: unmark_forward_path_at_level
+name: IntervalSkipList
+superclass: Object

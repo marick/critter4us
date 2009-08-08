@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Erector::Widget::prettyprint_default=
+is_singleton: true
+name: prettyprint_default=
+params: (enabled)
+visibility: public

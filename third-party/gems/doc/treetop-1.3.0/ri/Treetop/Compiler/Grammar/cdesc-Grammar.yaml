@@ -1,0 +1,20 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::Grammar
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: compile
+- !ruby/object:RI::MethodSummary 
+  name: indent_level
+- !ruby/object:RI::MethodSummary 
+  name: parser_name
+name: Grammar
+superclass: Runtime::SyntaxNode

@@ -1,0 +1,52 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: endpoint_of
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: key
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: markers
+  rw: R
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+constants: []
+
+full_name: IntervalSkipList::Node
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: all_forward_markers
+- !ruby/object:RI::MethodSummary 
+  name: can_be_promoted_higher?
+- !ruby/object:RI::MethodSummary 
+  name: delete
+- !ruby/object:RI::MethodSummary 
+  name: delete_marker_from_path
+- !ruby/object:RI::MethodSummary 
+  name: demote_inbound_markers
+- !ruby/object:RI::MethodSummary 
+  name: demote_markers
+- !ruby/object:RI::MethodSummary 
+  name: demote_outbound_markers
+- !ruby/object:RI::MethodSummary 
+  name: forward_node_with_marker_at_or_above_level?
+- !ruby/object:RI::MethodSummary 
+  name: place_marker_on_inbound_path
+- !ruby/object:RI::MethodSummary 
+  name: place_marker_on_outbound_path
+- !ruby/object:RI::MethodSummary 
+  name: promote_markers
+- !ruby/object:RI::MethodSummary 
+  name: propagate_length_change
+- !ruby/object:RI::MethodSummary 
+  name: update_forward_pointers
+name: Node
+superclass: HeadNode

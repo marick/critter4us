@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::Metagrammar::Nonterminal0#alpha_char
+is_singleton: false
+name: alpha_char
+params: ()
+visibility: public

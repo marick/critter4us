@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Erector::Mixin#erector
+is_singleton: false
+name: erector
+params: (options = {}, &block)
+visibility: public

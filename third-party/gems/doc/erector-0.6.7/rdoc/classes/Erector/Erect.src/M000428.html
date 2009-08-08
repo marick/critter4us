@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>to_html (Erector::Erect)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/erector/erect.rb, line 101</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_html</span>
+      <span class="ruby-identifier">files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">file</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">say</span> <span class="ruby-node">&quot;Erecting #{file}... &quot;</span>
+        <span class="ruby-comment cmt">#todo: move this into Erected with better tests for the naming methods</span>
+        <span class="ruby-keyword kw">begin</span>
+          <span class="ruby-comment cmt">#todo: fail if file isn't a .rb file</span>
+          <span class="ruby-identifier">require</span> <span class="ruby-identifier">file</span>
+          <span class="ruby-identifier">filename</span> = <span class="ruby-identifier">file</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">'/'</span>).<span class="ruby-identifier">last</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/\.rb$/</span>, <span class="ruby-value str">''</span>)
+          <span class="ruby-identifier">widget_name</span> = <span class="ruby-identifier">camelize</span>(<span class="ruby-identifier">filename</span>)
+          <span class="ruby-identifier">widget_class</span> = <span class="ruby-identifier">constantize</span>(<span class="ruby-identifier">widget_name</span>)
+          
+          <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">widget_class</span> <span class="ruby-operator">&lt;</span> <span class="ruby-constant">Erector</span><span class="ruby-operator">::</span><span class="ruby-constant">Widget</span>
+            <span class="ruby-identifier">widget</span> = <span class="ruby-identifier">widget_class</span>.<span class="ruby-identifier">new</span>
+            <span class="ruby-comment cmt">#todo: skip if it's missing a no-arg constructor</span>
+            <span class="ruby-identifier">dir</span> = <span class="ruby-identifier">output_dir</span> <span class="ruby-operator">||</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">file</span>)
+            <span class="ruby-constant">FileUtils</span>.<span class="ruby-identifier">mkdir_p</span>(<span class="ruby-identifier">dir</span>)
+            <span class="ruby-identifier">output_file</span> = <span class="ruby-node">&quot;#{dir}/#{filename}.html&quot;</span>
+            <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">output_file</span>, <span class="ruby-value str">&quot;w&quot;</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>
+              <span class="ruby-identifier">f</span>.<span class="ruby-identifier">puts</span> <span class="ruby-identifier">widget</span>.<span class="ruby-identifier">to_s</span>
+            <span class="ruby-keyword kw">end</span>
+            <span class="ruby-identifier">say</span> <span class="ruby-node">&quot; --&gt; #{output_file}\n&quot;</span>
+          <span class="ruby-keyword kw">else</span>
+            <span class="ruby-identifier">say</span> <span class="ruby-value str">&quot; -- not a widget, skipping\n&quot;</span>
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">rescue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">e</span>
+          <span class="ruby-identifier">puts</span> <span class="ruby-identifier">e</span>
+          <span class="ruby-identifier">puts</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">backtrace</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;\n\t&quot;</span>)
+          <span class="ruby-ivar">@success</span> = <span class="ruby-keyword kw">false</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

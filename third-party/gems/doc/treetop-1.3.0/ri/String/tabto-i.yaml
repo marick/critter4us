@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: The following methods are lifted from Facets 2.0.2
+full_name: String#tabto
+is_singleton: false
+name: tabto
+params: (n)
+visibility: public

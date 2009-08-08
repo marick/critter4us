@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Emits a (nested) widget onto the current widget's output stream. Accepts either a class or an instance. If the first argument is a class, then the second argument is a hash used to populate its instance variables. If the first argument is an instance then the hash must be unspecified (or empty).
+- !ruby/struct:SM::Flow::P 
+  body: The sub-widget will have access to the methods of the parent class, via some method_missing magic and a &quot;parent&quot; pointer.
+full_name: Erector::Widget#widget
+is_singleton: false
+name: widget
+params: (target, assigns={}, &block)
+visibility: public

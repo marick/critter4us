@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: IntervalSkipList::Node#delete
+is_singleton: false
+name: delete
+params: (path)
+visibility: public

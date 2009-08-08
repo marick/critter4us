@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::Metagrammar::NodeClassDeclarations0#trailing_inline_module
+is_singleton: false
+name: trailing_inline_module
+params: ()
+visibility: public

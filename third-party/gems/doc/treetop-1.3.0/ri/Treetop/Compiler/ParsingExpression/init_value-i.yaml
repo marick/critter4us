@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::ParsingExpression#init_value
+is_singleton: false
+name: init_value
+params: (var_symbol)
+visibility: public

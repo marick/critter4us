@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: IntervalSkipList::Node#demote_markers
+is_singleton: false
+name: demote_markers
+params: (path)
+visibility: protected

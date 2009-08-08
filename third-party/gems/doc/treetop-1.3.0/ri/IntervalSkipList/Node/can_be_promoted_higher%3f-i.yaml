@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: IntervalSkipList::Node#can_be_promoted_higher?
+is_singleton: false
+name: can_be_promoted_higher?
+params: (marker, level)
+visibility: protected

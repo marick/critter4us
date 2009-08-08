@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::Choice#compile_alternatives
+is_singleton: false
+name: compile_alternatives
+params: (alternatives)
+visibility: public

@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::ParsingRule#generate_cache_storage
+is_singleton: false
+name: generate_cache_storage
+params: (builder, result_var)
+visibility: public

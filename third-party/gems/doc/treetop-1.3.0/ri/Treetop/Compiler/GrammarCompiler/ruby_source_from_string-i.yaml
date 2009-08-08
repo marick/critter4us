@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: compile a string containing treetop source into ruby
+full_name: Treetop::Compiler::GrammarCompiler#ruby_source_from_string
+is_singleton: false
+name: ruby_source_from_string
+params: (s)
+visibility: public

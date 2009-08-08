@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::Metagrammar::DeclarationSequence2#tail
+is_singleton: false
+name: tail
+params: ()
+visibility: public

@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::Metagrammar::SequencePrimary1#prefixed_expression
+is_singleton: false
+name: prefixed_expression
+params: ()
+visibility: public

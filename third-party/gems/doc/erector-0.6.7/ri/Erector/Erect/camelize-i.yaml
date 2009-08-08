@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: stolen from activesuppport/lib/inflector.rb
+full_name: Erector::Erect#camelize
+is_singleton: false
+name: camelize
+params: (lower_case_and_underscored_word, first_letter_in_uppercase = true)
+visibility: public

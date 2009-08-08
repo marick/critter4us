@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Erector::Widget#any_are_needed?
+is_singleton: false
+name: any_are_needed?
+params: ()
+visibility: public

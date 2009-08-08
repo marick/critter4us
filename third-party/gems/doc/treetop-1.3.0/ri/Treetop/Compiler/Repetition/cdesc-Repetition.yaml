@@ -1,0 +1,20 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::Repetition
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: assign_and_extend_result
+- !ruby/object:RI::MethodSummary 
+  name: compile
+- !ruby/object:RI::MethodSummary 
+  name: inline_module_name
+name: Repetition
+superclass: ParsingExpression

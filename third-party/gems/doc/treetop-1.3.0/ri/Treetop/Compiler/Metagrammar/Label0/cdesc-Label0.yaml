@@ -1,0 +1,16 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::Metagrammar::Label0
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: alpha_char
+name: Label0
+superclass: 

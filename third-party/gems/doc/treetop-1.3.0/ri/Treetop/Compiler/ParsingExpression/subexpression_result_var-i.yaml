@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::ParsingExpression#subexpression_result_var
+is_singleton: false
+name: subexpression_result_var
+params: ()
+visibility: public

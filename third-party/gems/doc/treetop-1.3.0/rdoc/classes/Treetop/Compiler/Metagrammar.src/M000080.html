@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>_nt_include_declaration (Treetop::Compiler::Metagrammar)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/treetop/compiler/metagrammar.rb, line 681</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">_nt_include_declaration</span>
+        <span class="ruby-identifier">start_index</span> = <span class="ruby-identifier">index</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">node_cache</span>[<span class="ruby-identifier">:include_declaration</span>].<span class="ruby-identifier">has_key?</span>(<span class="ruby-identifier">index</span>)
+          <span class="ruby-identifier">cached</span> = <span class="ruby-identifier">node_cache</span>[<span class="ruby-identifier">:include_declaration</span>][<span class="ruby-identifier">index</span>]
+          <span class="ruby-ivar">@index</span> = <span class="ruby-identifier">cached</span>.<span class="ruby-identifier">interval</span>.<span class="ruby-identifier">end</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">cached</span>
+          <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">cached</span>
+        <span class="ruby-keyword kw">end</span>
+
+        <span class="ruby-identifier">i0</span>, <span class="ruby-identifier">s0</span> = <span class="ruby-identifier">index</span>, []
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">input</span>.<span class="ruby-identifier">index</span>(<span class="ruby-value str">'include'</span>, <span class="ruby-identifier">index</span>) <span class="ruby-operator">==</span> <span class="ruby-identifier">index</span>
+          <span class="ruby-identifier">r1</span> = <span class="ruby-identifier">instantiate_node</span>(<span class="ruby-constant">SyntaxNode</span>,<span class="ruby-identifier">input</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">...</span>(<span class="ruby-identifier">index</span> <span class="ruby-operator">+</span> <span class="ruby-value">7</span>))
+          <span class="ruby-ivar">@index</span> <span class="ruby-operator">+=</span> <span class="ruby-value">7</span>
+        <span class="ruby-keyword kw">else</span>
+          <span class="ruby-identifier">terminal_parse_failure</span>(<span class="ruby-value str">'include'</span>)
+          <span class="ruby-identifier">r1</span> = <span class="ruby-keyword kw">nil</span>
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-identifier">s0</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">r1</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">r1</span>
+          <span class="ruby-identifier">r2</span> = <span class="ruby-identifier">_nt_space</span>
+          <span class="ruby-identifier">s0</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">r2</span>
+          <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">r2</span>
+            <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">input</span>.<span class="ruby-identifier">index</span>(<span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'[A-Z]'</span>), <span class="ruby-identifier">index</span>) <span class="ruby-operator">==</span> <span class="ruby-identifier">index</span>
+              <span class="ruby-identifier">r3</span> = <span class="ruby-identifier">instantiate_node</span>(<span class="ruby-constant">SyntaxNode</span>,<span class="ruby-identifier">input</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">...</span>(<span class="ruby-identifier">index</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>))
+              <span class="ruby-ivar">@index</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+            <span class="ruby-keyword kw">else</span>
+              <span class="ruby-identifier">r3</span> = <span class="ruby-keyword kw">nil</span>
+            <span class="ruby-keyword kw">end</span>
+            <span class="ruby-identifier">s0</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">r3</span>
+            <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">r3</span>
+              <span class="ruby-identifier">s4</span>, <span class="ruby-identifier">i4</span> = [], <span class="ruby-identifier">index</span>
+              <span class="ruby-identifier">loop</span> <span class="ruby-keyword kw">do</span>
+                <span class="ruby-identifier">i5</span> = <span class="ruby-identifier">index</span>
+                <span class="ruby-identifier">r6</span> = <span class="ruby-identifier">_nt_alphanumeric_char</span>
+                <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">r6</span>
+                  <span class="ruby-identifier">r5</span> = <span class="ruby-identifier">r6</span>
+                <span class="ruby-keyword kw">else</span>
+                  <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">input</span>.<span class="ruby-identifier">index</span>(<span class="ruby-value str">'::'</span>, <span class="ruby-identifier">index</span>) <span class="ruby-operator">==</span> <span class="ruby-identifier">index</span>
+                    <span class="ruby-identifier">r7</span> = <span class="ruby-identifier">instantiate_node</span>(<span class="ruby-constant">SyntaxNode</span>,<span class="ruby-identifier">input</span>, <span class="ruby-identifier">index</span><span class="ruby-operator">...</span>(<span class="ruby-identifier">index</span> <span class="ruby-operator">+</span> <span class="ruby-value">2</span>))
+                    <span class="ruby-ivar">@index</span> <span class="ruby-operator">+=</span> <span class="ruby-value">2</span>
+                  <span class="ruby-keyword kw">else</span>
+                    <span class="ruby-identifier">terminal_parse_failure</span>(<span class="ruby-value str">'::'</span>)
+                    <span class="ruby-identifier">r7</span> = <span class="ruby-keyword kw">nil</span>
+                  <span class="ruby-keyword kw">end</span>
+                  <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">r7</span>
+                    <span class="ruby-identifier">r5</span> = <span class="ruby-identifier">r7</span>
+                  <span class="ruby-keyword kw">else</span>
+                    <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">index</span> = <span class="ruby-identifier">i5</span>
+                    <span class="ruby-identifier">r5</span> = <span class="ruby-keyword kw">nil</span>
+                  <span class="ruby-keyword kw">end</span>
+                <span class="ruby-keyword kw">end</span>
+                <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">r5</span>
+                  <span class="ruby-identifier">s4</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">r5</span>
+                <span class="ruby-keyword kw">else</span>
+                  <span class="ruby-keyword kw">break</span>
+                <span class="ruby-keyword kw">end</span>
+              <span class="ruby-keyword kw">end</span>
+              <span class="ruby-identifier">r4</span> = <span class="ruby-identifier">instantiate_node</span>(<span class="ruby-constant">SyntaxNode</span>,<span class="ruby-identifier">input</span>, <span class="ruby-identifier">i4</span><span class="ruby-operator">...</span><span class="ruby-identifier">index</span>, <span class="ruby-identifier">s4</span>)
+              <span class="ruby-identifier">s0</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">r4</span>
+            <span class="ruby-keyword kw">end</span>
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">s0</span>.<span class="ruby-identifier">last</span>
+          <span class="ruby-identifier">r0</span> = <span class="ruby-identifier">instantiate_node</span>(<span class="ruby-constant">SyntaxNode</span>,<span class="ruby-identifier">input</span>, <span class="ruby-identifier">i0</span><span class="ruby-operator">...</span><span class="ruby-identifier">index</span>, <span class="ruby-identifier">s0</span>)
+          <span class="ruby-identifier">r0</span>.<span class="ruby-identifier">extend</span>(<span class="ruby-constant">IncludeDeclaration0</span>)
+          <span class="ruby-identifier">r0</span>.<span class="ruby-identifier">extend</span>(<span class="ruby-constant">IncludeDeclaration1</span>)
+        <span class="ruby-keyword kw">else</span>
+          <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">index</span> = <span class="ruby-identifier">i0</span>
+          <span class="ruby-identifier">r0</span> = <span class="ruby-keyword kw">nil</span>
+        <span class="ruby-keyword kw">end</span>
+
+        <span class="ruby-identifier">node_cache</span>[<span class="ruby-identifier">:include_declaration</span>][<span class="ruby-identifier">start_index</span>] = <span class="ruby-identifier">r0</span>
+
+        <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">r0</span>
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

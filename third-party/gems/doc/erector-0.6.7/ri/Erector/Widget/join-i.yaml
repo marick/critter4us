@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Emits the result of joining the elements in array with the separator. The array elements and separator can be Erector::Widget objects, which are rendered, or strings, which are html-escaped and output.
+full_name: Erector::Widget#join
+is_singleton: false
+name: join
+params: (array, separator)
+visibility: public

@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::CharacterClass#grounded_regexp
+is_singleton: false
+name: grounded_regexp
+params: (string)
+visibility: public

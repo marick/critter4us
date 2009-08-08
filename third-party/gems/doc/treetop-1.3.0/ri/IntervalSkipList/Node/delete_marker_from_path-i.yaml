@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: IntervalSkipList::Node#delete_marker_from_path
+is_singleton: false
+name: delete_marker_from_path
+params: (marker, level, terminus)
+visibility: protected

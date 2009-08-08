@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::ParsingExpression#begin_comment
+is_singleton: false
+name: begin_comment
+params: (expression)
+visibility: public

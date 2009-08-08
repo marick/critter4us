@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::GrammarCompiler#compile
+is_singleton: false
+name: compile
+params: (source_path, target_path = source_path.gsub(/\.(treetop|tt)\Z/, '.rb'))
+visibility: public

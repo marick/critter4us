@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>delete (IntervalSkipList)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/treetop/runtime/interval_skip_list/interval_skip_list.rb, line 64</span>
+  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">delete</span>(<span class="ruby-identifier">marker</span>)
+    <span class="ruby-identifier">range</span> = <span class="ruby-identifier">ranges</span>[<span class="ruby-identifier">marker</span>]
+    <span class="ruby-identifier">path_to_first_node</span> = <span class="ruby-identifier">make_path</span>
+    <span class="ruby-identifier">first_node</span> = <span class="ruby-identifier">find</span>(<span class="ruby-identifier">range</span>.<span class="ruby-identifier">first</span>, <span class="ruby-identifier">path_to_first_node</span>)
+
+    <span class="ruby-identifier">cur_node</span> = <span class="ruby-identifier">first_node</span>
+    <span class="ruby-identifier">cur_level</span> = <span class="ruby-identifier">first_node</span>.<span class="ruby-identifier">top_level</span>
+    <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">next_node_at_level_inside_range?</span>(<span class="ruby-identifier">cur_node</span>, <span class="ruby-identifier">cur_level</span>, <span class="ruby-identifier">range</span>)
+      <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">can_ascend_from?</span>(<span class="ruby-identifier">cur_node</span>, <span class="ruby-identifier">cur_level</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">next_node_at_level_inside_range?</span>(<span class="ruby-identifier">cur_node</span>, <span class="ruby-identifier">cur_level</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">range</span>)
+        <span class="ruby-identifier">cur_level</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-identifier">cur_node</span> = <span class="ruby-identifier">unmark_forward_path_at_level</span>(<span class="ruby-identifier">cur_node</span>, <span class="ruby-identifier">cur_level</span>, <span class="ruby-identifier">marker</span>)
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">node_inside_range?</span>(<span class="ruby-identifier">cur_node</span>, <span class="ruby-identifier">range</span>)
+      <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">can_descend_from?</span>(<span class="ruby-identifier">cur_level</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">next_node_at_level_outside_range?</span>(<span class="ruby-identifier">cur_node</span>, <span class="ruby-identifier">cur_level</span>, <span class="ruby-identifier">range</span>)
+        <span class="ruby-identifier">cur_level</span> <span class="ruby-operator">-=</span> <span class="ruby-value">1</span>
+      <span class="ruby-keyword kw">end</span>
+      <span class="ruby-identifier">cur_node</span> = <span class="ruby-identifier">unmark_forward_path_at_level</span>(<span class="ruby-identifier">cur_node</span>, <span class="ruby-identifier">cur_level</span>, <span class="ruby-identifier">marker</span>)
+    <span class="ruby-keyword kw">end</span>
+    <span class="ruby-identifier">last_node</span> = <span class="ruby-identifier">cur_node</span>
+
+    <span class="ruby-identifier">first_node</span>.<span class="ruby-identifier">endpoint_of</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">marker</span>)
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">first_node</span>.<span class="ruby-identifier">endpoint_of</span>.<span class="ruby-identifier">empty?</span>
+      <span class="ruby-identifier">first_node</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">path_to_first_node</span>)
+    <span class="ruby-keyword kw">end</span>
+
+    <span class="ruby-identifier">last_node</span>.<span class="ruby-identifier">endpoint_of</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">marker</span>)
+    <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">last_node</span>.<span class="ruby-identifier">endpoint_of</span>.<span class="ruby-identifier">empty?</span>
+      <span class="ruby-identifier">path_to_last_node</span> = <span class="ruby-identifier">make_path</span>
+      <span class="ruby-identifier">find</span>(<span class="ruby-identifier">range</span>.<span class="ruby-identifier">last</span>, <span class="ruby-identifier">path_to_last_node</span>)
+      <span class="ruby-identifier">last_node</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">path_to_last_node</span>)
+    <span class="ruby-keyword kw">end</span>
+  <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

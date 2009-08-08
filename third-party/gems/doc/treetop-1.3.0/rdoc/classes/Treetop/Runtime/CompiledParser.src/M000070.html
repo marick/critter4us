@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>has_terminal? (Treetop::Runtime::CompiledParser)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/treetop/runtime/compiled_parser.rb, line 85</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">has_terminal?</span>(<span class="ruby-identifier">terminal</span>, <span class="ruby-identifier">regex</span>, <span class="ruby-identifier">index</span>)
+        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">regex</span>
+          <span class="ruby-identifier">rx</span> = <span class="ruby-ivar">@regexps</span>[<span class="ruby-identifier">terminal</span>] <span class="ruby-operator">||=</span> <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">terminal</span>)
+          <span class="ruby-identifier">input</span>.<span class="ruby-identifier">index</span>(<span class="ruby-identifier">rx</span>, <span class="ruby-identifier">index</span>) <span class="ruby-operator">==</span> <span class="ruby-identifier">index</span>
+        <span class="ruby-keyword kw">else</span>
+          <span class="ruby-identifier">input</span>[<span class="ruby-identifier">index</span>, <span class="ruby-identifier">terminal</span>.<span class="ruby-identifier">size</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">terminal</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

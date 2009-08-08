@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>write_via (Erector::Widget)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/erector/widget.rb, line 310</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">write_via</span>(<span class="ruby-identifier">parent</span>)
+      <span class="ruby-ivar">@parent</span> = <span class="ruby-identifier">parent</span>
+      <span class="ruby-identifier">context</span>(<span class="ruby-identifier">parent</span>.<span class="ruby-identifier">output</span>, <span class="ruby-identifier">parent</span>.<span class="ruby-identifier">prettyprint</span>, <span class="ruby-identifier">parent</span>.<span class="ruby-identifier">indentation</span>, <span class="ruby-identifier">parent</span>.<span class="ruby-identifier">helpers</span>) <span class="ruby-keyword kw">do</span>
+        <span class="ruby-identifier">content</span>
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,26 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: String
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: blank?
+- !ruby/object:RI::MethodSummary 
+  name: column_of
+- !ruby/object:RI::MethodSummary 
+  name: indent
+- !ruby/object:RI::MethodSummary 
+  name: line_of
+- !ruby/object:RI::MethodSummary 
+  name: tabto
+- !ruby/object:RI::MethodSummary 
+  name: treetop_camelize
+name: String
+superclass: Object

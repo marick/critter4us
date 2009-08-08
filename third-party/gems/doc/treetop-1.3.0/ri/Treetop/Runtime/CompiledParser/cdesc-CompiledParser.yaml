@@ -1,0 +1,73 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: consume_all_input
+  rw: RW
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: index
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: index
+  rw: W
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: input
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: input_length
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: max_terminal_failure_index
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: node_cache
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: root
+  rw: W
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: terminal_failures
+  rw: R
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+constants: []
+
+full_name: Treetop::Runtime::CompiledParser
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: Treetop::Runtime
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: failure_column
+- !ruby/object:RI::MethodSummary 
+  name: failure_index
+- !ruby/object:RI::MethodSummary 
+  name: failure_line
+- !ruby/object:RI::MethodSummary 
+  name: failure_reason
+- !ruby/object:RI::MethodSummary 
+  name: has_terminal?
+- !ruby/object:RI::MethodSummary 
+  name: instantiate_node
+- !ruby/object:RI::MethodSummary 
+  name: parse
+- !ruby/object:RI::MethodSummary 
+  name: parse_anything
+- !ruby/object:RI::MethodSummary 
+  name: prepare_to_parse
+- !ruby/object:RI::MethodSummary 
+  name: reset_index
+- !ruby/object:RI::MethodSummary 
+  name: terminal_parse_failure
+name: CompiledParser
+superclass: Object

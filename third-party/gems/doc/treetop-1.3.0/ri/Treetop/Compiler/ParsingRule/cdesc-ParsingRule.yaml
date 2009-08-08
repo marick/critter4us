@@ -1,0 +1,28 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::ParsingRule
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: compile
+- !ruby/object:RI::MethodSummary 
+  name: compile_inline_module_declarations
+- !ruby/object:RI::MethodSummary 
+  name: generate_cache_lookup
+- !ruby/object:RI::MethodSummary 
+  name: generate_cache_storage
+- !ruby/object:RI::MethodSummary 
+  name: generate_method_definition
+- !ruby/object:RI::MethodSummary 
+  name: method_name
+- !ruby/object:RI::MethodSummary 
+  name: name
+name: ParsingRule
+superclass: Runtime::SyntaxNode

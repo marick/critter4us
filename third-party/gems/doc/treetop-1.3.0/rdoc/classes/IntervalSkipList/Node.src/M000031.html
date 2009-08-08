@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>delete_marker_from_path (IntervalSkipList::Node)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/treetop/runtime/interval_skip_list/node.rb, line 78</span>
+    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">delete_marker_from_path</span>(<span class="ruby-identifier">marker</span>, <span class="ruby-identifier">level</span>, <span class="ruby-identifier">terminus</span>)
+      <span class="ruby-identifier">cur_node</span> = <span class="ruby-keyword kw">self</span>
+      <span class="ruby-keyword kw">until</span> <span class="ruby-identifier">cur_node</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">terminus</span>
+        <span class="ruby-identifier">cur_node</span>.<span class="ruby-identifier">forward_markers</span>[<span class="ruby-identifier">level</span>].<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">marker</span>)
+        <span class="ruby-identifier">cur_node</span>.<span class="ruby-identifier">markers</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">marker</span>)
+        <span class="ruby-identifier">cur_node</span> = <span class="ruby-identifier">cur_node</span>.<span class="ruby-identifier">forward</span>[<span class="ruby-identifier">level</span>]
+      <span class="ruby-keyword kw">end</span>
+    <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

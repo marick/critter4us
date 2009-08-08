@@ -1,0 +1,99 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::Metagrammar
+includes: 
+- !ruby/object:RI::IncludedModule 
+  name: Treetop::Runtime
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: _nt_alpha_char
+- !ruby/object:RI::MethodSummary 
+  name: _nt_alphanumeric_char
+- !ruby/object:RI::MethodSummary 
+  name: _nt_alternative
+- !ruby/object:RI::MethodSummary 
+  name: _nt_anything_symbol
+- !ruby/object:RI::MethodSummary 
+  name: _nt_atomic
+- !ruby/object:RI::MethodSummary 
+  name: _nt_character_class
+- !ruby/object:RI::MethodSummary 
+  name: _nt_choice
+- !ruby/object:RI::MethodSummary 
+  name: _nt_comment_to_eol
+- !ruby/object:RI::MethodSummary 
+  name: _nt_declaration
+- !ruby/object:RI::MethodSummary 
+  name: _nt_declaration_sequence
+- !ruby/object:RI::MethodSummary 
+  name: _nt_double_quoted_string
+- !ruby/object:RI::MethodSummary 
+  name: _nt_grammar
+- !ruby/object:RI::MethodSummary 
+  name: _nt_grammar_name
+- !ruby/object:RI::MethodSummary 
+  name: _nt_include_declaration
+- !ruby/object:RI::MethodSummary 
+  name: _nt_inline_module
+- !ruby/object:RI::MethodSummary 
+  name: _nt_keyword_inside_grammar
+- !ruby/object:RI::MethodSummary 
+  name: _nt_label
+- !ruby/object:RI::MethodSummary 
+  name: _nt_labeled_sequence_primary
+- !ruby/object:RI::MethodSummary 
+  name: _nt_module_declaration
+- !ruby/object:RI::MethodSummary 
+  name: _nt_node_class_declarations
+- !ruby/object:RI::MethodSummary 
+  name: _nt_node_class_expression
+- !ruby/object:RI::MethodSummary 
+  name: _nt_non_space_char
+- !ruby/object:RI::MethodSummary 
+  name: _nt_nonterminal
+- !ruby/object:RI::MethodSummary 
+  name: _nt_optional_suffix
+- !ruby/object:RI::MethodSummary 
+  name: _nt_parenthesized_expression
+- !ruby/object:RI::MethodSummary 
+  name: _nt_parsing_expression
+- !ruby/object:RI::MethodSummary 
+  name: _nt_parsing_rule
+- !ruby/object:RI::MethodSummary 
+  name: _nt_prefix
+- !ruby/object:RI::MethodSummary 
+  name: _nt_primary
+- !ruby/object:RI::MethodSummary 
+  name: _nt_quoted_string
+- !ruby/object:RI::MethodSummary 
+  name: _nt_repetition_suffix
+- !ruby/object:RI::MethodSummary 
+  name: _nt_require_statement
+- !ruby/object:RI::MethodSummary 
+  name: _nt_sequence
+- !ruby/object:RI::MethodSummary 
+  name: _nt_sequence_primary
+- !ruby/object:RI::MethodSummary 
+  name: _nt_single_quoted_string
+- !ruby/object:RI::MethodSummary 
+  name: _nt_space
+- !ruby/object:RI::MethodSummary 
+  name: _nt_suffix
+- !ruby/object:RI::MethodSummary 
+  name: _nt_terminal
+- !ruby/object:RI::MethodSummary 
+  name: _nt_trailing_inline_module
+- !ruby/object:RI::MethodSummary 
+  name: _nt_treetop_file
+- !ruby/object:RI::MethodSummary 
+  name: _nt_white
+- !ruby/object:RI::MethodSummary 
+  name: root
+name: Metagrammar
+superclass: 

@@ -1,0 +1,1245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Erector::Widget</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Erector::Widget</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../files/lib/erector/widget_rb.html">
+                lib/erector/widget.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                <a href="../Object.html">
+                Object
+               </a>
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+A <a href="Widget.html">Widget</a> is the center of the <a
+href="../Erector.html">Erector</a> universe.
+</p>
+<p>
+To create a <a href="Widget.html#M000393">widget</a>, extend <a
+href="Widget.html">Erector::Widget</a> and implement the <tt><a
+href="Widget.html#M000391">content</a></tt> method. Inside this method you
+may call any of the tag methods like <tt>span</tt> or <tt>p</tt> to emit
+HTML/XML tags.
+</p>
+<p>
+You can also define a <a href="Widget.html#M000393">widget</a> on the fly
+by passing a block to <tt><a href="Widget.html#M000381">new</a></tt>. This
+block will get executed when the <a
+href="Widget.html#M000393">widget</a>&#8216;s <tt><a
+href="Widget.html#M000391">content</a></tt> method is called.
+</p>
+<p>
+To render a <a href="Widget.html#M000393">widget</a> from the outside,
+instantiate it and call its <tt><a href="Widget.html#M000387">to_s</a></tt>
+method.
+</p>
+<p>
+A <a href="Widget.html#M000393">widget</a>&#8216;s <tt><a
+href="Widget.html#M000381">new</a></tt> method optionally accepts an
+options hash. Entries in this hash are converted to instance variables, and
+<tt>attr_reader</tt> accessors are defined for each.
+</p>
+<p>
+You can add runtime input checking via the <tt><a
+href="Widget.html#M000377">needs</a></tt> macro. See <a
+href="Widget.html#M000377">needs</a>. This mechanism is meant to ameliorate
+development-time confusion about exactly what parameters are supported by a
+given <a href="Widget.html#M000393">widget</a>, avoiding confusing runtime
+NilClass errors.
+</p>
+<p>
+To call one <a href="Widget.html#M000393">widget</a> from another, inside
+the parent <a href="Widget.html#M000393">widget</a>&#8216;s <tt><a
+href="Widget.html#M000391">content</a></tt> method, instantiate the child
+<a href="Widget.html#M000393">widget</a> and call the <tt><a
+href="Widget.html#M000393">widget</a></tt> method. This assures that the
+same output stream is used, which gives better performance than using
+<tt><a href="Widget.html#M000407">capture</a></tt> or <tt><a
+href="Widget.html#M000387">to_s</a></tt>. It also preserves the indentation
+and helpers of the enclosing class.
+</p>
+<p>
+In this documentation we&#8216;ve tried to keep the distinction clear
+between methods that <b>emit</b> <a href="Widget.html#M000399">text</a> and
+those that <b>return</b> <a href="Widget.html#M000399">text</a>.
+&quot;Emit&quot; means that it writes to the output stream;
+&quot;return&quot; means that it returns a string like a normal method and
+leaves it up to the caller to emit that string if it wants.
+</p>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000413">__element__</a>&nbsp;&nbsp;
+      <a href="#M000414">__empty_element__</a>&nbsp;&nbsp;
+      <a href="#M000415">_newline</a>&nbsp;&nbsp;
+      <a href="#M000389">_render</a>&nbsp;&nbsp;
+      <a href="#M000375">after_initialize</a>&nbsp;&nbsp;
+      <a href="#M000376">after_initialize_parts</a>&nbsp;&nbsp;
+      <a href="#M000372">all_tags</a>&nbsp;&nbsp;
+      <a href="#M000385">any_are_needed?</a>&nbsp;&nbsp;
+      <a href="#M000384">assign_local</a>&nbsp;&nbsp;
+      <a href="#M000383">assign_locals</a>&nbsp;&nbsp;
+      <a href="#M000407">capture</a>&nbsp;&nbsp;
+      <a href="#M000403">character</a>&nbsp;&nbsp;
+      <a href="#M000404">close_tag</a>&nbsp;&nbsp;
+      <a href="#M000391">content</a>&nbsp;&nbsp;
+      <a href="#M000382">context</a>&nbsp;&nbsp;
+      <a href="#M000409">css</a>&nbsp;&nbsp;
+      <a href="#M000395">element</a>&nbsp;&nbsp;
+      <a href="#M000396">empty_element</a>&nbsp;&nbsp;
+      <a href="#M000373">empty_tags</a>&nbsp;&nbsp;
+      <a href="#M000418">format_attributes</a>&nbsp;&nbsp;
+      <a href="#M000419">format_sorted</a>&nbsp;&nbsp;
+      <a href="#M000374">full_tags</a>&nbsp;&nbsp;
+      <a href="#M000378">get_needs</a>&nbsp;&nbsp;
+      <a href="#M000397">h</a>&nbsp;&nbsp;
+      <a href="#M000394">html_escape</a>&nbsp;&nbsp;
+      <a href="#M000417">indent</a>&nbsp;&nbsp;
+      <a href="#M000416">indent_for_open_tag</a>&nbsp;&nbsp;
+      <a href="#M000390">inspect</a>&nbsp;&nbsp;
+      <a href="#M000406">instruct</a>&nbsp;&nbsp;
+      <a href="#M000408">javascript</a>&nbsp;&nbsp;
+      <a href="#M000405">join</a>&nbsp;&nbsp;
+      <a href="#M000412">method_missing</a>&nbsp;&nbsp;
+      <a href="#M000402">nbsp</a>&nbsp;&nbsp;
+      <a href="#M000377">needs</a>&nbsp;&nbsp;
+      <a href="#M000381">new</a>&nbsp;&nbsp;
+      <a href="#M000411">newliney</a>&nbsp;&nbsp;
+      <a href="#M000398">open_tag</a>&nbsp;&nbsp;
+      <a href="#M000379">prettyprint_default</a>&nbsp;&nbsp;
+      <a href="#M000380">prettyprint_default=</a>&nbsp;&nbsp;
+      <a href="#M000400">raw</a>&nbsp;&nbsp;
+      <a href="#M000401">rawtext</a>&nbsp;&nbsp;
+      <a href="#M000421">sort_for_xml_declaration</a>&nbsp;&nbsp;
+      <a href="#M000420">sorted</a>&nbsp;&nbsp;
+      <a href="#M000399">text</a>&nbsp;&nbsp;
+      <a href="#M000388">to_a</a>&nbsp;&nbsp;
+      <a href="#M000386">to_pretty</a>&nbsp;&nbsp;
+      <a href="#M000387">to_s</a>&nbsp;&nbsp;
+      <a href="#M000410">url</a>&nbsp;&nbsp;
+      <a href="#M000393">widget</a>&nbsp;&nbsp;
+      <a href="#M000392">write_via</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+    <div id="constants-list">
+      <h3 class="section-bar">Constants</h3>
+
+      <div class="name-list">
+        <table summary="Constants">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">NON_NEWLINEY</td>
+          <td>=</td>
+          <td class="context-item-value">{'i' =&gt; true, 'b' =&gt; true, 'small' =&gt; true,       'img' =&gt; true, 'span' =&gt; true, 'a' =&gt; true,       'input' =&gt; true, 'textarea' =&gt; true, 'button' =&gt; true, 'select' =&gt; true</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">SPACES_PER_INDENT</td>
+          <td>=</td>
+          <td class="context-item-value">2</td>
+        </tr>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">RESERVED_INSTANCE_VARS</td>
+          <td>=</td>
+          <td class="context-item-value">[:helpers, :assigns, :block, :parent, :output, :prettyprint, :indentation, :at_start_of_line]</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000375" class="method-detail">
+        <a name="M000375"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000375.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000375.html');return false;">
+          <span class="method-name">after_initialize</span><span class="method-args">(instance=nil, &amp;blk)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000372" class="method-detail">
+        <a name="M000372"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000372.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000372.html');return false;">
+          <span class="method-name">all_tags</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000373" class="method-detail">
+        <a name="M000373"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000373.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000373.html');return false;">
+          <span class="method-name">empty_tags</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Tags which are always self-closing. Click &quot;[Source]&quot; to see the
+full list.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000374" class="method-detail">
+        <a name="M000374"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000374.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000374.html');return false;">
+          <span class="method-name">full_tags</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Tags which can contain other stuff. Click &quot;[Source]&quot; to see the
+full list.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000377" class="method-detail">
+        <a name="M000377"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000377.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000377.html');return false;">
+          <span class="method-name">needs</span><span class="method-args">(*args)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Class method by which <a href="Widget.html#M000393">widget</a> classes can
+declare that they need certain parameters. If needed parameters are not
+passed in to <a href="Widget.html#M000381">new</a>, then an exception will
+be thrown (with a hopefully useful message about which parameters are
+missing). This is intended to catch silly bugs like passing in a parameter
+called &#8216;name&#8217; to a <a href="Widget.html#M000393">widget</a>
+that expects a parameter called &#8216;title&#8217;. Every variable
+declared in &#8216;<a href="Widget.html#M000377">needs</a>&#8217; will get
+an attr_reader accessor declared for it.
+</p>
+<p>
+You can also declare default values for parameters using hash syntax. You
+can put <a href="Widget.html#M000377">needs</a> declarations on multiple
+lines or on the same line; the only caveat is that if there are default
+values, they all have to be at the end of the line (so they go into the
+magic hash parameter).
+</p>
+<p>
+If a <a href="Widget.html#M000393">widget</a> has no <a
+href="Widget.html#M000377">needs</a> declaration then it will accept any
+combination of parameters (and make accessors for them) just like normal.
+In that case there will be no &#8216;attr_reader&#8216;s declared. If a <a
+href="Widget.html#M000393">widget</a> wants to declare that it takes no
+parameters, use the special incantation &quot;<a
+href="Widget.html#M000377">needs</a> nil&quot; (and don&#8216;t declare any
+other <a href="Widget.html#M000377">needs</a>, or kittens will cry).
+</p>
+<p>
+Usage:
+</p>
+<pre>
+   class FancyForm &lt; Erector::Widget
+     needs :title, :show_okay =&gt; true, :show_cancel =&gt; false
+     ...
+   end
+</pre>
+<p>
+That means that
+</p>
+<pre>
+  FancyForm.new(:title =&gt; 'Login')
+</pre>
+<p>
+will succeed, as will
+</p>
+<pre>
+  FancyForm.new(:title =&gt; 'Login', :show_cancel =&gt; true)
+</pre>
+<p>
+but
+</p>
+<pre>
+  FancyForm.new(:name =&gt; 'Login')
+</pre>
+<p>
+will fail.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000381" class="method-detail">
+        <a name="M000381"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000381.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000381.html');return false;">
+          <span class="method-name">new</span><span class="method-args">(assigns={}, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000380" class="method-detail">
+        <a name="M000380"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000380.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000380.html');return false;">
+          <span class="method-name">prettyprint_default=</span><span class="method-args">(enabled)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <h3 class="section-bar">Protected Class methods</h3>
+
+      <div id="method-M000376" class="method-detail">
+        <a name="M000376"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000376.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000376.html');return false;">
+          <span class="method-name">after_initialize_parts</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000378" class="method-detail">
+        <a name="M000378"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000378.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000378.html');return false;">
+          <span class="method-name">get_needs</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000389" class="method-detail">
+        <a name="M000389"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000389.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000389.html');return false;">
+          <span class="method-name">_render</span><span class="method-args">(options = {}, &amp;blk)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000385" class="method-detail">
+        <a name="M000385"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000385.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000385.html');return false;">
+          <span class="method-name">any_are_needed?</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000384" class="method-detail">
+        <a name="M000384"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000384.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000384.html');return false;">
+          <span class="method-name">assign_local</span><span class="method-args">(name, value)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000383" class="method-detail">
+        <a name="M000383"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000383.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000383.html');return false;">
+          <span class="method-name">assign_locals</span><span class="method-args">(local_assigns)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000407" class="method-detail">
+        <a name="M000407"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000407.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000407.html');return false;">
+          <span class="method-name">capture</span><span class="method-args">() {|| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Creates a whole <a href="Widget.html#M000381">new</a> output string,
+executes the block, then converts the output string to a string and emits
+it as <a href="Widget.html#M000400">raw</a> <a
+href="Widget.html#M000399">text</a>. If at all possible you should avoid
+this method since it hurts performance, and use <tt><a
+href="Widget.html#M000393">widget</a></tt> or <tt><a
+href="Widget.html#M000392">write_via</a></tt> instead.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000403" class="method-detail">
+        <a name="M000403"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000403.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000403.html');return false;">
+          <span class="method-name">character</span><span class="method-args">(code_point_or_name)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Return a <a href="Widget.html#M000403">character</a> given its unicode code
+point or unicode name.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000404" class="method-detail">
+        <a name="M000404"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000404.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000404.html');return false;">
+          <span class="method-name">close_tag</span><span class="method-args">(tag_name)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Emits a close tag, consisting of &#8217;&lt;&#8217;, &#8217;/&#8217;, tag
+name, and &#8217;&gt;&#8217;
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000391" class="method-detail">
+        <a name="M000391"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000391.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000391.html');return false;">
+          <span class="method-name">content</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Template method which must be overridden by all <a
+href="Widget.html#M000393">widget</a> subclasses. Inside this method you
+call the magic <a href="Widget.html#M000395">element</a> methods which emit
+HTML and <a href="Widget.html#M000399">text</a> to the output string. If
+you call &quot;super&quot; (or don&#8216;t override <tt><a
+href="Widget.html#M000391">content</a></tt>) then your <a
+href="Widget.html#M000393">widget</a> will render any block that was passed
+into its constructor (in the current instance <a
+href="Widget.html#M000382">context</a> so it can get access to parent <a
+href="Widget.html#M000393">widget</a> methods via <a
+href="Widget.html#M000412">method_missing</a>).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000409" class="method-detail">
+        <a name="M000409"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000409.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000409.html');return false;">
+          <span class="method-name">css</span><span class="method-args">(href)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Convenience method to emit a <a href="Widget.html#M000409">css</a> file
+link, which looks like this: &lt;link href=&quot;erector.css&quot;
+rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt; The parameter is
+the full contents of the href attribute, including any &quot;.<a
+href="Widget.html#M000409">css</a>&quot; extension.
+</p>
+<p>
+If you want to emit <a href="Widget.html#M000400">raw</a> CSS inline, use
+the style method instead.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000395" class="method-detail">
+        <a name="M000395"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000395.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000395.html');return false;">
+          <span class="method-name">element</span><span class="method-args">(*args, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Internal method used to emit an HTML/XML <a
+href="Widget.html#M000395">element</a>, including an open tag, attributes
+(optional, via the default hash), contents (also optional), and close tag.
+</p>
+<p>
+Using the arcane powers of Ruby, there are magic methods that call <tt><a
+href="Widget.html#M000395">element</a></tt> for all the standard HTML tags,
+like <tt>a</tt>, <tt>body</tt>, <tt>p</tt>, and so forth. Look at the
+source of <a href="Widget.html#M000374">full_tags</a> for the full list.
+Unfortunately, this big mojo confuses rdoc, so we can&#8216;t see each
+method in this rdoc page, but trust us, they&#8216;re there.
+</p>
+<p>
+When calling one of these magic methods, put attributes in the default
+hash. If there is a string parameter, then it is used as the contents. If
+there is a block, then it is executed (yielded), and the string parameter
+is ignored. The block will usually be in the scope of the child <a
+href="Widget.html#M000393">widget</a>, which means it has access to all the
+methods of <a href="Widget.html">Widget</a>, which will eventually end up
+appending <a href="Widget.html#M000399">text</a> to the <tt>output</tt>
+string. See how elegant it is? Not confusing at all if you don&#8216;t
+think about it.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000396" class="method-detail">
+        <a name="M000396"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000396.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000396.html');return false;">
+          <span class="method-name">empty_element</span><span class="method-args">(*args, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Internal method used to emit a self-closing HTML/XML <a
+href="Widget.html#M000395">element</a>, including a tag name and optional
+attributes (passed in via the default hash).
+</p>
+<p>
+Using the arcane powers of Ruby, there are magic methods that call <tt><a
+href="Widget.html#M000396">empty_element</a></tt> for all the standard HTML
+tags, like <tt>img</tt>, <tt>br</tt>, and so forth. Look at the source of
+<a href="Widget.html#M000373">empty_tags</a> for the full list.
+Unfortunately, this big mojo confuses rdoc, so we can&#8216;t see each
+method in this rdoc page, but trust us, they&#8216;re there.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000397" class="method-detail">
+        <a name="M000397"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000397.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000397.html');return false;">
+          <span class="method-name">h</span><span class="method-args">(content)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns an HTML-escaped version of its parameter. Leaves the output string
+untouched. Note that the <a href="Widget.html#M000399">text</a> method
+automatically HTML-escapes its parameter, so be careful <b>not</b> to do
+something like <a href="Widget.html#M000399">text</a>(<a
+href="Widget.html#M000397">h</a>(&quot;2&lt;4&quot;)) since that will
+double-escape the less-than sign (you&#8216;ll get
+&quot;2&amp;amp;lt;4&quot; instead of &quot;2&amp;lt;4&quot;).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000394" class="method-detail">
+        <a name="M000394"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000394.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000394.html');return false;">
+          <span class="method-name">html_escape</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+(Should we make this hidden?)
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000390" class="method-detail">
+        <a name="M000390"></a>
+
+        <div class="method-heading">
+          <span class="method-name">inspect</span><span class="method-args">(options = {}, &amp;blk)</span>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Alias for <a href="Widget.html#M000387">to_s</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000406" class="method-detail">
+        <a name="M000406"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000406.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000406.html');return false;">
+          <span class="method-name">instruct</span><span class="method-args">(attributes={:version =&gt; &quot;1.0&quot;, :encoding =&gt; &quot;UTF-8&quot;})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Emits an XML instruction, which looks like this: &lt;?xml
+version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000408" class="method-detail">
+        <a name="M000408"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000408.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000408.html');return false;">
+          <span class="method-name">javascript</span><span class="method-args">(*args, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Emits a <a href="Widget.html#M000408">javascript</a> block inside a
+<tt>script</tt> tag, wrapped in CDATA doohickeys like all the cool JS kids
+do.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000405" class="method-detail">
+        <a name="M000405"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000405.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000405.html');return false;">
+          <span class="method-name">join</span><span class="method-args">(array, separator)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Emits the result of joining the elements in array with the separator. The
+array elements and separator can be <a
+href="Widget.html">Erector::Widget</a> objects, which are rendered, or
+strings, which are html-escaped and output.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000402" class="method-detail">
+        <a name="M000402"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000402.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000402.html');return false;">
+          <span class="method-name">nbsp</span><span class="method-args">(value = &quot; &quot;)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns a copy of value with spaces replaced by non-breaking space
+characters. With no arguments, return a single non-breaking space. The
+output uses the escaping format &#8217;&amp;160;&#8217; since that works in
+both HTML and XML (as opposed to &#8217;&amp;<a
+href="Widget.html#M000402">nbsp</a>;&#8217; which only works in HTML).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000411" class="method-detail">
+        <a name="M000411"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000411.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000411.html');return false;">
+          <span class="method-name">newliney</span><span class="method-args">(tag_name)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000398" class="method-detail">
+        <a name="M000398"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000398.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000398.html');return false;">
+          <span class="method-name">open_tag</span><span class="method-args">(tag_name, attributes={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Emits an open tag, comprising &#8217;&lt;&#8217;, tag name, optional
+attributes, and &#8217;&gt;&#8217;
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000379" class="method-detail">
+        <a name="M000379"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000379.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000379.html');return false;">
+          <span class="method-name">prettyprint_default</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000400" class="method-detail">
+        <a name="M000400"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000400.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000400.html');return false;">
+          <span class="method-name">raw</span><span class="method-args">(value)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Returns <a href="Widget.html#M000399">text</a> which will <b>not</b> be
+HTML-escaped.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000401" class="method-detail">
+        <a name="M000401"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000401.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000401.html');return false;">
+          <span class="method-name">rawtext</span><span class="method-args">(value)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Emits <a href="Widget.html#M000399">text</a> which will <b>not</b> be
+HTML-escaped. Same effect as <a href="Widget.html#M000399">text</a>(<a
+href="Widget.html#M000400">raw</a>(s))
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000399" class="method-detail">
+        <a name="M000399"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000399.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000399.html');return false;">
+          <span class="method-name">text</span><span class="method-args">(value)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Emits <a href="Widget.html#M000399">text</a>. If a string is passed in, it
+will be HTML-escaped. If a <a href="Widget.html#M000393">widget</a> or the
+result of calling methods such as <a href="Widget.html#M000400">raw</a> is
+passed in, the HTML will not be HTML-escaped again. If another kind of
+object is passed in, the result of calling its <a
+href="Widget.html#M000387">to_s</a> method will be treated as a string
+would be.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000388" class="method-detail">
+        <a name="M000388"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000388.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000388.html');return false;">
+          <span class="method-name">to_a</span><span class="method-args">(options = {}, &amp;blk)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Entry point for rendering a <a href="Widget.html#M000393">widget</a> (and
+all its children). Same as <a href="Widget.html#M000387">to_s</a> only it
+returns an array, for theoretical performance improvements when using a
+Rack server (like Sinatra or <a href="Rails.html">Rails</a> Metal).
+</p>
+<p>
+# Options: see <a href="Widget.html#M000387">to_s</a>
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000386" class="method-detail">
+        <a name="M000386"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000386.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000386.html');return false;">
+          <span class="method-name">to_pretty</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Render (like <a href="Widget.html#M000387">to_s</a>) but adding newlines
+and indentation. This is a convenience method; you may just want to call <a
+href="Widget.html#M000387">to_s</a>(:prettyprint =&gt; true) so you can
+pass in other rendering options as well.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000387" class="method-detail">
+        <a name="M000387"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000387.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000387.html');return false;">
+          <span class="method-name">to_s</span><span class="method-args">(options = {}, &amp;blk)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Entry point for rendering a <a href="Widget.html#M000393">widget</a> (and
+all its children). This method creates a <a
+href="Widget.html#M000381">new</a> output string (if necessary), calls this
+<a href="Widget.html#M000393">widget</a>&#8216;s <a
+href="Widget.html#M000391">content</a> method and returns the string.
+</p>
+<p>
+Options:
+</p>
+<table>
+<tr><td valign="top">output:</td><td>the string to output to. Default: a <a href="Widget.html#M000381">new</a>
+empty string
+
+</td></tr>
+<tr><td valign="top">prettyprint:</td><td>whether <a href="../Erector.html">Erector</a> should add newlines and
+indentation. Default: the value of <a
+href="Widget.html#M000379">prettyprint_default</a> (which is false by
+default).
+
+</td></tr>
+<tr><td valign="top">indentation:</td><td>the amount of spaces to <a href="Widget.html#M000417">indent</a>. Ignored
+unless prettyprint is true.
+
+</td></tr>
+<tr><td valign="top">helpers:</td><td>a helpers object containing utility methods. Usually this is a <a
+href="Rails.html">Rails</a> view object.
+
+</td></tr>
+<tr><td valign="top">content_method_name:</td><td>in case you want to call a method other than <a
+href="Widget.html#M000391">content</a>, pass its name in here.
+
+</td></tr>
+</table>
+        </div>
+      </div>
+
+      <div id="method-M000410" class="method-detail">
+        <a name="M000410"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000410.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000410.html');return false;">
+          <span class="method-name">url</span><span class="method-args">(href)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Convenience method to emit an anchor tag whose href and <a
+href="Widget.html#M000399">text</a> are the same, e.g. &lt;a href=&quot;<a
+href="http://example.com">http://example.com</a">example.com">http://example.com</a</a>&gt;
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000393" class="method-detail">
+        <a name="M000393"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000393.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000393.html');return false;">
+          <span class="method-name">widget</span><span class="method-args">(target, assigns={}, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Emits a (nested) <a href="Widget.html#M000393">widget</a> onto the current
+<a href="Widget.html#M000393">widget</a>&#8216;s output stream. Accepts
+either a class or an instance. If the first argument is a class, then the
+second argument is a hash used to populate its instance variables. If the
+first argument is an instance then the hash must be unspecified (or empty).
+</p>
+<p>
+The sub-<a href="Widget.html#M000393">widget</a> will have access to the
+methods of the parent class, via some <a
+href="Widget.html#M000412">method_missing</a> magic and a
+&quot;parent&quot; pointer.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000392" class="method-detail">
+        <a name="M000392"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000392.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000392.html');return false;">
+          <span class="method-name">write_via</span><span class="method-args">(parent)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+To call one <a href="Widget.html#M000393">widget</a> from another, inside
+the parent <a href="Widget.html#M000393">widget</a>&#8216;s <tt><a
+href="Widget.html#M000391">content</a></tt> method, instantiate the child
+<a href="Widget.html#M000393">widget</a> and call its <tt><a
+href="Widget.html#M000392">write_via</a></tt> method, passing in
+<tt>self</tt>. This assures that the same output string is used, which
+gives better performance than using <tt><a
+href="Widget.html#M000407">capture</a></tt> or <tt><a
+href="Widget.html#M000387">to_s</a></tt>. You can also use the <tt><a
+href="Widget.html#M000393">widget</a></tt> method.
+</p>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Protected Instance methods</h3>
+
+      <div id="method-M000413" class="method-detail">
+        <a name="M000413"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000413.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000413.html');return false;">
+          <span class="method-name">__element__</span><span class="method-args">(tag_name, *args, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000414" class="method-detail">
+        <a name="M000414"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000414.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000414.html');return false;">
+          <span class="method-name">__empty_element__</span><span class="method-args">(tag_name, attributes={})</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000415" class="method-detail">
+        <a name="M000415"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000415.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000415.html');return false;">
+          <span class="method-name">_newline</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000382" class="method-detail">
+        <a name="M000382"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000382.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000382.html');return false;">
+          <span class="method-name">context</span><span class="method-args">(output, prettyprint = false, indentation = 0, helpers = nil) {|| ...}</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000418" class="method-detail">
+        <a name="M000418"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000418.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000418.html');return false;">
+          <span class="method-name">format_attributes</span><span class="method-args">(attributes)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000419" class="method-detail">
+        <a name="M000419"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000419.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000419.html');return false;">
+          <span class="method-name">format_sorted</span><span class="method-args">(sorted)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000417" class="method-detail">
+        <a name="M000417"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000417.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000417.html');return false;">
+          <span class="method-name">indent</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000416" class="method-detail">
+        <a name="M000416"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000416.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000416.html');return false;">
+          <span class="method-name">indent_for_open_tag</span><span class="method-args">(tag_name)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000412" class="method-detail">
+        <a name="M000412"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000412.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000412.html');return false;">
+          <span class="method-name">method_missing</span><span class="method-args">(name, *args, &amp;block)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+This is part of the sub-widget/parent feature (see <a
+href="Widget.html#M000393">widget</a> method).
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000421" class="method-detail">
+        <a name="M000421"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000421.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000421.html');return false;">
+          <span class="method-name">sort_for_xml_declaration</span><span class="method-args">(attributes)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000420" class="method-detail">
+        <a name="M000420"></a>
+
+        <div class="method-heading">
+          <a href="Widget.src/M000420.html" target="Code" class="method-signature"
+            onclick="popupCode('Widget.src/M000420.html');return false;">
+          <span class="method-name">sorted</span><span class="method-args">(attributes)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

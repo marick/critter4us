@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: IntervalSkipList#overlapping
+is_singleton: false
+name: overlapping
+params: (range)
+visibility: public

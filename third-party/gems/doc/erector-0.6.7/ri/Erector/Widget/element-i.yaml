@@ -1,0 +1,16 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Internal method used to emit an HTML/XML element, including an open tag, attributes (optional, via the default hash), contents (also optional), and close tag.
+- !ruby/struct:SM::Flow::P 
+  body: "Using the arcane powers of Ruby, there are magic methods that call <tt>element</tt> for all the standard HTML tags, like <tt>a</tt>, <tt>body</tt>, <tt>p</tt>, and so forth. Look at the source of #full_tags for the full list. Unfortunately, this big mojo confuses rdoc, so we can't see each method in this rdoc page, but trust us, they're there."
+- !ruby/struct:SM::Flow::P 
+  body: When calling one of these magic methods, put attributes in the default hash. If there is a string parameter, then it is used as the contents. If there is a block, then it is executed (yielded), and the string parameter is ignored. The block will usually be in the scope of the child widget, which means it has access to all the methods of Widget, which will eventually end up appending text to the <tt>output</tt> string. See how elegant it is? Not confusing at all if you don't think about it.
+full_name: Erector::Widget#element
+is_singleton: false
+name: element
+params: (*args, &block)
+visibility: public

@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Runtime::CompiledParser#prepare_to_parse
+is_singleton: false
+name: prepare_to_parse
+params: (input)
+visibility: protected

@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: IntervalSkipList::Node#propagate_length_change
+is_singleton: false
+name: propagate_length_change
+params: (length_change)
+visibility: public

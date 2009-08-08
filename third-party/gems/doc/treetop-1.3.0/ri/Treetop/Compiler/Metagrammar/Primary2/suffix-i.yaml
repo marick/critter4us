@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::Metagrammar::Primary2#suffix
+is_singleton: false
+name: suffix
+params: ()
+visibility: public

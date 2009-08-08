@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Runtime::CompiledParser#failure_column
+is_singleton: false
+name: failure_column
+params: ()
+visibility: public

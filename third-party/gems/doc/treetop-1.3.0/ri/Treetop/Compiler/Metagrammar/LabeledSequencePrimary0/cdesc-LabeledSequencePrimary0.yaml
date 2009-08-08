@@ -1,0 +1,18 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::Metagrammar::LabeledSequencePrimary0
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: label
+- !ruby/object:RI::MethodSummary 
+  name: sequence_primary
+name: LabeledSequencePrimary0
+superclass: 

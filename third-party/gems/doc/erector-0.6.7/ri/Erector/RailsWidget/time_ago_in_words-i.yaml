@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Erector::RailsWidget#time_ago_in_words
+is_singleton: false
+name: time_ago_in_words
+params: (*args)
+visibility: public

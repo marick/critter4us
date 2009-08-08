@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::Metagrammar::Choice2#alternatives
+is_singleton: false
+name: alternatives
+params: ()
+visibility: public

@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Erector::Erect#explode
+is_singleton: false
+name: explode
+params: (dir)
+visibility: public

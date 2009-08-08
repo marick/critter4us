@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: You can override this method to provide a class for a row (as an alternative to calling row_classes).
+full_name: Erector::Widgets::Table#row_css_class
+is_singleton: false
+name: row_css_class
+params: (object, index)
+visibility: protected

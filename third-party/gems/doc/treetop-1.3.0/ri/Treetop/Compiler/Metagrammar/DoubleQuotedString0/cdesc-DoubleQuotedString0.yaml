@@ -1,0 +1,15 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::Metagrammar::DoubleQuotedString0
+includes: []
+
+instance_methods: []
+
+name: DoubleQuotedString0
+superclass: 

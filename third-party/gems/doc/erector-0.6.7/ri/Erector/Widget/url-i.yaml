@@ -1,0 +1,12 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: Convenience method to emit an anchor tag whose href and text are the same, e.g. &lt;a href=&quot;http://example.com&quot;&gt;http://example.com&lt;/a&gt;
+full_name: Erector::Widget#url
+is_singleton: false
+name: url
+params: (href)
+visibility: public

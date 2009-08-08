@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Erector::RailsWidget#simple_format
+is_singleton: false
+name: simple_format
+params: (string)
+visibility: public

@@ -1,0 +1,14 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+- !ruby/struct:SM::Flow::P 
+  body: "Convenience method to emit a css file link, which looks like this: &lt;link href=&quot;erector.css&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot; /&gt; The parameter is the full contents of the href attribute, including any &quot;.css&quot; extension."
+- !ruby/struct:SM::Flow::P 
+  body: "If you want to emit raw CSS inline, use the #style method instead."
+full_name: Erector::Widget#css
+is_singleton: false
+name: css
+params: (href)
+visibility: public

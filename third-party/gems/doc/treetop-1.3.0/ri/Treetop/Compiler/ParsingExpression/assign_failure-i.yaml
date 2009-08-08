@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::ParsingExpression#assign_failure
+is_singleton: false
+name: assign_failure
+params: (start_index_var)
+visibility: public

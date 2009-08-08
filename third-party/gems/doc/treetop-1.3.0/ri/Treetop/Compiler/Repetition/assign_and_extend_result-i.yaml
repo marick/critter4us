@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::Repetition#assign_and_extend_result
+is_singleton: false
+name: assign_and_extend_result
+params: ()
+visibility: public

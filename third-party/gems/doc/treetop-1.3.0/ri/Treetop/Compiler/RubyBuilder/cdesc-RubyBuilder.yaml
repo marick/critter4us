@@ -1,0 +1,62 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: address_space
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: level
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: ruby
+  rw: R
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::RubyBuilder
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: "<<"
+- !ruby/object:RI::MethodSummary 
+  name: accumulate
+- !ruby/object:RI::MethodSummary 
+  name: assign
+- !ruby/object:RI::MethodSummary 
+  name: break
+- !ruby/object:RI::MethodSummary 
+  name: class_declaration
+- !ruby/object:RI::MethodSummary 
+  name: else_
+- !ruby/object:RI::MethodSummary 
+  name: extend
+- !ruby/object:RI::MethodSummary 
+  name: if_
+- !ruby/object:RI::MethodSummary 
+  name: if__
+- !ruby/object:RI::MethodSummary 
+  name: in
+- !ruby/object:RI::MethodSummary 
+  name: indented
+- !ruby/object:RI::MethodSummary 
+  name: loop
+- !ruby/object:RI::MethodSummary 
+  name: method_declaration
+- !ruby/object:RI::MethodSummary 
+  name: module_declaration
+- !ruby/object:RI::MethodSummary 
+  name: newline
+- !ruby/object:RI::MethodSummary 
+  name: next_address
+- !ruby/object:RI::MethodSummary 
+  name: out
+- !ruby/object:RI::MethodSummary 
+  name: reset_addresses
+name: RubyBuilder
+superclass: Object

@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::Sequence#node_class_name
+is_singleton: false
+name: node_class_name
+params: ()
+visibility: public

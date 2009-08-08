@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::ParsingExpression#obtain_new_subexpression_address
+is_singleton: false
+name: obtain_new_subexpression_address
+params: ()
+visibility: public

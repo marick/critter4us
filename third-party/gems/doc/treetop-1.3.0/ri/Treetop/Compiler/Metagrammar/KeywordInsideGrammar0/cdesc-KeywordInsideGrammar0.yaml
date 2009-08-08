@@ -1,0 +1,15 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::Metagrammar::KeywordInsideGrammar0
+includes: []
+
+instance_methods: []
+
+name: KeywordInsideGrammar0
+superclass: 

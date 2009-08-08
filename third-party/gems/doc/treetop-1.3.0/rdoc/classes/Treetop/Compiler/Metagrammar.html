@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Module: Treetop::Compiler::Metagrammar</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Module</strong></td>
+          <td class="class-name-in-header">Treetop::Compiler::Metagrammar</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../../files/lib/treetop/compiler/metagrammar_rb.html">
+                lib/treetop/compiler/metagrammar.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000109">_nt_alpha_char</a>&nbsp;&nbsp;
+      <a href="#M000110">_nt_alphanumeric_char</a>&nbsp;&nbsp;
+      <a href="#M000085">_nt_alternative</a>&nbsp;&nbsp;
+      <a href="#M000103">_nt_anything_symbol</a>&nbsp;&nbsp;
+      <a href="#M000095">_nt_atomic</a>&nbsp;&nbsp;
+      <a href="#M000102">_nt_character_class</a>&nbsp;&nbsp;
+      <a href="#M000083">_nt_choice</a>&nbsp;&nbsp;
+      <a href="#M000112">_nt_comment_to_eol</a>&nbsp;&nbsp;
+      <a href="#M000079">_nt_declaration</a>&nbsp;&nbsp;
+      <a href="#M000078">_nt_declaration_sequence</a>&nbsp;&nbsp;
+      <a href="#M000100">_nt_double_quoted_string</a>&nbsp;&nbsp;
+      <a href="#M000076">_nt_grammar</a>&nbsp;&nbsp;
+      <a href="#M000077">_nt_grammar_name</a>&nbsp;&nbsp;
+      <a href="#M000080">_nt_include_declaration</a>&nbsp;&nbsp;
+      <a href="#M000106">_nt_inline_module</a>&nbsp;&nbsp;
+      <a href="#M000107">_nt_keyword_inside_grammar</a>&nbsp;&nbsp;
+      <a href="#M000088">_nt_label</a>&nbsp;&nbsp;
+      <a href="#M000087">_nt_labeled_sequence_primary</a>&nbsp;&nbsp;
+      <a href="#M000075">_nt_module_declaration</a>&nbsp;&nbsp;
+      <a href="#M000092">_nt_node_class_declarations</a>&nbsp;&nbsp;
+      <a href="#M000104">_nt_node_class_expression</a>&nbsp;&nbsp;
+      <a href="#M000108">_nt_non_space_char</a>&nbsp;&nbsp;
+      <a href="#M000097">_nt_nonterminal</a>&nbsp;&nbsp;
+      <a href="#M000091">_nt_optional_suffix</a>&nbsp;&nbsp;
+      <a href="#M000096">_nt_parenthesized_expression</a>&nbsp;&nbsp;
+      <a href="#M000082">_nt_parsing_expression</a>&nbsp;&nbsp;
+      <a href="#M000081">_nt_parsing_rule</a>&nbsp;&nbsp;
+      <a href="#M000094">_nt_prefix</a>&nbsp;&nbsp;
+      <a href="#M000086">_nt_primary</a>&nbsp;&nbsp;
+      <a href="#M000099">_nt_quoted_string</a>&nbsp;&nbsp;
+      <a href="#M000093">_nt_repetition_suffix</a>&nbsp;&nbsp;
+      <a href="#M000074">_nt_require_statement</a>&nbsp;&nbsp;
+      <a href="#M000084">_nt_sequence</a>&nbsp;&nbsp;
+      <a href="#M000089">_nt_sequence_primary</a>&nbsp;&nbsp;
+      <a href="#M000101">_nt_single_quoted_string</a>&nbsp;&nbsp;
+      <a href="#M000111">_nt_space</a>&nbsp;&nbsp;
+      <a href="#M000090">_nt_suffix</a>&nbsp;&nbsp;
+      <a href="#M000098">_nt_terminal</a>&nbsp;&nbsp;
+      <a href="#M000105">_nt_trailing_inline_module</a>&nbsp;&nbsp;
+      <a href="#M000073">_nt_treetop_file</a>&nbsp;&nbsp;
+      <a href="#M000113">_nt_white</a>&nbsp;&nbsp;
+      <a href="#M000072">root</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+    <div id="includes">
+      <h3 class="section-bar">Included Modules</h3>
+
+      <div id="includes-list">
+        <span class="include-name"><a href="../Runtime.html">Treetop::Runtime</a></span>
+      </div>
+    </div>
+
+    <div id="section">
+
+    <div id="class-list">
+      <h3 class="section-bar">Classes and Modules</h3>
+
+      Module <a href="Metagrammar/CharacterClass0.html" class="link">Treetop::Compiler::Metagrammar::CharacterClass0</a><br />
+Module <a href="Metagrammar/CharacterClass1.html" class="link">Treetop::Compiler::Metagrammar::CharacterClass1</a><br />
+Module <a href="Metagrammar/CharacterClass2.html" class="link">Treetop::Compiler::Metagrammar::CharacterClass2</a><br />
+Module <a href="Metagrammar/CharacterClass3.html" class="link">Treetop::Compiler::Metagrammar::CharacterClass3</a><br />
+Module <a href="Metagrammar/CharacterClass4.html" class="link">Treetop::Compiler::Metagrammar::CharacterClass4</a><br />
+Module <a href="Metagrammar/Choice0.html" class="link">Treetop::Compiler::Metagrammar::Choice0</a><br />
+Module <a href="Metagrammar/Choice1.html" class="link">Treetop::Compiler::Metagrammar::Choice1</a><br />
+Module <a href="Metagrammar/Choice2.html" class="link">Treetop::Compiler::Metagrammar::Choice2</a><br />
+Module <a href="Metagrammar/CommentToEol0.html" class="link">Treetop::Compiler::Metagrammar::CommentToEol0</a><br />
+Module <a href="Metagrammar/CommentToEol1.html" class="link">Treetop::Compiler::Metagrammar::CommentToEol1</a><br />
+Module <a href="Metagrammar/DeclarationSequence0.html" class="link">Treetop::Compiler::Metagrammar::DeclarationSequence0</a><br />
+Module <a href="Metagrammar/DeclarationSequence1.html" class="link">Treetop::Compiler::Metagrammar::DeclarationSequence1</a><br />
+Module <a href="Metagrammar/DeclarationSequence2.html" class="link">Treetop::Compiler::Metagrammar::DeclarationSequence2</a><br />
+Module <a href="Metagrammar/DeclarationSequence3.html" class="link">Treetop::Compiler::Metagrammar::DeclarationSequence3</a><br />
+Module <a href="Metagrammar/DoubleQuotedString0.html" class="link">Treetop::Compiler::Metagrammar::DoubleQuotedString0</a><br />
+Module <a href="Metagrammar/DoubleQuotedString1.html" class="link">Treetop::Compiler::Metagrammar::DoubleQuotedString1</a><br />
+Module <a href="Metagrammar/Grammar0.html" class="link">Treetop::Compiler::Metagrammar::Grammar0</a><br />
+Module <a href="Metagrammar/Grammar1.html" class="link">Treetop::Compiler::Metagrammar::Grammar1</a><br />
+Module <a href="Metagrammar/GrammarName0.html" class="link">Treetop::Compiler::Metagrammar::GrammarName0</a><br />
+Module <a href="Metagrammar/IncludeDeclaration0.html" class="link">Treetop::Compiler::Metagrammar::IncludeDeclaration0</a><br />
+Module <a href="Metagrammar/IncludeDeclaration1.html" class="link">Treetop::Compiler::Metagrammar::IncludeDeclaration1</a><br />
+Module <a href="Metagrammar/InlineModule0.html" class="link">Treetop::Compiler::Metagrammar::InlineModule0</a><br />
+Module <a href="Metagrammar/InlineModule1.html" class="link">Treetop::Compiler::Metagrammar::InlineModule1</a><br />
+Module <a href="Metagrammar/KeywordInsideGrammar0.html" class="link">Treetop::Compiler::Metagrammar::KeywordInsideGrammar0</a><br />
+Module <a href="Metagrammar/Label0.html" class="link">Treetop::Compiler::Metagrammar::Label0</a><br />
+Module <a href="Metagrammar/Label1.html" class="link">Treetop::Compiler::Metagrammar::Label1</a><br />
+Module <a href="Metagrammar/Label2.html" class="link">Treetop::Compiler::Metagrammar::Label2</a><br />
+Module <a href="Metagrammar/Label3.html" class="link">Treetop::Compiler::Metagrammar::Label3</a><br />
+Module <a href="Metagrammar/LabeledSequencePrimary0.html" class="link">Treetop::Compiler::Metagrammar::LabeledSequencePrimary0</a><br />
+Module <a href="Metagrammar/LabeledSequencePrimary1.html" class="link">Treetop::Compiler::Metagrammar::LabeledSequencePrimary1</a><br />
+Module <a href="Metagrammar/ModuleDeclaration0.html" class="link">Treetop::Compiler::Metagrammar::ModuleDeclaration0</a><br />
+Module <a href="Metagrammar/ModuleDeclaration1.html" class="link">Treetop::Compiler::Metagrammar::ModuleDeclaration1</a><br />
+Module <a href="Metagrammar/ModuleDeclaration2.html" class="link">Treetop::Compiler::Metagrammar::ModuleDeclaration2</a><br />
+Module <a href="Metagrammar/ModuleDeclaration3.html" class="link">Treetop::Compiler::Metagrammar::ModuleDeclaration3</a><br />
+Module <a href="Metagrammar/NodeClassDeclarations0.html" class="link">Treetop::Compiler::Metagrammar::NodeClassDeclarations0</a><br />
+Module <a href="Metagrammar/NodeClassDeclarations1.html" class="link">Treetop::Compiler::Metagrammar::NodeClassDeclarations1</a><br />
+Module <a href="Metagrammar/NodeClassExpression0.html" class="link">Treetop::Compiler::Metagrammar::NodeClassExpression0</a><br />
+Module <a href="Metagrammar/NodeClassExpression1.html" class="link">Treetop::Compiler::Metagrammar::NodeClassExpression1</a><br />
+Module <a href="Metagrammar/NodeClassExpression2.html" class="link">Treetop::Compiler::Metagrammar::NodeClassExpression2</a><br />
+Module <a href="Metagrammar/NodeClassExpression3.html" class="link">Treetop::Compiler::Metagrammar::NodeClassExpression3</a><br />
+Module <a href="Metagrammar/NonSpaceChar0.html" class="link">Treetop::Compiler::Metagrammar::NonSpaceChar0</a><br />
+Module <a href="Metagrammar/Nonterminal0.html" class="link">Treetop::Compiler::Metagrammar::Nonterminal0</a><br />
+Module <a href="Metagrammar/Nonterminal1.html" class="link">Treetop::Compiler::Metagrammar::Nonterminal1</a><br />
+Module <a href="Metagrammar/ParenthesizedExpression0.html" class="link">Treetop::Compiler::Metagrammar::ParenthesizedExpression0</a><br />
+Module <a href="Metagrammar/ParenthesizedExpression1.html" class="link">Treetop::Compiler::Metagrammar::ParenthesizedExpression1</a><br />
+Module <a href="Metagrammar/ParsingRule0.html" class="link">Treetop::Compiler::Metagrammar::ParsingRule0</a><br />
+Module <a href="Metagrammar/ParsingRule1.html" class="link">Treetop::Compiler::Metagrammar::ParsingRule1</a><br />
+Module <a href="Metagrammar/Primary0.html" class="link">Treetop::Compiler::Metagrammar::Primary0</a><br />
+Module <a href="Metagrammar/Primary1.html" class="link">Treetop::Compiler::Metagrammar::Primary1</a><br />
+Module <a href="Metagrammar/Primary2.html" class="link">Treetop::Compiler::Metagrammar::Primary2</a><br />
+Module <a href="Metagrammar/Primary3.html" class="link">Treetop::Compiler::Metagrammar::Primary3</a><br />
+Module <a href="Metagrammar/Primary4.html" class="link">Treetop::Compiler::Metagrammar::Primary4</a><br />
+Module <a href="Metagrammar/Primary5.html" class="link">Treetop::Compiler::Metagrammar::Primary5</a><br />
+Module <a href="Metagrammar/QuotedString0.html" class="link">Treetop::Compiler::Metagrammar::QuotedString0</a><br />
+Module <a href="Metagrammar/RequireStatement0.html" class="link">Treetop::Compiler::Metagrammar::RequireStatement0</a><br />
+Module <a href="Metagrammar/Sequence0.html" class="link">Treetop::Compiler::Metagrammar::Sequence0</a><br />
+Module <a href="Metagrammar/Sequence1.html" class="link">Treetop::Compiler::Metagrammar::Sequence1</a><br />
+Module <a href="Metagrammar/Sequence2.html" class="link">Treetop::Compiler::Metagrammar::Sequence2</a><br />
+Module <a href="Metagrammar/SequencePrimary0.html" class="link">Treetop::Compiler::Metagrammar::SequencePrimary0</a><br />
+Module <a href="Metagrammar/SequencePrimary1.html" class="link">Treetop::Compiler::Metagrammar::SequencePrimary1</a><br />
+Module <a href="Metagrammar/SequencePrimary2.html" class="link">Treetop::Compiler::Metagrammar::SequencePrimary2</a><br />
+Module <a href="Metagrammar/SequencePrimary3.html" class="link">Treetop::Compiler::Metagrammar::SequencePrimary3</a><br />
+Module <a href="Metagrammar/SingleQuotedString0.html" class="link">Treetop::Compiler::Metagrammar::SingleQuotedString0</a><br />
+Module <a href="Metagrammar/SingleQuotedString1.html" class="link">Treetop::Compiler::Metagrammar::SingleQuotedString1</a><br />
+Module <a href="Metagrammar/TrailingInlineModule0.html" class="link">Treetop::Compiler::Metagrammar::TrailingInlineModule0</a><br />
+Module <a href="Metagrammar/TrailingInlineModule1.html" class="link">Treetop::Compiler::Metagrammar::TrailingInlineModule1</a><br />
+Module <a href="Metagrammar/TrailingInlineModule2.html" class="link">Treetop::Compiler::Metagrammar::TrailingInlineModule2</a><br />
+Module <a href="Metagrammar/TreetopFile0.html" class="link">Treetop::Compiler::Metagrammar::TreetopFile0</a><br />
+Module <a href="Metagrammar/TreetopFile1.html" class="link">Treetop::Compiler::Metagrammar::TreetopFile1</a><br />
+Module <a href="Metagrammar/TreetopFile2.html" class="link">Treetop::Compiler::Metagrammar::TreetopFile2</a><br />
+
+    </div>
+
+
+
+
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000109" class="method-detail">
+        <a name="M000109"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000109.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000109.html');return false;">
+          <span class="method-name">_nt_alpha_char</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000110" class="method-detail">
+        <a name="M000110"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000110.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000110.html');return false;">
+          <span class="method-name">_nt_alphanumeric_char</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000085" class="method-detail">
+        <a name="M000085"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000085.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000085.html');return false;">
+          <span class="method-name">_nt_alternative</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000103" class="method-detail">
+        <a name="M000103"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000103.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000103.html');return false;">
+          <span class="method-name">_nt_anything_symbol</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000095" class="method-detail">
+        <a name="M000095"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000095.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000095.html');return false;">
+          <span class="method-name">_nt_atomic</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000102" class="method-detail">
+        <a name="M000102"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000102.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000102.html');return false;">
+          <span class="method-name">_nt_character_class</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000083" class="method-detail">
+        <a name="M000083"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000083.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000083.html');return false;">
+          <span class="method-name">_nt_choice</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000112" class="method-detail">
+        <a name="M000112"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000112.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000112.html');return false;">
+          <span class="method-name">_nt_comment_to_eol</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000079" class="method-detail">
+        <a name="M000079"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000079.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000079.html');return false;">
+          <span class="method-name">_nt_declaration</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000078" class="method-detail">
+        <a name="M000078"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000078.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000078.html');return false;">
+          <span class="method-name">_nt_declaration_sequence</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000100" class="method-detail">
+        <a name="M000100"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000100.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000100.html');return false;">
+          <span class="method-name">_nt_double_quoted_string</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000076" class="method-detail">
+        <a name="M000076"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000076.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000076.html');return false;">
+          <span class="method-name">_nt_grammar</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000077" class="method-detail">
+        <a name="M000077"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000077.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000077.html');return false;">
+          <span class="method-name">_nt_grammar_name</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000080" class="method-detail">
+        <a name="M000080"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000080.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000080.html');return false;">
+          <span class="method-name">_nt_include_declaration</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000106" class="method-detail">
+        <a name="M000106"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000106.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000106.html');return false;">
+          <span class="method-name">_nt_inline_module</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000107" class="method-detail">
+        <a name="M000107"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000107.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000107.html');return false;">
+          <span class="method-name">_nt_keyword_inside_grammar</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000088" class="method-detail">
+        <a name="M000088"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000088.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000088.html');return false;">
+          <span class="method-name">_nt_label</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000087" class="method-detail">
+        <a name="M000087"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000087.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000087.html');return false;">
+          <span class="method-name">_nt_labeled_sequence_primary</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000075" class="method-detail">
+        <a name="M000075"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000075.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000075.html');return false;">
+          <span class="method-name">_nt_module_declaration</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000092" class="method-detail">
+        <a name="M000092"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000092.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000092.html');return false;">
+          <span class="method-name">_nt_node_class_declarations</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000104" class="method-detail">
+        <a name="M000104"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000104.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000104.html');return false;">
+          <span class="method-name">_nt_node_class_expression</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000108" class="method-detail">
+        <a name="M000108"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000108.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000108.html');return false;">
+          <span class="method-name">_nt_non_space_char</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000097" class="method-detail">
+        <a name="M000097"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000097.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000097.html');return false;">
+          <span class="method-name">_nt_nonterminal</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000091" class="method-detail">
+        <a name="M000091"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000091.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000091.html');return false;">
+          <span class="method-name">_nt_optional_suffix</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000096" class="method-detail">
+        <a name="M000096"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000096.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000096.html');return false;">
+          <span class="method-name">_nt_parenthesized_expression</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000082" class="method-detail">
+        <a name="M000082"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000082.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000082.html');return false;">
+          <span class="method-name">_nt_parsing_expression</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000081" class="method-detail">
+        <a name="M000081"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000081.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000081.html');return false;">
+          <span class="method-name">_nt_parsing_rule</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000094" class="method-detail">
+        <a name="M000094"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000094.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000094.html');return false;">
+          <span class="method-name">_nt_prefix</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000086" class="method-detail">
+        <a name="M000086"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000086.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000086.html');return false;">
+          <span class="method-name">_nt_primary</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000099" class="method-detail">
+        <a name="M000099"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000099.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000099.html');return false;">
+          <span class="method-name">_nt_quoted_string</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000093" class="method-detail">
+        <a name="M000093"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000093.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000093.html');return false;">
+          <span class="method-name">_nt_repetition_suffix</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000074" class="method-detail">
+        <a name="M000074"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000074.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000074.html');return false;">
+          <span class="method-name">_nt_require_statement</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000084" class="method-detail">
+        <a name="M000084"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000084.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000084.html');return false;">
+          <span class="method-name">_nt_sequence</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000089" class="method-detail">
+        <a name="M000089"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000089.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000089.html');return false;">
+          <span class="method-name">_nt_sequence_primary</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000101" class="method-detail">
+        <a name="M000101"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000101.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000101.html');return false;">
+          <span class="method-name">_nt_single_quoted_string</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000111" class="method-detail">
+        <a name="M000111"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000111.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000111.html');return false;">
+          <span class="method-name">_nt_space</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000090" class="method-detail">
+        <a name="M000090"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000090.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000090.html');return false;">
+          <span class="method-name">_nt_suffix</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000098" class="method-detail">
+        <a name="M000098"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000098.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000098.html');return false;">
+          <span class="method-name">_nt_terminal</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000105" class="method-detail">
+        <a name="M000105"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000105.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000105.html');return false;">
+          <span class="method-name">_nt_trailing_inline_module</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000073" class="method-detail">
+        <a name="M000073"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000073.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000073.html');return false;">
+          <span class="method-name">_nt_treetop_file</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000113" class="method-detail">
+        <a name="M000113"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000113.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000113.html');return false;">
+          <span class="method-name">_nt_white</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+      <div id="method-M000072" class="method-detail">
+        <a name="M000072"></a>
+
+        <div class="method-heading">
+          <a href="Metagrammar.src/M000072.html" target="Code" class="method-signature"
+            onclick="popupCode('Metagrammar.src/M000072.html');return false;">
+          <span class="method-name">root</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

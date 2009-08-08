@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::RubyBuilder#out
+is_singleton: false
+name: out
+params: (depth = 2)
+visibility: public

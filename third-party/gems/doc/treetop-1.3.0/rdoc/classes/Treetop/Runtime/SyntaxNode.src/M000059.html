@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>inspect (Treetop::Runtime::SyntaxNode)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/treetop/runtime/syntax_node.rb, line 45</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">inspect</span>(<span class="ruby-identifier">indent</span>=<span class="ruby-value str">&quot;&quot;</span>)
+        <span class="ruby-identifier">em</span> = <span class="ruby-identifier">extension_modules</span>
+        <span class="ruby-identifier">interesting_methods</span> = <span class="ruby-identifier">methods</span><span class="ruby-operator">-</span>[<span class="ruby-identifier">em</span>.<span class="ruby-identifier">last</span> <span class="ruby-value">? </span><span class="ruby-identifier">em</span>.<span class="ruby-identifier">last</span>.<span class="ruby-identifier">methods</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">nil</span>]<span class="ruby-operator">-</span><span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">instance_methods</span>
+        <span class="ruby-identifier">im</span> = <span class="ruby-identifier">interesting_methods</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-node">&quot; (#{interesting_methods.join(&quot;,&quot;)})&quot;</span> <span class="ruby-operator">:</span> <span class="ruby-value str">&quot;&quot;</span>
+        <span class="ruby-identifier">tv</span> = <span class="ruby-identifier">text_value</span>
+        <span class="ruby-identifier">tv</span> = <span class="ruby-node">&quot;...#{tv[-20..-1]}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">tv</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">20</span>
+
+        <span class="ruby-identifier">indent</span> <span class="ruby-operator">+</span>
+        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-regexp re">/.*:/</span>,<span class="ruby-value str">''</span>) <span class="ruby-operator">+</span>
+          <span class="ruby-identifier">em</span>.<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-value str">&quot;+&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">m</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-regexp re">/.*:/</span>,<span class="ruby-value str">''</span>)}<span class="ruby-operator">*</span><span class="ruby-value str">&quot;&quot;</span> <span class="ruby-operator">+</span>
+          <span class="ruby-node">&quot; offset=#{interval.first}&quot;</span> <span class="ruby-operator">+</span>
+          <span class="ruby-node">&quot;, #{tv.inspect}&quot;</span> <span class="ruby-operator">+</span>
+          <span class="ruby-identifier">im</span> <span class="ruby-operator">+</span>
+          (<span class="ruby-identifier">elements</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">elements</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span>
+            <span class="ruby-value str">&quot;:&quot;</span> <span class="ruby-operator">+</span>
+              (<span class="ruby-ivar">@elements</span><span class="ruby-operator">||</span>[]).<span class="ruby-identifier">map</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span>
+          <span class="ruby-keyword kw">begin</span>
+            <span class="ruby-value str">&quot;\n&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">e</span>.<span class="ruby-identifier">inspect</span>(<span class="ruby-identifier">indent</span><span class="ruby-operator">+</span><span class="ruby-value str">&quot;  &quot;</span>)
+          <span class="ruby-keyword kw">rescue</span>  <span class="ruby-comment cmt"># Defend against inspect not taking a parameter</span>
+            <span class="ruby-value str">&quot;\n&quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">indent</span><span class="ruby-operator">+</span><span class="ruby-value str">&quot; &quot;</span><span class="ruby-operator">+</span><span class="ruby-identifier">e</span>.<span class="ruby-identifier">inspect</span>
+          <span class="ruby-keyword kw">end</span>
+              }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;&quot;</span>) <span class="ruby-operator">:</span>
+            <span class="ruby-value str">&quot;&quot;</span>
+          )
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

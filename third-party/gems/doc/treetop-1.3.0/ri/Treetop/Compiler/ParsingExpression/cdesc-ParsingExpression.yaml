@@ -1,0 +1,85 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: address
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: builder
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: parent_expression
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: subexpression_address
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: var_symbols
+  rw: R
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::ParsingExpression
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: accumulate_subexpression_result
+- !ruby/object:RI::MethodSummary 
+  name: accumulator_var
+- !ruby/object:RI::MethodSummary 
+  name: assign_failure
+- !ruby/object:RI::MethodSummary 
+  name: assign_result
+- !ruby/object:RI::MethodSummary 
+  name: begin_comment
+- !ruby/object:RI::MethodSummary 
+  name: compile
+- !ruby/object:RI::MethodSummary 
+  name: declared_module_name
+- !ruby/object:RI::MethodSummary 
+  name: end_comment
+- !ruby/object:RI::MethodSummary 
+  name: epsilon_node
+- !ruby/object:RI::MethodSummary 
+  name: extend_result
+- !ruby/object:RI::MethodSummary 
+  name: extend_result_with_declared_module
+- !ruby/object:RI::MethodSummary 
+  name: extend_result_with_inline_module
+- !ruby/object:RI::MethodSummary 
+  name: init_value
+- !ruby/object:RI::MethodSummary 
+  name: inline_module_name
+- !ruby/object:RI::MethodSummary 
+  name: node_class_name
+- !ruby/object:RI::MethodSummary 
+  name: obtain_new_subexpression_address
+- !ruby/object:RI::MethodSummary 
+  name: on_one_line
+- !ruby/object:RI::MethodSummary 
+  name: optional_arg
+- !ruby/object:RI::MethodSummary 
+  name: reset_index
+- !ruby/object:RI::MethodSummary 
+  name: result_var
+- !ruby/object:RI::MethodSummary 
+  name: start_index_var
+- !ruby/object:RI::MethodSummary 
+  name: subexpression_result_var
+- !ruby/object:RI::MethodSummary 
+  name: subexpression_success?
+- !ruby/object:RI::MethodSummary 
+  name: use_vars
+- !ruby/object:RI::MethodSummary 
+  name: var
+- !ruby/object:RI::MethodSummary 
+  name: var_initialization
+name: ParsingExpression
+superclass: Runtime::SyntaxNode

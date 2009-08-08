@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Runtime::CompiledParser#instantiate_node
+is_singleton: false
+name: instantiate_node
+params: (node_type,*args)
+visibility: protected

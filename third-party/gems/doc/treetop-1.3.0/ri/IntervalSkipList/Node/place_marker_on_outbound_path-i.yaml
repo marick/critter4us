@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: IntervalSkipList::Node#place_marker_on_outbound_path
+is_singleton: false
+name: place_marker_on_outbound_path
+params: (marker, level, terminus)
+visibility: protected

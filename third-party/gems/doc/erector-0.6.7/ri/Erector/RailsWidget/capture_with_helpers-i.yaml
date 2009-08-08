@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Erector::RailsWidget#capture_with_helpers
+is_singleton: false
+name: capture_with_helpers
+params: (&block)
+visibility: public

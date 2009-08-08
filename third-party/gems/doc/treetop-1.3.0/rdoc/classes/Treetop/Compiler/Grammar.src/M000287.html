@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>compile (Treetop::Compiler::Grammar)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/treetop/compiler/node_classes/grammar.rb, line 4</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">compile</span>
+        <span class="ruby-identifier">builder</span> = <span class="ruby-constant">RubyBuilder</span>.<span class="ruby-identifier">new</span>
+        
+        <span class="ruby-identifier">builder</span>.<span class="ruby-identifier">module_declaration</span> <span class="ruby-node">&quot;#{grammar_name.text_value}&quot;</span> <span class="ruby-keyword kw">do</span>
+          <span class="ruby-identifier">builder</span>.<span class="ruby-identifier">in</span>(<span class="ruby-identifier">indent_level</span>) <span class="ruby-comment cmt"># account for initial indentation of grammar declaration</span>
+          <span class="ruby-identifier">builder</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;include Treetop::Runtime&quot;</span>
+          <span class="ruby-identifier">builder</span>.<span class="ruby-identifier">newline</span>
+          <span class="ruby-identifier">declaration_sequence</span>.<span class="ruby-identifier">compile</span>(<span class="ruby-identifier">builder</span>)
+        <span class="ruby-keyword kw">end</span>
+        <span class="ruby-identifier">builder</span>.<span class="ruby-identifier">newline</span>
+        <span class="ruby-identifier">builder</span>.<span class="ruby-identifier">class_declaration</span> <span class="ruby-node">&quot;#{parser_name} &lt; Treetop::Runtime::CompiledParser&quot;</span> <span class="ruby-keyword kw">do</span>
+          <span class="ruby-identifier">builder</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;include #{grammar_name.text_value}&quot;</span>
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

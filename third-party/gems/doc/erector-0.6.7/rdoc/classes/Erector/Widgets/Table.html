@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>Class: Erector::Widgets::Table</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+  <script type="text/javascript">
+  // <![CDATA[
+
+  function popupCode( url ) {
+    window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+  }
+
+  function toggleCode( id ) {
+    if ( document.getElementById )
+      elem = document.getElementById( id );
+    else if ( document.all )
+      elem = eval( "document.all." + id );
+    else
+      return false;
+
+    elemStyle = elem.style;
+    
+    if ( elemStyle.display != "block" ) {
+      elemStyle.display = "block"
+    } else {
+      elemStyle.display = "none"
+    }
+
+    return true;
+  }
+  
+  // Make codeblocks hidden by default
+  document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
+  
+  // ]]>
+  </script>
+
+</head>
+<body>
+
+
+
+    <div id="classHeader">
+        <table class="header-table">
+        <tr class="top-aligned-row">
+          <td><strong>Class</strong></td>
+          <td class="class-name-in-header">Erector::Widgets::Table</td>
+        </tr>
+        <tr class="top-aligned-row">
+            <td><strong>In:</strong></td>
+            <td>
+                <a href="../../../files/lib/erector/widgets/table_rb.html">
+                lib/erector/widgets/table.rb
+                </a>
+        <br />
+            </td>
+        </tr>
+
+        <tr class="top-aligned-row">
+            <td><strong>Parent:</strong></td>
+            <td>
+                <a href="../Widget.html">
+                Erector::Widget
+               </a>
+            </td>
+        </tr>
+        </table>
+    </div>
+  <!-- banner header -->
+
+  <div id="bodyContent">
+
+
+
+  <div id="contextContent">
+
+    <div id="description">
+      <p>
+The <a href="Table.html">Table</a> widget provides the ability to render a
+table from a list of objects (one for each row).
+</p>
+<p>
+Because the default for the <a href="Table.html#M000336">column</a> titles
+utilizes the ActiveSupport Inflector#titleize method, this widget requires
+active_support to be loaded.
+</p>
+<pre>
+  class UsersTable &lt; Erector::Widgets::Table
+    column :first_name
+    column :last_name
+    column :email
+    row_classes :even, :odd
+  end
+
+  widget UsersTable, :row_objects =&gt; [user_1, user_2, user_3]
+</pre>
+
+    </div>
+
+
+   </div>
+
+    <div id="method-list">
+      <h3 class="section-bar">Methods</h3>
+
+      <div class="name-list">
+      <a href="#M000336">column</a>&nbsp;&nbsp;
+      <a href="#M000338">content</a>&nbsp;&nbsp;
+      <a href="#M000337">row_classes</a>&nbsp;&nbsp;
+      <a href="#M000339">row_css_class</a>&nbsp;&nbsp;
+      </div>
+    </div>
+
+  </div>
+
+
+    <!-- if includes -->
+
+    <div id="section">
+
+
+    <div id="constants-list">
+      <h3 class="section-bar">Constants</h3>
+
+      <div class="name-list">
+        <table summary="Constants">
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">ColumnDefinition</td>
+          <td>=</td>
+          <td class="context-item-value">Struct.new(:id, :name, :cell_proc)</td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+
+
+    <div id="attribute-list">
+      <h3 class="section-bar">Attributes</h3>
+
+      <div class="name-list">
+        <table>
+        <tr class="top-aligned-row context-row">
+          <td class="context-item-name">row_class_list</td>
+          <td class="context-item-value">&nbsp;[R]&nbsp;</td>
+          <td class="context-item-desc"></td>
+        </tr>
+        </table>
+      </div>
+    </div>
+      
+
+
+    <!-- if method_list -->
+    <div id="methods">
+      <h3 class="section-bar">Public Class methods</h3>
+
+      <div id="method-M000336" class="method-detail">
+        <a name="M000336"></a>
+
+        <div class="method-heading">
+          <a href="Table.src/M000336.html" target="Code" class="method-signature"
+            onclick="popupCode('Table.src/M000336.html');return false;">
+          <span class="method-name">column</span><span class="method-args">(id, name=id.to_s.titleize, &amp;cell_proc)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+Define a <a href="Table.html#M000336">column</a>, optionally specifying the
+name (the heading that the user sees) and a block which renders the cell
+given a row object. If the block is not specified, the cell contains the
+result of calling a method whose name is id.
+</p>
+<p>
+The name can be a string or a proc.
+</p>
+        </div>
+      </div>
+
+      <div id="method-M000337" class="method-detail">
+        <a name="M000337"></a>
+
+        <div class="method-heading">
+          <a href="Table.src/M000337.html" target="Code" class="method-signature"
+            onclick="popupCode('Table.src/M000337.html');return false;">
+          <span class="method-name">row_classes</span><span class="method-args">(*row_classes)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+A list of HTML classes to apply to the rows in turn. After the list is
+exhausted, start again at the start. The most common use for this is to
+specify one class for odd rows and a different class for even rows.
+</p>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Public Instance methods</h3>
+
+      <div id="method-M000338" class="method-detail">
+        <a name="M000338"></a>
+
+        <div class="method-heading">
+          <a href="Table.src/M000338.html" target="Code" class="method-signature"
+            onclick="popupCode('Table.src/M000338.html');return false;">
+          <span class="method-name">content</span><span class="method-args">()</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+The standard erector <a href="Table.html#M000338">content</a> method.
+</p>
+        </div>
+      </div>
+
+      <h3 class="section-bar">Protected Instance methods</h3>
+
+      <div id="method-M000339" class="method-detail">
+        <a name="M000339"></a>
+
+        <div class="method-heading">
+          <a href="Table.src/M000339.html" target="Code" class="method-signature"
+            onclick="popupCode('Table.src/M000339.html');return false;">
+          <span class="method-name">row_css_class</span><span class="method-args">(object, index)</span>
+          </a>
+        </div>
+      
+        <div class="method-description">
+          <p>
+You can override this method to provide a class for a row (as an
+alternative to calling <a href="Table.html#M000337">row_classes</a>).
+</p>
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+
+
+<div id="validator-badges">
+  <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: 
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: elements
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: input
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: interval
+  rw: R
+- !ruby/object:RI::Attribute 
+  comment: 
+  name: parent
+  rw: RW
+class_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: new
+comment: 
+constants: []
+
+full_name: Treetop::Runtime::SyntaxNode
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: empty?
+- !ruby/object:RI::MethodSummary 
+  name: extension_modules
+- !ruby/object:RI::MethodSummary 
+  name: inspect
+- !ruby/object:RI::MethodSummary 
+  name: nonterminal?
+- !ruby/object:RI::MethodSummary 
+  name: terminal?
+- !ruby/object:RI::MethodSummary 
+  name: text_value
+name: SyntaxNode
+superclass: Object

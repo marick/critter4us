@@ -1,0 +1,10 @@
+--- !ruby/object:RI::MethodDescription 
+aliases: []
+
+block_params: 
+comment: 
+full_name: Treetop::Compiler::Metagrammar#_nt_node_class_expression
+is_singleton: false
+name: _nt_node_class_expression
+params: ()
+visibility: public

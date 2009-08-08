@@ -1,0 +1,24 @@
+--- !ruby/object:RI::ClassDescription 
+attributes: []
+
+class_methods: []
+
+comment: 
+constants: []
+
+full_name: Treetop::Compiler::Sequence
+includes: []
+
+instance_methods: 
+- !ruby/object:RI::MethodSummary 
+  name: compile
+- !ruby/object:RI::MethodSummary 
+  name: compile_sequence_elements
+- !ruby/object:RI::MethodSummary 
+  name: node_class_name
+- !ruby/object:RI::MethodSummary 
+  name: sequence_element_accessor_module
+- !ruby/object:RI::MethodSummary 
+  name: sequence_element_accessor_module_name
+name: Sequence
+superclass: ParsingExpression
