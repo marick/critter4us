@@ -77,10 +77,10 @@
 - (void) makeReservation: (CPButton) sender
 {
   var data = {'date':date,'procedures':procedures,'animals':animals}
-  [persistentStore makeReservation: data];
+  var reservationID = [persistentStore makeReservation: data];
+  [[CPNotificationCenter defaultCenter] postNotificationName: NewReservationNews
+   object: reservationID];
 }
-
-
 
 - (void) updateButton
 {
@@ -89,6 +89,5 @@
       [button setEnabled:YES];
     }
 }
-
 
 @end

@@ -17,11 +17,21 @@
 
 - (void) setUpNotifications
 {
+  [[CPNotificationCenter defaultCenter]
+   addObserver: self
+   selector: @selector(activateLink:)
+   name: NewReservationNews
+   object: nil];
 }
 
 - (void) activateLink: aNotification
 {
-  //  [webView loadHTMLString:@"<a href=\"http://arxta.net\" target=\"_blank\">Click me!</a>" baseURL: nil];
+  [containingView setHidden:NO];
+  var number = [aNotification object];
+  var href = "/reservation/" + number;
+  var message = "Click to view the reservation in a new window.";
+  [link loadHTMLString:@"<a href='" + href + "' target=\"_blank\">" + message + "</a>"
+               baseURL: nil];
 
 }
 

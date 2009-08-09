@@ -21,4 +21,22 @@
     }];
 }
 
+-(void)testReceiptOfResult
+{
+  [scenario
+   during: function() {
+      [self sendNotification: NewReservationNews withObject:"YOW!"];
+    }
+  behold: function() {
+      [self controlsWillBeMadeVisible];
+      [sut.link shouldReceive: @selector(loadHTMLString:baseURL:)
+       with: [function(arg) {
+	    return arg.match(/\/reservation\/YOW!/)
+	  }, function(x) { return YES }] // TODO: Make this any "any".
+       ]; 
+    }  
+   ];
+}
+
+
 @end

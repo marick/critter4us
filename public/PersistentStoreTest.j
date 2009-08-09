@@ -78,9 +78,10 @@
 		  [self assertTrue: content.match(/date.*2009/)];
 		  return YES;
 	      }]
-       andReturn: "a string"];
+       andReturn: '{"reservation":"1"}'];
     }
    ];
+  [self assert: '1' equals: scenario.result];
 }
 
 @end

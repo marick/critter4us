@@ -106,7 +106,10 @@
  	return YES
       }
       [sut.persistentStore shouldReceive: @selector(makeReservation:)
-                                    with: hashTester]
+                                    with: hashTester
+                                    andReturn: "reservation-identifier"];
+      [self listenersWillReceiveNotification: NewReservationNews
+                            containingObject: "reservation-identifier"];
     }];
 }
 

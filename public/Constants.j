@@ -1,6 +1,7 @@
 // Notification Names
 
 DateChosenNews = "date chosen";
+NewReservationNews = "new reservation";
 
 
 // Route names

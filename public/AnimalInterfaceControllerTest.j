@@ -37,7 +37,7 @@
 {
   [scenario 
    during: function() {
-      [self sendNotification: "date chosen"];
+      [self sendNotification: DateChosenNews];
     }
   behold: function() {
       [self controlsWillBeMadeVisible];

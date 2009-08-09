@@ -23,7 +23,6 @@
 
   var data = [CPURLConnection sendSynchronousRequest: request   
 	      returningResponse:nil error:nil]; 
-  alert([data description]);
   return [data description];
 }
 
@@ -57,7 +56,10 @@
   var dataString = encodeURIComponent([CPString JSONFromObject: jsData]);
   var content = [CPString stringWithFormat:@"data=%s", dataString];
   url = jsonURI(StoreReservationRoute);
-  [network POSTFormDataTo: url withContent: content];
+  var jsonString = [network POSTFormDataTo: url withContent: content];
+  var jsHash = [jsonString objectFromJSON];
+  var result = jsHash["reservation"];
+  return result;
 }
 
 // util

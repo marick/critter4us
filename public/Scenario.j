@@ -54,7 +54,7 @@
 
 
 
-o
+
 -(void) beforeAwakening: setup whileAwakening: (id)mockSettings andTherefore: (id)consequence
 {
   setup();

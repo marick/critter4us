@@ -1,4 +1,5 @@
 @import <Foundation/CPObject.j>
+@import "Constants.j"
 
 @implementation AnimalInterfaceController : CPObject
 {

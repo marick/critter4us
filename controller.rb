@@ -47,7 +47,7 @@ class Controller < Sinatra::Base
                                                hash['animals'])
     jsonically do
       typing_as "reservation" do 
-        reservation.id
+        reservation.id.to_s
       end
     end
   end

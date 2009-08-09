@@ -98,7 +98,7 @@ class JsonGenerationTests < Test::Unit::TestCase
       post '/json/store_reservation', :data => @data.to_json
       assert_json_response
       r = Reservation[:date => Date.new(2009, 02, 03)]
-      assert_jsonification_of({'reservation' => r.id})
+      assert_jsonification_of({'reservation' => r.id.to_s})
     end
   end
 end
