@@ -2,7 +2,7 @@ require 'sinatra/base'
 require 'sequel'
 
 Sinatra::Base.configure :test do 
-DB = Sequel.postgres("critter4us", :host => 'localhost', :user => 'postgres', :password => 'c0wm4gnet')
+DB = Sequel.postgres("critter4us-test", :host => 'localhost', :user => 'postgres', :password => 'c0wm4gnet')
 #  DB = Sequel.sqlite
 #  DB = Sequel.mysql("critter4us-test", :host=>'localhost',
 #                    :user=>'root', :password=>'')
