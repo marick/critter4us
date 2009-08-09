@@ -34,7 +34,7 @@ class Controller < Sinatra::Base
     jsonically do
       typing_as 'exclusions' do
         date = Date.parse(params['date'])
-        ExclusionMap.new(date).to_hash
+        ExclusionMap.new(date, true).to_hash
       end
     end
   end
@@ -42,7 +42,7 @@ class Controller < Sinatra::Base
   post '/json/store_reservation' do
     data = params['data']
     hash = JSON.parse(data)
-    reservation = Reservation.create_with_uses(hash['date'],
+    reservation = Reservation.create_with_uses(hash['date'], true,
                                                hash['procedures'],
                                                hash['animals'])
     jsonically do

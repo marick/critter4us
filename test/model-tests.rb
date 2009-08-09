@@ -29,7 +29,7 @@ class ModelTests < Test::Unit::TestCase
       create(Procedure, 'procedure')
       create(Animal, 'animal')
       date = Date.new(2009, 7, 23)
-      reservation = Reservation.create_with_uses(date,
+      reservation = Reservation.create_with_uses(date, morning=true,
                                                  ['procedure'],
                                                  ['animal'])
       assert { reservation.date == date }
@@ -46,7 +46,7 @@ class ModelTests < Test::Unit::TestCase
         @p1, @p2 = create(Procedure, 'p1', 'p2')
         @a1, @a2 = create(Animal, 'a1', 'a2')
         @date = Date.new(2009, 7, 23)
-        @reservation = Reservation.create_with_uses(@date,
+        @reservation = Reservation.create_with_uses(@date, morning=true,
                                                    ['p1', 'p2'],
                                                    ['a1', 'a2'])
       end

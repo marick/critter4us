@@ -15,8 +15,8 @@ end
 class Reservation < Sequel::Model
   one_to_many :uses
 
-  def self.create_with_uses(date, procedures, animals, method=:find_or_create)
-    reservation = Reservation.create(:date => date)
+  def self.create_with_uses(date, in_morning, procedures, animals, method=:find_or_create)
+    reservation = Reservation.create(:date => date, :morning => in_morning)
     procedures.each do | procedure | 
       animals.each do | animal |
         Use.create(:procedure => Procedure.send(method, :name => procedure),

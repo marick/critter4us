@@ -57,8 +57,8 @@ class JsonGenerationTests < Test::Unit::TestCase
 
   context "delivering exclusions" do
 
-    should_eventually "hand over the exclusion hash" do
-      Reservation.create_with_uses(Date.new(2009, 7, 20),
+    should "hand over the exclusion hash" do
+      Reservation.create_with_uses(Date.new(2009, 7, 20), morning=true,
                                    ['procedure name'],
                                    ['excluded animal'],
                                    :find_or_create)
