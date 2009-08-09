@@ -64,16 +64,14 @@ class ExclusionMap
 =end
 
     # Use a join? - don't know how to alias both procedure and animal names.
-    rows = DB[:procedures, :animals, :uses, :reservations].
-      filter(:procedures__id => :uses__procedure_id).
-      filter(:animals__id => :uses__animal_id).
-      filter(:reservations__id => :uses__reservation_id).
-      filter("? < ADDDATE(reservations.date, procedures.days_delay)", date_string).
-      select(:procedures__name.as(:procedure_name),
-             :animals__name.as(:animal_name),
-             :reservations__date).all   # including date for debugging.
 
-    @hash = hash_with_procedure_keys(rows)
+    query = DB[:expanded_uses].
+      select(:procedure_name,
+             :animal_name)
+    puts query.sql
+    result = query.all
+
+    @hash = hash_with_procedure_keys(result)
   end
 
   def to_hash
