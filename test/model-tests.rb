@@ -40,19 +40,33 @@ class ModelTests < Test::Unit::TestCase
       assert { use.reservation == reservation }
     end
 
+    context "multiple animals and procedures" do 
 
-    should "can create the cross-product of procedures and animals" do
-      p1, p2 = create(Procedure, 'p1', 'p2')
-      a1, a2 = create(Animal, 'a1', 'a2')
-      date = Date.new(2009, 7, 23)
-      reservation = Reservation.create_with_uses(date,
-                                                 ['p1', 'p2'],
-                                                 ['a1', 'a2'])
-      assert { Use.all.size == 4 }
-      assert { Use[:procedure_id => p1.id, :animal_id => a1.id] } 
-      assert { Use[:procedure_id => p1.id, :animal_id => a2.id] } 
-      assert { Use[:procedure_id => p2.id, :animal_id => a1.id] } 
-      assert { Use[:procedure_id => p2.id, :animal_id => a2.id] } 
+      setup do
+        @p1, @p2 = create(Procedure, 'p1', 'p2')
+        @a1, @a2 = create(Animal, 'a1', 'a2')
+        @date = Date.new(2009, 7, 23)
+        @reservation = Reservation.create_with_uses(@date,
+                                                   ['p1', 'p2'],
+                                                   ['a1', 'a2'])
+      end
+
+      should "can create the cross-product of procedures and animals" do
+        assert { Use.all.size == 4 }
+        assert { Use[:procedure_id => @p1.id, :animal_id => @a1.id] } 
+        assert { Use[:procedure_id => @p1.id, :animal_id => @a2.id] } 
+        assert { Use[:procedure_id => @p2.id, :animal_id => @a1.id] } 
+        assert { Use[:procedure_id => @p2.id, :animal_id => @a2.id] } 
+      end
+
+      should "be able to list all the animals involved" do
+        assert { @reservation.animal_names == [ @a1.name, @a2.name] }
+      end
+
+
+      should "be able to list all the procedures involved" do
+        assert { @reservation.procedure_names == [ @p1.name, @p2.name] }
+      end
     end
   end
 

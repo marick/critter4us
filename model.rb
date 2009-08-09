@@ -26,6 +26,18 @@ class Reservation < Sequel::Model
     end
     reservation
   end
+
+  def animal_names; x_names(:animal); end
+  def procedure_names; x_names(:procedure); end
+
+  private
+
+  def x_names(x)
+    names = uses.collect { | use | 
+      use.send(x).name
+    }.uniq.sort
+  end
+
 end
 
 class Use < Sequel::Model
