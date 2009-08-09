@@ -33,9 +33,10 @@ def create_tables
                  select(:procedures__name.as(:procedure_name),
                         :animals__name.as(:animal_name),
                         :reservations__date.as(:reservation_date),
-                        :reservations__morning.as(:reservation_morning)))
-#                        :reservations__date.as(:first_excluded_date),
-#                        (:procedures__days_delay + :reservations__date).as(:first_available_date)))
+                        :procedures__days_delay.as(:days_delay),
+                        :reservations__morning.as(:reservation_morning),
+                        (:reservations__date - :procedures__days_delay + 1).as(:first_excluded_date),
+                        (:reservations__date + :procedures__days_delay).as(:first_available_date)))
                  
 
 end

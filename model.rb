@@ -48,30 +48,31 @@ end
 
 class ExclusionMap
 
-  def initialize(date)
-    date_string = date.to_s
+  def initialize(desired_date, in_morning)
+    same_day_exclusions = exclude_for_procedures_with_no_delay(desired_date, in_morning)
+    diff_day_exclusions = exclude_for_procedures_with_delay(desired_date)
+    @hash = hash_with_procedure_keys(same_day_exclusions + diff_day_exclusions)
+  end
 
-=begin
-    rows = DB["
-        SELECT procedures.name as procedure_name, 
-               animals.name as animal_name 
-        FROM procedures, animals, uses, reservations 
-        WHERE procedures.id = uses.procedure_id AND 
-              animals.id = uses.animal_id AND 
-              reservations.id = uses.reservation_id AND
-              ? < ADDDATE(reservations.date, procedures.days_delay);
-        ", date_string].to_a
-=end
 
-    # Use a join? - don't know how to alias both procedure and animal names.
-
+  def exclude_for_procedures_with_no_delay(desired_date, in_morning)
     query = DB[:expanded_uses].
-      select(:procedure_name,
-             :animal_name)
-    puts query.sql
-    result = query.all
+      filter(:days_delay => 0).
+      filter(:reservation_morning => in_morning).
+      select(:procedure_name, :animal_name)
+    # puts query.all.inspect
+    query.all
+  end
 
-    @hash = hash_with_procedure_keys(result)
+  def exclude_for_procedures_with_delay(desired_date)
+    query = DB[:expanded_uses].
+      filter {|o| o.days_delay > 0 }.
+      filter {|o| o.first_available_date > desired_date }.
+      filter {|o| o.first_excluded_date <= desired_date }.
+      select(:procedure_name, :animal_name)
+    # puts query.sql
+    # puts query.all.inspect
+    query.all
   end
 
   def to_hash
