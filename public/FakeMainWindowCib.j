@@ -56,19 +56,61 @@
 
 -(void) loadAndConnectDateInterfaceController
 {  
-  label = [[CPTextField alloc] initWithFrame:CGRectMake(10, 40, 500, 30)];
-  [label setStringValue: "1. Type in the date of your lab. (You can just press Return to accept the date shown.)"];
-  [[theWindow contentView] addSubview:label];
+  var contentView = [theWindow contentView];
 
-  dateField = [[CPTextField alloc] initWithFrame:CGRectMake(10, 70, 250, 30)];
+  var label = [[CPTextField alloc] initWithFrame:CGRectMake(10, 40, 500, 30)];
+  [label setStringValue: "1. Fill in the information, then click the button."];
+  [contentView addSubview:label];
+
+  var courseLabel = [[CPTextField alloc] initWithFrame:CGRectMake(10, 75, 100, 30)];
+  [courseLabel setStringValue: "Course: "];
+  [contentView addSubview:courseLabel];
+
+  var courseField = [[CPTextField alloc] initWithFrame:CGRectMake(60, 70, 100, 30)];
+  [courseField setEditable:YES];
+  [courseField setBezeled:YES];
+  [contentView addSubview:courseField];
+  [theWindow makeFirstResponder: courseField];
+
+  var instructorLabel = [[CPTextField alloc] initWithFrame:CGRectMake(170, 75, 60, 30)];
+  [instructorLabel setStringValue: "Instructor: "];
+  [contentView addSubview:instructorLabel];
+
+  var instructorField = [[CPTextField alloc] initWithFrame:CGRectMake(235, 70, 100, 30)];
+  [instructorField setEditable:YES];
+  [instructorField setBezeled:YES];
+  [contentView addSubview:instructorField];
+
+  var onLabel = [[CPTextField alloc] initWithFrame:CGRectMake(345, 75, 60, 30)];
+  [onLabel setStringValue: "on: "];
+  [contentView addSubview:onLabel];
+
+  var dateField = [[CPTextField alloc] initWithFrame:CGRectMake(370, 70, 100, 30)];
   [dateField setEditable:YES];
   [dateField setBezeled:YES];
-  [dateField setStringValue: "2009-07-23"];
-  [[theWindow contentView] addSubview:dateField];
-  [theWindow makeFirstResponder: dateField];
+  [dateField setStringValue: "2009-"];
+  [contentView addSubview:dateField];
+
+  var morningButton = [[CPRadio alloc] initWithFrame: CGRectMake(480, 67, 100, 20)];
+  [morningButton setState:CPOnState];
+  [morningButton setTitle:"morning"];
+  
+  var afternoonButton = [[CPRadio alloc] initWithFrame: CGRectMake(480, 87, 100, 20) radioGroup:[morningButton radioGroup]];
+  [afternoonButton setTitle:"afternoon"];
+
+  [contentView addSubview: morningButton];
+  [contentView addSubview: afternoonButton];
+	   
+  var goButton = [[CPButton alloc] initWithFrame:CGRectMake(580, 70, 80, 30)];
+  [goButton setTitle: "Begin"];
+  [contentView addSubview:goButton];
 
   var dateController = [[DateInterfaceController alloc] init];
   dateController.persistentStore = persistentStore;
+  dateController.courseField = courseField;
+  dateController.instructorField = instructorField;
+  dateController.dateField = dateField;
+  dateController.morningButton = morningButton;
 
   [dateField setTarget: dateController];
   [dateField setAction: @selector(newDate:)];
