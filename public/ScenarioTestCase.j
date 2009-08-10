@@ -98,7 +98,22 @@
 
 - (void) listenersWillReceiveNotification: (CPString) aNotificationName containingObject: (id) anObject
 {
-  
+  [self listenersWillReceiveNotification:aNotificationName
+   checkingWith:function(notification) {
+      return [[notification object] isEqual: anObject];
+    }];
+}
+      
+- (void) listenersWillReceiveNotification: (CPString) aNotificationName
+{
+  [self listenersWillReceiveNotification:aNotificationName
+   checkingWith:function(notification) {
+      return YES;
+    }];
+}
+      
+-(void) listenersWillReceiveNotification: (CPString) aNotificationName checkingWith: (id)aFunction
+{  
   var selector = CPSelectorFromString([aNotificationName stringByReplacingOccurrencesOfString: " " withString: ""]);
 
   [[CPNotificationCenter defaultCenter]
@@ -108,9 +123,7 @@
    object: nil];
 
   [scenario.randomListener shouldReceive: selector
-                           with: function(notification) {
-                                    return [[notification object] isEqual: anObject]
-                                  }];
+                           with: aFunction];
 }
 
 @end

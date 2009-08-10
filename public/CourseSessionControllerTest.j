@@ -14,27 +14,27 @@
   [scenario sutHasDownwardCollaborators: ['persistentStore']];
 }
 
-
-- (void)testPickingDateNotifiesListenersOfEvent
+- (void)testClickingButtonNotifiesListenersOfEvent
 {
   [scenario 
    during: function() {
-      [self selectSessionForDate: "2009-09-03"]
+      [sut sessionReady: sut.okButton];
     }
   behold: function() {
-      [self listenersWillReceiveNotification: "date chosen" containingObject: "2009-09-03"];
+      [self listenersWillReceiveNotification: CourseSessionDescribedNews];
     }
    ];
 }
 
-
-- (void)testPickingDateCausesExclusionsToBeRetrievedAndNotified
+- (void)testClickingButtonCausesExclusionsToBeRetrievedAndNotified
 {
   [scenario
    during: function() {
-      [self selectSessionForDate: "some date"];
+      [sut sessionReady: sut.okButton];
     }
   behold: function() {
+      [sut.dateField shouldReceive:@selector(stringValue)
+                         andReturn:@"some date"];
       [sut.persistentStore shouldReceive: @selector(exclusionsForDate:)
                            with: [@"some date"]
                            andReturn: @"some exclusions"];
@@ -43,10 +43,50 @@
    ];
 }
 
-- (void) selectSessionForDate: (CPString) aDate
+-(void)testCanRespondWithSessionData
 {
-  [sut.dateField shouldReceive: @selector(stringValue) andReturn: aDate];
-  [sut sessionReady: 'irrelevant'];
+  var notifier = [[Mock alloc] init];
+  [scenario
+   during: function() {
+      [self userBeginsWithSomeValues];
+      [self object: notifier notifiesUniverseOfNeed: NeedForSessionDataNews];
+    }
+  behold: function() {
+      [notifier shouldReceive: @selector(courseSession:) 
+       with: function(session) {
+	  [self assert: "some course" equals: session['course']];
+	  [self assert: "some instructor" equals: session['instructor']];
+	  [self assert: "some date" equals: session['date']];
+	  [self assert: YES equals: session['isMorning']];
+	  return YES;
+	}];
+    }
+   ];
+}
+
+-(void) userBeginsWithSomeValues
+{
+  [sut.courseField shouldReceive:@selector(stringValue)
+                       andReturn:"some course"];
+
+  [sut.instructorField shouldReceive:@selector(stringValue)
+                       andReturn:"some instructor"];
+
+  [sut.dateField shouldReceive:@selector(stringValue)
+                       andReturn:"some date"];
+
+  [sut.morningButton shouldReceive:@selector(state)
+                       andReturn:CPOnState];
+
+  // TODO: I would rather leave this in, but it should be commented out 
+  // until mocks can take default values.
+  // [sut sessionReady: sut.goButton];
+}
+
+-(void) object: (CPObject)anObject notifiesUniverseOfNeed: aNotificationName
+{
+  [NotificationCenter postNotificationName:aNotificationName
+                                    object:anObject];
 }
 
 @end
