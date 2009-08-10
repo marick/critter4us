@@ -1,15 +1,16 @@
-@import "DateInterfaceController.j"
+@import "CourseSessionController.j"
 @import "ScenarioTestCase.j"
 
-@implementation DateInterfaceControllerTest : ScenarioTestCase
+@implementation CourseSessionControllerTest : ScenarioTestCase
 {
 }
 
 - (void)setUp
 {
-  sut = [[DateInterfaceController alloc] init];
+  sut = [[CourseSessionController alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardCollaborators: ['textField']];
+  [scenario sutHasUpwardCollaborators: ['courseField', 'instructorField',
+                                        'dateField', 'morningButton']];
   [scenario sutHasDownwardCollaborators: ['persistentStore']];
 }
 
@@ -18,7 +19,7 @@
 {
   [scenario 
    during: function() {
-      [self selectDate: "2009-09-03"]
+      [self selectSessionForDate: "2009-09-03"]
     }
   behold: function() {
       [self listenersWillReceiveNotification: "date chosen" containingObject: "2009-09-03"];
@@ -31,7 +32,7 @@
 {
   [scenario
    during: function() {
-      [self selectDate: "some date"];
+      [self selectSessionForDate: "some date"];
     }
   behold: function() {
       [sut.persistentStore shouldReceive: @selector(exclusionsForDate:)
@@ -42,10 +43,10 @@
    ];
 }
 
-- (void) selectDate: (CPString) aDate
+- (void) selectSessionForDate: (CPString) aDate
 {
-  [sut.textField shouldReceive: @selector(stringValue) andReturn: aDate];
-  [sut newDate: sut.textField];
+  [sut.dateField shouldReceive: @selector(stringValue) andReturn: aDate];
+  [sut sessionReady: 'irrelevant'];
 }
 
 @end

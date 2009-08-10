@@ -2,6 +2,7 @@
 
 DateChosenNews = "date chosen";
 NewReservationNews = "new reservation";
+SessionExclusionsNews = "exclusions";
 
 
 // Route names

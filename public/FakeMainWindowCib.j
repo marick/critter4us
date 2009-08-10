@@ -1,7 +1,7 @@
 @import "Constants.j"
 @import "PersistentStore.j"
 @import "MainWindowController.j"
-@import "DateInterfaceController.j"
+@import "CourseSessionController.j"
 @import "ProcedureInterfaceController.j"
 @import "AnimalInterfaceController.j"
 @import "ReservationController.j"
@@ -26,7 +26,7 @@
 
   [self loadGlobalPersistentStore];
   [self loadAndConnectWindowController];
-  [self loadAndConnectDateInterfaceController];
+  [self loadAndConnectCourseSessionController];
   [self loadAndConnectProcedureInterfaceController];
   [self loadAndConnectAnimalInterfaceController];
   [self loadAndConnectReservationController];
@@ -54,7 +54,7 @@
   [customObjectsLoaded addObject:mainWindowController];
 }
 
--(void) loadAndConnectDateInterfaceController
+-(void) loadAndConnectCourseSessionController
 {  
   var contentView = [theWindow contentView];
 
@@ -105,16 +105,16 @@
   [goButton setTitle: "Begin"];
   [contentView addSubview:goButton];
 
-  var dateController = [[DateInterfaceController alloc] init];
-  dateController.persistentStore = persistentStore;
-  dateController.courseField = courseField;
-  dateController.instructorField = instructorField;
-  dateController.dateField = dateField;
-  dateController.morningButton = morningButton;
+  var sessionController = [[CourseSessionController alloc] init];
+  sessionController.persistentStore = persistentStore;
+  sessionController.courseField = courseField;
+  sessionController.instructorField = instructorField;
+  sessionController.dateField = dateField;
+  sessionController.morningButton = morningButton;
 
-  [dateField setTarget: dateController];
-  [dateField setAction: @selector(newDate:)];
-  [customObjectsLoaded addObject:dateController];
+  [goButton setTarget: sessionController];
+  [goButton setAction: @selector(sessionReady:)];
+  [customObjectsLoaded addObject:sessionController];
 }
   
 - (void) loadAndConnectProcedureInterfaceController

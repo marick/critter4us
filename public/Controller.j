@@ -1,4 +1,5 @@
 @import <Foundation/Foundation.j>
+@import <AppKit/AppKit.j>
 @import "Constants.j"
 
 @implementation Controller : CPObject
