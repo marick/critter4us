@@ -38,8 +38,11 @@
    ];
 }
 
+- (void) setControls: controlArray toValues: valueArray
+{
+  
+}
 
-// This is a pretty dumb test.
 - (void)testButtonClickSendsDataToPersistentStore
 {
   [scenario
