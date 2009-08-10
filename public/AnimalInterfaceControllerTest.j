@@ -118,28 +118,6 @@
     }];
 }
 
-- (void) testChoosingAnimalsBroadcastsChoice
-{
-  [scenario
-   given: function() { 
-      [self animals: ["alpha",  "delta", "betty"]];
-      [self usingExclusions: { 'veniculture': [],
-	                       'physical exam': [],
-                               'floating':[]}];
-      [self alreadySelected: ["betty"]];
-    }
-  during: function() { 
-      [self selectAnimal: "alpha"];
-    }
-  behold: function() {
-      [self listenersWillReceiveNotification: @"animals chosen"
-            containingObject: ["alpha", "betty"]];
-    }];
-}
-
-
-
-
 
 -(void) selectAnimal: aName
 {

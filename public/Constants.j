@@ -7,7 +7,6 @@ NewReservationNews = "new reservation";
 SessionExclusionsNews = "exclusions";
 NeedForSessionDataNews = "need session data";
 ProcedureUpdateNews = "procedures chosen";
-AnimalUpdateNews = "animals chosen";
 
 
 // Route names

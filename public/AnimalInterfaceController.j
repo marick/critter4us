@@ -124,9 +124,6 @@
 - (void) updateEveryoneWhoCaresAboutChange
 {
   [table reloadData];
-  [[CPNotificationCenter defaultCenter] 
-         postNotificationName: @"animals chosen"
-	 object: [self chosenAnimals]];
 }
 
 - (CPArray) chosenAnimals
