@@ -1,7 +1,7 @@
 @import <Foundation/CPObject.j>
-@import "Constants.j"
+@import "AwakeningObject.j"
 
-@implementation ReservationController : CPObject
+@implementation ReservationController : AwakeningObject
 {
   // outlets
   CPView containingView;
@@ -11,16 +11,12 @@
   // State ready
   CPArray procedures;
   CPArray animals;
-
-  // For testing
-  BOOL awakened;
 }
 
 - (void)awakeFromCib
 {
   if (awakened) return;
-  awakened = YES;
-  [self setUpNotifications];
+  [super awakeFromCib];
   [containingView setHidden: YES];
   [button setEnabled: NO];
 }
@@ -53,11 +49,6 @@
   [containingView setHidden:NO];
 }
 
-
-- (void)stopObserving
-{
-  [[CPNotificationCenter defaultCenter] removeObserver: self];
-}
 
 - (void) proceduresChosen: aNotification
 {
