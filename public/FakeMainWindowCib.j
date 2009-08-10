@@ -75,7 +75,6 @@
   [courseField setEditable:YES];
   [courseField setBezeled:YES];
   [buildingView addSubview:courseField];
-  [theWindow makeFirstResponder: courseField];
 
   var instructorLabel = [[CPTextField alloc] initWithFrame:CGRectMake(170, 75, 60, 30)];
   [instructorLabel setStringValue: "Instructor: "];
@@ -125,6 +124,17 @@
 
   [goButton setTarget: sessionController];
   [goButton setAction: @selector(sessionReady:)];
+
+  // Temporary for testing
+  [instructorField setStringValue: "Morin"];
+  [courseField setStringValue: "VM333"];
+  [dateField setStringValue: "2009-09-23"];
+
+  [theWindow makeFirstResponder: courseField];
+  [dateField setNextKeyView: afternoonButton]; // doesn't work.
+
+  [theWindow setDefaultButton: goButton];
+  [theWindow enableKeyEquivalentForDefaultButton];
   [customObjectsLoaded addObject:sessionController];
 }
   
