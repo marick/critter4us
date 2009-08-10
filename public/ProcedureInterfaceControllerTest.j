@@ -36,11 +36,11 @@
    ]
 }
 
-- (void)testChoosingADate
+- (void)testChoosingACourseSession
 {
   [scenario 
    during: function() {
-      [self sendNotification: "date chosen"];
+      [self sendNotification: CourseSessionDescribedNews];
     }
   behold: function() {
       [self controlsWillBeMadeVisible];

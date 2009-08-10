@@ -54,19 +54,19 @@
   [[CPNotificationCenter defaultCenter]
    addObserver: self
    selector: @selector(newExclusions:)
-   name: @"exclusions"
+   name: SessionExclusionsNews
    object: nil];
 
   [[CPNotificationCenter defaultCenter]
    addObserver: self
    selector: @selector(proceduresChosen:)
-   name: @"procedures chosen"
+   name: ProcedureUpdateNews
    object: nil];
 
   [[CPNotificationCenter defaultCenter]
    addObserver: self
-   selector: @selector(dateChosen:)
-   name: @"date chosen"
+   selector: @selector(becomeAvailable:)
+   name: CourseSessionDescribedNews
    object: nil];
 
 }
@@ -77,8 +77,9 @@
   [[CPNotificationCenter defaultCenter] removeObserver: self];
 }
 
-- (void) dateChosen: aNotification
+- (void) becomeAvailable: aNotification
 {
+  alert("becoming available");
   [containingView setHidden:NO];
 }
 

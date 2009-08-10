@@ -1,4 +1,5 @@
 @import <Foundation/CPObject.j>
+@import "Constants.j"
 
 @implementation ProcedureInterfaceController : CPObject
 {
@@ -31,8 +32,8 @@
 {
   [[CPNotificationCenter defaultCenter]
    addObserver: self
-   selector: @selector(dateChosen:)
-   name: @"date chosen"
+   selector: @selector(becomeAvailable:)
+   name: CourseSessionDescribedNews
    object: nil];
 }
 
@@ -41,7 +42,7 @@
   [[CPNotificationCenter defaultCenter] removeObserver: self];
 }
 
-- (void) dateChosen: aNotification
+- (void) becomeAvailable: aNotification
 {
   [containingView setHidden:NO];
 }
