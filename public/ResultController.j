@@ -17,7 +17,7 @@
 
 - (void) setUpNotifications
 {
-  [[CPNotificationCenter defaultCenter]
+  [NotificationCenter
    addObserver: self
    selector: @selector(activateLink:)
    name: NewReservationNews

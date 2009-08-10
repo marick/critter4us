@@ -28,7 +28,7 @@
 {
   [scenario
    during: function() {
-      [self notifyOfSomeDate];
+      [self sendNotification: CourseSessionDescribedNews];
     }
   behold: function() {
       [self controlsWillBeMadeVisible];
@@ -41,7 +41,7 @@
   [scenario
    given: function() {
       [sut awakeFromCib];
-      [self notifyOfSomeDate];
+      [self sendNotification: CourseSessionDescribedNews];
     }
    after: function() {
       [self notifyOfSomeAnimals];
@@ -57,7 +57,7 @@
   [scenario
    given: function() {
       [sut awakeFromCib];
-      [self notifyOfSomeDate];
+      [self sendNotification: CourseSessionDescribedNews];
     }
    after: function() {
       [self notifyOfSomeProcedures];
@@ -73,7 +73,7 @@
   [scenario
    given: function() {
       [sut awakeFromCib];
-      [self notifyOfSomeDate];
+      [self sendNotification: CourseSessionDescribedNews];
       [self notifyOfSomeProcedures];
     }
    during: function() {
@@ -91,7 +91,7 @@
   [scenario
    given: function() {
       [sut awakeFromCib];
-      [self notifyOfChosenDate: '2009-03-05'];
+      [self sendNotification: CourseSessionDescribedNews];
       [self notifyOfChosenProcedures: ["procedure 1", "procedure 2"]];
       [self notifyOfChosenAnimals: ["animal 1", "animal 2"]];
     }

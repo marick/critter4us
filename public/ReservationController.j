@@ -9,7 +9,6 @@
   CPButton button;
 
   // State ready
-  CPString date;
   CPArray procedures;
   CPArray animals;
 
@@ -32,34 +31,32 @@
 {
   [[CPNotificationCenter defaultCenter]
    addObserver: self
+   selector: @selector(becomeAvailable:)
+   name: CourseSessionDescribedNews
+   object: nil];
+
+  [[CPNotificationCenter defaultCenter]
+   addObserver: self
    selector: @selector(proceduresChosen:)
-   name: @"procedures chosen"
+   name: ProcedureUpdateNews
    object: nil];
 
   [[CPNotificationCenter defaultCenter]
    addObserver: self
    selector: @selector(animalsChosen:)
-   name: @"animals chosen"
+   name: AnimalUpdateNews
    object: nil];
+}
 
-  [[CPNotificationCenter defaultCenter]
-   addObserver: self
-   selector: @selector(dateChosen:)
-   name: @"date chosen"
-   object: nil];
+- (void) becomeAvailable: aNotification
+{
+  [containingView setHidden:NO];
 }
 
 
 - (void)stopObserving
 {
   [[CPNotificationCenter defaultCenter] removeObserver: self];
-}
-
-- (void) dateChosen: aNotification
-{
-  date = [aNotification object];
-  [containingView setHidden:NO];
-  [self updateButton];
 }
 
 - (void) proceduresChosen: aNotification
@@ -84,7 +81,7 @@
 
 - (void) updateButton
 {
-  if (date && procedures && animals)
+  if (procedures && animals)
     {
       [button setEnabled:YES];
     }
