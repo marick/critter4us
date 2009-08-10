@@ -10,7 +10,9 @@
   sut = [[CourseSessionController alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasUpwardCollaborators: ['courseField', 'instructorField',
-                                        'dateField', 'morningButton']];
+                                        'dateField', 'morningButton',
+					'summaryField', 
+					'buildingView', 'finishedView']];
   [scenario sutHasDownwardCollaborators: ['persistentStore']];
 }
 
@@ -25,6 +27,29 @@
     }
    ];
 }
+
+- (void)testClickingButtonChangesTheDisplayToMakeItInformativeYetImmutable
+{
+  [scenario 
+   given: function() {
+      [self userBeginsWithSomeValues];
+    }
+  during: function() {
+      [sut sessionReady: sut.okButton];
+    }
+  behold: function() {
+      [sut.buildingView shouldReceive: @selector(setHidden:) with:YES];
+      [sut.finishedView shouldReceive: @selector(setHidden:) with:NO];
+      [sut.summaryField shouldReceive: @selector(setStringValue:) 
+       with: function(value) {
+	  [self assertTrue: value.match("some instructor.*some course.*morning.*some date")
+	   message: "Expected '" + value + "' to have informative content."];
+	  return YES;
+	}];
+    }];
+}
+
+
 
 - (void)testClickingButtonCausesExclusionsToBeRetrievedAndNotified
 {
