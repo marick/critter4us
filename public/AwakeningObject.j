@@ -2,7 +2,7 @@
 @import <AppKit/AppKit.j>
 @import "Constants.j"
 
-@implementation Controller : CPObject
+@implementation AwakeningObject : CPObject
 {
 
   // For testing

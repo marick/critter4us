@@ -1,5 +1,5 @@
 @import <Foundation/CPObject.j>
-@import "Controller.j"
+@import "AwakeningObject.j"
 
 @implementation NetworkConnection : CPObject
 {
@@ -29,7 +29,7 @@
 
 @end
 
-@implementation PersistentStore : Controller
+@implementation PersistentStore : AwakeningObject
 {
   id network;
 }

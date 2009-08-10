@@ -1,6 +1,6 @@
-@import "Controller.j"
+@import "AwakeningObject.j"
 
-@implementation ResultController : Controller
+@implementation ResultController : AwakeningObject
 {
   // outlets
   CPWebView link;

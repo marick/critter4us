@@ -1,7 +1,7 @@
 
-@import "Controller.j"
+@import "AwakeningObject.j"
 
-@implementation CourseSessionController : Controller
+@implementation CourseSessionController : AwakeningObject
 {
   PersistentStore persistentStore;
 

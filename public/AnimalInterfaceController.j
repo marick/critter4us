@@ -79,7 +79,6 @@
 
 - (void) becomeAvailable: aNotification
 {
-  alert("becoming available");
   [containingView setHidden:NO];
 }
 
