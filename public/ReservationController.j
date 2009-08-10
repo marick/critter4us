@@ -1,11 +1,9 @@
 @import <Foundation/CPObject.j>
-@import "AwakeningObject.j"
+@import "SecondStageController.j"
 
-@implementation ReservationController : AwakeningObject
+@implementation ReservationController : SecondStageController
 {
   // outlets
-  CPView containingView;
-  id persistentStore;
   CPButton button;
 
   // State ready
@@ -17,36 +15,24 @@
 {
   if (awakened) return;
   [super awakeFromCib];
-  [containingView setHidden: YES];
   [button setEnabled: NO];
 }
 
-
-
 - (void) setUpNotifications
 {
-  [[CPNotificationCenter defaultCenter]
-   addObserver: self
-   selector: @selector(becomeAvailable:)
-   name: CourseSessionDescribedNews
-   object: nil];
+  [super setUpNotifications]
 
-  [[CPNotificationCenter defaultCenter]
+  [NotificationCenter
    addObserver: self
    selector: @selector(proceduresChosen:)
    name: ProcedureUpdateNews
    object: nil];
 
-  [[CPNotificationCenter defaultCenter]
+  [NotificationCenter
    addObserver: self
    selector: @selector(animalsChosen:)
    name: AnimalUpdateNews
    object: nil];
-}
-
-- (void) becomeAvailable: aNotification
-{
-  [containingView setHidden:NO];
 }
 
 

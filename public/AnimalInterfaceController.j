@@ -1,14 +1,12 @@
 @import <Foundation/CPObject.j>
-@import "AwakeningObject.j"
+@import "SecondStageController.j"
 
-@implementation AnimalInterfaceController : AwakeningObject
+@implementation AnimalInterfaceController : SecondStageController
 {
   // outlets
   CPTableView table;
   CPTableColumn nameColumn;
   CPTableColumn checkColumn;
-  CPView containingView;
-  id persistentStore;
 
   CPArray allAnimals;
   CPArray availableAnimals;
@@ -26,7 +24,6 @@
   [self allAnimalsAreAvailable];
   [self noAnimalsAreChosen]
 
-  [containingView setHidden:YES]; 
   [table reloadData];
 }
 
@@ -48,31 +45,21 @@
 
 - (void) setUpNotifications
 {
-  [[CPNotificationCenter defaultCenter]
+  [super setUpNotifications];
+
+  [NotificationCenter
    addObserver: self
    selector: @selector(newExclusions:)
    name: SessionExclusionsNews
    object: nil];
 
-  [[CPNotificationCenter defaultCenter]
+  [NotificationCenter
    addObserver: self
    selector: @selector(proceduresChosen:)
    name: ProcedureUpdateNews
    object: nil];
-
-  [[CPNotificationCenter defaultCenter]
-   addObserver: self
-   selector: @selector(becomeAvailable:)
-   name: CourseSessionDescribedNews
-   object: nil];
-
 }
 
-
-- (void) becomeAvailable: aNotification
-{
-  [containingView setHidden:NO];
-}
 
 - (void) newExclusions: aNotification
 {

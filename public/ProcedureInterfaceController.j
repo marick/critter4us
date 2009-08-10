@@ -1,13 +1,10 @@
-@import <Foundation/CPObject.j>
-@import "AwakeningObject.j"
+@import "SecondStageController.j"
 
-@implementation ProcedureInterfaceController : AwakeningObject
+@implementation ProcedureInterfaceController : SecondStageController
 {
   // outlets
   CPTableView unchosenProcedureTable;
   CPTableView chosenProcedureTable;
-  CPView containingView;
-  id persistentStore;
 
   id unchosenProcedures;
   id chosenProcedures;
@@ -24,22 +21,8 @@
 
   [unchosenProcedureTable reloadData];
   [chosenProcedureTable reloadData];
-  [containingView setHidden:YES]; 
 }
 
-- (void) setUpNotifications
-{
-  [[CPNotificationCenter defaultCenter]
-   addObserver: self
-   selector: @selector(becomeAvailable:)
-   name: CourseSessionDescribedNews
-   object: nil];
-}
-
-- (void) becomeAvailable: aNotification
-{
-  [containingView setHidden:NO];
-}
 
 - (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView
 {
