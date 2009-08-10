@@ -37,6 +37,7 @@
   BOOL happiness;
   CPString name;
   BOOL failOnUnexpectedSelector;
+  id storedValues;
 }
 
 -(Mock)init
@@ -46,6 +47,7 @@
   printErrors = YES;
   happiness = YES;
   failOnUnexpectedSelector = YES;
+  storedValues = [CPMutableDictionary dictionary];
   return self;
 }
 
@@ -170,17 +172,57 @@
 
 - (void)forwardInvocation:(CPInvocation)anInvocation
 {
-  matchingMethod = [expectationDictionary objectForKey: [anInvocation selector]];
+  var selector = [anInvocation selector];
+  var matchingMethod = [expectationDictionary objectForKey: selector];
   if (matchingMethod)
     {
       [anInvocation setReturnValue: [matchingMethod returnValue]];
       [actualities addObject: anInvocation];
+    }
+  else if ([self isSetter: selector])
+    {
+      var variable = [self setterToVariable: selector];
+      var value = [anInvocation argumentAtIndex: 2];
+      [storedValues setValue: value forKey: variable];
+    }
+  else if ([self isExpectedGetter: selector])
+    {
+      var variable = CPStringFromSelector(selector);
+      var retval = [storedValues objectForKey: variable];
+      [anInvocation setReturnValue: retval];
     }
   else if (failOnUnexpectedSelector)
     {
       [super forwardInvocation: anInvocation];
     }
 }
+
+-(CPString) setterToVariable: selector
+{
+  var stringVersion = CPStringFromSelector(selector);
+  var len = [stringVersion length];
+
+  var firstChar = [stringVersion substringWithRange: CPMakeRange(3, 1)];
+  var rest = [stringVersion substringWithRange: CPMakeRange(4, len-5)];
+  return [firstChar lowercaseString] + rest;
+}
+
+-(BOOL) isSetter: selector
+{
+  var stringVersion = CPStringFromSelector(selector);
+  var len = [stringVersion length];
+
+  var prefix = [stringVersion substringWithRange:CPMakeRange(0,3)];
+  var suffix = [stringVersion substringWithRange:CPMakeRange(len-1, 1)];
+  return  [prefix isEqual: "set"] && [suffix isEqual: ':'];
+}
+
+-(BOOL) isExpectedGetter: selector
+{
+  var stringVersion = CPStringFromSelector(selector);
+  return [storedValues objectForKey: stringVersion];
+}
+
 
 // Convenience methods
 

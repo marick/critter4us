@@ -103,4 +103,27 @@
   [self assertTrue: [mock wereExpectationsFulfilled]];
 }	
 
+
+-(void)testMocksCanConvertSettersToGetterNames
+{
+  mock = [[Mock alloc] initWithName: "fred"];
+  [self assert: "downcase" equals: [mock setterToVariable: @selector(setDowncase:)]];
+}
+
+// This is not foolproof: consider [foo set:Based:];
+-(void)testMocksCanRecognizeSetters
+{
+  mock = [[Mock alloc] initWithName: "fred"];
+  [self assertTrue: [mock isSetter: @selector(setDowncase:)]];
+  [self assertFalse: [mock isSetter: @selector(seDowncase:)]];
+  [self assertFalse: [mock isSetter: @selector(setDowncase)]];
+}
+
+-(void)testMocksCanStoreSetterValues
+{
+  mock = [[Mock alloc] initWithName: "fred"];
+  [mock setThatThing: 3];
+  [self assert: 3 equals: [mock thatThing]];
+}
+
 @end
