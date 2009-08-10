@@ -1,7 +1,7 @@
 @import <Foundation/CPObject.j>
-@import "Constants.j"
+@import "AwakeningObject.j"
 
-@implementation AnimalInterfaceController : CPObject
+@implementation AnimalInterfaceController : AwakeningObject
 {
   // outlets
   CPTableView table;
@@ -14,21 +14,18 @@
   CPArray availableAnimals;
   CPMutableDictionary isChosen;
   CPDictionary exclusions;
-
-  // For testing
-  BOOL awakened;
 }
 
 - (void)awakeFromCib
 {
   if (awakened) return;
-  awakened = YES;
+  [super awakeFromCib];
+
   allAnimals = [persistentStore allAnimalNames];
 
   [self allAnimalsAreAvailable];
   [self noAnimalsAreChosen]
 
-  [self setUpNotifications];
   [containingView setHidden:YES]; 
   [table reloadData];
 }
@@ -71,11 +68,6 @@
 
 }
 
-
-- (void)stopObserving
-{
-  [[CPNotificationCenter defaultCenter] removeObserver: self];
-}
 
 - (void) becomeAvailable: aNotification
 {

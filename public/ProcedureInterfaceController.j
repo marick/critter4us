@@ -1,7 +1,7 @@
 @import <Foundation/CPObject.j>
-@import "Constants.j"
+@import "AwakeningObject.j"
 
-@implementation ProcedureInterfaceController : CPObject
+@implementation ProcedureInterfaceController : AwakeningObject
 {
   // outlets
   CPTableView unchosenProcedureTable;
@@ -11,21 +11,20 @@
 
   id unchosenProcedures;
   id chosenProcedures;
-
-  // Test support
-  BOOL awakened;
 }
 
 - (void)awakeFromCib
 {
+  if (awakened) return;
+  [super awakeFromCib];
+
   unchosenProcedures = [persistentStore allProcedureNames];
   [unchosenProcedures sortUsingSelector: @selector(caseInsensitiveCompare:)];
   chosenProcedures = [CPArray array];
-  [self setUpNotifications];
+
   [unchosenProcedureTable reloadData];
   [chosenProcedureTable reloadData];
   [containingView setHidden:YES]; 
-  awakened = YES;
 }
 
 - (void) setUpNotifications
@@ -35,11 +34,6 @@
    selector: @selector(becomeAvailable:)
    name: CourseSessionDescribedNews
    object: nil];
-}
-
-- (void)stopObserving 
-{
-  [[CPNotificationCenter defaultCenter] removeObserver: self];
 }
 
 - (void) becomeAvailable: aNotification
