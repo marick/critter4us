@@ -41,22 +41,6 @@
   [self sendNotification: ProcedureUpdateNews withObject: anArray];
 }
 
-- (void) notifyOfSomeProcedures
-{
-  [self notifyOfChosenProcedures: ["foo", "bar"]];
-}
-
-- (void) notifyOfChosenAnimals: (CPArray)anArray
-{
-  [self sendNotification: AnimalUpdateNews withObject: anArray];
-}
-
-- (void) notifyOfSomeAnimals
-{
-  [self notifyOfChosenAnimals: ["betsy", "barney"]];
-}
-
-
 
 
 - (void) onlyColumnInTable: aTable named: aString willContain: anArray

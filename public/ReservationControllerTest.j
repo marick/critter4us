@@ -10,7 +10,10 @@
 {
   sut = [[ReservationController alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardCollaborators: ['button', 'containingView']];
+  [scenario sutHasUpwardCollaborators: ['button', 'containingView',
+					'courseSessionController',
+					'procedureController',
+					'animalController']];
   [scenario sutHasDownwardCollaborators: ['persistentStore']];
 }
 
@@ -20,11 +23,10 @@
   [scenario
    whileAwakening: function() {
       [self controlsWillBeMadeHidden];
-      [self thisControlWillBeDisabled: sut.button];
     }];
 }
 
-- (void)testChoosingADate
+- (void)testCourseSessionAvailable
 {
   [scenario
    during: function() {
@@ -36,74 +38,36 @@
    ];
 }
 
-- (void)testChoosingADateAndAnimalDoesNotEnableButton
-{
-  [scenario
-   given: function() {
-      [sut awakeFromCib];
-      [self sendNotification: CourseSessionDescribedNews];
-    }
-   after: function() {
-      [self notifyOfSomeAnimals];
-    }
-   behold: function() {
-      [self thisControlWillRemainDisabled: sut.button];
-    }
-   ];
-}
-
-- (void)testChoosingADateAndProcedureDoesNotEnableButton
-{
-  [scenario
-   given: function() {
-      [sut awakeFromCib];
-      [self sendNotification: CourseSessionDescribedNews];
-    }
-   after: function() {
-      [self notifyOfSomeProcedures];
-    }
-   behold: function() {
-      [self thisControlWillRemainDisabled: sut.button];
-    }
-   ];
-}
-
-- (void)testChoosingAllThreeDataEnablesButton
-{
-  [scenario
-   given: function() {
-      [sut awakeFromCib];
-      [self sendNotification: CourseSessionDescribedNews];
-      [self notifyOfSomeProcedures];
-    }
-   during: function() {
-      [self notifyOfSomeAnimals];
-    }
-   behold: function() {
-      [self thisControlWillBeEnabled: sut.button];
-    }
-   ];
-}
 
 // This is a pretty dumb test.
 - (void)testButtonClickSendsDataToPersistentStore
 {
   [scenario
-   given: function() {
-      [sut awakeFromCib];
-      [self sendNotification: CourseSessionDescribedNews];
-      [self notifyOfChosenProcedures: ["procedure 1", "procedure 2"]];
-      [self notifyOfChosenAnimals: ["animal 1", "animal 2"]];
-    }
    during: function() {
       [sut makeReservation: 'ignored'];
     }
    behold: function() {
+      [sut.courseSessionController shouldReceive: @selector(spillIt:)
+       with: function(dict) {
+	  dict['date'] = "2009-03-05";
+	  return YES;
+	}];
+      [sut.procedureController shouldReceive: @selector(spillIt:)
+       with: function(dict) {
+	  dict['procedures'] = ['procedure 1', 'procedure 2'];
+	  return YES;
+	}];
+      [sut.animalController shouldReceive: @selector(spillIt:)
+       with: function(dict) {
+	  dict['animals'] = ['animal 1', 'animal 2'];
+	  return YES;
+       }];
+
       var hashTester = function (h) {
-	[self assert: h['date'] equals: '2009-03-05'];
-	[self assert: h['procedures'] equals: ["procedure 1", "procedure 2"]];
-	[self assert: h['animals'] equals: ["animal 1", "animal 2"]];
- 	return YES
+	[self assert: '2009-03-05' equals: h['date'] ];
+	[self assert: ["procedure 1", "procedure 2"] equals: h['procedures']];
+	[self assert: ["animal 1", "animal 2"] equals: h['animals']];
+ 	return YES;
       }
       [sut.persistentStore shouldReceive: @selector(makeReservation:)
                                     with: hashTester
@@ -113,21 +77,4 @@
     }];
 }
 
-
-- (void) thisControlWillBeDisabled: (CPControl) aControl
-{
-  [aControl shouldReceive: @selector(setEnabled:) with: NO];
-}
-
-- (void) thisControlWillBeEnabled: (CPControl) aControl
-{
-  [aControl shouldReceive: @selector(setEnabled:) with: YES];
-}
-
-- (void) thisControlWillRemainDisabled: (CPControl) aControl
-{
-  aControl.failOnUnexpectedSelector = YES;
-}
-						    
- 
 @end

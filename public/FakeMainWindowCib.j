@@ -26,10 +26,14 @@
 
   [self loadGlobalPersistentStore];
   [self loadAndConnectWindowController];
-  [self loadAndConnectCourseSessionController];
-  [self loadAndConnectProcedureInterfaceController];
-  [self loadAndConnectAnimalInterfaceController];
-  [self loadAndConnectReservationController];
+  var reservationController = [self loadAndConnectReservationController];
+  reservationController.courseSessionController = 
+    [self loadAndConnectCourseSessionController];
+  reservationController.procedureController = 
+    [self loadAndConnectProcedureInterfaceController];
+  reservationController.animalController = 
+    [self loadAndConnectAnimalInterfaceController];
+
   [self loadAndConnectResultController];
 
   [self awakenAllObjects];
@@ -43,7 +47,7 @@
   persistentStore.network = [[NetworkConnection alloc] init];
 }
 
-- (void) loadAndConnectWindowController
+- (id) loadAndConnectWindowController
 {
   theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero()
 	       styleMask:CPBorderlessBridgeWindowMask];
@@ -52,9 +56,10 @@
   var mainWindowController = [[MainWindowController alloc] init];
   mainWindowController.theWindow = theWindow;
   [customObjectsLoaded addObject:mainWindowController];
+  return mainWindowController;
 }
 
--(void) loadAndConnectCourseSessionController
+-(id) loadAndConnectCourseSessionController
 {  
   var contentView = [theWindow contentView];
   var buildingView = [[CPView alloc] initWithFrame:CGRectMake(0, 0, 900, 120)];
@@ -136,9 +141,10 @@
   [theWindow setDefaultButton: goButton];
   [theWindow enableKeyEquivalentForDefaultButton];
   [customObjectsLoaded addObject:sessionController];
+  return sessionController;
 }
   
-- (void) loadAndConnectProcedureInterfaceController
+- (id) loadAndConnectProcedureInterfaceController
 {
   var contentView = [[CPView alloc] initWithFrame: CGRectMake(10, 140, 600, 400)];
   [[theWindow contentView] addSubview: contentView];
@@ -197,9 +203,10 @@
   [chosenProcedureTable setAction: @selector(unchooseProcedure:)];
 
   [customObjectsLoaded addObject:procedureController];
+  return procedureController;
 }
 
--(void)loadAndConnectAnimalInterfaceController
+-(id)loadAndConnectAnimalInterfaceController
 {
   var animalController = [[AnimalInterfaceController alloc] init];
   GlobalCheckboxTarget = animalController;
@@ -244,10 +251,11 @@
   [animalTable setDelegate:animalController];
 
   [customObjectsLoaded addObject:animalController];
+  return animalController;
 }
 
 
--(void)loadAndConnectReservationController
+-(id)loadAndConnectReservationController
 {
   var reservationController = [[ReservationController alloc] init];
 
@@ -270,9 +278,10 @@
   reservationController.button = reserveButton;
 
   [customObjectsLoaded addObject:reservationController];
+  return reservationController;
 }
 
--(void) loadAndConnectResultController
+-(id) loadAndConnectResultController
 {
   var resultController = [[ResultController alloc] init];
   var contentView = [[CPView alloc] initWithFrame: CGRectMake(600,50,400,50)];
@@ -287,6 +296,7 @@
   resultController.link = webView;
 
   [customObjectsLoaded addObject: resultController];
+  return resultController;
 }
 
 - (void) awakenAllObjects
