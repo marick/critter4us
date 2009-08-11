@@ -16,6 +16,8 @@ def create_tables
     primary_key :id
     Date :date
     boolean :morning
+    String :course
+    String :instructor
   end
 
   DB.create_table! :uses do
