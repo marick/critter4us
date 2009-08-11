@@ -45,11 +45,11 @@
 {
   [scenario
    during: function() {
-      return [sut exclusionsForDate:"2009-02-23"];
+      return [sut exclusionsForDate:"2009-02-23" time: [Time morning]];
     }
   behold: function() {
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
-       with: jsonURI(ExclusionsRoute) + "?date=2009-02-23"
+       with: jsonURI(ExclusionsRoute) + "?date=2009-02-23&time=morning"
        andReturn: '{"exclusions":{"veniculture":["one"],"aquaculture":["2","3"]}}'];
     }
    ];
@@ -62,8 +62,12 @@
 {
   [scenario 
    during: function() {
-      var data = [CPDictionary dictionaryWithObjects: ['2009-03-23', ["betsy"], ["rhinoscopy (cows)"]]
-		  forKeys: ['date', 'animals', 'procedures']];
+      var time = [Time afternoon];
+      var data = [CPDictionary dictionaryWithObjects:
+		  ['2009-03-23', time, "morin", "vm333",
+		   ["betsy"], ["rhinoscopy (cows)"]]
+		  forKeys: ['date', 'time', 'instructor', 'course',
+		  'animals', 'procedures']];
       return [sut makeReservation: data];
     }
   behold: function() { 
@@ -81,6 +85,19 @@
     }
    ];
   [self assert: '1' equals: scenario.result];
+}
+
+-(void) testDictionaryToJSStringifiesObjects
+{
+  var dict = [CPDictionary dictionary];
+  [dict setValue: "string" forKey: "string"];
+  [dict setValue: 1 forKey:"number"];
+  [dict setValue: [Time afternoon] forKey: "time"];
+  
+  var js = [sut dictionaryToJS: dict];
+  [self assert: "string" equals: js['string']];
+  [self assert: "1" equals: js['number']];
+  [self assert: "afternoon" equals: js['time']];
 }
 
 @end

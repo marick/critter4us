@@ -1,4 +1,5 @@
 @import <Foundation/CPObject.j>
+@import "Time.j"
 @import "AwakeningObject.j"
 
 @implementation NetworkConnection : CPObject
@@ -44,15 +45,16 @@
   return [self valueForKey: 'procedures' atRoute: AllProceduresRoute];
 }
 
-- (CPDictionary) exclusionsForDate: (CPString)dateString
+- (CPDictionary) exclusionsForDate: (CPString)dateString time:(Time)time
 {
-  var jsHash = [self valueForKey: 'exclusions' atRoute: ExclusionsRoute+"?date=" + dateString];
+  var jsHash = [self valueForKey: 'exclusions' atRoute: ExclusionsRoute+"?date=" + dateString + "&time=" + [time description]];
   var retval = [CPDictionary dictionaryWithJSObject: jsHash recursively: YES];
   return retval;
 }	
 
 - (void) makeReservation: dict
 {
+  [self checkValidity: dict];
   var jsData = [self dictionaryToJS: dict];
   var dataString = encodeURIComponent([CPString JSONFromObject: jsData]);
   var content = [CPString stringWithFormat:@"data=%s", dataString];
@@ -64,6 +66,20 @@
 }
 
 // util
+
+- (void) checkValidity: (CPDictionary) dict
+{
+  var expected = ['date', 'time', 'procedures', 'animals', 'course', 'instructor'];
+  var actual = [dict allKeys];
+
+  [actual sortUsingSelector: @selector(compare:)];
+  [expected sortUsingSelector: @selector(compare:)];
+
+  if ([expected isEqual: actual]) return;
+  alert("There's a program bug. Some invalid or missing key in " + [expected description]);
+}
+
+
 - (CPArray) valueForKey: (CPString)aKey atRoute: route
 {
   var url = jsonURI(route);
@@ -80,7 +96,7 @@
   var key;
   while (key = [enumerator nextObject])
     {
-      jsData[key] = [dict valueForKey: key];
+      jsData[key] = [[dict valueForKey: key] description];
     }
   return jsData;
 }

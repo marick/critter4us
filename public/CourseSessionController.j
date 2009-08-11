@@ -1,5 +1,5 @@
-
 @import "AwakeningObject.j"
+@import "Time.j"
 
 @implementation CourseSessionController : AwakeningObject
 {
@@ -29,15 +29,16 @@
                                     object:nil];
 
   var date = [dateField stringValue];
-  var exclusions = [persistentStore exclusionsForDate: date];
+  var time = [self deduceTime];
+
+  var exclusions = [persistentStore exclusionsForDate: date time: time];
   [NotificationCenter postNotificationName:SessionExclusionsNews
                                     object:exclusions];
 
   var instructor = [instructorField stringValue];
   var course = [courseField stringValue];
-  var morning = [morningButton state] == CPOnState ? "morning" : "afternoon";
 
-  var summaryText = [CPString stringWithFormat: "%s needs animals for %s on the %s of %s.", instructor, course, morning, date];
+  var summaryText = [CPString stringWithFormat: "%s needs animals for %s on the %s of %s.", instructor, course, [time description], date];
   [summaryField setStringValue: summaryText];
 				 
   [buildingView setHidden:YES];
@@ -45,12 +46,20 @@
 
 }
 
+- (id) deduceTime
+{
+  if ([morningButton state] == CPOnState) 
+    return [Time morning];
+  else
+    return [Time afternoon];
+}
+
 - (id) spillIt: (CPMutableDictionary) dict
 {
   [dict setValue: [courseField stringValue] forKey: 'course'];
   [dict setValue: [instructorField stringValue] forKey: 'instructor'];
   [dict setValue: [dateField stringValue] forKey: 'date'];
-  [dict setValue: ([morningButton state] == CPOnState) forKey: 'isMorning'];
+  [dict setValue: [self deduceTime] forKey: 'time'];
 }
 
 @end

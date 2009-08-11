@@ -54,16 +54,19 @@
 - (void)testClickingButtonCausesExclusionsToBeRetrievedAndNotified
 {
   [scenario
+   given: function() {
+      [sut.morningButton setState: CPOnState];
+      [sut.dateField setStringValue: @"some date"];
+    }
    during: function() {
       [sut sessionReady: sut.okButton];
     }
   behold: function() {
-      [sut.dateField shouldReceive:@selector(stringValue)
-                         andReturn:@"some date"];
-      [sut.persistentStore shouldReceive: @selector(exclusionsForDate:)
-                           with: [@"some date"]
-                           andReturn: @"some exclusions"];
-      [self listenersWillReceiveNotification: "exclusions" containingObject: "some exclusions"];
+      [sut.persistentStore shouldReceive: @selector(exclusionsForDate:time:)
+  	                            with: [@"some date", [Time morning]]
+                               andReturn: @"some exclusions"];
+      [self listenersWillReceiveNotification: "exclusions"
+                            containingObject: "some exclusions"];
     }
    ];
 }
@@ -82,7 +85,7 @@
       [self assert: "some course" equals: [dict valueForKey: 'course']];
       [self assert: "some instructor" equals: [dict valueForKey: 'instructor']];
       [self assert: "some date" equals: [dict valueForKey:'date']];
-      [self assert: YES equals: [dict valueForKey:'isMorning']];
+      [self assert: [Time morning] equals: [dict valueForKey:'time']];
     }];
 }
 
