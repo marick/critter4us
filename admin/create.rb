@@ -85,6 +85,7 @@ Animal.create(:name => 'sunny', :kind => 'equine mare')
 Animal.create(:name => 'pumpkin', :kind => 'equine mare')
 
 
+exit
 
 reservation = Reservation.create(:date => Date.new(2009, 2, 23))
 Use.create(:animal => Animal[:name => 'brooke'],
@@ -94,7 +95,6 @@ Use.create(:animal => Animal[:name => 'brooke'],
 puts Use.all.inspect
 puts DB[:expanded_uses].all
 
-exit
 
 #
 #
