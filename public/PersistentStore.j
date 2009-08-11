@@ -56,7 +56,7 @@
   var jsData = [self dictionaryToJS: dict];
   var dataString = encodeURIComponent([CPString JSONFromObject: jsData]);
   var content = [CPString stringWithFormat:@"data=%s", dataString];
-  url = jsonURI(StoreReservationRoute);
+  var url = jsonURI(StoreReservationRoute);
   var jsonString = [network POSTFormDataTo: url withContent: content];
   var jsHash = [jsonString objectFromJSON];
   var result = jsHash["reservation"];
