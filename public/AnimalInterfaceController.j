@@ -144,6 +144,12 @@
   return retval;
 }
 
+- (void) spillIt: (CPMutableDictionary) dict
+{
+  [dict setValue: [self chosenAnimals] forKey: 'animals'];
+}
+
+
 - (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView
 {
   return [availableAnimals count];

@@ -51,8 +51,9 @@
   return retval;
 }	
 
-- (void) makeReservation: jsData
+- (void) makeReservation: dict
 {
+  var jsData = [self dictionaryToJS: dict];
   var dataString = encodeURIComponent([CPString JSONFromObject: jsData]);
   var content = [CPString stringWithFormat:@"data=%s", dataString];
   url = jsonURI(StoreReservationRoute);
@@ -70,6 +71,18 @@
   var jsHash =  [jsonString objectFromJSON];
   var result = jsHash[aKey];
   return result;
+}
+
+- (id) dictionaryToJS: dict
+{
+  var jsData = {};
+  var enumerator = [dict keyEnumerator];
+  var key;
+  while (key = [enumerator nextObject])
+    {
+      jsData[key] = [dict valueForKey: key];
+    }
+  return jsData;
 }
 
 @end

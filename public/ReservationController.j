@@ -14,7 +14,7 @@
 
 - (void) makeReservation: (CPButton) sender
 {
-  var dict = {};
+  var dict = [CPMutableDictionary dictionary];
   [courseSessionController spillIt: dict];
   [procedureController spillIt: dict];
   [animalController spillIt: dict];

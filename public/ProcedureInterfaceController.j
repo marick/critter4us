@@ -72,12 +72,16 @@
 
 - (void) updateEveryoneWhoCaresAboutMovement
 {
-  [[CPNotificationCenter defaultCenter] 
-         postNotificationName: @"procedures chosen"
-	 object: chosenProcedures];
+  [NotificationCenter postNotificationName: ProcedureUpdateNews
+                                    object: chosenProcedures];
   [chosenProcedureTable deselectAll: self];
   [unchosenProcedureTable deselectAll: self];
   [chosenProcedureTable reloadData];
   [unchosenProcedureTable reloadData];
+}
+
+- (void) spillIt: (CPMutableDictionary) dict
+{
+  [dict setValue: chosenProcedures forKey: 'procedures'];
 }
 @end

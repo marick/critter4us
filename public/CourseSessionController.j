@@ -45,19 +45,12 @@
 
 }
 
-- (void) courseSessionRequested: aNotification
+- (id) spillIt: (CPMutableDictionary) dict
 {
-  [[aNotification object] courseSession: [self allMyData]];
-}
-
-- (id) allMyData
-{
-  var course = [courseField stringValue];
-  var instructor = [instructorField stringValue];
-  var date = [dateField stringValue];
-  var isMorning = ([morningButton state] == CPOnState);
-  return {'course':course,'instructor':instructor,'date':date,
-          'isMorning':isMorning};
+  [dict setValue: [courseField stringValue] forKey: 'course'];
+  [dict setValue: [instructorField stringValue] forKey: 'instructor'];
+  [dict setValue: [dateField stringValue] forKey: 'date'];
+  [dict setValue: ([morningButton state] == CPOnState) forKey: 'isMorning'];
 }
 
 @end

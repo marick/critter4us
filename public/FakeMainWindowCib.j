@@ -26,13 +26,14 @@
 
   [self loadGlobalPersistentStore];
   [self loadAndConnectWindowController];
+  var courseSessionController = [self loadAndConnectCourseSessionController];
+  var procedureController = [self loadAndConnectProcedureInterfaceController];
+  var animalController = [self loadAndConnectAnimalInterfaceController];
   var reservationController = [self loadAndConnectReservationController];
-  reservationController.courseSessionController = 
-    [self loadAndConnectCourseSessionController];
-  reservationController.procedureController = 
-    [self loadAndConnectProcedureInterfaceController];
-  reservationController.animalController = 
-    [self loadAndConnectAnimalInterfaceController];
+
+  reservationController.courseSessionController = courseSessionController;
+  reservationController.procedureController = procedureController;
+  reservationController.animalController = animalController;
 
   [self loadAndConnectResultController];
 

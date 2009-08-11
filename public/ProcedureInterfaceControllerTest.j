@@ -92,6 +92,25 @@
 
 
 
+- (void)testSPillingProcedures
+{
+  var dict = [CPMutableDictionary dictionary];
+  [scenario
+   given: function() {
+      [self procedure: "Betical"
+            hasBeenSelectedFrom: ["alpha", "Betical", "order"]];
+    }
+  sequence: function() {
+      [sut spillIt: dict];
+    }
+  means: function() {
+      [self assert: ['Betical'] equals: [dict valueForKey: 'procedures']]
+    }
+   ];
+}
+
+
+
 
 
 

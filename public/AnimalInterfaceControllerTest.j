@@ -118,6 +118,23 @@
     }];
 }
 
+- (void) testSpillingData
+{
+  var dict = [CPMutableDictionary dictionary];
+  [scenario
+   given: function() { 
+      [self animals: ["alpha",  "delta", "betty"]];
+      [self alreadySelected: ["betty", "delta"]];
+    }
+  sequence: function() { 
+      [sut spillIt: dict];
+
+    }
+  means: function() {
+      [self assert: ["betty", "delta"] equals: [dict objectForKey: "animals"]];
+    }];
+}
+
 
 -(void) selectAnimal: aName
 {

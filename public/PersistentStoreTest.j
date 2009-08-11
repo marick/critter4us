@@ -62,9 +62,8 @@
 {
   [scenario 
    during: function() {
-      var data = {'date':'2009-03-23',
-		  'animals':["betsy"],
-		  'procedures':["rhinoscopy (cows)"]};
+      var data = [CPDictionary dictionaryWithObjects: ['2009-03-23', ["betsy"], ["rhinoscopy (cows)"]]
+		  forKeys: ['date', 'animals', 'procedures']];
       return [sut makeReservation: data];
     }
   behold: function() { 

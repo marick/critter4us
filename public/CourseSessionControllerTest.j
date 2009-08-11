@@ -68,50 +68,31 @@
    ];
 }
 
--(void)testCanRespondWithSessionData
+-(void)testCanSpillSessionData
 {
-  var notifier = [[Mock alloc] init];
+  var dict = [CPMutableDictionary dictionary];
   [scenario
-   during: function() {
+   given: function() { 
       [self userBeginsWithSomeValues];
-      [self object: notifier notifiesUniverseOfNeed: NeedForSessionDataNews];
     }
-  behold: function() {
-      [notifier shouldReceive: @selector(courseSession:) 
-       with: function(session) {
-	  [self assert: "some course" equals: session['course']];
-	  [self assert: "some instructor" equals: session['instructor']];
-	  [self assert: "some date" equals: session['date']];
-	  [self assert: YES equals: session['isMorning']];
-	  return YES;
-	}];
+   sequence: function() {
+      [sut spillIt: dict];
     }
-   ];
+  means: function() {
+      [self assert: "some course" equals: [dict valueForKey: 'course']];
+      [self assert: "some instructor" equals: [dict valueForKey: 'instructor']];
+      [self assert: "some date" equals: [dict valueForKey:'date']];
+      [self assert: YES equals: [dict valueForKey:'isMorning']];
+    }];
 }
 
 -(void) userBeginsWithSomeValues
 {
-  [sut.courseField shouldReceive:@selector(stringValue)
-                       andReturn:"some course"];
-
-  [sut.instructorField shouldReceive:@selector(stringValue)
-                       andReturn:"some instructor"];
-
-  [sut.dateField shouldReceive:@selector(stringValue)
-                       andReturn:"some date"];
-
-  [sut.morningButton shouldReceive:@selector(state)
-                       andReturn:CPOnState];
-
-  // TODO: I would rather leave this in, but it should be commented out 
-  // until mocks can take default values.
-  // [sut sessionReady: sut.goButton];
+  [sut.courseField setStringValue: "some course"];
+  [sut.instructorField setStringValue: "some instructor"];
+  [sut.dateField setStringValue: "some date"];
+  [sut.morningButton setState:CPOnState];
 }
 
--(void) object: (CPObject)anObject notifiesUniverseOfNeed: aNotificationName
-{
-  [NotificationCenter postNotificationName:aNotificationName
-                                    object:anObject];
-}
 
 @end
