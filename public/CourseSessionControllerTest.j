@@ -16,6 +16,22 @@
   [scenario sutHasDownwardCollaborators: ['persistentStore']];
 }
 
+- (void) testCanFlipViewsToAllowDataEntry
+{
+  [scenario
+   given: function() {
+      [sut.buildingView setHidden: YES];
+      [sut.finishedView setHidden: NO];
+    }
+  sequence: function() {
+      [sut makeViewsAcceptData];
+    }
+  means: function() {
+      [self assertFalse: [sut.buildingView hidden]];
+      [self assertTrue: [sut.finishedView hidden]];
+    }];
+}
+
 - (void)testClickingButtonNotifiesListenersOfEvent
 {
   [scenario 

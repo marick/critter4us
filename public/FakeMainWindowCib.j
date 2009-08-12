@@ -35,10 +35,25 @@
   reservationController.procedureController = procedureController;
   reservationController.animalController = animalController;
 
-  [self loadAndConnectResultController];
+  var resultController = [self loadAndConnectResultController];
+
+  var controllerCoordinator = [self loadAndConnectControllerCoordinator];
+  controllerCoordinator.courseSessionController = courseSessionController;
+  controllerCoordinator.procedureController = procedureController;
+  controllerCoordinator.animalController = animalController;
+  controllerCoordinator.reservationController = reservationController;
+  controllerCoordinator.resultController = resultController;
 
   [self awakenAllObjects];
   [theWindow orderFront:self];
+}
+
+- (void) loadControllerCoordinator
+{
+  var controllerCoordinator = [[ControllerCoordinator alloc] init];
+
+  [customObjectsLoaded addObject:controllerCoordinator];
+  return controllerCoordinator;
 }
 
 

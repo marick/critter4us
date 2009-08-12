@@ -23,6 +23,15 @@
                            object:nil];
 }
 
+
+- (void)makeViewsAcceptData
+{
+  [buildingView setHidden:NO];
+  [finishedView setHidden:YES];
+}
+
+
+
 - (void)sessionReady:(id)sender
 {
   [NotificationCenter postNotificationName:CourseSessionDescribedNews
