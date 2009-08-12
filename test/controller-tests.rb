@@ -1,8 +1,5 @@
 require 'test/testutil/requires'
-require 'test/testutil/dbhelpers'
-
 require 'controller'
-require 'admin/tables'
 
 class JsonGenerationTests < Test::Unit::TestCase
   include Rack::Test::Methods
@@ -23,17 +20,33 @@ class JsonGenerationTests < Test::Unit::TestCase
     assert { ruby_obj == JSON[last_response.body] }
   end
 
+  should "convert to consistent internal format" do
+    input = {
+      "stringkey" => "value",
+      "time" => "morning",
+      "date" => "2009-12-01",
+      "animals" => ["an", "array"],
+    };
+    actual = app.move_to_internal_format(input)
+    expected = {
+      :stringkey => 'value', :morning => true,
+      :date => Date.new(2009,12,1),
+      :animals => ["an", "array"]
+    }
+    assert { actual == expected }
+  end
+
   context "delivering procedure names" do
 
     should "return a JSON list of strings" do
-      create(Procedure, 'a')
+      Procedure.random(:name => 'a')
       get '/json/procedures'
       assert_json_response
       assert_jsonification_of({'procedures' => ['a']})
     end
 
     should "also sort the list" do
-      create(Procedure, 'c', 'a', 'b')
+      Procedure.random_with_names('c', 'a', 'b')
       get '/json/procedures'
       assert_jsonification_of({'procedures' => ['a', 'b', 'c']})
     end
@@ -41,15 +54,14 @@ class JsonGenerationTests < Test::Unit::TestCase
 
   context "delivering all animals" do
     should "return a JSON list of strings" do
-      create(Animal, 'bossie');
+      Animal.random(:name => 'bossie');
       get '/json/all_animals'
       assert_json_response
       assert_jsonification_of({'animals' => ['bossie']})
     end
 
-
     should "also sort the list" do
-      create(Animal, 'wilbur', 'bossie', 'hank', 'betsy');
+      Animal.random_with_names('wilbur', 'bossie', 'hank', 'betsy')
       get '/json/all_animals'
       assert_jsonification_of({'animals' => ['betsy', 'bossie', 'hank', 'wilbur']})
     end
@@ -58,38 +70,92 @@ class JsonGenerationTests < Test::Unit::TestCase
   context "delivering exclusions" do
 
     should "hand over the exclusion hash" do
-      Reservation.create_with_uses(Date.new(2009, 7, 20), morning=true,
-                                   ['procedure name'],
-                                   ['excluded animal'],
-                                   :find_or_create)
-      Procedure.first.update(:days_delay => 14)
+      
+      DB.populate do
+        Reservation.random(:date => '2009-07-03') do
+          use Animal.random
+          use Procedure.random(:days_delay => 14.days)
+        end
+      end
 
-      get '/json/exclusions', {:date => '2009-07-23'}
+      get '/json/exclusions', {:date => '2009-07-13', :time => "morning"}
       assert_json_response
-      expected_exclusion = {'procedure name' => ['excluded animal']}
+      expected_exclusion = {Procedure.first.name => [Animal.first.name]}
       assert_jsonification_of({'exclusions' => expected_exclusion})
     end
 
+    context "zero-delay animals" do 
+
+      setup do
+        @date_of_interest = "2009-12-01"
+        DB.populate do
+          Reservation.random(:date => @date_of_interest,
+                             :morning => true) do
+            use Animal.random(:name => 'morning animal')
+            use Procedure.random(:days_delay => 0.days, 
+                                 :name => 'morning procedure')
+          end
+          
+          Reservation.random(:date => @date_of_interest,
+                             :morning => false) do
+            use Animal.random(:name => "afternoon animal")
+            use Procedure.random(:days_delay => 0.days,
+                                 :name => "afternoon procedure")
+          end
+        end
+      end
+
+      # Here, in English, is what we're checking:
+      no_morning_animal = {'morning procedure' => ['morning animal'] }
+      morning_animal_ok = {'morning procedure' => [] }
+        
+      no_afternoon_animal = {'afternoon procedure' => ['afternoon animal'] }
+      afternoon_animal_ok = {'afternoon procedure' => [] }
+        
+
+      should "be excluded from being reserved twice in a morning" do
+        get '/json/exclusions',
+            {:date => @date_of_interest, :time => "morning"}
+        expected = no_morning_animal.merge(afternoon_animal_ok)
+        assert_jsonification_of({'exclusions' => expected})
+      end
+
+
+      should "be excluded from being reserved twice in an afternoon" do
+        get '/json/exclusions',
+            {:date => @date_of_interest, :time => "afternoon"}
+        expected = no_afternoon_animal.merge(morning_animal_ok)
+        assert_jsonification_of({'exclusions' => expected})
+      end
+      
+    end
   end
 
   context "adding a reservation" do 
 
-    setup do 
-      create(Animal, 'hum', 'bug')
-      create(Procedure, 'sloop', 'slop')
+    setup do
+      Animal.random_with_names('twitter', 'jinx')
+      Procedure.random_with_names('lick', 'slop')
 
-      @data = {'date' => '2009-02-03',
- 	      'procedures' => ['sloop', 'slop'],
-	      'animals' => ['hum', 'bug']}
+      @data = {
+        'date' => '2009-02-03',
+        'time' => 'morning',
+        'instructor' => 'morin',
+        'course' => 'vm333',
+        'procedures' => ['lick', 'slop'],
+        'animals' => ['twitter', 'jinx']}
     end
 
     should "create the required uses" do
       post '/json/store_reservation', :data => @data.to_json
       r = Reservation[:date => Date.new(2009, 02, 03)]
+      assert { r.morning }
+      assert { r.instructor == @data['instructor'] }
+      assert { r.course == @data['course'] }
       assert { r.uses.size == 4 }
       assert do 
         r.uses.find do | u | 
-          u.animal.name == 'hum' && u.procedure.name == 'slop'
+          u.animal.name == 'twitter' && u.procedure.name == 'slop'
         end
       end
     end

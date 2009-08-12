@@ -3,7 +3,7 @@ require 'sinatra/base'
 require 'json'
 require 'model'
 require 'view'
-
+require 'pp'
 
 class Controller < Sinatra::Base
 
@@ -33,18 +33,15 @@ class Controller < Sinatra::Base
   get '/json/exclusions' do
     jsonically do
       typing_as 'exclusions' do
-        date = Date.parse(params['date'])
-        ExclusionMap.new(date, true).to_hash
+        internal = move_to_internal_format(params)
+        ExclusionMap.new(internal[:date], internal[:morning]).to_hash
       end
     end
   end
 
   post '/json/store_reservation' do
-    data = params['data']
-    hash = JSON.parse(data)
-    reservation = Reservation.create_with_uses(hash['date'], true,
-                                               hash['procedures'],
-                                               hash['animals'])
+    hash = move_to_internal_format(JSON.parse(params['data']))
+    reservation = Reservation.create_with_uses(hash)
     jsonically do
       typing_as "reservation" do 
         reservation.id.to_s
@@ -54,10 +51,24 @@ class Controller < Sinatra::Base
 
   get '/reservation/:number' do
     number = params[:number]
-    ReservationDescription.new(:reservation => Reservation[number]).to_s
+    ReservationView.new(:reservation => Reservation[number]).to_s
+  end
+
+  def move_to_internal_format(hash)
+    result = {}
+    hash.each { | k, v | result[k.to_sym] = v }
+
+
+    result[:date] = Date.parse(result[:date]) if result[:date]
+    if result[:time]
+      result[:morning] = (result[:time]=="morning")
+      result.delete(:time)
+    end
+    result
   end
 
   private
+
 
   def jsonically
     response['Content-Type'] = 'application/json'
