@@ -26,7 +26,10 @@ class Controller < Sinatra::Base
     jsonically do 
       typing_as 'animals' do
         animals = Animal.all.sort { | a, b | a.name <=> b.name }
-        animals.collect { | a | {'name'=>a.name, 'kind' => a.kind } }
+        names = animals.collect { | a | a.name }
+        map = {}
+        animals.each { | a | map[a.name] = a.kind }
+        [names, map]
       end
     end
   end

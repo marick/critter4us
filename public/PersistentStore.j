@@ -35,7 +35,7 @@
   id network;
 }
 
-- (CPArray) allAnimalNames
+- (CPArray) allAnimalInfo
 {
   return [self valueForKey: 'animals' atRoute: AllAnimalsRoute];
 }

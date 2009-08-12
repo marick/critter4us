@@ -19,7 +19,8 @@
 {
   [scenario 
    beforeAwakening: function() {
-      [self animals: ["Betical", "order", "alpha"]];
+      [self someAnimalsAreStored: [["cc", "B", "aaa"],
+		      {"cc":"ckind","B":"bkind","aaa":"akind"}]];
     }
     whileAwakening: function() {
       [self tableWillLoadData];
@@ -27,7 +28,7 @@
       [self controlsWillBeMadeHidden];
     }
     andTherefore: function() {
-      [self animalTableWillContainNames: ["alpha", "Betical", "order"]];
+      [self animalTableWillContainNames: ["aaa (akind)", "B (bkind)", "cc (ckind)"]];
       [self animalTableWillHaveCorrespondingChecks: [NO, NO, NO]];
     }];
 }
@@ -35,7 +36,10 @@
 
 - (void)testChoosingACourseSession
 {
-  [scenario 
+  [scenario
+   given: function() {
+      [self someAnimalsAreStored];
+    }
    during: function() {
       [self sendNotification: CourseSessionDescribedNews];
     }
@@ -50,7 +54,8 @@
 {
   [scenario
    given: function() { 
-      [self animals: ["fred", "betty", "dave"]];
+      [self someAnimalsAreStored: [["fred", "betty", "dave"],
+                                  {"fred":"cow","betty":"irrelevant","dave":"horse"}]];
     }
    sequence: function() { 
 	[self notifyOfExclusions: { 'veniculture': ['fred'],
@@ -59,7 +64,7 @@
 	[self notifyOfChosenProcedures: ['veniculture', 'physical exam']];
     }
   means: function() {
-      [self animalTableWillContainNames: ["dave"]];
+      [self animalTableWillContainNames: ["dave (horse)"]];
       [self animalTableWillHaveCorrespondingChecks: [NO]];
     }];
 }
@@ -68,13 +73,15 @@
 {
   [scenario
    given: function() { 
-      [self animals: ["alpha",  "delta", "betty"]];
+      [self someAnimalsAreStored: [["alpha",  "delta", "betty"],
+                                   {"alpha":"akind", "delta":"dkind", "betty":"bkind"}]
+       ];
     }
   sequence: function() { 
       [self selectAnimal: "betty"];
     }
   means: function() {
-      [self animalTableWillContainNames: ["alpha", "betty", "delta"]];
+      [self animalTableWillContainNames: ["alpha (akind)", "betty (bkind)", "delta (dkind)"]];
       [self animalTableWillHaveCorrespondingChecks: [NO, YES, NO]];
     }];
 }
@@ -83,14 +90,15 @@
 {
   [scenario
    given: function() { 
-      [self animals: ["alpha",  "delta", "betty"]];
+      [self someAnimalsAreStored: [["alpha",  "delta", "betty"],
+                                   {"alpha":"akind", "delta":"dkind", "betty":"bkind"}]];
       [self alreadySelected: ["betty"]];
     }
   sequence: function() { 
       [self selectAnimal: "alpha"];
     }
   means: function() {
-      [self animalTableWillContainNames: ["alpha", "betty", "delta"]];
+      [self animalTableWillContainNames: ["alpha (akind)", "betty (bkind)", "delta (dkind)"]];
       [self animalTableWillHaveCorrespondingChecks: [YES, YES, NO]];
     }];
 }
@@ -100,20 +108,21 @@
 {
   [scenario
    given: function() { 
-      [self animals: ["alpha",  "delta", "betty"]];
+      [self someAnimalsAreStored: [["alpha",  "delta", "betty"],
+                                   {"alpha":"akind", "delta":"dkind", "betty":"bkind"}]];
       [self usingExclusions: { 'veniculture': ['alpha'],
 	                       'physical exam': ['betty'],
                                'floating':['delta']}];
       [self alreadySelected: ["betty", "delta"]];
     }
   sequence: function() { 
-      [self animalTableWillContainNames: ["alpha", "betty", "delta"]];
+      [self animalTableWillContainNames: ["alpha (akind)", "betty (bkind)", "delta (dkind)"]];
       [self animalTableWillHaveCorrespondingChecks: [NO, YES, YES]];
       [self notifyOfChosenProcedures: ['veniculture', 'physical exam']];
 
     }
   means: function() {
-      [self animalTableWillContainNames: ["delta"]];
+      [self animalTableWillContainNames: ["delta (dkind)"]];
       [self animalTableWillHaveCorrespondingChecks: [YES]];
     }];
 }
@@ -123,7 +132,8 @@
   var dict = [CPMutableDictionary dictionary];
   [scenario
    given: function() { 
-      [self animals: ["alpha",  "delta", "betty"]];
+      [self someAnimalsAreStored: [["alpha",  "delta", "betty"],
+                                   {"alpha":"akind", "delta":"dkind", "betty":"bkind"}]];
       [self alreadySelected: ["betty", "delta"]];
     }
   sequence: function() { 
@@ -131,7 +141,8 @@
 
     }
   means: function() {
-      [self assert: ["betty", "delta"] equals: [dict objectForKey: "animals"]];
+      [self assert: ["betty", "delta"]
+            equals: [dict objectForKey: "animals"]];
     }];
 }
 
@@ -161,9 +172,14 @@
 
 
 
--(void) animals: anArray
+-(void) someAnimalsAreStored: anArray
 {
-  [sut.persistentStore shouldReceive: @selector(allAnimalNames) andReturn: anArray];
+  [sut.persistentStore shouldReceive: @selector(allAnimalInfo) andReturn: anArray];
+}
+
+-(void) someAnimalsAreStored
+{
+  [self someAnimalsAreStored: [['betsy'], {'betsy' : 'bovine'}]];
 }
 
 -(void) tableWillLoadData

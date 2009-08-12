@@ -12,6 +12,7 @@
   CPArray availableAnimals;
   CPMutableDictionary isChosen;
   CPDictionary exclusions;
+  id nameToKind;
 }
 
 - (void)awakeFromCib
@@ -19,7 +20,9 @@
   if (awakened) return;
   [super awakeFromCib];
 
-  allAnimals = [persistentStore allAnimalNames];
+  var result = [persistentStore allAnimalInfo];
+  allAnimals = result[0];
+  nameToKind = result[1];
 
   [self allAnimalsAreAvailable];
   [self noAnimalsAreChosen]
@@ -165,7 +168,7 @@
   name = availableAnimals[rowIndex];
   if (column == nameColumn)
     {
-      return name;
+      return name + ' (' + nameToKind[name] + ')';
     }
   else
     {

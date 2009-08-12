@@ -27,8 +27,6 @@ end
 class Animal < Sequel::Model
   one_to_many :uses
 
-  def self.names; map(:name); end
-
   # self description / testing
 
   def self.random(overrides = {})

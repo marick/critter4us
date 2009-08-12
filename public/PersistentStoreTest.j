@@ -17,14 +17,15 @@
 {
   [scenario
    during: function() {
-      return [sut allAnimalNames];
+      return [sut allAnimalInfo];
    }
   behold: function() {
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
        with: jsonURI(AllAnimalsRoute)
-       andReturn: '{"animals":["betsy"]}'];
+           andReturn: '{"animals":[["betsy"],{"betsy":"cow"}]}']
     }]
-  [self assert: ['betsy'] equals: scenario.result];
+  [self assert: ['betsy'] equals: scenario.result[0]];
+  [self assert: 'cow' equals: scenario.result[1]['betsy']];
 }
 
 - (void)testFetchesProcedureNamesIntoArray

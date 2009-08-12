@@ -53,11 +53,11 @@ class JsonGenerationTests < Test::Unit::TestCase
   end
 
   context "delivering all animals" do
-    should "return a JSON list of name/kind hashes" do
+    should "return a JSON list of names, together with name-to-kind hash" do
       Animal.random(:name => 'bossie', :kind => 'bovine');
       get '/json/all_animals'
       assert_json_response
-      assert_jsonification_of({'animals' => [ {'name' => 'bossie', 'kind' => 'bovine'}]})
+      assert_jsonification_of({'animals' => [ ['bossie'], {'bossie' => 'bovine'}]})
     end
 
     should "also sort the list" do
@@ -67,10 +67,8 @@ class JsonGenerationTests < Test::Unit::TestCase
       Animal.random(:name => 'betsy', :kind => 'bovine')
       get '/json/all_animals'
       assert_jsonification_of({'animals' => [
-                          {'name' => 'betsy', 'kind' => 'bovine'},
-                          {'name' => 'bossie', 'kind' => 'bovine'},
-                          {'name' => 'hank', 'kind' => 'horse'},
-                          {'name' => 'wilbur', 'kind' => 'horse'}]})
+              ['betsy', 'bossie', 'hank', 'wilbur'],
+              {'betsy' => 'bovine', 'bossie' => 'bovine','hank' => 'horse', 'wilbur' => 'horse'}]})
     end
   end
 

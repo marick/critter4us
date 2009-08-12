@@ -6,13 +6,6 @@ class ModelTests < Test::Unit::TestCase
     empty_tables
   end
 
-  context "animals" do
-    should "collectively be able to return their names" do
-      Animal.random_with_names('c', 'b', 'a')
-      assert { Animal.names.sort == ['a', 'b', 'c'] }
-    end
-  end
-
   context "procedures" do 
     should "collectively be able to return their names" do
       Procedure.random_with_names('c', 'a', 'b')
