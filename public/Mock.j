@@ -173,9 +173,11 @@
 - (void)forwardInvocation:(CPInvocation)anInvocation
 {
   var selector = [anInvocation selector];
+  // CPLog(selector);
   var matchingMethod = [expectationDictionary objectForKey: selector];
   if (matchingMethod)
     {
+      //      CPLog("a matching method in dictionary" + [expectationDictionary description]);
       [anInvocation setReturnValue: [matchingMethod returnValue]];
       [actualities addObject: anInvocation];
     }
@@ -183,12 +185,14 @@
     {
       var variable = [self setterToVariable: selector];
       var value = [anInvocation argumentAtIndex: 2];
+      // CPLog("Mock storing " + value + " for " + variable);
       [storedValues setValue: value forKey: variable];
     }
   else if ([self isExpectedGetter: selector])
     {
       var variable = CPStringFromSelector(selector);
       var retval = [storedValues objectForKey: variable];
+      // CPLog("Mock returning " + retval + " for " + variable);
       [anInvocation setReturnValue: retval];
     }
   else if (failOnUnexpectedSelector)
@@ -210,6 +214,7 @@
 -(BOOL) isSetter: selector
 {
   var stringVersion = CPStringFromSelector(selector);
+  // CPLog([self description] + " checking if " + stringVersion + " is a setter");
   var len = [stringVersion length];
 
   var prefix = [stringVersion substringWithRange:CPMakeRange(0,3)];
@@ -219,8 +224,14 @@
 
 -(BOOL) isExpectedGetter: selector
 {
+  // Doesn't handle "isFoo" yet.
   var stringVersion = CPStringFromSelector(selector);
-  return [storedValues objectForKey: stringVersion];
+  // CPLog("is " + stringVersion + "a getter in " );
+  // CPLog([storedValues description]);
+  if ([storedValues objectForKey: stringVersion] != nil) return YES;
+
+  return NO;
+  return [storedValues objectForKey: stringVersion] != nil;
 }
 
 
