@@ -1,6 +1,6 @@
 require 'erector'
 
-class ReservationDescription < Erector::Widget
+class ReservationView < Erector::Widget
 
   def name_list(names)
     ul do
