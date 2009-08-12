@@ -32,6 +32,32 @@
     }];
 }
 
+
+- (void)testCanFlipToInformativeButImmutableDisplay
+{
+  [scenario 
+   given: function() {
+      [self userBeginsWithSomeValues];
+      [sut.buildingView setHidden: NO];
+      [sut.finishedView setHidden: YES];
+    }
+  during: function() {
+      [sut displaySelectedSession];
+    }
+  behold: function() {
+      [sut.summaryField shouldReceive: @selector(setStringValue:) 
+       with: function(value) {
+	  [self assertTrue: value.match("some instructor.*some course.*morning.*some date")
+	   message: "Expected '" + value + "' to have informative content."];
+	  return YES;
+	}];
+    }
+  andTherefore: function() {
+      [self assertTrue: [sut.buildingView hidden]];
+      [self assertFalse: [sut.finishedView hidden]];
+    }];
+}
+
 - (void)testClickingButtonNotifiesListenersOfEvent
 {
   [scenario 
@@ -42,27 +68,6 @@
       [self listenersWillReceiveNotification: CourseSessionDescribedNews];
     }
    ];
-}
-
-- (void)testClickingButtonChangesTheDisplayToMakeItInformativeYetImmutable
-{
-  [scenario 
-   given: function() {
-      [self userBeginsWithSomeValues];
-    }
-  during: function() {
-      [sut sessionReady: sut.okButton];
-    }
-  behold: function() {
-      [sut.buildingView shouldReceive: @selector(setHidden:) with:YES];
-      [sut.finishedView shouldReceive: @selector(setHidden:) with:NO];
-      [sut.summaryField shouldReceive: @selector(setStringValue:) 
-       with: function(value) {
-	  [self assertTrue: value.match("some instructor.*some course.*morning.*some date")
-	   message: "Expected '" + value + "' to have informative content."];
-	  return YES;
-	}];
-    }];
 }
 
 

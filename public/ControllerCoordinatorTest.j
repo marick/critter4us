@@ -67,7 +67,6 @@
     }];
 }
 
-
 -(void) testTellsResultControllerToOfferLinkToNewReservation
 {
   [scenario
@@ -81,6 +80,20 @@
       [sut.resultController shouldReceive: @selector(offerReservationView:)
        with: "reservation-identifier"];
       [sut.resultController shouldReceive: @selector(showViews)];
+    }];
+}
+
+-(void) testChangesDisplayWhenCourseSessionIsIdentified
+{
+  [scenario
+   during: function() {
+      [self sendNotification: CourseSessionDescribedNews];
+    }
+   behold: function() {
+      [sut.courseSessionController shouldReceive: @selector(displaySelectedSession)];
+      [sut.animalController shouldReceive: @selector(showViews)];
+      [sut.procedureController shouldReceive: @selector(showViews)];
+      [sut.reservationController shouldReceive: @selector(showViews)];
     }];
 }
 

@@ -28,12 +28,18 @@
 
   [NotificationCenter
    addObserver: self
+   selector: @selector(switchToAnimalChoosing:)
+   name: CourseSessionDescribedNews
+   object: nil];
+
+  [NotificationCenter
+   addObserver: self
    selector: @selector(makeReservation:)
    name: ReservationRequestedNews
    object: nil];
 }
 
-- (void) makeReservation: (CPButton) sender
+- (void) makeReservation: (CPNotification) ignored
 {
   var dict = [CPMutableDictionary dictionary];
   [courseSessionController spillIt: dict];
@@ -46,5 +52,12 @@
   [resultController showViews];
 }
 
+- (void) switchToAnimalChoosing: (CPNotification) ignored
+{
+  [courseSessionController displaySelectedSession];
+  [animalController showViews];
+  [procedureController showViews];
+  [reservationController showViews];
+}
 
 @end

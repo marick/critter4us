@@ -10,7 +10,6 @@
 
 - (void) makeReservation: (CPButton) sender
 {
-  alert("click!")
   [NotificationCenter postNotificationName: ReservationRequestedNews
                                     object: nil];
 }

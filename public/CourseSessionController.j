@@ -15,22 +15,26 @@
     CPTextField summaryField;
 }
 
-- (void) setUpNotifications
-{
-  [NotificationCenter addObserver:self
-                         selector:@selector(courseSessionRequested:)
-                             name:NeedForSessionDataNews
-                           object:nil];
-}
-
-
 - (void)makeViewsAcceptData
 {
   [buildingView setHidden:NO];
   [finishedView setHidden:YES];
 }
 
+- (void)displaySelectedSession
+{
+  [buildingView setHidden:YES];
+  [finishedView setHidden:NO];
 
+  var date = [dateField stringValue];
+  var time = [self deduceTime];
+
+  var instructor = [instructorField stringValue];
+  var course = [courseField stringValue];
+
+  var summaryText = [CPString stringWithFormat: "%s needs animals for %s on the %s of %s.", instructor, course, [time description], date];
+  [summaryField setStringValue: summaryText];
+}
 
 - (void)sessionReady:(id)sender
 {
@@ -40,18 +44,12 @@
   var date = [dateField stringValue];
   var time = [self deduceTime];
 
-  var exclusions = [persistentStore exclusionsForDate: date time: time];
-  [NotificationCenter postNotificationName:SessionExclusionsNews
-                                    object:exclusions];
-
   var instructor = [instructorField stringValue];
   var course = [courseField stringValue];
 
-  var summaryText = [CPString stringWithFormat: "%s needs animals for %s on the %s of %s.", instructor, course, [time description], date];
-  [summaryField setStringValue: summaryText];
-				 
-  [buildingView setHidden:YES];
-  [finishedView setHidden:NO];
+  var exclusions = [persistentStore exclusionsForDate: date time: time];
+  [NotificationCenter postNotificationName:SessionExclusionsNews
+                                    object:exclusions];
 
 }
 
