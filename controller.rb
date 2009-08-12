@@ -25,7 +25,8 @@ class Controller < Sinatra::Base
   get '/json/all_animals' do
     jsonically do 
       typing_as 'animals' do
-        Animal.names.sort
+        animals = Animal.all.sort { | a, b | a.name <=> b.name }
+        animals.collect { | a | {'name'=>a.name, 'kind' => a.kind } }
       end
     end
   end
