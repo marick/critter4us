@@ -96,7 +96,10 @@
   var key;
   while (key = [enumerator nextObject])
     {
-      jsData[key] = [[dict valueForKey: key] description];
+      if ([[dict valueForKey: key] isMemberOfClass: CPArray])
+	jsData[key] = [dict valueForKey: key];
+      else
+	jsData[key] = [[dict valueForKey: key] description];
     }
   return jsData;
 }

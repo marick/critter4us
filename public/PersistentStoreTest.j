@@ -93,11 +93,13 @@
   [dict setValue: "string" forKey: "string"];
   [dict setValue: 1 forKey:"number"];
   [dict setValue: [Time afternoon] forKey: "time"];
+  [dict setValue: ["animal", "also"] forKey: "animals"];
   
   var js = [sut dictionaryToJS: dict];
   [self assert: "string" equals: js['string']];
   [self assert: "1" equals: js['number']];
   [self assert: "afternoon" equals: js['time']];
+  [self assert: ["animal", "also"] equals: js['animals']];
 }
 
 @end
