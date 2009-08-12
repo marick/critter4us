@@ -1,7 +1,8 @@
-def create(klass, *names)
-  names.collect do | name |
-    klass.create(:name => name)
-  end
+require 'admin/tables'
+
+def DB.populate  # syntactic sugar
+  yield
 end
 
 
+  
