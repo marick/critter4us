@@ -1,34 +1,127 @@
 require 'config'
+require 'pp'
 
 class Procedure  < Sequel::Model
   one_to_many :uses
 
   def self.names; map(:name); end
+
+  # self description / testing
+
+  def self.random(overrides = {})
+    defaults = {
+      :name => 'procedure',
+      :days_delay => 3
+    }
+    create(defaults.merge(overrides));
+  end
+
+  def self.random_with_names(*names)
+    names.each do | name | 
+      random(:name => name)
+    end
+  end
+
 end
 
 class Animal < Sequel::Model
   one_to_many :uses
 
   def self.names; map(:name); end
+
+  # self description / testing
+
+  def self.random(overrides = {})
+    defaults = {
+      :name => 'bossy',
+      :kind => 'bovine'
+    }
+    create(defaults.merge(overrides));
+  end
+
+  def self.random_with_names(*names)
+    names.each do | name | 
+      random(:name => name)
+    end
+  end
 end
 
 class Reservation < Sequel::Model
-  one_to_many :uses
+  class ReservationStructureBuilder
 
-  def self.create_with_uses(date, in_morning, procedures, animals, method=:find_or_create)
-    reservation = Reservation.create(:date => date, :morning => in_morning)
-    procedures.each do | procedure | 
-      animals.each do | animal |
-        Use.create(:procedure => Procedure.send(method, :name => procedure),
-                   :animal => Animal.send(method, :name => animal),
-                   :reservation => reservation)
+    attr_reader :reservation
+
+    def self.build_from(data)
+      new(data).reservation
+    end
+
+    def initialize(data)
+      reservation_part = partition_reservation_data(data)
+      @reservation = Reservation.create(reservation_part)
+      cross_product_of_procedures_and_animals
+    end
+
+    private
+
+    def cross_product_of_procedures_and_animals
+      @procedure_names.each do | procedure_name | 
+        @animal_names.each do | animal_name |
+          build_use(procedure_name, animal_name)
+        end
       end
     end
-    reservation
+
+    def partition_reservation_data(data)
+      data = data.dup
+      @procedure_names = data.delete(:procedures)
+      @animal_names = data.delete(:animals)
+      data
+    end
+
+    def build_use(procedure_name, animal_name)
+      procedure = Procedure[:name => procedure_name]
+      animal = Animal[:name => animal_name]
+      Use.create(:procedure => procedure,
+                 :animal => animal,
+                 :reservation => @reservation)
+    end
+  end
+
+  one_to_many :uses
+
+  def self.create_with_uses(data)
+    ReservationStructureBuilder.build_from(data)
   end
 
   def animal_names; x_names(:animal); end
   def procedure_names; x_names(:procedure); end
+
+
+  # Self-description and test
+
+  def self.random(overrides = {}, &block)
+    defaults = {
+      :date => Date.new(2009, 7, 23),
+      :course => 'vm333',
+      :instructor => 'morin',
+      :morning => true
+    }
+    class_eval(&block) if block # Create animals or procedures
+    
+    reservation = create(defaults.merge(overrides))
+    Use.create(:reservation => reservation, 
+               :animal => @animal_created_in_block,
+               :procedure => @procedure_created_in_block)
+    reservation
+  end
+
+  def self.use(thing)
+    if thing.is_a?(Animal)
+      @animal_created_in_block = thing
+    else
+      @procedure_created_in_block = thing
+    end
+  end
 
   private
 
@@ -37,7 +130,6 @@ class Reservation < Sequel::Model
       use.send(x).name
     }.uniq.sort
   end
-
 end
 
 class Use < Sequel::Model
@@ -59,8 +151,9 @@ class ExclusionMap
     query = DB[:expanded_uses].
       filter(:days_delay => 0).
       filter(:reservation_morning => in_morning).
-      select(:procedure_name, :animal_name)
-    # puts query.all.inspect
+      select(:procedure_name, :animal_name, :reservation_morning)
+    #puts query.sql
+    #puts query.all.inspect
     query.all
   end
 
