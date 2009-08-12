@@ -1,7 +1,4 @@
 require 'test/testutil/requires'
-require 'test/testutil/config'
-require 'test/testutil/dbhelpers'
-require 'admin/tables'
 require 'model'
 
 class Date
@@ -66,9 +63,9 @@ class ExclusionMapTests < Test::Unit::TestCase
   end
 
   def prior_reservation(delay, date, time)
-    @animal = Animal.create(:name => "bossie")
-    @procedure = Procedure.create(:name => 'only', :days_delay => delay)
-    @reservation = Reservation.create(:date => Date.new(2009, 12, date),
+    @animal = Animal.random(:name => "bossie")
+    @procedure = Procedure.random(:name => 'only', :days_delay => delay)
+    @reservation = Reservation.random(:date => Date.new(2009, 12, date),
                                       :morning => (time == :morning))
     @use = Use.create(:animal => @animal, :procedure => @procedure, :reservation => @reservation)
     # puts "all uses:"
@@ -95,22 +92,22 @@ class ExclusionMapTests < Test::Unit::TestCase
   end
 
   should "produce no exclusions if no uses" do
-    Procedure.create(:name => 'only', :days_delay => 14)
+    Procedure.random(:name => 'only', :days_delay => 14)
     map = ExclusionMap.new(Date.new(2009, 7, 23), true)
     assert { map.to_hash == { 'only' => [] } }
   end
 
   should "work with a typical example" do
-    venipuncture = Procedure.create(:name => 'venipuncture', :days_delay => 7)
-    physical_exam = Procedure.create(:name => 'physical exam', :days_delay => 1)
+    venipuncture = Procedure.random(:name => 'venipuncture', :days_delay => 7)
+    physical_exam = Procedure.random(:name => 'physical exam', :days_delay => 1)
     
-    veinie = Animal.create(:name => 'veinie')
-    bossie = Animal.create(:name => 'bossie')
-    staggers = Animal.create(:name => 'staggers')
+    veinie = Animal.random(:name => 'veinie')
+    bossie = Animal.random(:name => 'bossie')
+    staggers = Animal.random(:name => 'staggers')
 
-    eight31 = Reservation.create(:date => Date.new(2009, 8, 31)) # Previous Monday
-    nine1 = Reservation.create(:date => Date.new(2009, 9, 1))  # Previous Tuesday
-    nine7 = Reservation.create(:date => Date.new(2009, 9, 7))  # Today, Monday
+    eight31 = Reservation.random(:date => Date.new(2009, 8, 31)) # Previous Monday
+    nine1 = Reservation.random(:date => Date.new(2009, 9, 1))  # Previous Tuesday
+    nine7 = Reservation.random(:date => Date.new(2009, 9, 7))  # Today, Monday
 
     Use.create(:animal => bossie, :procedure => venipuncture,
                :reservation => eight31);
