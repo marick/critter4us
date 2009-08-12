@@ -18,26 +18,6 @@
 }
 
 
--(void)testCanHideViews
-{
-  [scenario
-   given: function() {
-      [sut.unchosenProcedureTable setHidden: YES];
-      [sut.chosenProcedureTable setHidden: YES];
-    }
-  sequence: function() {
-      [sut hideViews];
-    }
-  means: function() {
-      [self assertTrue: [sut.unchosenProcedureTable hidden]];
-      [self assertTrue: [sut.chosenProcedureTable hidden]];
-    }];
-}
-
-
-  // REVIEW BELOW
-
-
 - (void)testInitialAppearance
 {
   [scenario
