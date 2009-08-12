@@ -6,6 +6,7 @@
 @import "AnimalInterfaceController.j"
 @import "ReservationController.j"
 @import "ResultController.j"
+@import "ControllerCoordinator.j"
 @import "CheckboxHacks.j"
 
 @implementation FakeMainWindowCib : CPObject
@@ -31,10 +32,6 @@
   var animalController = [self loadAndConnectAnimalInterfaceController];
   var reservationController = [self loadAndConnectReservationController];
 
-  reservationController.courseSessionController = courseSessionController;
-  reservationController.procedureController = procedureController;
-  reservationController.animalController = animalController;
-
   var resultController = [self loadAndConnectResultController];
 
   var controllerCoordinator = [self loadAndConnectControllerCoordinator];
@@ -43,6 +40,7 @@
   controllerCoordinator.animalController = animalController;
   controllerCoordinator.reservationController = reservationController;
   controllerCoordinator.resultController = resultController;
+  controllerCoordinator.persistentStore = persistentStore;
 
   [self awakenAllObjects];
   [theWindow orderFront:self];
@@ -289,7 +287,6 @@
   [reserveButton setAction: @selector(makeReservation:)];
   [contentView addSubview:reserveButton];
 
-  reservationController.persistentStore = persistentStore;
   reservationController.containingView = contentView;
   reservationController.button = reserveButton;
 
@@ -313,6 +310,13 @@
 
   [customObjectsLoaded addObject: resultController];
   return resultController;
+}
+
+-(id) loadAndConnectControllerCoordinator
+{
+  var coordinator = [[ControllerCoordinator alloc] init];
+  [customObjectsLoaded addObject: coordinator];
+  return coordinator;
 }
 
 - (void) awakenAllObjects

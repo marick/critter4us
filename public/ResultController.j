@@ -7,28 +7,22 @@
   CPView containingView;
 }
 
-- (void) awakeFromCib
+// TODO: switch superclass so these are available
+- (void) hideViews
 {
-  if (awakened) return;
-  [super awakeFromCib];
-
   [containingView setHidden:YES];
 }
 
-- (void) setUpNotifications
-{
-  [NotificationCenter
-   addObserver: self
-   selector: @selector(activateLink:)
-   name: NewReservationNews
-   object: nil];
-}
-
-- (void) activateLink: aNotification
+- (void) showViews
 {
   [containingView setHidden:NO];
-  var number = [aNotification object];
-  var href = "/reservation/" + number;
+}
+
+
+
+- (void) offerReservationView: id
+{
+  var href = "/reservation/" + id;
   var message = "Click to view the reservation in a new window.";
   [link loadHTMLString:@"<a href='" + href + "' target=\"_blank\">" + message + "</a>"
                baseURL: nil];

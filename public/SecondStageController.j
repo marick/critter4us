@@ -21,9 +21,19 @@
    object: nil];
 }
 
-- (void) becomeAvailable: aNotification
+- (void) hideViews
+{
+  [containingView setHidden:YES];
+}
+
+- (void) showViews
 {
   [containingView setHidden:NO];
+}
+
+- (void) becomeAvailable: aNotification
+{
+  [self showViews];
 }
 
 @end

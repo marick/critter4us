@@ -29,4 +29,19 @@
 }
 
 
+-(void)testCanShowViews
+ {
+  [scenario
+   given: function() {
+      [sut.containingView setHidden: NO];
+    }
+  sequence: function() {
+      [sut showViews];
+    }
+  means: function() {
+      [self assertFalse: [sut.containingView hidden]];
+    }];
+}
+
+
 @end	

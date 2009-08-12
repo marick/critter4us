@@ -7,6 +7,7 @@ NewReservationNews = "new reservation";
 SessionExclusionsNews = "exclusions";
 NeedForSessionDataNews = "need session data";
 ProcedureUpdateNews = "procedures chosen";
+ReservationRequestedNews = "reservation requested";
 
 
 // Route names

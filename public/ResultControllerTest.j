@@ -12,26 +12,16 @@
   [scenario sutHasUpwardCollaborators: ['link', 'containingView']];
 }
 
-
--(void) testInitialAppearance
+-(void)testOfferingOfNewReservation
 {
   [scenario
-   whileAwakening: function() {
-      [self controlsWillBeMadeHidden];
-    }];
-}
-
--(void)testReceiptOfResult
-{
-  [scenario
-   during: function() {
-      [self sendNotification: NewReservationNews withObject:"YOW!"];
+   sequence: function() {
+      [sut offerReservationView: '33'];
     }
-  behold: function() {
-      [self controlsWillBeMadeVisible];
+  means: function() {
       [sut.link shouldReceive: @selector(loadHTMLString:baseURL:)
        with: [function(arg) {
-	    return arg.match(/\/reservation\/YOW!/)
+	    return arg.match(/\/reservation\/33/)
 	  }, function(x) { return YES }] // TODO: Make this any "any".
        ]; 
     }  

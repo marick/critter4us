@@ -17,6 +17,12 @@
   return self;
 }
 
+-(void) sequence: sequence means: consequence
+{
+  given = nothing = function() { }
+  [self given: given during: sequence behold: nothing andTherefore: consequence];
+}
+
 -(void) given: given sequence: sequence means: consequence
 {
   nothing = function() { }
