@@ -1,5 +1,6 @@
 @import "AnimalInterfaceController.j"
 @import "ScenarioTestCase.j"
+@import "Time.j"
 
 @implementation AnimalInterfaceControllerTest : ScenarioTestCase
 {
@@ -18,7 +19,7 @@
 -(void) testInitialAppearance
 {
   [scenario 
-   beforeAwakening: function() {
+   beforeApp: function() {
       [self someAnimalsAreStored: [["cc", "B", "aaa"],
 		      {"cc":"ckind","B":"bkind","aaa":"akind"}]];
     }
@@ -27,43 +28,48 @@
       //
       [self controlsWillBeMadeHidden];
     }
-    andTherefore: function() {
+    andSo: function() {
       [self animalTableWillContainNames: ["aaa (akind)", "B (bkind)", "cc (ckind)"]];
       [self animalTableWillHaveCorrespondingChecks: [NO, NO, NO]];
     }];
 }
 
 
-- (void)testChoosingACourseSession
+
+-(void) testWhatItMeansToLoadExclusions
 {
   [scenario
-   given: function() {
+   beforeApp: function() {
       [self someAnimalsAreStored];
     }
    during: function() {
-      [self sendNotification: CourseSessionDescribedNews];
+      [sut loadExclusionsForDate: '2009-08-12' time: [Time afternoon]];
     }
   behold: function() {
-      [self controlsWillBeMadeVisible];
+      [sut.persistentStore shouldReceive: @selector(exclusionsForDate:time:)
+       with: ['2009-08-12', [Time afternoon]]];
     }
    ];
 }
-
  
+
 - (void)testExcludingAnimalsBecauseOfChosenProcedures
 {
   [scenario
-   given: function() { 
+   beforeApp: function() { 
       [self someAnimalsAreStored: [["fred", "betty", "dave"],
                                   {"fred":"cow","betty":"irrelevant","dave":"horse"}]];
-    }
-   sequence: function() { 
-	[self notifyOfExclusions: { 'veniculture': ['fred'],
+      [self someExclusionsApply: { 'veniculture': ['fred'],
                                     'physical exam': ['betty'],
                                      'floating':['dave']}];
-	[self notifyOfChosenProcedures: ['veniculture', 'physical exam']];
     }
-  means: function() {
+  previousAction: function() {
+      [sut loadExclusionsForDate: '2009-08-12' time: [Time afternoon]];
+    }
+  testAction: function() { 
+      [self notifyOfChosenProcedures: ['veniculture', 'physical exam']];
+    }
+  andSo: function() {
       [self animalTableWillContainNames: ["dave (horse)"]];
       [self animalTableWillHaveCorrespondingChecks: [NO]];
     }];
@@ -72,15 +78,15 @@
 - (void) testChoosingAnAnimal
 {
   [scenario
-   given: function() { 
+   beforeApp: function() { 
       [self someAnimalsAreStored: [["alpha",  "delta", "betty"],
                                    {"alpha":"akind", "delta":"dkind", "betty":"bkind"}]
        ];
     }
-  sequence: function() { 
+  testAction: function() { 
       [self selectAnimal: "betty"];
     }
-  means: function() {
+  andSo: function() {
       [self animalTableWillContainNames: ["alpha (akind)", "betty (bkind)", "delta (dkind)"]];
       [self animalTableWillHaveCorrespondingChecks: [NO, YES, NO]];
     }];
@@ -89,15 +95,17 @@
 - (void) testChoosingTwoAnimalsAccumulates
 {
   [scenario
-   given: function() { 
+   beforeApp: function() { 
       [self someAnimalsAreStored: [["alpha",  "delta", "betty"],
                                    {"alpha":"akind", "delta":"dkind", "betty":"bkind"}]];
+    }
+  previousAction: function() {
       [self alreadySelected: ["betty"]];
     }
-  sequence: function() { 
+  testAction: function() { 
       [self selectAnimal: "alpha"];
     }
-  means: function() {
+  andSo: function() {
       [self animalTableWillContainNames: ["alpha (akind)", "betty (bkind)", "delta (dkind)"]];
       [self animalTableWillHaveCorrespondingChecks: [YES, YES, NO]];
     }];
@@ -107,21 +115,24 @@
 - (void) testChoosingAnimalsThenAProcedureThatExcludesOne
 {
   [scenario
-   given: function() { 
+   beforeApp: function() { 
       [self someAnimalsAreStored: [["alpha",  "delta", "betty"],
                                    {"alpha":"akind", "delta":"dkind", "betty":"bkind"}]];
-      [self usingExclusions: { 'veniculture': ['alpha'],
-	                       'physical exam': ['betty'],
-                               'floating':['delta']}];
-      [self alreadySelected: ["betty", "delta"]];
+      [self someExclusionsApply: { 'veniculture': ['alpha'],
+	                           'physical exam': ['betty'],
+                                   'floating':['delta']}];
     }
-  sequence: function() { 
+  previousAction: function() {
+      [sut loadExclusionsForDate: '2009-08-12' time: [Time afternoon]];
+      [self alreadySelected: ["betty", "delta"]];
       [self animalTableWillContainNames: ["alpha (akind)", "betty (bkind)", "delta (dkind)"]];
       [self animalTableWillHaveCorrespondingChecks: [NO, YES, YES]];
+    }
+  testAction: function() { 
       [self notifyOfChosenProcedures: ['veniculture', 'physical exam']];
 
     }
-  means: function() {
+  andSo: function() {
       [self animalTableWillContainNames: ["delta (dkind)"]];
       [self animalTableWillHaveCorrespondingChecks: [YES]];
     }];
@@ -131,20 +142,26 @@
 {
   var dict = [CPMutableDictionary dictionary];
   [scenario
-   given: function() { 
+   beforeApp: function() { 
       [self someAnimalsAreStored: [["alpha",  "delta", "betty"],
                                    {"alpha":"akind", "delta":"dkind", "betty":"bkind"}]];
+    }
+  previousAction: function() {
       [self alreadySelected: ["betty", "delta"]];
     }
-  sequence: function() { 
+  testAction: function() { 
       [sut spillIt: dict];
 
     }
-  means: function() {
+  andSo: function() {
       [self assert: ["betty", "delta"]
             equals: [dict objectForKey: "animals"]];
     }];
 }
+
+
+
+
 
 
 -(void) selectAnimal: aName
@@ -182,6 +199,13 @@
   [self someAnimalsAreStored: [['betsy'], {'betsy' : 'bovine'}]];
 }
 
+-(void) someExclusionsApply: jsHash
+{
+  retval = [CPDictionary dictionaryWithJSObject: jsHash recursively: YES];
+  [sut.persistentStore shouldReceive: @selector(exclusionsForDate:time:)
+   andReturn: retval];
+}
+
 -(void) tableWillLoadData
 {
   [sut.table shouldReceive: @selector(reloadData)];
@@ -203,17 +227,6 @@
         willContain: anArray];
 }
 
-- (void) notifyOfExclusions: (id)aJSHash
-{
-  dict = [CPDictionary dictionaryWithJSObject: aJSHash recursively: YES];
-  [self sendNotification:@"exclusions" withObject: dict];
-}
-
-- (void) usingExclusions: (id)aJSHash
-{
-  [sut awakeFromCib];
-  [self notifyOfExclusions: aJSHash];
-}
 
 
 @end	

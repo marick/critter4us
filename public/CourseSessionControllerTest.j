@@ -70,28 +70,6 @@
    ];
 }
 
-
-
-- (void)testClickingButtonCausesExclusionsToBeRetrievedAndNotified
-{
-  [scenario
-   given: function() {
-      [sut.morningButton setState: CPOnState];
-      [sut.dateField setStringValue: @"some date"];
-    }
-   during: function() {
-      [sut sessionReady: sut.okButton];
-    }
-  behold: function() {
-      [sut.persistentStore shouldReceive: @selector(exclusionsForDate:time:)
-  	                            with: [@"some date", [Time morning]]
-                               andReturn: @"some exclusions"];
-      [self listenersWillReceiveNotification: "exclusions"
-                            containingObject: "some exclusions"];
-    }
-   ];
-}
-
 -(void)testCanSpillSessionData
 {
   var dict = [CPMutableDictionary dictionary];

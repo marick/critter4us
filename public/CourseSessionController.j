@@ -40,17 +40,6 @@
 {
   [NotificationCenter postNotificationName:CourseSessionDescribedNews
                                     object:nil];
-
-  var date = [dateField stringValue];
-  var time = [self deduceTime];
-
-  var instructor = [instructorField stringValue];
-  var course = [courseField stringValue];
-
-  var exclusions = [persistentStore exclusionsForDate: date time: time];
-  [NotificationCenter postNotificationName:SessionExclusionsNews
-                                    object:exclusions];
-
 }
 
 - (id) deduceTime

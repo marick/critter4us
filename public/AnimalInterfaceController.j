@@ -52,21 +52,15 @@
 
   [NotificationCenter
    addObserver: self
-   selector: @selector(newExclusions:)
-   name: SessionExclusionsNews
-   object: nil];
-
-  [NotificationCenter
-   addObserver: self
    selector: @selector(proceduresChosen:)
    name: ProcedureUpdateNews
    object: nil];
 }
 
 
-- (void) newExclusions: aNotification
+- (void) loadExclusionsForDate: date time: time
 {
-  exclusions = [aNotification object];
+  exclusions = [persistentStore exclusionsForDate: date time: time];
 }
 
 - (void) proceduresChosen: aNotification

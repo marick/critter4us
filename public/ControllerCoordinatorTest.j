@@ -98,4 +98,17 @@
 }
 
 
+-(void) testInstructsAnimalControllerToLoadExclusionsWhenSessionChosen
+{
+  [scenario
+   during: function() {
+      [self sendNotification: CourseSessionDescribedNews];
+    }
+   behold: function() {
+      [sut.courseSessionController shouldReceive: @selector(spillIt:)];
+      [sut.animalController shouldReceive: @selector(loadExclusionsForDate:time:)]
+    }];
+}
+
+
 @end

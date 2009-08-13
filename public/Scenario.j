@@ -1,3 +1,6 @@
+var Skip = function() {}
+
+
 @implementation Scenario : CPObject
 {
   OJTestCase test;
@@ -16,6 +19,90 @@
   randomListener = [[Mock alloc] initWithName: "any old listener"];
   return self;
 }
+
+// NEW FAVORED NAMES
+
+   // Having to do with awakeFromNib
+
+-(void)       beforeApp: beforeApp
+         whileAwakening: mockSettings
+	          andSo: consequence
+{
+  beforeApp();
+  mockSettings();
+  [test.sut awakeFromCib];
+  [self checkAllExpectations];
+  consequence();
+}
+
+   // Having to do with rest of app
+
+
+-(void)    beforeApp: beforeApp        // most specific version
+      previousAction: previousAction
+          testAction: testAction
+              behold: behold 
+               andSo: consequence
+{
+  beforeApp();
+  if (! sut.awakened) [sut awakeFromCib];
+  previousAction();
+  behold();
+  result = testAction();
+  [self checkAllExpectations];
+  consequence();
+}
+
+                                      // 4 keywords
+
+
+-(void)     beforeApp: beforeApp
+       previousAction: previousAction
+           testAction: testAction
+	        andSo: consequence
+{
+  [self      beforeApp: beforeApp
+        previousAction: previousAction
+            testAction: testAction
+		behold: Skip
+    	         andSo: consequence];
+}
+
+                                      // 3 keywords
+
+
+
+-(void)     beforeApp: beforeApp
+               during: during
+	       behold: behold 
+{
+  [self       beforeApp: beforeApp
+         previousAction: Skip
+             testAction: during
+	         behold: behold
+          	  andSo: Skip];
+}
+
+
+-(void)      beforeApp: beforeApp
+            testAction: testAction
+	         andSo: consequence
+{
+  [self      beforeApp: beforeApp
+        previousAction: Skip
+            testAction: testAction
+		behold: Skip
+    	         andSo: consequence];
+}
+
+
+
+// OLD FAVORED NAMES
+
+
+
+
+
 
 -(void) sequence: sequence means: consequence
 {

@@ -55,6 +55,12 @@
 - (void) switchToAnimalChoosing: (CPNotification) ignored
 {
   [courseSessionController displaySelectedSession];
+
+  var dict = [CPMutableDictionary dictionary];
+  [courseSessionController spillIt: dict];
+  [animalController loadExclusionsForDate: [dict valueForKey: 'date']
+                                     time: [dict valueForKey: 'time']];
+
   [animalController showViews];
   [procedureController showViews];
   [reservationController showViews];
