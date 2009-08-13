@@ -297,7 +297,7 @@
 -(id) loadAndConnectResultController
 {
   var resultController = [[ResultController alloc] init];
-  var contentView = [[CPView alloc] initWithFrame: CGRectMake(600,50,400,50)];
+  var contentView = [[CPView alloc] initWithFrame: CGRectMake(100,250,400,50)];
   [contentView setHidden:YES];
   [[theWindow contentView] addSubview: contentView];
   resultController.containingView = contentView;
