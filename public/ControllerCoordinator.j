@@ -45,6 +45,31 @@
    object: nil];
 }
 
+- (void) switchToAnimalChoosing: (CPNotification) ignored
+{
+  [courseSessionController displaySelectedSession];
+
+  var dict = [CPMutableDictionary dictionary];
+  [courseSessionController spillIt: dict];
+  [animalController loadExclusionsForDate: [dict valueForKey: 'date']
+                                     time: [dict valueForKey: 'time']];
+
+  [animalController unchooseAllAnimals];
+  [animalController showViews];
+
+  [procedureController unchooseAllProcedures];
+  [procedureController showViews];
+
+  [reservationController showViews];
+  [resultController hideViews];
+}
+
+- (void) chosenProceduresChanged: aNotification
+{
+  var procedures = [aNotification object];
+  [animalController offerAnimalsForProcedures: procedures];
+}
+
 - (void) makeReservation: (CPNotification) ignored
 {
   var dict = [CPMutableDictionary dictionary];
@@ -56,26 +81,13 @@
   
   [resultController offerReservationView: reservationID];
   [resultController showViews];
+
+  [courseSessionController makeViewsAcceptData];
+  [animalController hideViews];
+  [procedureController hideViews];
+  [reservationController hideViews];
 }
 
-- (void) switchToAnimalChoosing: (CPNotification) ignored
-{
-  [courseSessionController displaySelectedSession];
 
-  var dict = [CPMutableDictionary dictionary];
-  [courseSessionController spillIt: dict];
-  [animalController loadExclusionsForDate: [dict valueForKey: 'date']
-                                     time: [dict valueForKey: 'time']];
-
-  [animalController showViews];
-  [procedureController showViews];
-  [reservationController showViews];
-}
-
-- (void) chosenProceduresChanged: aNotification
-{
-  var procedures = [aNotification object];
-  [animalController offerAnimalsForProcedures: procedures];
-}
 
 @end

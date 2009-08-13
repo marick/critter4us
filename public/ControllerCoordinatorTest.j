@@ -26,6 +26,63 @@
     }];
 }
 
+
+-(void) testChangesDisplayWhenCourseSessionIsIdentified
+{
+  [scenario
+   during: function() {
+      [self sendNotification: CourseSessionDescribedNews];
+    }
+   behold: function() {
+      [sut.courseSessionController shouldReceive: @selector(displaySelectedSession)];
+      [sut.animalController shouldReceive: @selector(showViews)];
+      [sut.procedureController shouldReceive: @selector(showViews)];
+      [sut.reservationController shouldReceive: @selector(showViews)];
+      [sut.resultController shouldReceive: @selector(hideViews)];
+    }];
+}
+
+-(void) testInstructsControllersToMakeSureNoDataLeftFromLastSession
+{
+  [scenario
+   during: function() {
+      [self sendNotification: CourseSessionDescribedNews];
+    }
+   behold: function() {
+      // 
+      [sut.procedureController shouldReceive: @selector(unchooseAllProcedures)];
+      [sut.animalController shouldReceive: @selector(unchooseAllAnimals)];
+    }
+   ];
+}
+
+
+-(void) testInstructsAnimalControllerToLoadExclusionsWhenSessionChosen
+{
+  [scenario
+   during: function() {
+      [self sendNotification: CourseSessionDescribedNews];
+    }
+   behold: function() {
+      [sut.courseSessionController shouldReceive: @selector(spillIt:)];
+      [sut.animalController shouldReceive: @selector(loadExclusionsForDate:time:)]
+    }];
+}
+
+- (void) testMakesAnimalControllerWhenProceduresChosenAreUpdated
+{
+  [scenario
+   during: function() {
+      [self sendNotification: ProcedureUpdateNews
+       withObject: ["a", "b"]];
+    }
+   behold: function() {
+      [sut.animalController shouldReceive: @selector(offerAnimalsForProcedures:)
+       with: [["a", "b"]]]
+    }];
+}
+
+
 -(void) testCollectsReservationDataAndSendsToPersistentStore
 {
   [scenario
@@ -83,45 +140,20 @@
     }];
 }
 
--(void) testChangesDisplayWhenCourseSessionIsIdentified
+-(void) testInstructsControllersToPrepareForNewCourseSession
 {
   [scenario
    during: function() {
-      [self sendNotification: CourseSessionDescribedNews];
+      [self sendNotification: ReservationRequestedNews];
     }
    behold: function() {
-      [sut.courseSessionController shouldReceive: @selector(displaySelectedSession)];
-      [sut.animalController shouldReceive: @selector(showViews)];
-      [sut.procedureController shouldReceive: @selector(showViews)];
-      [sut.reservationController shouldReceive: @selector(showViews)];
+      // 
+      [sut.courseSessionController shouldReceive: @selector(makeViewsAcceptData)];
+      [sut.animalController shouldReceive: @selector(hideViews)];
+      [sut.procedureController shouldReceive: @selector(hideViews)];
+      [sut.reservationController shouldReceive: @selector(hideViews)];
+
     }];
 }
-
-
--(void) testInstructsAnimalControllerToLoadExclusionsWhenSessionChosen
-{
-  [scenario
-   during: function() {
-      [self sendNotification: CourseSessionDescribedNews];
-    }
-   behold: function() {
-      [sut.courseSessionController shouldReceive: @selector(spillIt:)];
-      [sut.animalController shouldReceive: @selector(loadExclusionsForDate:time:)]
-    }];
-}
-
-- (void) testMakesAnimalControllerWhenProceduresChosenAreUpdated
-{
-  [scenario
-   during: function() {
-      [self sendNotification: ProcedureUpdateNews
-       withObject: ["a", "b"]];
-    }
-   behold: function() {
-      [sut.animalController shouldReceive: @selector(offerAnimalsForProcedures:)
-       with: [["a", "b"]]]
-    }];
-}
-
 
 @end

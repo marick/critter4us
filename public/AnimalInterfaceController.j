@@ -136,20 +136,34 @@
     }
 }
 
+- (void) unchooseAllAnimals
+{
+  for (var i=0; i<[availableAnimals count]; i++)
+    {
+      var name = availableAnimals[i];
+      if ([isChosen valueForKey: name])
+	{
+	  [self toggleAnimalAtIndex: i];
+	}
+    }
+  [self updateEveryoneWhoCaresAboutChange];
+}
+
 - (void) toggleAnimal: (CPTable) sender
 {
   [self toggleAnimalAtIndex: [sender clickedRow]];
+  [self updateEveryoneWhoCaresAboutChange];
 }
 
 - (void) toggleAnimalAtIndex: index
 {
   var name = availableAnimals[index];
   [isChosen setValue: (![isChosen valueForKey: name]) forKey: name];
-  [self updateEveryoneWhoCaresAboutChange];
 }
 
 - (void) updateEveryoneWhoCaresAboutChange
 {
+  [table deselectAll: self];
   [table reloadData];
 }
 

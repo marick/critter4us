@@ -58,7 +58,7 @@
     }];
 }
 
-- (void)testClickingButtonNotifiesListenersOfEvent
+- (void)testClickingSessionReadyButtonNotifiesListenersOfEvent
 {
   [scenario 
    during: function() {

@@ -17,7 +17,7 @@
 
   unchosenProcedures = [persistentStore allProcedureNames];
   [unchosenProcedures sortUsingSelector: @selector(caseInsensitiveCompare:)];
-  chosenProcedures = [CPArray array];
+  chosenProcedures = [];
 
   [unchosenProcedureTable reloadData];
   [chosenProcedureTable reloadData];
@@ -60,6 +60,17 @@
   [self updateEveryoneWhoCaresAboutMovement];
 }
 
+- (void) unchooseAllProcedures
+{
+  while([chosenProcedures count] > 0) 
+    {
+      [self moveProcedureAtIndex: 0
+                            from: chosenProcedures 
+                              to: unchosenProcedures];
+    }
+  [self updateEveryoneWhoCaresAboutMovement];
+}
+
 
 
 - (void) moveProcedureAtIndex: index from: fromArray to: toArray
@@ -84,4 +95,5 @@
 {
   [dict setValue: chosenProcedures forKey: 'procedures'];
 }
+
 @end

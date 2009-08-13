@@ -83,8 +83,11 @@
                                    {"alpha":"akind", "delta":"dkind", "betty":"bkind"}]
        ];
     }
-  testAction: function() { 
+  during: function() { 
       [self selectAnimal: "betty"];
+    }
+  behold: function() {
+      [sut.table shouldReceive: @selector(deselectAll:)];
     }
   andSo: function() {
       [self animalTableWillContainNames: ["alpha (akind)", "betty (bkind)", "delta (dkind)"]];
@@ -135,6 +138,29 @@
   andSo: function() {
       [self animalTableWillContainNames: ["delta (dkind)"]];
       [self animalTableWillHaveCorrespondingChecks: [YES]];
+    }];
+}
+
+- (void) testUnchoosingAllAnimals
+{
+  [scenario
+   beforeApp: function() { 
+      [self someAnimalsAreStored: [["alpha",  "delta"],
+                                   {"alpha":"akind", "delta":"dkind"}]];
+    }
+  previousAction: function() {
+      [self alreadySelected: ["alpha", "delta"]];
+    }
+  during: function() { 
+      [sut unchooseAllAnimals];
+
+    }
+  behold: function() {
+      [sut.table shouldReceive: @selector(reloadData)];
+    }
+  andSo: function() {
+      [self animalTableWillContainNames: ['alpha (akind)', 'delta (dkind)']];
+      [self animalTableWillHaveCorrespondingChecks: [NO, NO]];
     }];
 }
 

@@ -57,7 +57,7 @@
       [self selectProcedure: "chosen"];
     }
   behold: function() {
-      [self listenersWillReceiveNotification: @"procedures chosen"
+      [self listenersWillReceiveNotification: ProcedureUpdateNews
             containingObject: [@"chosen"]];
       [self tablesWillReloadData];
     }
@@ -79,7 +79,7 @@
       [self putBackProcedure: "Betical"];
     }
   behold: function() {
-      [self listenersWillReceiveNotification: @"procedures chosen"
+      [self listenersWillReceiveNotification: ProcedureUpdateNews
             containingObject: []];
       [self tablesWillReloadData];
     }
@@ -88,6 +88,33 @@
       [self chosenProcedureTableWillContain: []];
     }
    ];
+}
+
+- (void) testCanUnchooseAllProcedures
+{
+  [scenario
+   beforeApp: function() {
+      [self procedures: ["chosen", "unchosen"]];
+    }
+  previousAction: function() {
+      sut.unchosenProcedures = [];
+      sut.chosenProcedures = ['unchosen', 'chosen'];
+    }
+  during: function() {
+      [sut unchooseAllProcedures];
+    }
+  behold: function() {
+      [sut.unchosenProcedureTable shouldReceive:@selector(reloadData)];
+      [sut.chosenProcedureTable shouldReceive:@selector(reloadData)];
+      [self listenersWillReceiveNotification: ProcedureUpdateNews
+            containingObject: []];
+    }
+  andSo: function() {
+      [self unchosenProcedureTableWillContain: ["chosen", "unchosen"]];
+      [self chosenProcedureTableWillContain: []];
+    }
+   ];
+  
 }
 
 
@@ -144,6 +171,8 @@
   [sut chooseProcedure: sut.unchosenProcedureTable];
 }
 
+
+				    
 
 - (void) putBackProcedure: (CPString) aName
 {
