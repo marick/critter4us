@@ -53,6 +53,22 @@ var Skip = function() {}
   consequence();
 }
 
+// synonym
+-(void)    beforeApp: beforeApp        // most specific version
+      previousAction: previousAction
+          during: testAction
+              behold: behold 
+               andSo: consequence
+{
+  [self      beforeApp: beforeApp
+        previousAction: previousAction
+            testAction: testAction
+		behold: behold
+    	         andSo: consequence];
+}
+
+
+
                                       // 4 keywords
 
 
@@ -65,6 +81,30 @@ var Skip = function() {}
         previousAction: previousAction
             testAction: testAction
 		behold: Skip
+    	         andSo: consequence];
+}
+
+-(void)      beforeApp: beforeApp
+        previousAction: previousAction
+                during: testAction
+	        behold: behold
+{
+  [self      beforeApp: beforeApp
+        previousAction: previousAction
+            testAction: testAction
+		behold: behold
+    	         andSo: Skip];
+}
+
+-(void)      beforeApp: beforeApp
+                during: testAction
+	        behold: behold
+  		 andSo: consequence
+{
+  [self      beforeApp: beforeApp
+        previousAction: Skip
+                during: testAction
+		behold: behold
     	         andSo: consequence];
 }
 
@@ -83,17 +123,28 @@ var Skip = function() {}
           	  andSo: Skip];
 }
 
-
--(void)      beforeApp: beforeApp
-            testAction: testAction
-	         andSo: consequence
+-(void)     beforeApp: beforeApp
+           testAction: during
+	        andSo: consequence
 {
-  [self      beforeApp: beforeApp
-        previousAction: Skip
-            testAction: testAction
-		behold: Skip
-    	         andSo: consequence];
+  [self       beforeApp: beforeApp
+         previousAction: Skip
+             testAction: during
+	         behold: Skip
+          	  andSo: consequence];
 }
+
+-(void)        during: during
+	       behold: behold
+	        andSo: consequence 
+{
+  [self       beforeApp: Skip
+         previousAction: Skip
+             testAction: during
+	         behold: behold
+          	  andSo: consequence];
+}
+
 
 
 
