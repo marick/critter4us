@@ -110,5 +110,18 @@
     }];
 }
 
+- (void) testMakesAnimalControllerWhenProceduresChosenAreUpdated
+{
+  [scenario
+   during: function() {
+      [self sendNotification: ProcedureUpdateNews
+       withObject: ["a", "b"]];
+    }
+   behold: function() {
+      [sut.animalController shouldReceive: @selector(offerAnimalsForProcedures:)
+       with: [["a", "b"]]]
+    }];
+}
+
 
 @end

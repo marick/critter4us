@@ -30,6 +30,68 @@
   [table reloadData];
 }
 
+
+// Coordinator methods
+
+- (void) loadExclusionsForDate: date time: time
+{
+  exclusions = [persistentStore exclusionsForDate: date time: time];
+}
+
+- (void) offerAnimalsForProcedures: (CPArray) procedures
+{
+  [self allAnimalsAreAvailable];
+  [self removeAnimalsExcludedByProcedures: procedures];
+
+
+  oldIsChosen = [CPMutableDictionary dictionaryWithDictionary: isChosen];
+  [self noAnimalsAreChosen];
+  [self chooseAnimalsAlreadyChosenIn: oldIsChosen];
+
+  [table reloadData];
+}
+
+- (void) spillIt: (CPMutableDictionary) dict
+{
+  [dict setValue: [self chosenAnimals] forKey: 'animals'];
+}
+
+
+// Table methods
+
+- (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView
+{
+  return [availableAnimals count];
+}
+
+- (id)tableView:(CPTableView)aTableView objectValueForTableColumn: (CPTableColumn)column row:(CPInteger)rowIndex
+{
+  name = availableAnimals[rowIndex];
+  if (column == nameColumn)
+    {
+      return name + ' (' + nameToKind[name] + ')';
+    }
+  else
+    {
+      return [isChosen valueForKey: name];
+    }
+}
+
+- (void) tableView: table setObjectValue: value forTableColumn: aColumn row: rowIndex
+{
+  alert("Will do nothing");
+}
+
+- (void)tableView:(CPTableView)aTableView willDisplayCell:(id)aCell forTableColumn:(CPTableColumn)aTableColumn row:(id)rowIndex
+{
+  // TODO: Not implemented in cappuccino yet.
+}
+
+
+
+
+// Util
+
 - (void)allAnimalsAreAvailable
 {
   availableAnimals = [CPArray arrayWithArray: allAnimals];
@@ -43,38 +105,6 @@
     {
       [isChosen setValue: NO forKey: availableAnimals[i]];
     }
-}
-
-
-- (void) setUpNotifications
-{
-  [super setUpNotifications];
-
-  [NotificationCenter
-   addObserver: self
-   selector: @selector(proceduresChosen:)
-   name: ProcedureUpdateNews
-   object: nil];
-}
-
-
-- (void) loadExclusionsForDate: date time: time
-{
-  exclusions = [persistentStore exclusionsForDate: date time: time];
-}
-
-- (void) proceduresChosen: aNotification
-{
-  var procedures = [aNotification object];
-  [self allAnimalsAreAvailable];
-  [self removeAnimalsExcludedByProcedures: procedures];
-
-
-  oldIsChosen = [CPMutableDictionary dictionaryWithDictionary: isChosen];
-  [self noAnimalsAreChosen];
-  [self chooseAnimalsAlreadyChosenIn: oldIsChosen];
-
-  [table reloadData];
 }
 
 - (void) removeAnimalsExcludedByProcedures: procedures
@@ -139,40 +169,6 @@
     }
   [retval sortUsingSelector: @selector(caseInsensitiveCompare:)];
   return retval;
-}
-
-- (void) spillIt: (CPMutableDictionary) dict
-{
-  [dict setValue: [self chosenAnimals] forKey: 'animals'];
-}
-
-
-- (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView
-{
-  return [availableAnimals count];
-}
-
-- (void)tableView:(CPTableView)aTableView willDisplayCell:(id)aCell forTableColumn:(CPTableColumn)aTableColumn row:(id)rowIndex
-{
-  // TODO: Not implemented in cappuccino yet.
-}
-
-- (id)tableView:(CPTableView)aTableView objectValueForTableColumn: (CPTableColumn)column row:(CPInteger)rowIndex
-{
-  name = availableAnimals[rowIndex];
-  if (column == nameColumn)
-    {
-      return name + ' (' + nameToKind[name] + ')';
-    }
-  else
-    {
-      return [isChosen valueForKey: name];
-    }
-}
-
-- (void) tableView: table setObjectValue: value forTableColumn: aColumn row: rowIndex
-{
-  alert("Will do nothing");
 }
 
 

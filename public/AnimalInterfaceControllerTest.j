@@ -129,7 +129,7 @@
       [self animalTableWillHaveCorrespondingChecks: [NO, YES, YES]];
     }
   testAction: function() { 
-      [self offerAnimalsForProcedures: ['veniculture', 'physical exam']];
+      [sut offerAnimalsForProcedures: ['veniculture', 'physical exam']];
 
     }
   andSo: function() {

@@ -37,6 +37,12 @@
    selector: @selector(makeReservation:)
    name: ReservationRequestedNews
    object: nil];
+
+  [NotificationCenter
+   addObserver: self
+   selector: @selector(chosenProceduresChanged:)
+   name: ProcedureUpdateNews
+   object: nil];
 }
 
 - (void) makeReservation: (CPNotification) ignored
@@ -64,6 +70,12 @@
   [animalController showViews];
   [procedureController showViews];
   [reservationController showViews];
+}
+
+- (void) chosenProceduresChanged: aNotification
+{
+  var procedures = [aNotification object];
+  [animalController offerAnimalsForProcedures: procedures];
 }
 
 @end
