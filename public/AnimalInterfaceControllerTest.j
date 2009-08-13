@@ -67,7 +67,7 @@
       [sut loadExclusionsForDate: '2009-08-12' time: [Time afternoon]];
     }
   testAction: function() { 
-      [self notifyOfChosenProcedures: ['veniculture', 'physical exam']];
+      [sut offerAnimalsForProcedures: ['veniculture', 'physical exam']];
     }
   andSo: function() {
       [self animalTableWillContainNames: ["dave (horse)"]];
@@ -129,7 +129,7 @@
       [self animalTableWillHaveCorrespondingChecks: [NO, YES, YES]];
     }
   testAction: function() { 
-      [self notifyOfChosenProcedures: ['veniculture', 'physical exam']];
+      [self offerAnimalsForProcedures: ['veniculture', 'physical exam']];
 
     }
   andSo: function() {
