@@ -15,3 +15,7 @@ task :db_create do
      require 'config'
      require "admin/create.rb"
 end
+
+task :deploy do 
+     `git push heroku`
+end
