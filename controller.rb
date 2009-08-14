@@ -9,6 +9,7 @@ class Controller < Sinatra::Base
 
   set :static, true
   set :root, File.dirname(__FILE__)
+  enable :raise_errors
 
   get '/' do
     File.read(File.join(options.public, 'index.html'))
