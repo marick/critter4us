@@ -7,5 +7,5 @@
 # application as FastCGI, CGI, or standalone with Mongrel or WEBrick -- all from
 # the same configuration.
 
-require File.expand_path('path-setting', File.dirname(__FILE__))
+# require File.expand_path('path-setting', File.dirname(__FILE__))
 require File.expand_path('app', File.dirname(__FILE__))
