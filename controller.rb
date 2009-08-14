@@ -19,7 +19,7 @@ class Controller < Sinatra::Base
   end
 
   get '/log' do
-    erector { text DB.inspect } 
+    erector { text DB[:animals].all.inspect } 
   end
 
   get '/json/procedures' do
