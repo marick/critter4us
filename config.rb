@@ -11,7 +11,6 @@ DB = Sequel.postgres("critter4us-test", :host => 'localhost', :user => 'postgres
 end
 
 Sinatra::Base.configure :development do 
-  Site = "http://localhost:7000"
   DB = Sequel.postgres("critter4us", :host => 'localhost', :user => 'postgres', :password => 'c0wm4gnet')
   
 #  DB = Sequel.mysql("critter4us", :host=>'localhost',
@@ -20,5 +19,4 @@ end
 
 Sinatra::Base.configure :production do 
   DB = Sequel.connect(ENV['DATABASE_URL'])
-  Site = "http://critter4us.heroku.com"
 end
