@@ -84,6 +84,7 @@ Animal.create(:name => 'genesis', :kind => 'equine gelding')
 Animal.create(:name => 'sunny', :kind => 'equine mare')
 Animal.create(:name => 'pumpkin', :kind => 'equine mare')
 
+puts Animal.all.inspect
 
 exit
 
