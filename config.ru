@@ -8,6 +8,6 @@
 # the same configuration.
 
 require File.expand_path('path-setting', File.dirname(__FILE__))
-require "hello"
-run Sinatra::Application
-# require File.expand_path('app', File.dirname(__FILE__))
+#require "hello"
+#run Sinatra::Application
+require File.expand_path('app', File.dirname(__FILE__))
