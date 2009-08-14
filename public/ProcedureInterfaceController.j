@@ -12,13 +12,10 @@
 
 - (void)awakeFromCib
 {
-  alert("procedure awaken");
   if (awakened) return;
   [super awakeFromCib];
 
-  alert("from superclass");
   unchosenProcedures = [persistentStore allProcedureNames];
-  alert("got: " + [unchosenProcedures description]);
   [unchosenProcedures sortUsingSelector: @selector(caseInsensitiveCompare:)];
   chosenProcedures = [];
 

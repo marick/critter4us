@@ -21,7 +21,7 @@
 - (void)testInitialAppearance
 {
   [scenario
-   beforeAwakening: function() {
+   beforeApp: function() {
       [self procedures: ["B", "a", "c"]];
     }
   whileAwakening: function() {
@@ -29,7 +29,7 @@
       // although
       [self controlsWillBeMadeHidden];
     }
-  andTherefore: function() {
+  andSo: function() {
       [self unchosenProcedureTableWillContain: ["a", "B", "c"]];
       [self chosenProcedureTableWillContain: []];
     }
@@ -50,7 +50,8 @@
 
 - (void)testChoosingAProcedure
 {
-  [scenario given: function() {
+  [scenario
+   beforeApp: function() {
       [self procedures: ["chosen", "unchosen"]];
     }
   during: function() {
@@ -61,7 +62,7 @@
             containingObject: [@"chosen"]];
       [self tablesWillReloadData];
     }
-  andTherefore: function() {
+  andSo: function() {
       [self unchosenProcedureTableWillContain: ["unchosen"]];
       [self chosenProcedureTableWillContain: ["chosen"]];
     }
@@ -72,6 +73,9 @@
 - (void)testPutBackAProcedure
 {
   [scenario
+   beforeApp: function() { 
+      [self procedures: ["alpha", "Betical", "order"]];
+    }
    previousAction: function() {
       [self procedure: "Betical"
             hasBeenSelectedFrom: ["alpha", "Betical", "order"]];
