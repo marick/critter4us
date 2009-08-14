@@ -12,7 +12,6 @@ end
 Sinatra::Base.configure :production do 
 =end
   require 'hello'
-  Sinatra::Application.run!
 =begin
 end
 =end
