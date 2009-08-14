@@ -20,7 +20,6 @@ StoreReservationRoute = @"store_reservation";
 NotificationCenter = [CPNotificationCenter defaultCenter];
 
 // URI
-Site = "http://localhost:7000"
 
 jsonURI = function(route)
 {
