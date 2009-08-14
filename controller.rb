@@ -19,7 +19,7 @@ class Controller < Sinatra::Base
     jsonically do 
       typing_as 'procedures' do
         $stderr.puts "In procedures"
-        $stderr.puts DB.inspect
+        raise "DB.inspect"
         Procedure.names.sort
       end
     end
