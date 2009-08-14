@@ -71,7 +71,8 @@
 
 - (void)testPutBackAProcedure
 {
-  [scenario given: function() {
+  [scenario
+   previousAction: function() {
       [self procedure: "Betical"
             hasBeenSelectedFrom: ["alpha", "Betical", "order"]];
     }
@@ -83,7 +84,7 @@
             containingObject: []];
       [self tablesWillReloadData];
     }
-  andTherefore: function() {
+  andSo: function() {
       [self unchosenProcedureTableWillContain: ["alpha", "Betical", "order"]];
       [self chosenProcedureTableWillContain: []];
     }
