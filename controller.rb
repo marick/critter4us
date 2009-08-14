@@ -5,6 +5,9 @@ require 'model'
 require 'view'
 require 'pp'
 
+require 'erector'
+include Erector::Mixin
+
 class Controller < Sinatra::Base
 
   set :static, true
@@ -15,11 +18,13 @@ class Controller < Sinatra::Base
     File.read(File.join(options.public, 'index.html'))
   end
 
+  get '/log' do
+    erector { text DB.inspect } 
+  end
+
   get '/json/procedures' do
     jsonically do 
       typing_as 'procedures' do
-        $stderr.puts "In procedures"
-        raise "DB.inspect"
         Procedure.names.sort
       end
     end
