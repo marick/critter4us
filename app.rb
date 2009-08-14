@@ -1,3 +1,4 @@
+=begin
 require 'rubygems'
 require File.expand_path('path-setting', File.dirname(__FILE__))
 
@@ -9,6 +10,9 @@ Sinatra::Base.configure :development do
 end
 
 Sinatra::Base.configure :production do 
+=end
   require 'hello'
   run Sinatra::Application
+=begin
 end
+=end
