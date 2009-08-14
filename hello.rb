@@ -1,5 +1,7 @@
-require 'sinatra'
+require 'sinatra/base'
 
-get '/' do
-  "hello"
+class Controller < Sinatra::Base
+  get '/' do
+    "hello"
+  end
 end
