@@ -108,6 +108,18 @@ var Skip = function() {}
     	         andSo: consequence];
 }
 
+-(void) previousAction: previousAction
+                during: testAction
+	        behold: behold
+  		 andSo: consequence
+{
+  [self      beforeApp: Skip
+        previousAction: previousAction
+                during: testAction
+		behold: behold
+    	         andSo: consequence];
+}
+
                                       // 3 keywords
 
 
@@ -145,7 +157,17 @@ var Skip = function() {}
           	  andSo: consequence];
 }
 
+                                      // 3 keywords
 
+-(void)          during: during
+                 behold: behold 
+{
+  [self       beforeApp: Skip
+         previousAction: Skip
+                 during: during
+		 behold: behold
+	          andSo: Skip];
+}
 
 
 // OLD FAVORED NAMES
@@ -174,11 +196,6 @@ var Skip = function() {}
 }
 
 
--(void) during: during behold: behold 
-{
-  nothing = function() {}
-  [self given: nothing during: during behold: behold andTherefore: nothing];
-}
 
 -(void) given: given during: during behold: behold 
 {
