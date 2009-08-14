@@ -8,4 +8,5 @@
 # the same configuration.
 
 # require File.expand_path('path-setting', File.dirname(__FILE__))
-require File.expand_path('app', File.dirname(__FILE__))
+require "hello"
+# require File.expand_path('app', File.dirname(__FILE__))
