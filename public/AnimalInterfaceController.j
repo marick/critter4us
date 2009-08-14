@@ -20,9 +20,7 @@
   if (awakened) return;
   [super awakeFromCib];
 
-  alert("will try to get animal info")
   var result = [persistentStore allAnimalInfo];
-  alert("got animal info")
   allAnimals = result[0];
   nameToKind = result[1];
 
