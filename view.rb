@@ -10,6 +10,14 @@ class ReservationView < Erector::Widget
     end
   end
 
+  def time_of_day
+    if @reservation.morning
+      "morning"
+    else
+      "afternoon"
+    end
+  end
+
   def content
     html do 
       head do
@@ -17,7 +25,11 @@ class ReservationView < Erector::Widget
       end
       body do
         p do
-          text "Reservation for #{@reservation.date}"
+          text "Reservation for the #{time_of_day} of #{@reservation.date},"
+          text " made by "
+          a "#{@reservation.instructor}@illinois.edu",
+            :href=>"mailto:#{@reservation.instructor}@illinois.edu"
+          text " for #{@reservation.course}."
         end
         p do
           text "These animals are reserved:"
