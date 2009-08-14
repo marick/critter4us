@@ -11,8 +11,7 @@ class Controller < Sinatra::Base
   set :root, File.dirname(__FILE__)
 
   get '/' do
-    "hello"
-    # File.read(File.join(options.public, 'index.html'))
+    File.read(File.join(options.public, 'index.html'))
   end
 
   get '/json/procedures' do
