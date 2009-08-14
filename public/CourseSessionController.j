@@ -32,7 +32,7 @@
   var instructor = [instructorField stringValue];
   var course = [courseField stringValue];
 
-  var summaryText = [CPString stringWithFormat: "%s needs animals for %s on the %s of %s.", instructor, course, [time description], date];
+  var summaryText = [CPString stringWithFormat: "%s@illinois.edu needs animals for %s on the %s of %s.", instructor, course, [time description], date];
   [summaryField setStringValue: summaryText];
 }
 
