@@ -23,16 +23,12 @@
 
 - (void)load
 {
-  alert("Load");
   customObjectsLoaded = [[CPArray alloc] init];
 
   [self loadGlobalPersistentStore];
   [self loadAndConnectWindowController];
-  alert("course");
   var courseSessionController = [self loadAndConnectCourseSessionController];
-  alert("procedure");
   var procedureController = [self loadAndConnectProcedureInterfaceController];
-  alert("animal");
   var animalController = [self loadAndConnectAnimalInterfaceController];
   var reservationController = [self loadAndConnectReservationController];
 
