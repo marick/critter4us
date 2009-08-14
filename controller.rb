@@ -19,13 +19,17 @@ class Controller < Sinatra::Base
   end
 
   get '/log' do
-    erector { text DB[:animals].all.inspect } 
+    erector { text $last_result.inspect } 
+  end
+
+  get '/last_json' do
+    erector { text $last_json.inspect } 
   end
 
   get '/json/procedures' do
     jsonically do 
       typing_as 'procedures' do
-        Procedure.names.sort
+        $last_result = Procedure.names.sort
       end
     end
   end
@@ -84,7 +88,7 @@ class Controller < Sinatra::Base
 
   def jsonically
     response['Content-Type'] = 'application/json'
-    yield.to_json
+    $last_json = yield.to_json
   end
 
   def typing_as(type)
