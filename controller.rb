@@ -8,11 +8,13 @@ require 'pp'
 require 'erector'
 include Erector::Mixin
 
-class Controller < Sinatra::Base
+class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
 
   set :static, true
   set :root, File.dirname(__FILE__)
   enable :raise_errors
+
+  attr_accessor :test_view_builder
 
   get '/' do
     File.read(File.join(options.public, 'index.html'))
@@ -62,6 +64,10 @@ class Controller < Sinatra::Base
     ReservationView.new(:reservation => Reservation[number]).to_s
   end
 
+  get '/reservations' do 
+    view(ReservationListView).new(:reservations => Reservation.all).to_s
+  end
+
   def move_to_internal_format(hash)
     result = {}
     hash.each { | k, v | result[k.to_sym] = v }
@@ -77,6 +83,9 @@ class Controller < Sinatra::Base
 
   private
 
+  def view(klass)
+    (test_view_builder || klass)
+  end
 
   def jsonically
     response['Content-Type'] = 'application/json'

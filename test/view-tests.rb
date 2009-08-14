@@ -30,5 +30,18 @@ class ViewTests < Test::Unit::TestCase
       assert { actual.include?(expected_course) }
     end
   end
+
+  context "reservation list display" do
+    should "sort reservations" do
+      earlier = Reservation.create(:date => Date.new(2008, 8, 8))
+      afternoon = Reservation.create(:date => Date.new(2009, 9, 9),
+                                   :morning => false)
+      morning = Reservation.create(:date => Date.new(2009, 9, 9),
+                                   :morning => true)
+
+      view = ReservationListView.new(:reservations => [afternoon, morning, earlier])
+      assert { [earlier, morning, afternoon] == view.sorted_reservations }
+    end
+  end
 end
 

@@ -1,5 +1,32 @@
 require 'erector'
 
+class ReservationListView < Erector::Widget
+  def content
+    html do 
+      head do
+        title 'All Reservations'
+      end
+      body do
+        text 'hi'
+      end
+    end
+  end
+
+  def sorted_reservations
+    @reservations.sort { |a, b|
+      if a.date != b.date
+        a.date <=> b.date
+      elsif a.morning == b.morning
+        0
+      elsif a.morning
+        -1
+      else
+        1
+      end
+    }
+  end
+end
+
 class ReservationView < Erector::Widget
 
   def name_list(names)
