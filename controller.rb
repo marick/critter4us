@@ -17,8 +17,8 @@ class Controller < Sinatra::Base
   get '/json/procedures' do
     jsonically do 
       typing_as 'procedures' do
-        puts "In procedures"
-        puts Procedure.names
+        $stderr.puts "In procedures"
+        $stderr.puts DB.inspect
         Procedure.names.sort
       end
     end
