@@ -15,3 +15,7 @@ Sinatra::Base.configure :development do
 #  DB = Sequel.mysql("critter4us", :host=>'localhost',
 #                    :user=>'root', :password=>'')
 end
+
+Sinatra::Base.configure :production do 
+  DB = Sequel.connect(ENV['DATABASE_URL'])
+end
