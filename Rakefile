@@ -11,9 +11,13 @@ end
 desc "Create Database"
 task :db_create do
      require 'rubygems'
+     echo 'gems loaded'
      require 'path-setting'
+     echo 'path-setting'
      require 'config'
+     echo 'config'
      require "admin/create.rb"
+     echo 'admin/create'
 end
 
 task :echo do 
