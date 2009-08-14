@@ -9,5 +9,6 @@ Sinatra::Base.configure :development do
 end
 
 Sinatra::Base.configure :production do 
-  Controller.run!
+  require 'hello'
+  run Sinatra::Application
 end
