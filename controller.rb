@@ -18,14 +18,6 @@ class Controller < Sinatra::Base
     File.read(File.join(options.public, 'index.html'))
   end
 
-  get '/log' do
-    erector { text DB[:animals].all.inspect } 
-  end
-
-  get '/last_json' do
-    erector { text DB[:procedures].all.inspect } 
-  end
-
   get '/json/procedures' do
     jsonically do 
       typing_as 'procedures' do

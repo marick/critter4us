@@ -20,8 +20,7 @@ StoreReservationRoute = @"store_reservation";
 NotificationCenter = [CPNotificationCenter defaultCenter];
 
 // URI
-Site = "http://critter4us.heroku.com"
 jsonURI = function(route)
 {
-  return url = Site + "/json/" + route
+  return url = "/json/" + route
 }

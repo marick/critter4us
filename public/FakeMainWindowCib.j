@@ -42,9 +42,7 @@
   controllerCoordinator.resultController = resultController;
   controllerCoordinator.persistentStore = persistentStore;
 
-  alert("about to awaken");
   [self awakenAllObjects];
-  alert("done awakening");
   [theWindow orderFront:self];
 }
 

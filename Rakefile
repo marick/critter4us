@@ -11,17 +11,9 @@ end
 desc "Create Database"
 task :db_create do
      require 'rubygems'
-     puts 'gems loaded'
      require 'path-setting'
-     puts 'path-setting'
      require 'config'
-     puts 'config'
      require "admin/create.rb"
-     puts 'admin/create'
-end
-
-task :echo do 
-     puts "help"
 end
 
 task :deploy do 

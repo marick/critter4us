@@ -82,10 +82,8 @@
 
 - (CPArray) valueForKey: (CPString)aKey atRoute: route
 {
-  alert("value for key" + aKey + " at route " + route);
   var url = jsonURI(route);
   var jsonString = [network GETJsonFromURL: url];
-  alert("json = " + jsonString);
   var jsHash =  [jsonString objectFromJSON];
   var result = jsHash[aKey];
   return result;
