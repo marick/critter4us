@@ -1,5 +1,6 @@
 require 'rake'
 require 'rake/testtask'
+$in_rake = true
 
 task :default => :test
 

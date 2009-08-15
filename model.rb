@@ -104,12 +104,15 @@ class Reservation < Sequel::Model
       :instructor => 'morin',
       :morning => true
     }
-    class_eval(&block) if block # Create animals or procedures
-    
     reservation = create(defaults.merge(overrides))
-    Use.create(:reservation => reservation, 
-               :animal => @animal_created_in_block,
-               :procedure => @procedure_created_in_block)
+
+    if block
+      class_eval(&block)
+
+      Use.create(:reservation => reservation, 
+                 :animal => @animal_created_in_block,
+                 :procedure => @procedure_created_in_block)
+    end
     reservation
   end
 
