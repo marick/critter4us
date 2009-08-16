@@ -1,4 +1,4 @@
-$: << '..' unless $in_rake
+$: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'controller'
 require 'ostruct'
