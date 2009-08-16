@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'sinatra/base'
 require 'json'
-require 'model'
+require 'model/requires'
 require 'view'
 require 'pp'
 

@@ -8,7 +8,7 @@ Sinatra::Base.set :environment, :development
 require 'config'
 require 'admin/tables'
 create_tables
-require 'model'
+require 'model/requires'
 
 TWICE_A_WEEK=3
 TWO_WEEKS=14

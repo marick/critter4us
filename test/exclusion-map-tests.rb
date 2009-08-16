@@ -1,6 +1,6 @@
 $: << '..' unless $in_rake
 require 'test/testutil/requires'
-require 'model'
+require 'model/requires'
 
 class Date
   def inspect
