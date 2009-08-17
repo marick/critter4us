@@ -11,22 +11,51 @@ class AuthorizationControllerTests < Test::Unit::TestCase
     empty_tables
     @app = Controller.new
     @dummy_view = TestViewClass.new
+    @app.test_view_builder = @dummy_view
+    @app.authorizer = @authorizer = flexmock("authorizer")
   end
 
-  context "viewing reservations" do
-    should "pass a list of reservations to the view" do
-      DB.populate do
-        @expected_reservation = Reservation.random do
-          use(@expected_animal = Animal.random)
-          use(@expected_procedure = Procedure.random)
-        end
-      end
+  context "authorization" do
+    should "try to authorize if not already authorized" do
+      during {
+        get '/'
+      }.behold! {
+        @authorizer.should_receive(:already_authorized?).and_return(false)
+        @authorizer.should_receive(:authorize)
+      }
+    end
 
-      @app.test_view_builder = @dummy_view
-      get '/reservations'
-      assert { @dummy_view[:reservations].size == 1 }
-      actual_reservation = @dummy_view[:reservations].first
-      assert { actual_reservation == @expected_reservation }
+    should "not try to authorize if already authorized" do 
+      during {
+        get '/json/procedures'
+      }.behold! {
+        @authorizer.should_receive(:already_authorized?).and_return(true);
+      }
+      assert { last_response.ok? }
+    end
+
+    should "be fine if authorization attempt succeeds" do
+      during {
+        get '/'
+      }.behold! {
+        @authorizer.should_receive(:already_authorized?).and_return(false)
+        @authorizer.should_receive(:authorize).and_return(true)
+      }
+      assert { last_response.ok? }
+    end
+
+    should "show error if authorization attempt succeeds" do
+      during {
+        get '/'
+      }.behold! {
+        @authorizer.should_receive(:already_authorized?).and_return(false)
+        @authorizer.should_receive(:authorize).and_return(false)
+      }
+      assert { last_response.status == 401 }
     end
   end
 end
+
+
+
+

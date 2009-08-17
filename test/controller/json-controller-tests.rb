@@ -10,6 +10,7 @@ class JsonGenerationTests < Test::Unit::TestCase
   def setup
     empty_tables
     @app = Controller.new
+    @app.authorizer = AuthorizeEverything.new
   end
 
   def assert_json_response

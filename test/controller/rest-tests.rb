@@ -11,6 +11,7 @@ class HtmlControllerTests < Test::Unit::TestCase
   def setup
     empty_tables
     @app = Controller.new
+    @app.authorizer = AuthorizeEverything.new
     @dummy_view = TestViewClass.new
   end
 

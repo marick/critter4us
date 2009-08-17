@@ -8,13 +8,35 @@ require 'pp'
 require 'erector'
 include Erector::Mixin
 
+
 class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
 
   set :static, true
   set :root, File.dirname(__FILE__)
   enable :raise_errors
+  enable :sessions
 
   attr_accessor :test_view_builder
+  attr_writer :authorizer
+
+  helpers do
+    def protected!
+      unless authorized?
+        response['WWW-Authenticate'] = %(Basic realm="critter4us")
+        throw(:halt, [401, "Not authorized\n"])
+        return
+      end
+    end
+
+    def authorized?
+      authorizer.already_authorized? || authorizer.authorize(request)
+    end
+  end
+
+  before do
+    protected!
+  end
+
 
   get '/' do
     File.read(File.join(options.public, 'index.html'))
@@ -85,6 +107,11 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
 
   def view(klass)
     (test_view_builder || klass)
+  end
+
+  def authorizer
+    @authorizer ||= Authorizer.new(session)
+    @authorizer
   end
 
   def jsonically

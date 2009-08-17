@@ -1,1 +1,2 @@
-require 'model/rest.rb'
+require 'model/rest'
+require 'model/authorizer'
