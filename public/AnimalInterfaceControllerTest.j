@@ -12,62 +12,56 @@
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasUpwardCollaborators: ['table', 'nameColumn',
 					'checkColumn', 'containingView']];
-  [scenario sutHasDownwardCollaborators: ['persistentStore']];
 }
 
 
--(void) testInitialAppearance
+-(void) testBeginning
 {
   [scenario 
-   beforeApp: function() {
-      [self someAnimalsAreStored: [["cc", "B", "aaa"],
-		      {"cc":"ckind","B":"bkind","aaa":"akind"}]];
-    }
-    whileAwakening: function() {
-      [self tableWillLoadData];
-      //
-      [self controlsWillBeMadeHidden];
-    }
+    during: function() {
+      [sut beginUsingAnimals: ["cc", "B", "aaa"]
+                 withKindMap: {"cc":"ckind","B":"bkind","aaa":"akind"}]
+       }
+    behold: function() { 
+      [sut.table shouldReceive: @selector(reloadData)];
+      }
     andSo: function() {
+	[self animalTableWillContainNames: ["aaa (akind)", "B (bkind)", "cc (ckind)"]];
+	[self animalTableWillHaveCorrespondingChecks: [NO, NO, NO]];
+    }];
+}
+
+-(void) testBeginningAgain
+{
+  [scenario 
+    previousAction: function() {
+      [sut beginUsingAnimals: ["cc", "B", "aaa"]
+                 withKindMap: {"cc":"ckind","B":"bkind","aaa":"akind"}];
+      [self selectAnimal: "cc"];
+      [sut withholdAnimals: ['B']];
+      [self animalTableWillContainNames: ["aaa (akind)", "cc (ckind)"]];
+      [self animalTableWillHaveCorrespondingChecks: [NO, YES]];
+    }
+  testAction: function() {
+      [sut beginUsingAnimals: ["cc", "B", "aaa"]
+                 withKindMap: {"cc":"ckind","B":"bkind","aaa":"akind"}];
+    }
+  andSo: function() {
       [self animalTableWillContainNames: ["aaa (akind)", "B (bkind)", "cc (ckind)"]];
       [self animalTableWillHaveCorrespondingChecks: [NO, NO, NO]];
     }];
 }
 
 
-
--(void) testWhatItMeansToLoadExclusions
+- (void)testWithholdingAnimals
 {
   [scenario
-   beforeApp: function() {
-      [self someAnimalsAreStored];
-    }
-   during: function() {
-      [sut loadExclusionsForDate: '2009-08-12' time: [Time afternoon]];
-    }
-  behold: function() {
-      [sut.persistentStore shouldReceive: @selector(exclusionsForDate:time:)
-       with: ['2009-08-12', [Time afternoon]]];
-    }
-   ];
-}
- 
-
-- (void)testExcludingAnimalsBecauseOfChosenProcedures
-{
-  [scenario
-   beforeApp: function() { 
-      [self someAnimalsAreStored: [["fred", "betty", "dave"],
-                                  {"fred":"cow","betty":"irrelevant","dave":"horse"}]];
-      [self someExclusionsApply: { 'veniculture': ['fred'],
-                                    'physical exam': ['betty'],
-                                     'floating':['dave']}];
-    }
-  previousAction: function() {
-      [sut loadExclusionsForDate: '2009-08-12' time: [Time afternoon]];
+   previousAction: function() { 
+      [sut beginUsingAnimals: ["fred", "betty", "dave"]
+                 withKindMap: {"fred":"cow","betty":"irrelevant","dave":"horse"}];
     }
   testAction: function() { 
-      [sut offerAnimalsForProcedures: ['veniculture', 'physical exam']];
+      [sut withholdAnimals: ['fred', 'betty']];
     }
   andSo: function() {
       [self animalTableWillContainNames: ["dave (horse)"]];
@@ -75,19 +69,37 @@
     }];
 }
 
+- (void)testWithholdingAnimalsNeedNotBePermanent
+{
+  [scenario
+   previousAction: function() { 
+      [sut beginUsingAnimals: ["fred", "betty", "dave"]
+                 withKindMap: {"fred":"cow","betty":"cow","dave":"horse"}];
+      [sut withholdAnimals: ['fred', 'betty']];
+    }
+  testAction: function() { 
+      [sut withholdAnimals: []]
+    }
+  andSo: function() {
+      [self animalTableWillContainNames: ["betty (cow)", "dave (horse)", "fred (cow)"]];
+      [self animalTableWillHaveCorrespondingChecks: [NO, NO, NO]];
+    }];
+}
+
+
 - (void) testChoosingAnAnimal
 {
   [scenario
-   beforeApp: function() { 
-      [self someAnimalsAreStored: [["alpha",  "delta", "betty"],
-                                   {"alpha":"akind", "delta":"dkind", "betty":"bkind"}]
-       ];
+   previousAction: function() { 
+      [sut beginUsingAnimals: ["alpha",  "delta", "betty"]
+                 withKindMap: {"alpha":"akind", "delta":"dkind", "betty":"bkind"}];
     }
   during: function() { 
       [self selectAnimal: "betty"];
     }
   behold: function() {
       [sut.table shouldReceive: @selector(deselectAll:)];
+      [sut.table shouldReceive: @selector(reloadData)];
     }
   andSo: function() {
       [self animalTableWillContainNames: ["alpha (akind)", "betty (bkind)", "delta (dkind)"]];
@@ -95,14 +107,12 @@
     }];
 }
 
-- (void) testChoosingTwoAnimalsAccumulates
+- (void) testChoosingAnimalsAccumulates
 {
   [scenario
-   beforeApp: function() { 
-      [self someAnimalsAreStored: [["alpha",  "delta", "betty"],
-                                   {"alpha":"akind", "delta":"dkind", "betty":"bkind"}]];
-    }
-  previousAction: function() {
+   previousAction: function() { 
+      [sut beginUsingAnimals: ["alpha",  "delta", "betty"]
+                 withKindMap: {"alpha":"akind", "delta":"dkind", "betty":"bkind"}];
       [self alreadySelected: ["betty"]];
     }
   testAction: function() { 
@@ -115,25 +125,19 @@
 }
 
 
-- (void) testChoosingAnimalsThenAProcedureThatExcludesOne
+- (void) testChoosingAnimalsThenWithholdingOneOfThem
 {
   [scenario
-   beforeApp: function() { 
-      [self someAnimalsAreStored: [["alpha",  "delta", "betty"],
-                                   {"alpha":"akind", "delta":"dkind", "betty":"bkind"}]];
-      [self someExclusionsApply: { 'veniculture': ['alpha'],
-	                           'physical exam': ['betty'],
-                                   'floating':['delta']}];
-    }
   previousAction: function() {
-      [sut loadExclusionsForDate: '2009-08-12' time: [Time afternoon]];
+      [sut beginUsingAnimals: ["alpha",  "delta", "betty"]
+                 withKindMap: {"alpha":"akind", "delta":"dkind", "betty":"bkind"}];
+
       [self alreadySelected: ["betty", "delta"]];
       [self animalTableWillContainNames: ["alpha (akind)", "betty (bkind)", "delta (dkind)"]];
       [self animalTableWillHaveCorrespondingChecks: [NO, YES, YES]];
     }
   testAction: function() { 
-      [sut offerAnimalsForProcedures: ['veniculture', 'physical exam']];
-
+      [sut withholdAnimals: ['alpha', 'betty']];
     }
   andSo: function() {
       [self animalTableWillContainNames: ["delta (dkind)"]];
@@ -141,38 +145,35 @@
     }];
 }
 
-- (void) testUnchoosingAllAnimals
+- (void) testWithholdingAnAnimalErasesItsCheckmarkIfItReappears
 {
   [scenario
-   beforeApp: function() { 
-      [self someAnimalsAreStored: [["alpha",  "delta"],
-                                   {"alpha":"akind", "delta":"dkind"}]];
-    }
   previousAction: function() {
-      [self alreadySelected: ["alpha", "delta"]];
-    }
-  during: function() { 
-      [sut unchooseAllAnimals];
+      [sut beginUsingAnimals: ["alpha",  "delta", "betty"]
+                 withKindMap: {"alpha":"akind", "delta":"dkind", "betty":"bkind"}];
 
+      [self alreadySelected: ["betty", "delta"]];
+      [sut withholdAnimals: ['betty']];
+      [self animalTableWillContainNames: ["alpha (akind)", "delta (dkind)"]];
+      [self animalTableWillHaveCorrespondingChecks: [NO, YES]];
     }
-  behold: function() {
-      [sut.table shouldReceive: @selector(reloadData)];
+  testAction: function() { 
+      [sut withholdAnimals: []];
     }
   andSo: function() {
-      [self animalTableWillContainNames: ['alpha (akind)', 'delta (dkind)']];
-      [self animalTableWillHaveCorrespondingChecks: [NO, NO]];
+      [self animalTableWillContainNames: ["alpha (akind)", "betty (bkind)", "delta (dkind)"]];
+       [self animalTableWillHaveCorrespondingChecks: [NO, NO, YES]];
     }];
 }
+
 
 - (void) testSpillingData
 {
   var dict = [CPMutableDictionary dictionary];
   [scenario
-   beforeApp: function() { 
-      [self someAnimalsAreStored: [["alpha",  "delta", "betty"],
-                                   {"alpha":"akind", "delta":"dkind", "betty":"bkind"}]];
-    }
   previousAction: function() {
+      [sut beginUsingAnimals: ["alpha",  "delta", "betty"]
+                 withKindMap: {"alpha":"akind", "delta":"dkind", "betty":"bkind"}];
       [self alreadySelected: ["betty", "delta"]];
     }
   testAction: function() { 
@@ -204,7 +205,6 @@
 // I think it's a hack.
 -(void) alreadySelected: animalNames
 {
-  [sut awakeFromCib];
   for(i=0; i<[animalNames count]; i++)
     {
       var aName = animalNames[i];
@@ -213,29 +213,6 @@
     }
 }
 
-
-
--(void) someAnimalsAreStored: anArray
-{
-  [sut.persistentStore shouldReceive: @selector(allAnimalInfo) andReturn: anArray];
-}
-
--(void) someAnimalsAreStored
-{
-  [self someAnimalsAreStored: [['betsy'], {'betsy' : 'bovine'}]];
-}
-
--(void) someExclusionsApply: jsHash
-{
-  retval = [CPDictionary dictionaryWithJSObject: jsHash recursively: YES];
-  [sut.persistentStore shouldReceive: @selector(exclusionsForDate:time:)
-   andReturn: retval];
-}
-
--(void) tableWillLoadData
-{
-  [sut.table shouldReceive: @selector(reloadData)];
-}
 
 -(void) animalTableWillContainNames: anArray
 {

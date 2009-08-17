@@ -135,6 +135,17 @@ var Skip = function() {}
           	  andSo: Skip];
 }
 
+-(void)  previousAction: previousAction
+             testAction: during
+	          andSo: consequence
+{
+  [self       beforeApp: Skip
+         previousAction: previousAction
+             testAction: during
+	         behold: Skip
+          	  andSo: consequence];
+}
+
 -(void)     beforeApp: beforeApp
            testAction: during
 	        andSo: consequence
@@ -157,7 +168,7 @@ var Skip = function() {}
           	  andSo: consequence];
 }
 
-                                      // 3 keywords
+                                      // 2 keywords
 
 -(void)          during: during
                  behold: behold 

@@ -11,49 +11,7 @@
   CPArray allAnimals;
   CPArray availableAnimals;
   CPMutableDictionary isChosen;
-  CPDictionary exclusions;
   id nameToKind;
-}
-
-- (void)awakeFromCib
-{
-  if (awakened) return;
-  [super awakeFromCib];
-
-  var result = [persistentStore allAnimalInfo];
-  allAnimals = result[0];
-  nameToKind = result[1];
-
-  [self allAnimalsAreAvailable];
-  [self noAnimalsAreChosen]
-
-  [table reloadData];
-}
-
-
-// Coordinator methods
-
-- (void) loadExclusionsForDate: date time: time
-{
-  exclusions = [persistentStore exclusionsForDate: date time: time];
-}
-
-- (void) offerAnimalsForProcedures: (CPArray) procedures
-{
-  [self allAnimalsAreAvailable];
-  [self removeAnimalsExcludedByProcedures: procedures];
-
-
-  oldIsChosen = [CPMutableDictionary dictionaryWithDictionary: isChosen];
-  [self noAnimalsAreChosen];
-  [self chooseAnimalsAlreadyChosenIn: oldIsChosen];
-
-  [table reloadData];
-}
-
-- (void) spillIt: (CPMutableDictionary) dict
-{
-  [dict setValue: [self chosenAnimals] forKey: 'animals'];
 }
 
 
@@ -79,13 +37,58 @@
 
 - (void) tableView: table setObjectValue: value forTableColumn: aColumn row: rowIndex
 {
-  alert("Will do nothing");
+  alert("The program's broken: setObjectvalue should never be called");
 }
 
 - (void)tableView:(CPTableView)aTableView willDisplayCell:(id)aCell forTableColumn:(CPTableColumn)aTableColumn row:(id)rowIndex
 {
   // TODO: Not implemented in cappuccino yet.
 }
+
+
+// Coordinator methods
+
+- (void) beginUsingAnimals: (CPArray) anArray withKindMap: (id) aJSHash
+{
+  allAnimals = [CPArray arrayWithArray: anArray]
+  nameToKind = aJSHash
+
+  [self allAnimalsAreAvailable];
+  [self noAnimalsAreChosen]
+
+  [table reloadData];
+}
+
+
+- (void) withholdAnimals: (CPArray) animalsToRemove
+{
+  [self allAnimalsAreAvailable];
+  for(var i=0; i < [animalsToRemove count]; i++) 
+    {
+      var goner = [animalsToRemove objectAtIndex: i];
+      [availableAnimals removeObject: goner];
+      [isChosen setValue: NO forKey: goner];
+    }
+}
+
+- (void) spillIt: (CPMutableDictionary) dict
+{
+  [dict setValue: [self chosenAnimals] forKey: 'animals'];
+}
+
+// Responding to clicks
+
+- (void) toggleAnimal: (CPTable) sender
+{
+  [self toggleAnimalAtIndex: [sender clickedRow]];
+  [table deselectAll: self];
+  [table reloadData];
+}
+
+
+
+
+
 
 
 
@@ -107,64 +110,10 @@
     }
 }
 
-- (void) removeAnimalsExcludedByProcedures: procedures
-{
-  for (var i=0; i<[procedures count]; i++)
-    {
-      [self removeAnimalsExcludedByProcedure: [procedures objectAtIndex: i]];
-    }
-}
-  
-- (void) removeAnimalsExcludedByProcedure: (CPString) procedure
-{
-  var animalsToRemove = [exclusions objectForKey: procedure];
-  
-  for(var i=0; i < [animalsToRemove count]; i++) 
-    {
-      var goner = [animalsToRemove objectAtIndex: i];
-      [availableAnimals removeObject: goner];
-    }
-}
-
-- (void) chooseAnimalsAlreadyChosenIn: oldIsChosen
-{
-  for (var i=0; i<[availableAnimals count]; i++)
-    {
-      var name = availableAnimals[i];
-      [isChosen setValue: [oldIsChosen valueForKey: name]
-                forKey: name]
-    }
-}
-
-- (void) unchooseAllAnimals
-{
-  for (var i=0; i<[availableAnimals count]; i++)
-    {
-      var name = availableAnimals[i];
-      if ([isChosen valueForKey: name])
-	{
-	  [self toggleAnimalAtIndex: i];
-	}
-    }
-  [self updateEveryoneWhoCaresAboutChange];
-}
-
-- (void) toggleAnimal: (CPTable) sender
-{
-  [self toggleAnimalAtIndex: [sender clickedRow]];
-  [self updateEveryoneWhoCaresAboutChange];
-}
-
 - (void) toggleAnimalAtIndex: index
 {
   var name = availableAnimals[index];
   [isChosen setValue: (![isChosen valueForKey: name]) forKey: name];
-}
-
-- (void) updateEveryoneWhoCaresAboutChange
-{
-  [table deselectAll: self];
-  [table reloadData];
 }
 
 - (CPArray) chosenAnimals
