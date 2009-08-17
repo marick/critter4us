@@ -94,35 +94,31 @@ class JsonGenerationTests < Test::Unit::TestCase
 
       setup do
         @date_of_interest = "2009-12-01"
+        @next_day = '2009-12-02'
         DB.populate do
           Reservation.random(:date => @date_of_interest,
                              :morning => true) do
             use Animal.random(:name => 'morning animal')
             use Procedure.random(:days_delay => 0.days, 
-                                 :name => 'morning procedure')
+                                 :name => 'first procedure')
           end
           
           Reservation.random(:date => @date_of_interest,
                              :morning => false) do
             use Animal.random(:name => "afternoon animal")
             use Procedure.random(:days_delay => 0.days,
-                                 :name => "afternoon procedure")
+                                 :name => "second procedure")
           end
         end
       end
 
-      # Here, in English, is what we're checking:
-      no_morning_animal = {'morning procedure' => ['morning animal'] }
-      morning_animal_ok = {'morning procedure' => [] }
-        
-      no_afternoon_animal = {'afternoon procedure' => ['afternoon animal'] }
-      afternoon_animal_ok = {'afternoon procedure' => [] }
-        
-
       should "be excluded from being reserved twice in a morning" do
         get '/json/exclusions',
             {:date => @date_of_interest, :time => "morning"}
-        expected = no_morning_animal.merge(afternoon_animal_ok)
+        expected = {
+          'first procedure' => ['morning animal'],
+          'second procedure' => ['morning animal']
+        }    
         assert_jsonification_of({'exclusions' => expected})
       end
 
@@ -130,7 +126,20 @@ class JsonGenerationTests < Test::Unit::TestCase
       should "be excluded from being reserved twice in an afternoon" do
         get '/json/exclusions',
             {:date => @date_of_interest, :time => "afternoon"}
-        expected = no_afternoon_animal.merge(morning_animal_ok)
+        expected = {
+          'first procedure' => ['afternoon animal'],
+          'second procedure' => ['afternoon animal']
+        }
+        assert_jsonification_of({'exclusions' => expected})
+      end
+
+      should "be unaffected when attempt is on different days" do
+        get '/json/exclusions',
+            {:date => @next_day, :time => 'morning'}
+        expected = { 
+          'first procedure' => [],
+          'second procedure' => []
+        }
         assert_jsonification_of({'exclusions' => expected})
       end
       

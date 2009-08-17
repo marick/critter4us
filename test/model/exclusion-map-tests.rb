@@ -34,7 +34,7 @@ class ExclusionMapTests < Test::Unit::TestCase
     assert { map == { 'proc' => [] } }
   end
 
-  should_eventually "exclude any animal that's used in any lab at the same time" do
+  should "exclude any animal that's used in any lab at the same time" do
 
     Reservation.random(:date => Date.new(2009, 9, 9),
                        :morning => true,

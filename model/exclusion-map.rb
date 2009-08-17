@@ -4,29 +4,32 @@ require 'pp'
 class ExclusionMap
 
   def initialize(desired_date, in_morning)
-    same_day_exclusions = exclude_for_procedures_with_no_delay(desired_date, in_morning)
-    diff_day_exclusions = exclude_for_procedures_with_delay(desired_date)
-    @hash = hash_with_procedure_keys(same_day_exclusions + diff_day_exclusions)
+    already_used_exclusions = conflicting_because_animals_in_use(desired_date, in_morning)
+    diff_day_exclusions = conflicting_because_of_procedure_delay_period(desired_date)
+    @hash = hash_with_procedure_keys(diff_day_exclusions + already_used_exclusions)
   end
 
-
-  def exclude_for_procedures_with_no_delay(desired_date, in_morning)
-    query = DB[:expanded_uses].
-      filter(:reservation_date => desired_date).
-      filter(:days_delay => 0).
-      filter(:reservation_morning => in_morning).
-      select(:procedure_name, :animal_name, :reservation_morning)
-    #puts query.sql
-    #puts query.all.inspect
-    query.all
-  end
-
-  def exclude_for_procedures_with_delay(desired_date)
+  def conflicting_because_of_procedure_delay_period(desired_date)
     query = DB[:expanded_uses].
       filter {|o| o.days_delay > 0 }.
       filter {|o| o.first_available_date > desired_date }.
       filter {|o| o.first_excluded_date <= desired_date }.
       select(:procedure_name, :animal_name)
+    # puts query.sql
+    # puts query.all.inspect
+    query.all
+  end
+
+  # TODO: It would probably be better to deliver a list of animals
+  # that are in-use at the desired time. That would make it easier
+  # to exclude animals right off the bat and would eliminate the 
+  # silly join below.
+  def conflicting_because_animals_in_use(desired_date, in_morning)
+    query = DB[:expanded_uses].
+      filter(:reservation_date => desired_date).
+      filter(:reservation_morning => in_morning).
+      join_table(:cross, :procedures).
+      select(:name.as(:procedure_name), :animal_name)
     # puts query.sql
     # puts query.all.inspect
     query.all
@@ -49,6 +52,7 @@ private
     rows.each do | row |
       retval[row[:procedure_name]] << row[:animal_name]
     end
+    retval.each { | k, v | v.uniq! }
     retval
   end
 
