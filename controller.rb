@@ -29,7 +29,8 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
     end
 
     def authorized?
-      authorizer.already_authorized? || authorizer.authorize(request)
+      auth_request = Rack::Auth::Basic::Request.new(request.env)
+      authorizer.already_authorized? || authorizer.authorize(auth_request)
     end
   end
 

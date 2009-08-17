@@ -41,6 +41,11 @@ def create_tables
                         (:reservations__date + :procedures__days_delay).as(:first_available_date)))
                  
 
+  DB.create_table! :authorizations do
+    primary_key :id
+    String :magic_word
+  end
+
 end
 
 def drop_tables
@@ -48,6 +53,7 @@ def drop_tables
   DB.drop_table :animals
   DB.drop_table :uses
   DB.drop_table :reservations
+  DB.drop_table :authorizations
 end
 
 
@@ -56,4 +62,5 @@ def empty_tables
   DB[:animals].delete
   DB[:procedures].delete
   DB[:reservations].delete
+  DB[:authorizations].delete
 end

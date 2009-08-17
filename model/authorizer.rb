@@ -7,15 +7,18 @@ class Authorizer
     @session['authorized']
   end
 
-  def authorize(request)
-    auth_request ||=  Rack::Auth::Basic::Request.new(request.env)
+  def authorize(auth_request)
     return false unless auth_request.provided? &&
                         auth_request.basic? &&
-                        auth_request.credentials 
-    if auth_request.credentials[1] == 'bar'
+                        auth_request.credentials
+    password = auth_request.credentials[1]
+    if DB[:authorizations].all.size == 0
+      DB[:authorizations].insert(:magic_word => password)
+    end
+    if DB[:authorizations].first[:magic_word] == password
       @session['authorized'] = true
     end
-    @session['authorized']
+    already_authorized?
   end
 end
 
