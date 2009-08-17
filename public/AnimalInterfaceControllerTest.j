@@ -23,8 +23,9 @@
                  withKindMap: {"cc":"ckind","B":"bkind","aaa":"akind"}]
        }
     behold: function() { 
-      [sut.table shouldReceive: @selector(reloadData)];
-      }
+      [sut.unchosenProcedureTable shouldReceive: @selector(reloadData)];
+      [sut.chosenProcedureTable shouldReceive: @selector(reloadData)];
+    }
     andSo: function() {
 	[self animalTableWillContainNames: ["aaa (akind)", "B (bkind)", "cc (ckind)"]];
 	[self animalTableWillHaveCorrespondingChecks: [NO, NO, NO]];

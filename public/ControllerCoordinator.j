@@ -51,13 +51,15 @@
 
   var dict = [CPMutableDictionary dictionary];
   [courseSessionController spillIt: dict];
-  [animalController loadExclusionsForDate: [dict valueForKey: 'date']
-                                     time: [dict valueForKey: 'time']];
 
-  [animalController unchooseAllAnimals];
+  [persistentStore focusOnDate: [dict valueForKey: 'date']
+                          time: [dict valueForKey: 'time']];
+
+  [animalController beginUsingAnimals: persistentStore.allAnimalNames
+                          withKindMap: persistentStore.kindMap];
   [animalController showViews];
 
-  [procedureController unchooseAllProcedures];
+  [procedureController beginUsingProcedures: persistentStore.allProcedureNames];
   [procedureController showViews];
 
   [reservationController showViews];
@@ -67,7 +69,9 @@
 - (void) chosenProceduresChanged: aNotification
 {
   var procedures = [aNotification object];
-  [animalController offerAnimalsForProcedures: procedures];
+  var animals = [CPArray arrayWithArray: persistentStore.allAnimalNames];
+  [self removeAnimalsFromArray: animals whenExcludedByProcedures: procedures];
+  [animalController withholdAnimals: animals];
 }
 
 - (void) makeReservation: (CPNotification) ignored
@@ -87,6 +91,29 @@
   [procedureController hideViews];
   [reservationController hideViews];
 }
+
+// util
+
+- (void) removeAnimalsFromArray: animals whenExcludedByProcedures: procedures
+{
+  for (var i=0; i<[procedures count]; i++)
+    {
+      [self removeAnimalsFromArray: animals
+            whenExcludedByProcedure: [procedures objectAtIndex: i]];
+    }
+}
+  
+- (void) removeAnimalsFromArray: animals whenExcludedByProcedure: (CPString) procedure
+{
+  var animalsToRemove = persistentStore.exclusions[procedure];
+  
+  for(var i=0; i < [animalsToRemove count]; i++) 
+    {
+      var goner = [animalsToRemove objectAtIndex: i];
+      [animals removeObject: goner];
+    }
+}
+
 
 
 

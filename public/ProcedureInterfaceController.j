@@ -10,19 +10,7 @@
   id chosenProcedures;
 }
 
-- (void)awakeFromCib
-{
-  if (awakened) return;
-  [super awakeFromCib];
-
-  unchosenProcedures = [persistentStore allProcedureNames];
-  [unchosenProcedures sortUsingSelector: @selector(caseInsensitiveCompare:)];
-  chosenProcedures = [];
-
-  [unchosenProcedureTable reloadData];
-  [chosenProcedureTable reloadData];
-}
-
+// Table methods
 
 - (CPInteger) numberOfRowsInTableView:(CPTableView)aTableView
 {
@@ -43,6 +31,25 @@
     return [chosenProcedures objectAtIndex:rowIndex];
 }
 
+// Coordinator methods
+
+- (void)beginUsingProcedures: (CPArray) procedures
+{
+  unchosenProcedures = [CPArray arrayWithArray: procedures];
+  [unchosenProcedures sortUsingSelector: @selector(caseInsensitiveCompare:)];
+  chosenProcedures = [];
+
+  [unchosenProcedureTable reloadData];
+  [chosenProcedureTable reloadData];
+}
+
+- (void) spillIt: (CPMutableDictionary) dict
+{
+  [dict setValue: chosenProcedures forKey: 'procedures'];
+}
+
+// Responding to clicks 
+
 - (void)chooseProcedure:(id)sender
 {
   [self moveProcedureAtIndex: [unchosenProcedureTable clickedRow]
@@ -60,18 +67,9 @@
   [self updateEveryoneWhoCaresAboutMovement];
 }
 
-- (void) unchooseAllProcedures
-{
-  while([chosenProcedures count] > 0) 
-    {
-      [self moveProcedureAtIndex: 0
-                            from: chosenProcedures 
-                              to: unchosenProcedures];
-    }
-  [self updateEveryoneWhoCaresAboutMovement];
-}
 
 
+// Util
 
 - (void) moveProcedureAtIndex: index from: fromArray to: toArray
 {
@@ -89,11 +87,6 @@
   [unchosenProcedureTable deselectAll: self];
   [chosenProcedureTable reloadData];
   [unchosenProcedureTable reloadData];
-}
-
-- (void) spillIt: (CPMutableDictionary) dict
-{
-  [dict setValue: chosenProcedures forKey: 'procedures'];
 }
 
 @end

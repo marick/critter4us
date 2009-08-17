@@ -4,7 +4,17 @@
 
 @implementation NetworkConnection : CPObject
 {
+  CPArray allAnimalNames;
+  id kindMap;   // TODO: this should probably turn into a dictionary.
+  CPDictionary exclusions;
 }
+
+- (void) focusOnDate: date time: time
+{
+}
+
+
+
 
 - (CPString)GETJsonFromURL: (CPString) url
 {

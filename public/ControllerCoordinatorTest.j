@@ -2,6 +2,36 @@
 @import "ScenarioTestCase.j"
 @import "Time.j"
 
+@implementation Spiller : Mock
+{
+  (CPDictionary) internal;
+}
+
+- (void) initWithValue: aValue
+{
+  self = [super init];
+  internal =[CPDictionary dictionaryWithJSObject: aValue];
+  failOnUnexpectedSelector = NO;
+  return self;
+}
+
+- (void) spillIt: (CPMutableDictionary) dest
+{
+  var keys = [internal allKeys];
+  for (var i=0; i < [keys count]; i++)
+    {
+      var key = [keys objectAtIndex: i];
+      [dest setValue: [internal valueForKey: key] forKey: key];
+    }
+}
+
+- (BOOL) wereExpectationsFulfilled
+{
+  return YES;
+}
+
+@end
+
 @implementation ControllerCoordinatorTest : ScenarioTestCase
 {
 }
@@ -26,7 +56,6 @@
     }];
 }
 
-
 -(void) testChangesDisplayWhenCourseSessionIsIdentified
 {
   [scenario
@@ -42,43 +71,44 @@
     }];
 }
 
--(void) testInstructsControllersToMakeSureNoDataLeftFromLastSession
+-(void) testHandsControllersValuableDataWhenCourseSessionIsIdentified
 {
   [scenario
+   previousAction: function() {
+      sut.persistentStore.allAnimalNames = ['animal1', 'animal2'];
+      sut.persistentStore.allProcedureNames = ['procedure1', 'procedure2'];
+      sut.persistentStore.kindMap = {'animal1':'cow', 'animal2':'horse'};
+      sut.courseSessionController =
+          [[Spiller alloc] initWithValue: {'date':'2009-02-02',
+	                                   'time':[Time morning]}];
+    }
    during: function() {
       [self sendNotification: CourseSessionDescribedNews];
     }
    behold: function() {
-      // 
-      [sut.procedureController shouldReceive: @selector(unchooseAllProcedures)];
-      [sut.animalController shouldReceive: @selector(unchooseAllAnimals)];
-    }
-   ];
-}
-
-
--(void) testInstructsAnimalControllerToLoadExclusionsWhenSessionChosen
-{
-  [scenario
-   during: function() {
-      [self sendNotification: CourseSessionDescribedNews];
-    }
-   behold: function() {
-      [sut.courseSessionController shouldReceive: @selector(spillIt:)];
-      [sut.animalController shouldReceive: @selector(loadExclusionsForDate:time:)]
+      [sut.persistentStore shouldReceive: @selector(focusOnDate:time:)
+                                    with: ['2009-02-02', [Time morning]]];
+      [sut.animalController shouldReceive: @selector(beginUsingAnimals:withKindMap:)
+                                     with: [sut.persistentStore.allAnimalNames, sut.persistentStore.kindMap]];
+      [sut.procedureController shouldReceive: @selector(beginUsingProcedures:)
+       with: [sut.persistentStore.allProcedureNames]];
     }];
 }
 
-- (void) testMakesAnimalControllerWhenProceduresChosenAreUpdated
+- (void) testAdjustAnimalControllerAnimalsWhenProceduresChosenAreUpdated
 {
   [scenario
+   previousAction: function() {
+      [sut.persistentStore.allAnimalNames = ['animal1', 'animal2']];
+      [sut.persistentStore.exclusions = { 'a': ['animal1'] }];
+    }
    during: function() {
       [self sendNotification: ProcedureUpdateNews
        withObject: ["a", "b"]];
     }
    behold: function() {
-      [sut.animalController shouldReceive: @selector(offerAnimalsForProcedures:)
-       with: [["a", "b"]]]
+      [sut.animalController shouldReceive: @selector(withholdAnimals:)
+       with: [["animal2"]]];
     }];
 }
 
@@ -86,29 +116,24 @@
 -(void) testCollectsReservationDataAndSendsToPersistentStore
 {
   [scenario
+   previousAction: function() { 
+      sut.courseSessionController = 
+          [[Spiller alloc] initWithValue: {'date':'2009-03-05',
+	                                   'time':[Time afternoon],
+					   'course':'vm333',
+					   'instructor':'fred'}];
+      sut.procedureController = 
+    	  [[Spiller alloc] initWithValue: {'procedures':
+					   ['procedure 1','procedure 2']}];
+
+      sut.animalController = 
+	[[Spiller alloc] initWithValue: {'animals':
+					 ['animal 1', 'animal 2']}];
+    }
    during: function() {
       [self sendNotification: ReservationRequestedNews];
     }
    behold: function() {
-      [sut.courseSessionController shouldReceive: @selector(spillIt:)
-       with: function(dict) {
-	  [dict setValue: "2009-03-05" forKey: 'date'];
-	  [dict setValue: [Time afternoon] forKey: 'time'];
-	  [dict setValue: "vm333" forKey: 'course'];
-	  [dict setValue: 'fred' forKey: 'instructor']
-	  return YES;
-	}];
-      [sut.procedureController shouldReceive: @selector(spillIt:)
-       with: function(dict) {
-	  [dict setValue: ['procedure 1', 'procedure 2'] forKey: 'procedures'];
-	  return YES;
-	}];
-      [sut.animalController shouldReceive: @selector(spillIt:)
-       with: function(dict) {
-	  [dict setValue: ['animal 1', 'animal 2'] forKey: 'animals'];
-	  return YES;
-       }];
-
       var dictTester = function (h) {
 	[self assert: '2009-03-05' equals: [h valueForKey: 'date'] ];
 	[self assert: [Time afternoon] equals: [h valueForKey: 'time' ]];

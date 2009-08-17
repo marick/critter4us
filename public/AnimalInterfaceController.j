@@ -87,12 +87,6 @@
 
 
 
-
-
-
-
-
-
 // Util
 
 - (void)allAnimalsAreAvailable
