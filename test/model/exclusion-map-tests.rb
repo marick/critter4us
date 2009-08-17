@@ -10,6 +10,49 @@ end
     
 
 class ExclusionMapTests < Test::Unit::TestCase
+
+
+  def setup
+    empty_tables
+  end
+
+  should "produce no exclusions if no uses" do
+    Procedure.random(:name => 'only', :days_delay => 14)
+    map = ExclusionMap.new(Date.new(2009, 7, 23), true)
+    assert { map.to_hash == { 'only' => [] } }
+  end
+
+  should "not exclude an animal that's used for a 0-delay procedure on a different day" do
+    Reservation.random(:date => Date.new(2009,9,9),
+                       :morning => true) do
+      use Animal.random
+      use Procedure.random(:name => 'proc', :days_delay => 0)
+    end
+    map = ExclusionMap.new(Date.new(2009, 9, 10),
+                           morning = true).to_hash
+    
+    assert { map == { 'proc' => [] } }
+  end
+
+  should_eventually "exclude any animal that's used in any lab at the same time" do
+
+    Reservation.random(:date => Date.new(2009, 9, 9),
+                       :morning => true,
+                       :course => 'vm333') do
+      use Animal.random(:name => "inuse")
+      use Procedure.random(:name => 'lab procedure')
+    end
+
+    Procedure.random(:name => 'other')
+
+    map = ExclusionMap.new(Date.new(2009, 9, 9),
+                           morning = true).to_hash
+
+    assert { map == { 'other' => ['inuse'], 'lab procedure' => ['inuse'] } }
+        
+  end
+
+
   BoundaryCases = [
 # Reservation attempt for date after previously-made reservation
       # DELAY       USED-ON        TRY-AGAIN          OK?
@@ -87,16 +130,6 @@ class ExclusionMapTests < Test::Unit::TestCase
     assert { @map.to_hash == { 'only' => expected } }
   end
 
-
-  def setup
-    empty_tables
-  end
-
-  should "produce no exclusions if no uses" do
-    Procedure.random(:name => 'only', :days_delay => 14)
-    map = ExclusionMap.new(Date.new(2009, 7, 23), true)
-    assert { map.to_hash == { 'only' => [] } }
-  end
 
   should "work with a typical example" do
     venipuncture = Procedure.random(:name => 'venipuncture', :days_delay => 7)

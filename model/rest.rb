@@ -150,6 +150,7 @@ class ExclusionMap
 
   def exclude_for_procedures_with_no_delay(desired_date, in_morning)
     query = DB[:expanded_uses].
+      filter(:reservation_date => desired_date).
       filter(:days_delay => 0).
       filter(:reservation_morning => in_morning).
       select(:procedure_name, :animal_name, :reservation_morning)
