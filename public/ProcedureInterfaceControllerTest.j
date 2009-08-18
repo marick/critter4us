@@ -24,7 +24,8 @@
       [sut beginUsingProcedures: ['cc', 'B', 'aaa']];
     }
   behold: function() {
-      [sut.table shouldReceive: @selector(reloadData)];
+      [sut.unchosenProcedureTable shouldReceive: @selector(reloadData)];
+      [sut.chosenProcedureTable shouldReceive: @selector(reloadData)];
     }
   andSo: function() {
       [self unchosenProcedureTableWillContain: ["aaa", "B", "cc"]];
@@ -43,8 +44,12 @@
       [self unchosenProcedureTableWillContain: ["aaa", "B"]];
       [self chosenProcedureTableWillContain: ["cc"]];
     }
-  testAction: function() {
+  during: function() {
       [sut beginUsingProcedures: ["cc", "B", "aaa"]];
+    }
+  behold: function() {
+      [sut.unchosenProcedureTable shouldReceive: @selector(reloadData)];
+      [sut.chosenProcedureTable shouldReceive: @selector(reloadData)];
     }
   andSo: function() {
       [self unchosenProcedureTableWillContain: ["aaa", "B", 'cc']];
