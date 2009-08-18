@@ -9,12 +9,6 @@
   CPDictionary exclusions;
 }
 
-- (void) focusOnDate: date time: time
-{
-}
-
-
-
 
 - (CPString)GETJsonFromURL: (CPString) url
 {
@@ -43,24 +37,24 @@
 @implementation PersistentStore : AwakeningObject
 {
   id network;
+
+  CPArray allAnimalNames;
+  CPArray allProcedureNames;
+  id kindMap;
+  CPDictionary exclusions;
 }
 
-- (CPArray) allAnimalInfo
+- (void) focusOnDate: date time: time
 {
-  return [self valueForKey: 'animals' atRoute: AllAnimalsRoute];
+  var url = jsonURI(CourseSessionDataBlobRoute);
+  var jsonString = [network GETJsonFromURL: url];
+  var jsHash =  [jsonString objectFromJSON];
+  var d = [CPDictionary dictionaryWithJSObject: jsHash];
+  allAnimalNames = jsHash['animals'];
+  allProcedureNames = jsHash['procedures'];
+  kindMap = jsHash['kindMap'];
+  exclusions = [CPDictionary dictionaryWithJSObject: jsHash['exclusions']];
 }
-
-- (CPArray) allProcedureNames
-{
-  return [self valueForKey: 'procedures' atRoute: AllProceduresRoute];
-}
-
-- (CPDictionary) exclusionsForDate: (CPString)dateString time:(Time)time
-{
-  var jsHash = [self valueForKey: 'exclusions' atRoute: ExclusionsRoute+"?date=" + dateString + "&time=" + [time description]];
-  var retval = [CPDictionary dictionaryWithJSObject: jsHash recursively: YES];
-  return retval;
-}	
 
 - (void) makeReservation: dict
 {
@@ -89,15 +83,6 @@
   alert("There's a program bug. Some invalid or missing key in " + [expected description]);
 }
 
-
-- (CPArray) valueForKey: (CPString)aKey atRoute: route
-{
-  var url = jsonURI(route);
-  var jsonString = [network GETJsonFromURL: url];
-  var jsHash =  [jsonString objectFromJSON];
-  var result = jsHash[aKey];
-  return result;
-}
 
 - (id) dictionaryToJS: dict
 {

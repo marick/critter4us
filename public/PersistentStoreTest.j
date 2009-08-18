@@ -1,5 +1,6 @@
 @import "PersistentStore.j"
 @import "ScenarioTestCase.j"
+@import "Time.j"
 
 @implementation PersistentStoreTest : ScenarioTestCase
 {
@@ -12,56 +13,26 @@
  [scenario sutHasDownwardCollaborators: ['network']];
 }
 
-
-- (void)testFetchesAnimalNamesIntoArray
+- (void)testPersistentStoreMakesNetworkInfoAvailable
 {
-  CPLog("Make this work"); return;
-  [scenario
-   during: function() {
-      return [sut allAnimalInfo];
-   }
-  behold: function() {
-      [sut.network shouldReceive: @selector(GETJsonFromURL:)
-       with: jsonURI(AllAnimalsRoute)
-           andReturn: '{"animals":[["betsy"],{"betsy":"cow"}]}']
-    }]
-  [self assert: ['betsy'] equals: scenario.result[0]];
-  [self assert: 'cow' equals: scenario.result[1]['betsy']];
-}
-
-- (void)testFetchesProcedureNamesIntoArray
-{
-  CPLog("Make this work"); return;
-  CPLog("Make this work"); return;
-  [scenario
-   during: function() {
-      return [sut allProcedureNames];
-   }
-  behold: function() {
-      [sut.network shouldReceive: @selector(GETJsonFromURL:)
-       with: jsonURI(AllProceduresRoute)
-       andReturn: '{"procedures":["1", "2"]}'];
-    }]
-    [self assert: ['1', '2'] equals: scenario.result];
-}
-
-- (void)testFetchesJsonExclusions
-{
-  CPLog("Make this work"); return;
-  [scenario
-   during: function() {
-      return [sut exclusionsForDate:"2009-02-23" time: [Time morning]];
+  [scenario 
+   during: function() { 
+      [sut focusOnDate: '2009-02-02' time: [Time morning]];
     }
   behold: function() {
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
-       with: jsonURI(ExclusionsRoute) + "?date=2009-02-23&time=morning"
-       andReturn: '{"exclusions":{"veniculture":["one"],"aquaculture":["2","3"]}}'];
+                            with: jsonURI(CourseSessionDataBlobRoute)
+                       andReturn: '{"animals":["betsy","josie"],"kindMap":{"betsy":"cow","josie":"horse"},"procedures":["proc1"],"exclusions":{"proc1":["betsy"]}}'];
     }
-   ];
-    
-  var expected = [CPDictionary dictionaryWithJSObject: {"veniculture":["one"],"aquaculture":["2","3"]}];
-  [self assertTrue: [expected isEqualToDictionary: scenario.result]];
+  andSo: function() {
+      [self assert: ["betsy", "josie"] equals: sut.allAnimalNames];
+      [self assert: "cow" equals: sut.kindMap['betsy']];
+      [self assert: "horse" equals: sut.kindMap['josie']];
+      [self assert: ["proc1"] equals: sut.allProcedureNames];
+      [self assert: ['betsy'] equals: [sut.exclusions valueForKey: 'proc1']];
+    }]
 }
+
 
 -(void)testPostingOfReservation
 {

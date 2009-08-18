@@ -3,18 +3,14 @@
 // Notification Names
 
 CourseSessionDescribedNews = "course session described";
-NewReservationNews = "new reservation";
-SessionExclusionsNews = "exclusions";
-NeedForSessionDataNews = "need session data";
 ProcedureUpdateNews = "procedures chosen";
 ReservationRequestedNews = "reservation requested";
+NewReservationNews = "new reservation created";
 
 
 // Route names
-AllAnimalsRoute = @"all_animals";
-AllProceduresRoute = @"procedures";
-ExclusionsRoute = @"exclusions";
 StoreReservationRoute = @"store_reservation";
+CourseSessionDataBlobRoute = @"course_session_data_blob";
 
 // Other useful constants
 NotificationCenter = [CPNotificationCenter defaultCenter];
