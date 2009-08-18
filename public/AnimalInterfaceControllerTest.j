@@ -23,8 +23,7 @@
                  withKindMap: {"cc":"ckind","B":"bkind","aaa":"akind"}]
        }
     behold: function() { 
-      [sut.unchosenProcedureTable shouldReceive: @selector(reloadData)];
-      [sut.chosenProcedureTable shouldReceive: @selector(reloadData)];
+      [sut.table shouldReceive: @selector(reloadData)];
     }
     andSo: function() {
 	[self animalTableWillContainNames: ["aaa (akind)", "B (bkind)", "cc (ckind)"]];
@@ -43,9 +42,12 @@
       [self animalTableWillContainNames: ["aaa (akind)", "cc (ckind)"]];
       [self animalTableWillHaveCorrespondingChecks: [NO, YES]];
     }
-  testAction: function() {
+  during: function() {
       [sut beginUsingAnimals: ["cc", "B", "aaa"]
                  withKindMap: {"cc":"ckind","B":"bkind","aaa":"akind"}];
+    }
+  behold: function() { 
+      [sut.table shouldReceive: @selector(reloadData)];
     }
   andSo: function() {
       [self animalTableWillContainNames: ["aaa (akind)", "B (bkind)", "cc (ckind)"]];
@@ -61,8 +63,11 @@
       [sut beginUsingAnimals: ["fred", "betty", "dave"]
                  withKindMap: {"fred":"cow","betty":"irrelevant","dave":"horse"}];
     }
-  testAction: function() { 
+  during: function() { 
       [sut withholdAnimals: ['fred', 'betty']];
+    }
+  behold: function() {
+      [sut.table shouldReceive: @selector(reloadData)];
     }
   andSo: function() {
       [self animalTableWillContainNames: ["dave (horse)"]];

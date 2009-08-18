@@ -69,6 +69,7 @@
       [availableAnimals removeObject: goner];
       [isChosen setValue: NO forKey: goner];
     }
+  [table reloadData];
 }
 
 - (void) spillIt: (CPMutableDictionary) dict
