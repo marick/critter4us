@@ -14,6 +14,19 @@ class ModelTests < Test::Unit::TestCase
     end
   end
 
+  context "animals" do 
+    should "collectively be able to return their names" do
+      Animal.random_with_names('c', 'a', 'b')
+      assert { Animal.names.sort == ['a', 'b', 'c'] }
+    end
+
+    should "be able to return a name=>kind mapping" do
+      Animal.random(:name => 'bossie', :kind => 'cow')
+      Animal.random(:name => 'fred', :kind => 'horse')
+      assert { Animal.kind_map == {'bossie' => 'cow', 'fred' => 'horse'} }
+    end
+  end
+
   context "reservations" do
     should "can create a single 'nested' uses" do
       Procedure.random(:name => 'procedure')
