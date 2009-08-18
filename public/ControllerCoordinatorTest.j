@@ -99,8 +99,8 @@
 {
   [scenario
    previousAction: function() {
-      [sut.persistentStore.allAnimalNames = ['animal1', 'animal2']];
-      [sut.persistentStore.exclusions = { 'a': ['animal1'] }];
+      sut.persistentStore.allAnimalNames = ['animal1', 'animal2'];
+      sut.persistentStore.exclusions = [CPDictionary dictionaryWithJSObject:{ 'a': ['animal1'], 'b':[] }];
     }
    during: function() {
       [self sendNotification: ProcedureUpdateNews
@@ -108,7 +108,25 @@
     }
    behold: function() {
       [sut.animalController shouldReceive: @selector(withholdAnimals:)
-       with: [["animal2"]]];
+       with: [["animal1"]]];
+    }];
+}
+
+
+- (void) testWithheldAnimalListDoesNotContainDuplicates
+{
+  [scenario
+   previousAction: function() {
+      sut.persistentStore.allAnimalNames = ['animal1', 'animal2', 'animal3'];
+      sut.persistentStore.exclusions = [CPDictionary dictionaryWithJSObject:{ 'a': ['animal1'], 'b':['animal1','animal3'] }];
+    }
+   during: function() {
+      [self sendNotification: ProcedureUpdateNews
+       withObject: ["a", "b"]];
+    }
+   behold: function() {
+      [sut.animalController shouldReceive: @selector(withholdAnimals:)
+       with: [["animal1", "animal3"]]];
     }];
 }
 

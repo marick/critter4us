@@ -69,9 +69,8 @@
 - (void) chosenProceduresChanged: aNotification
 {
   var procedures = [aNotification object];
-  var animals = [CPArray arrayWithArray: persistentStore.allAnimalNames];
-  [self removeAnimalsFromArray: animals whenExcludedByProcedures: procedures];
-  [animalController withholdAnimals: animals];
+  var animalsToRemove = [self animalsExcludedBy: procedures];
+  [animalController withholdAnimals: animalsToRemove];
 }
 
 - (void) makeReservation: (CPNotification) ignored
@@ -94,27 +93,22 @@
 
 // util
 
-- (void) removeAnimalsFromArray: animals whenExcludedByProcedures: procedures
+- (CPArray) animalsExcludedBy: procedures
 {
+  var building = [CPMutableSet set];
   for (var i=0; i<[procedures count]; i++)
     {
-      [self removeAnimalsFromArray: animals
-            whenExcludedByProcedure: [procedures objectAtIndex: i]];
+      [self addAnimalsTo: building whenExcludedBy: [procedures objectAtIndex: i]];
     }
+  var retval = [building allObjects]
+  [retval sortUsingSelector: @selector(caseInsensitiveCompare:)]; // for testing
+  return retval;
 }
   
-- (void) removeAnimalsFromArray: animals whenExcludedByProcedure: (CPString) procedure
+- (void) addAnimalsTo: (CPMutableSet) animalSet whenExcludedBy: (CPString) procedure
 {
-  var animalsToRemove = persistentStore.exclusions[procedure];
-  
-  for(var i=0; i < [animalsToRemove count]; i++) 
-    {
-      var goner = [animalsToRemove objectAtIndex: i];
-      [animals removeObject: goner];
-    }
+  var excludedAnimals = [persistentStore.exclusions objectForKey: procedure];
+  [animalSet addObjectsFromArray: excludedAnimals];
 }
-
-
-
 
 @end
