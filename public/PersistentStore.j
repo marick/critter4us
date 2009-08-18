@@ -46,7 +46,7 @@
 
 - (void) focusOnDate: date time: time
 {
-  var url = jsonURI(CourseSessionDataBlobRoute);
+  var url = jsonURI(CourseSessionDataBlobRoute+"?date=" + date + "&time=" + [time description]);
   var jsonString = [network GETJsonFromURL: url];
   var jsHash =  [jsonString objectFromJSON];
   var d = [CPDictionary dictionaryWithJSObject: jsHash];

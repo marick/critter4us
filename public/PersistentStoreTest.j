@@ -20,8 +20,9 @@
       [sut focusOnDate: '2009-02-02' time: [Time morning]];
     }
   behold: function() {
+      uri = jsonURI(CourseSessionDataBlobRoute+"?date=2009-02-02&time=morning");
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
-                            with: jsonURI(CourseSessionDataBlobRoute)
+                            with: uri
                        andReturn: '{"animals":["betsy","josie"],"kindMap":{"betsy":"cow","josie":"horse"},"procedures":["proc1"],"exclusions":{"proc1":["betsy"]}}'];
     }
   andSo: function() {
@@ -46,7 +47,7 @@
 		  'animals', 'procedures']];
       return [sut makeReservation: data];
     }
-  behold: function() { 
+  behold: function() {
       [sut.network shouldReceive: @selector(POSTFormDataTo:withContent:)
        with: [jsonURI(StoreReservationRoute), 
 	      function(content) {
