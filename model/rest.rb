@@ -6,7 +6,7 @@ class Procedure  < Sequel::Model
 
   def self.names; map(:name); end
 
-  # self description / testing
+  # following are for testing
 
   def self.random(overrides = {})
     defaults = {
@@ -27,7 +27,15 @@ end
 class Animal < Sequel::Model
   one_to_many :uses
 
-  # self description / testing
+  def self.names; map(:name); end
+
+  def self.kind_map
+    map = {}
+    Animal.all.each { | a | map[a.name] = a.kind }
+    map
+  end
+
+  # following are for testing
 
   def self.random(overrides = {})
     defaults = {

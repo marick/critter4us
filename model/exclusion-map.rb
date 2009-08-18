@@ -52,7 +52,9 @@ private
     rows.each do | row |
       retval[row[:procedure_name]] << row[:animal_name]
     end
-    retval.each { | k, v | v.uniq! }
+    # The sorting is for testing. The uniq! is no longer necessary,
+    # but is a desirable invariant anyway.
+    retval.each { | k, v | v.sort!; v.uniq! }
     retval
   end
 

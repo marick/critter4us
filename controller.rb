@@ -43,6 +43,21 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
     File.read(File.join(options.public, 'index.html'))
   end
 
+  get '/json/course_session_data_blob' do
+    internal = move_to_internal_format(params)
+    jsonically do 
+      retval = {
+        'animals' => Animal.names.sort,
+        'procedures' => Procedure.names.sort,
+        'kindMap' => Animal.kind_map,
+        'exclusions' => ExclusionMap.new(internal[:date],
+                                         internal[:morning]).to_hash
+      }
+      # pp retval
+      retval
+    end
+  end
+
   get '/json/procedures' do
     jsonically do 
       typing_as 'procedures' do
