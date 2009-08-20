@@ -192,6 +192,17 @@ var Skip = function() {}
 }
 
 
+-(void)          testAction: during
+                      andSo: consequence
+{
+  [self       beforeApp: Skip
+         previousAction: Skip
+                 during: during
+		 behold: Skip
+	          andSo: consequence];
+}
+
+
 // OLD FAVORED NAMES
 
 
