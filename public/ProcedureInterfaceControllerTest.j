@@ -35,6 +35,25 @@
 }
 
 
+- (void)testBeginningWithSomeProceduresChosen
+{
+  [scenario
+   during: function() {
+      [sut beginUsingChosenProcedures: ['cc', 'B', 'aaa']
+                   unchosenProcedures: ['z', 'f']];
+    }
+  behold: function() {
+      [sut.unchosenProcedureTable shouldReceive: @selector(reloadData)];
+      [sut.chosenProcedureTable shouldReceive: @selector(reloadData)];
+    }
+  andSo: function() {
+      [self unchosenProcedureTableWillContain: ['f', 'z']];
+      [self chosenProcedureTableWillContain: ["aaa", "B", "cc"]];
+    }
+   ]
+}
+
+
 -(void) testBeginningAgain
 {
   [scenario 

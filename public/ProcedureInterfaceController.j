@@ -35,9 +35,16 @@
 
 - (void)beginUsingProcedures: (CPArray) procedures
 {
-  unchosenProcedures = [CPArray arrayWithArray: procedures];
+  [self beginUsingChosenProcedures: [] unchosenProcedures: procedures];
+}
+
+- (void)beginUsingChosenProcedures: (CPArray) chosen unchosenProcedures: (CPArray) unchosen
+{
+  unchosenProcedures = [CPArray arrayWithArray: unchosen];
   [unchosenProcedures sortUsingSelector: @selector(caseInsensitiveCompare:)];
-  chosenProcedures = [];
+
+  chosenProcedures = chosen;
+  [chosenProcedures sortUsingSelector: @selector(caseInsensitiveCompare:)];
 
   [unchosenProcedureTable reloadData];
   [chosenProcedureTable reloadData];
