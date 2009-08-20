@@ -50,11 +50,19 @@
 
 - (void) beginUsingAnimals: (CPArray) anArray withKindMap: (id) aJSHash
 {
-  allAnimals = [CPArray arrayWithArray: anArray]
+  [self beginUsingAnimals: anArray
+          withAlreadyUsed: []
+	      withKindMap: aJSHash];
+}
+
+
+- (void) beginUsingAnimals: (CPArray) animals withAlreadyUsed: (CPArray) inUse withKindMap: (id) aJSHash
+{
+  allAnimals = [CPArray arrayWithArray: animals]
   nameToKind = aJSHash
 
   [self allAnimalsAreAvailable];
-  [self noAnimalsAreChosen]
+  [self theseAnimalsAreChosen: inUse]
 
   [table reloadData];
 }
@@ -96,12 +104,16 @@
   [availableAnimals sortUsingSelector: @selector(caseInsensitiveCompare:)];
 }
 
-- (void)noAnimalsAreChosen
+- (void)theseAnimalsAreChosen: (CPArray) alreadyChosen
 {
   isChosen = [CPMutableDictionary dictionary];
   for(var i=0; i < [availableAnimals count]; i++)
     {
-      [isChosen setValue: NO forKey: availableAnimals[i]];
+      var animal = availableAnimals[i];
+      var chosen = NO;
+      if ([alreadyChosen containsObject: animal])
+	chosen = YES;
+      [isChosen setValue: chosen forKey: animal];
     }
 }
 

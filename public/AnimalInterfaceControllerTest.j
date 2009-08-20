@@ -31,6 +31,23 @@
     }];
 }
 
+- (void) testAnimalsCanBePutInUseImmediately
+{
+  [scenario 
+    during: function() {
+      [sut beginUsingAnimals: ["cc", "B", "aaa"]
+             withAlreadyUsed: ['cc', 'aaa']
+                 withKindMap: {"cc":"ckind","B":"bkind","aaa":"akind"}]
+       }
+    behold: function() { 
+      [sut.table shouldReceive: @selector(reloadData)];
+    }
+    andSo: function() {
+	[self animalTableWillContainNames: ["aaa (akind)", "B (bkind)", "cc (ckind)"]];
+	[self animalTableWillHaveCorrespondingChecks: [YES, NO, YES]];
+    }];
+}
+
 -(void) testBeginningAgain
 {
   [scenario 
