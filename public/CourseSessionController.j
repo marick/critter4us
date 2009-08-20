@@ -58,4 +58,15 @@
   [dict setValue: [self deduceTime] forKey: 'time'];
 }
 
+- (id) setIt: (id) jsHash
+{
+  [courseField setStringValue: jsHash['course']];
+  [instructorField setStringValue: jsHash['instructor']];
+  [dateField setStringValue: jsHash['date']];
+  if (jsHash['time'] === [Time morning])
+    [morningButton setState: CPOnState];
+  else
+    [morningButton setState: CPOffState];
+}
+
 @end

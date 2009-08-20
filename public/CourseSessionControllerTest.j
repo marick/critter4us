@@ -19,14 +19,14 @@
 - (void) testCanFlipViewsToAllowDataEntry
 {
   [scenario
-   given: function() {
+   previousAction: function() {
       [sut.buildingView setHidden: YES];
       [sut.finishedView setHidden: NO];
     }
-  sequence: function() {
+  testAction: function() {
       [sut makeViewsAcceptData];
     }
-  means: function() {
+  andSo: function() {
       [self assertFalse: [sut.buildingView hidden]];
       [self assertTrue: [sut.finishedView hidden]];
     }];
@@ -36,7 +36,7 @@
 - (void)testCanFlipToInformativeButImmutableDisplay
 {
   [scenario 
-   given: function() {
+   previousAction: function() {
       [self userBeginsWithSomeValues];
       [sut.buildingView setHidden: NO];
       [sut.finishedView setHidden: YES];
@@ -52,7 +52,7 @@
 	  return YES;
 	}];
     }
-  andTherefore: function() {
+  andSo: function() {
       [self assertTrue: [sut.buildingView hidden]];
       [self assertFalse: [sut.finishedView hidden]];
     }];
@@ -74,17 +74,37 @@
 {
   var dict = [CPMutableDictionary dictionary];
   [scenario
-   given: function() { 
+   previousAction: function() { 
       [self userBeginsWithSomeValues];
     }
-   sequence: function() {
+   testAction: function() {
       [sut spillIt: dict];
     }
-  means: function() {
+  andSo: function() {
       [self assert: "some course" equals: [dict valueForKey: 'course']];
       [self assert: "some instructor" equals: [dict valueForKey: 'instructor']];
       [self assert: "some date" equals: [dict valueForKey:'date']];
       [self assert: [Time morning] equals: [dict valueForKey:'time']];
+    }];
+}
+
+-(void)testCanSetSessionDataArtificially
+{
+  var dict = [CPMutableDictionary dictionary];
+  [scenario
+   testAction: function() {
+      settings = {'course':'the course',
+		  'instructor': 'the instructor',
+		  'date' : 'the date',
+		  'time' : [Time afternoon] };
+      [sut setIt: settings]
+      [sut spillIt: dict];
+    }
+  andSo: function() {
+      [self assert: "the course" equals: [dict valueForKey: 'course']];
+      [self assert: "the instructor" equals: [dict valueForKey: 'instructor']];
+      [self assert: "the date" equals: [dict valueForKey:'date']];
+      [self assert: [Time afternoon] equals: [dict valueForKey:'time']];
     }];
 }
 
