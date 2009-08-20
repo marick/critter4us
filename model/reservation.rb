@@ -44,6 +44,10 @@ class Reservation < Sequel::Model
 
   one_to_many :uses
 
+  def before_destroy
+    uses.each { | use | use.destroy }
+  end
+
   def self.create_with_uses(data)
     ReservationStructureBuilder.build_from(data)
   end

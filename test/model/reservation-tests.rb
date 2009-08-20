@@ -68,4 +68,24 @@ class ReservationModelTests < Test::Unit::TestCase
       assert { @reservation.procedure_names == [ @p1.name, @p2.name] }
     end
   end
+
+
+  should "delete both self and associated uses" do
+    reservation = Reservation.random(:instructor => 'marge') do 
+      use Animal.random(:name => 'animal')
+      use Procedure.random(:name => 'procedure')
+    end
+    reservation.destroy
+    deny { Reservation[:instructor => 'marge'] }
+    assert { Reservation.all.size == 0 }
+    assert { Use.all.size == 0 }
+  end
+
+  should "leave other reservations and uses alone" do
+    deleteme = Reservation.random(:instructor => 'deleteme')
+    saveme = Reservation.random(:instructor => 'saveme')
+    deleteme.destroy
+    deny { Reservation[:instructor => 'deleteme'] }
+    assert { Reservation[:instructor => 'saveme'] }
+  end
 end

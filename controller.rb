@@ -16,6 +16,14 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
   enable :raise_errors
   enable :sessions
 
+  # TODO: Not wild about this. If methodoverride is enabled in the 
+  # test environment, Controller.new returns this:
+  #<Rack::MethodOverride:0x19fbe50 @app=#<Controller:0x19fbf7c @app=nil>>
+  # so test calls like 
+  #    Controller.new.authorizer = ... 
+  # die with method-not-found.
+  enable :methodoverride unless environment == :test
+
   attr_accessor :test_view_builder
   attr_writer :authorizer
 
@@ -100,6 +108,12 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
   get '/reservation/:number' do
     number = params[:number]
     ReservationView.new(:reservation => Reservation[number]).to_s
+  end
+
+  delete '/reservation/:number' do
+    number = params[:number]
+    Reservation[number].destroy
+    redirect '/reservations'
   end
 
   get '/reservations' do 
