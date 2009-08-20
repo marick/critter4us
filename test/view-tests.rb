@@ -2,20 +2,10 @@ $: << '..' unless $in_rake
 require 'test/testutil/requires'
 require 'model/requires'
 require 'view'
+require 'assert2/xhtml'
 
 class ViewTests < Test::Unit::TestCase
   context "reservation display" do
-    should "know how to display time of day" do
-      morning = Reservation.random(:morning => true)
-      morning_view = ReservationView.new(:reservation => morning)
-      
-      afternoon = Reservation.random(:morning => false)
-      afternoon_view = ReservationView.new(:reservation => afternoon)
-
-      assert { 'morning' == morning_view.time_of_day(morning) }
-      assert { 'afternoon' == afternoon_view.time_of_day(afternoon) }
-    end
-
     should "include session information in output" do
       expected_date = '2009-09-03'
       expected_morning = "morning"
@@ -70,6 +60,33 @@ class ViewTests < Test::Unit::TestCase
       assert { r[reservation.uses[0].animal.name] =~ output }
       assert { r[reservation.uses[0].procedure.name] =~ output }
     end
+
+    should "know how to display time of day" do
+      morning = Reservation.random(:morning => true)
+      morning_view = ReservationView.new(:reservation => morning)
+      
+      afternoon = Reservation.random(:morning => false)
+      afternoon_view = ReservationView.new(:reservation => afternoon)
+
+      assert { 'morning' == morning_view.time_of_day(morning) }
+      assert { 'afternoon' == afternoon_view.time_of_day(afternoon) }
+    end
+
+    should "contain well-formed delete button" do
+      reservation = Reservation.random(:course => 'v=m=1')
+
+      output = ReservationListView.new(:reservations => [reservation]).to_s
+      assert_xhtml(output) do
+        td do
+          form :method => 'POST',
+               :action => "reservation/#{reservation.id}" do 
+            input(:type => 'hidden', :value => "DELETE", :name => "_method")
+            input(:type => 'submit')
+          end
+        end
+      end
+    end
+
   end
 end
 

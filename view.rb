@@ -29,15 +29,24 @@ class ReservationListView < Erector::Widget
         title 'All Reservations'
       end
       body do
-        sorted_reservations.each do | r | 
-          p do 
-            long_form(r)
-            br
-            rawtext "&nbsp;"*8
-            text r.animal_names.join(', ') 
-            br
-            rawtext "&nbsp;"*8
-            text r.procedure_names.join(', ') 
+        table(:border=>"1px", :cellpadding => "5px", :cellspacing=>"0px") do 
+          sorted_reservations.each do | r | 
+            tr do
+              td(:style => 'width: 7em;') { text r.date.to_s }
+              td { text time_of_day(r) }
+              td { a "#{r.instructor}@illinois.edu",
+                :href=>"mailto:#{r.instructor}@illinois.edu" }
+              td { text r.course }
+              td { text r.animal_names.join(', ') }
+              td { text r.procedure_names.join(', ') }
+              td do
+                form(:method => "POST",
+                     :action => "reservation/#{r.id}") do 
+                  input(:type => 'submit', :value=>'Delete')
+                  input(:type => 'hidden', :value=>"DELETE", :name=>"_method")
+                end
+              end
+            end
           end
         end
       end
