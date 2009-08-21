@@ -22,10 +22,12 @@ task :local_db_create do
      require "admin/create.rb"
 end
 
+desc "Deploy new version on staging server."
 task :stage do 
      `git push staging master`
 end
 
+desc "Push new version into production."
 task :deploy do 
      `git push heroku`
 end
