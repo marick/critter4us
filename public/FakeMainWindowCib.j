@@ -82,9 +82,10 @@
   [contentView addSubview: buildingView];
   [finishedView setHidden:YES];
 
-  var label = [[CPTextField alloc] initWithFrame:CGRectMake(10, 40, 500, 30)];
-  [label setStringValue: "1. Fill in the information, then click the button."];
-  [buildingView addSubview:label];
+  var optionsView = [[CPWebView alloc] initWithFrame: CGRectMake(10,30, 700,40)];
+  [optionsView loadHTMLString:@"1. Fill in the information, then click the button. <a href=\"reservations\" target=\"_blank\">Or click here to see all reservations.</a>" baseURL: nil];
+  [buildingView addSubview: optionsView];
+
 
   var x = 10;
   var width = 45
