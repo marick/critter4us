@@ -166,7 +166,7 @@
   [goButton setAction: @selector(sessionReady:)];
 
   // Temporary for testing
-  [instructorField setStringValue: "Morin"];
+  [instructorField setStringValue: "morin"];
   [courseField setStringValue: "VM333"];
   [dateField setStringValue: "2009-09-23"];
 
