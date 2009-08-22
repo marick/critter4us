@@ -12,6 +12,7 @@
 @implementation FakeMainWindowCib : CPObject
 {
   CPWindow theWindow;
+  CPView theOutermostView;
   PersistentStore persistentStore;
   CPArray customObjectsLoaded;
 }
@@ -65,7 +66,7 @@
 {
   theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero()
 	       styleMask:CPBorderlessBridgeWindowMask];
-  var contentView = [theWindow contentView];
+  theOutermostView = [theWindow contentView];
 
   var mainWindowController = [[MainWindowController alloc] init];
   mainWindowController.theWindow = theWindow;
@@ -75,11 +76,11 @@
 
 -(id) loadAndConnectCourseSessionController
 {  
-  var contentView = [theWindow contentView];
+  var myView = theOutermostView;
   var buildingView = [[CPView alloc] initWithFrame:CGRectMake(0, 0, 900, 120)];
   var finishedView = [[CPView alloc] initWithFrame:CGRectMake(0, 0, 900, 120)];
-  [contentView addSubview: finishedView];
-  [contentView addSubview: buildingView];
+  [myView addSubview: finishedView];
+  [myView addSubview: buildingView];
   [finishedView setHidden:YES];
 
   var optionsView = [[CPWebView alloc] initWithFrame: CGRectMake(10,30, 700,40)];
@@ -181,17 +182,17 @@
   
 - (id) loadAndConnectProcedureInterfaceController
 {
-  var contentView = [[CPView alloc] initWithFrame: CGRectMake(10, 140, 600, 400)];
-  [[theWindow contentView] addSubview: contentView];
+  var myView = [[CPView alloc] initWithFrame: CGRectMake(10, 140, 600, 400)];
+  [theOutermostView addSubview: myView];
 
 
   var label = [[CPTextField alloc] initWithFrame:CGRectMake(0, 0, 500, 30)];
   [label setStringValue: "2. Click the procedures to be used in the lab."];
-  [contentView addSubview:label];
+  [myView addSubview:label];
 
   var note = [[CPTextField alloc] initWithFrame:CGRectMake(0, 20, 600, 30)];
   [note setStringValue: "Animals that may not be used for that procedure will be removed from the table on the far right."];
-  [contentView addSubview:note];
+  [myView addSubview:note];
 
 
   var unchosenProcedureTable = [[CPTableView alloc] initWithFrame: CGRectMake(0, 0, 250, 250)];
@@ -204,7 +205,7 @@
   var cscrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0,60,250,250)];
   [cscrollView setDocumentView:unchosenProcedureTable];
   [cscrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
-  [contentView addSubview:cscrollView];
+  [myView addSubview:cscrollView];
 
 
   var chosenProcedureTable = [[CPTableView alloc] initWithFrame: CGRectMake(0, 0, 250, 250)];
@@ -217,13 +218,13 @@
   var uscrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(260,60,250,250)];
   [uscrollView setDocumentView:chosenProcedureTable];
   [uscrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
-  [contentView addSubview:uscrollView];
+  [myView addSubview:uscrollView];
 
 
 
   var procedureController = [[ProcedureInterfaceController alloc] init];
   procedureController.persistentStore = persistentStore;
-  procedureController.containingView = contentView;
+  procedureController.containingView = myView;
 
   procedureController.unchosenProcedureTable = unchosenProcedureTable;
   [unchosenProcedureTable setDataSource: procedureController];
@@ -246,13 +247,13 @@
   var animalController = [[AnimalInterfaceController alloc] init];
   GlobalCheckboxTarget = animalController;
 
-  var contentView = [[CPView alloc] initWithFrame: CGRectMake(650, 140, 300, 900)];
-  [[theWindow contentView] addSubview: contentView];
+  var myView = [[CPView alloc] initWithFrame: CGRectMake(650, 140, 300, 900)];
+  [theOutermostView addSubview: myView];
 
 
   var label = [[CPTextField alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
   [label setStringValue: "3. Check which animals are to be reserved."];
-  [contentView addSubview:label];
+  [myView addSubview:label];
 
    var animalTable = [[CPTableView alloc] initWithFrame: CGRectMake(0, 0, 250, 250)];
   var checkColumn = [[CheckboxTableColumn alloc] initWithIdentifier:@"checks"];
@@ -271,11 +272,11 @@
   var scrollView = [[CPScrollView alloc] initWithFrame:CGRectMake(0,60,250,250)];
   [scrollView setDocumentView:animalTable];
   [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
-  [contentView addSubview:scrollView];
-  [contentView setHidden:YES];
+  [myView addSubview:scrollView];
+  [myView setHidden:YES];
 
   animalController.persistentStore = persistentStore;
-  animalController.containingView = contentView;
+  animalController.containingView = myView;
   animalController.nameColumn = nameColumn;
   animalController.checkColumn = checkColumn;
 
@@ -294,21 +295,21 @@
 {
   var reservationController = [[ReservationController alloc] init];
 
-  var contentView = [[CPView alloc] initWithFrame: CGRectMake(650, 480, 300, 100)];
-  [contentView setHidden:YES];
-  [[theWindow contentView] addSubview: contentView];
+  var myView = [[CPView alloc] initWithFrame: CGRectMake(650, 480, 300, 100)];
+  [myView setHidden:YES];
+  [theOutermostView addSubview: myView];
 
   var reserveLabel = [[CPTextField alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
   [reserveLabel setStringValue: "4. When you're ready to reserve, just click."];
-  [contentView addSubview:reserveLabel];
+  [myView addSubview:reserveLabel];
 
   var reserveButton = [[CPButton alloc] initWithFrame:CGRectMake(80, 30, 80, 30)];
   [reserveButton setTitle: "Reserve"];
   [reserveButton setTarget: reservationController];
   [reserveButton setAction: @selector(makeReservation:)];
-  [contentView addSubview:reserveButton];
+  [myView addSubview:reserveButton];
 
-  reservationController.containingView = contentView;
+  reservationController.containingView = myView;
   reservationController.button = reserveButton;
 
   [customObjectsLoaded addObject:reservationController];
@@ -318,13 +319,13 @@
 -(id) loadAndConnectResultController
 {
   var resultController = [[ResultController alloc] init];
-  var contentView = [[CPView alloc] initWithFrame: CGRectMake(100,250,400,50)];
-  [contentView setHidden:YES];
-  [[theWindow contentView] addSubview: contentView];
-  resultController.containingView = contentView;
+  var myView = [[CPView alloc] initWithFrame: CGRectMake(100,250,400,50)];
+  [myView setHidden:YES];
+  [theOutermostView addSubview: myView];
+  resultController.containingView = myView;
 
   var webView = [[CPWebView alloc] initWithFrame: CGRectMake(0,0,400,50)];
-  [contentView addSubview: webView];
+  [myView addSubview: webView];
   //[webView loadHTMLString:@"<a href=\"http://arxta.net\" target=\"_blank\">Click me!</a>" baseURL: nil];
 
   resultController.link = webView;
