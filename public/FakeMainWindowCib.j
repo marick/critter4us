@@ -10,24 +10,23 @@
 
 @implementation FakeMainWindowCib : CPObject
 {
-  CPWindow theWindow;
   CPView theOutermostView;
   PersistentStore persistentStore;
   CPArray customObjectsLoaded;
-  CPResponder firstResponder;
+  CPResponder desiredFirstResponder;
 }
 
-+ (void)load
+- (CPResponder) desiredFirstResponder
 {
-  [[[FakeMainWindowCib alloc] init] load];
+  return desiredFirstResponder;
 }
 
-- (void)load
+- (void)loadUsingView: aView
 {
+  theOutermostView = aView;
   customObjectsLoaded = [[CPArray alloc] init];
 
   [self loadGlobalPersistentStore];
-  [self loadAndConnectWindowController];
   var courseSessionController = [self loadAndConnectCourseSessionController];
   var procedureController = [self loadAndConnectProcedureInterfaceController];
   var animalController = [self loadAndConnectAnimalInterfaceController];
@@ -44,8 +43,6 @@
   controllerCoordinator.persistentStore = persistentStore;
 
   [self awakenAllObjects];
-
-  [theWindow makeFirstResponder: firstResponder];
 }
 
 - (void) loadControllerCoordinator
@@ -61,15 +58,6 @@
 {
   persistentStore = [[PersistentStore alloc] init];
   persistentStore.network = [[NetworkConnection alloc] init];
-}
-
-- (void) loadAndConnectWindowController
-{
-  theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero()
-	       styleMask:CPBorderlessBridgeWindowMask];
-  theOutermostView = [[CPView alloc] initWithFrame: [[theWindow contentView] frame]];
-  [[theWindow contentView] addSubview: theOutermostView];
-  [theWindow orderFront:self];
 }
 
 -(id) loadAndConnectCourseSessionController
@@ -169,7 +157,7 @@
   [courseField setStringValue: "VM333"];
   [dateField setStringValue: "2009-09-23"];
 
-  firstResponder = courseField;
+  desiredFirstResponder = courseField;
   [courseField setNextKeyView: dateField];
   [dateField setNextKeyView: afternoonButton];
 

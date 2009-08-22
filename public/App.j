@@ -3,12 +3,24 @@
 
 @implementation App : CPObject
 {
+  CPWindow theWindow;
+  CPView reservationMakerWindowish;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
 {
   [self createMainMenu];
-  [FakeMainWindowCib load];
+
+  theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero()
+	       styleMask:CPBorderlessBridgeWindowMask];
+  [theWindow orderFront:self];
+
+  reservationMakerWindowish = [[CPView alloc] initWithFrame: [[theWindow contentView] frame]];
+  [[theWindow contentView] addSubview: reservationMakerWindowish];
+
+  cib = [[FakeMainWindowCib alloc] init];
+  [cib loadUsingView: reservationMakerWindowish];
+  [theWindow makeFirstResponder: [cib desiredFirstResponder]];
 }
 
 -(void)createMainMenu
@@ -34,6 +46,16 @@
 
   [CPApp setMainMenu: mainMenu];
   [CPMenu setMenuBarVisible:YES];
+}
+
+- (void) activateReservationMaker: (CPMenuItem) sender
+{
+  [reservationMakerWindowish setHidden:NO];
+}
+
+- (void) activateReservationViewer: (CPMenuItem) sender
+{
+  [reservationMakerWindowish setHidden:YES];
 }
 
 
