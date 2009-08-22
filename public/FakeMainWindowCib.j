@@ -1,6 +1,5 @@
 @import "Constants.j"
 @import "PersistentStore.j"
-@import "MainWindowController.j"
 @import "CourseSessionController.j"
 @import "ProcedureInterfaceController.j"
 @import "AnimalInterfaceController.j"
@@ -62,16 +61,12 @@
   persistentStore.network = [[NetworkConnection alloc] init];
 }
 
-- (id) loadAndConnectWindowController
+- (void) loadAndConnectWindowController
 {
   theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero()
 	       styleMask:CPBorderlessBridgeWindowMask];
-  theOutermostView = [theWindow contentView];
-
-  var mainWindowController = [[MainWindowController alloc] init];
-  mainWindowController.theWindow = theWindow;
-  [customObjectsLoaded addObject:mainWindowController];
-  return mainWindowController;
+  theOutermostView = [[CPView alloc] initWithFrame: [[theWindow contentView] frame]];
+  [[theWindow contentView] addSubview: theOutermostView];
 }
 
 -(id) loadAndConnectCourseSessionController
