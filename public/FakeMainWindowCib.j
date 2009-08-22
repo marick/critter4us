@@ -14,6 +14,7 @@
   CPView theOutermostView;
   PersistentStore persistentStore;
   CPArray customObjectsLoaded;
+  CPResponder firstResponder;
 }
 
 + (void)load
@@ -43,7 +44,8 @@
   controllerCoordinator.persistentStore = persistentStore;
 
   [self awakenAllObjects];
-  [theWindow orderFront:self];
+
+  [theWindow makeFirstResponder: firstResponder];
 }
 
 - (void) loadControllerCoordinator
@@ -67,6 +69,7 @@
 	       styleMask:CPBorderlessBridgeWindowMask];
   theOutermostView = [[CPView alloc] initWithFrame: [[theWindow contentView] frame]];
   [[theWindow contentView] addSubview: theOutermostView];
+  [theWindow orderFront:self];
 }
 
 -(id) loadAndConnectCourseSessionController
@@ -166,11 +169,13 @@
   [courseField setStringValue: "VM333"];
   [dateField setStringValue: "2009-09-23"];
 
-  [theWindow makeFirstResponder: courseField];
-  [dateField setNextKeyView: afternoonButton]; // doesn't work.
+  firstResponder = courseField;
+  [courseField setNextKeyView: dateField];
+  [dateField setNextKeyView: afternoonButton];
 
-  [theWindow setDefaultButton: goButton];
-  [theWindow enableKeyEquivalentForDefaultButton];
+  // Doesn't work.
+  //  [theWindow setDefaultButton: goButton];
+  //  [theWindow enableKeyEquivalentForDefaultButton];
   [customObjectsLoaded addObject:sessionController];
   return sessionController;
 }
