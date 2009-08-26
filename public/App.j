@@ -18,9 +18,14 @@
   reservationMakerWindowish = [[CPView alloc] initWithFrame: [[theWindow contentView] frame]];
   [[theWindow contentView] addSubview: reservationMakerWindowish];
 
+  allReservationViewerWindowish = [[CPView alloc] initWithFrame: [[theWindow contentView] frame]];
+  [[theWindow contentView] addSubview: allReservationViewerWindowish];
+
   cib = [[FakeMainWindowCib alloc] init];
   [cib loadUsingView: reservationMakerWindowish];
   [theWindow makeFirstResponder: [cib desiredFirstResponder]];
+
+  [self activateReservationMaker]
 }
 
 -(void)createMainMenu
@@ -51,11 +56,16 @@
 - (void) activateReservationMaker: (CPMenuItem) sender
 {
   [reservationMakerWindowish setHidden:NO];
+  [allReservationViewerWindowish setHidden:YES];
 }
 
 - (void) activateReservationViewer: (CPMenuItem) sender
 {
   [reservationMakerWindowish setHidden:YES];
+  [allReservationViewerWindowish setHidden:NO];
+  var optionsView = [[CPWebView alloc] initWithFrame: CGRectMake(10,30, 700,40)];
+  [optionsView loadHTMLString:@"<b>Some text will go here!</b>" baseURL: nil];
+  [allReservationViewerWindowish addSubview: optionsView];
 }
 
 
