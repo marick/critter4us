@@ -1,5 +1,6 @@
 @import <Foundation/Foundation.j>
 @import "FakeMainWindowCib.j"
+@import "FakeAllReservationWindowCib.j"
 
 @implementation App : CPObject
 {
@@ -11,8 +12,8 @@
 {
   [self createMainMenu];
 
-  theWindow = [[CPWindow alloc] initWithContentRect:CGRectMakeZero()
-	       styleMask:CPBorderlessBridgeWindowMask];
+  theWindow = [[CPWindow alloc] initWithContentRect: CGRectMakeZero()
+	                                  styleMask: CPBorderlessBridgeWindowMask];
   [theWindow orderFront:self];
 
   reservationMakerWindowish = [[CPView alloc] initWithFrame: [[theWindow contentView] frame]];
@@ -21,9 +22,12 @@
   allReservationViewerWindowish = [[CPView alloc] initWithFrame: [[theWindow contentView] frame]];
   [[theWindow contentView] addSubview: allReservationViewerWindowish];
 
-  cib = [[FakeMainWindowCib alloc] init];
+  var cib = [[FakeMainWindowCib alloc] init];
   [cib loadUsingView: reservationMakerWindowish];
   [theWindow makeFirstResponder: [cib desiredFirstResponder]];
+
+  cib = [[FakeAllReservationWindowCib alloc] init];
+  [cib loadUsingView: allReservationViewerWindowish];
 
   [self activateReservationMaker]
 }
@@ -63,11 +67,6 @@
 {
   [reservationMakerWindowish setHidden:YES];
   [allReservationViewerWindowish setHidden:NO];
-  var optionsView = [[CPWebView alloc] initWithFrame: CGRectMake(10,30, 700,40)];
-  [optionsView loadHTMLString:@"<b>Some text will go here!</b>" baseURL: nil];
-  [allReservationViewerWindowish addSubview: optionsView];
 }
-
-
 
 @end
