@@ -50,7 +50,7 @@ class ReservationModelTests < Test::Unit::TestCase
       @reservation = Reservation.create_with_uses(test_data)
     end
 
-    should "can create the cross-product of procedures and animals" do
+    should "create the cross-product of procedures and animals" do
       deny { @reservation.morning}
       assert { Use.all.size == 4 }
       assert { Use[:procedure_id => @p1.id, :animal_id => @a1.id] } 
