@@ -7,23 +7,33 @@
 @import "ResultController.j"
 @import "ControllerCoordinator.j"
 @import "CheckboxHacks.j"
+@import "MakeReservationPageController.j"
 
 @implementation MakeReservationPageCib : CPObject
 {
-  CPView theOutermostView;
+  CPView pageView;
+	CPObject pageController;
   PersistentStore persistentStore;
   CPArray customObjectsLoaded;
   CPResponder desiredFirstResponder;
 }
 
-- (CPResponder) desiredFirstResponder
+- (void)instantiatePageInWindow: (CPWindow) window withOwner: (CPObject) owner
 {
-  return desiredFirstResponder;
+	var containingView = [window contentView];
+	pageView = [[CPView alloc] initWithFrame: [containingView frame]];
+  [containingView addSubview: pageView];
+
+	pageController = [[MakeReservationPageController alloc] init];
+	pageController.pageView = pageView;
+	owner.makeReservationPageController = pageController;
+	
+	[self connect];
 }
 
-- (void)loadUsingView: aView
+
+- (void)connect
 {
-  theOutermostView = aView;
   customObjectsLoaded = [[CPArray alloc] init];
 
   [self loadGlobalPersistentStore];
@@ -62,7 +72,7 @@
 
 -(id) loadAndConnectCourseSessionController
 {  
-  var myView = theOutermostView;
+  var myView = pageView;
   var buildingView = [[CPView alloc] initWithFrame:CGRectMake(0, 0, 900, 120)];
   var finishedView = [[CPView alloc] initWithFrame:CGRectMake(0, 0, 900, 120)];
   [myView addSubview: finishedView];
@@ -157,7 +167,7 @@
   [courseField setStringValue: "VM333"];
   [dateField setStringValue: "2009-09-23"];
 
-  desiredFirstResponder = courseField;
+	[pageController setDesiredFirstResponder:courseField];
   [courseField setNextKeyView: dateField];
   [dateField setNextKeyView: afternoonButton];
 
@@ -171,7 +181,7 @@
 - (id) loadAndConnectProcedureInterfaceController
 {
   var myView = [[CPView alloc] initWithFrame: CGRectMake(10, 140, 600, 400)];
-  [theOutermostView addSubview: myView];
+  [pageView addSubview: myView];
 
 
   var label = [[CPTextField alloc] initWithFrame:CGRectMake(0, 0, 500, 30)];
@@ -236,7 +246,7 @@
   GlobalCheckboxTarget = animalController;
 
   var myView = [[CPView alloc] initWithFrame: CGRectMake(650, 140, 300, 900)];
-  [theOutermostView addSubview: myView];
+  [pageView addSubview: myView];
 
 
   var label = [[CPTextField alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
@@ -285,7 +295,7 @@
 
   var myView = [[CPView alloc] initWithFrame: CGRectMake(650, 480, 300, 100)];
   [myView setHidden:YES];
-  [theOutermostView addSubview: myView];
+  [pageView addSubview: myView];
 
   var reserveLabel = [[CPTextField alloc] initWithFrame:CGRectMake(0, 0, 300, 30)];
   [reserveLabel setStringValue: "4. When you're ready to reserve, just click."];
@@ -309,7 +319,7 @@
   var resultController = [[ResultController alloc] init];
   var myView = [[CPView alloc] initWithFrame: CGRectMake(100,250,400,50)];
   [myView setHidden:YES];
-  [theOutermostView addSubview: myView];
+  [pageView addSubview: myView];
   resultController.containingView = myView;
 
   var webView = [[CPWebView alloc] initWithFrame: CGRectMake(0,0,400,50)];

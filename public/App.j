@@ -1,11 +1,12 @@
 @import <Foundation/Foundation.j>
-@import "FakeMainWindowCib.j"
-@import "FakeAllReservationWindowCib.j"
+@import "MakeReservationPageCib.j"
+@import "AllReservationsPageCib.j"
 
 @implementation App : CPObject
 {
   CPWindow theWindow;
-  CPView reservationMakerWindowish;
+  CPObject makeReservationPageController;
+  CPObject allReservationsPageController;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -13,23 +14,23 @@
   [self createMainMenu];
 
   theWindow = [[CPWindow alloc] initWithContentRect: CGRectMakeZero()
-	                                  styleMask: CPBorderlessBridgeWindowMask];
+                                          styleMask: CPBorderlessBridgeWindowMask];
   [theWindow orderFront:self];
 
-  reservationMakerWindowish = [[CPView alloc] initWithFrame: [[theWindow contentView] frame]];
-  [[theWindow contentView] addSubview: reservationMakerWindowish];
+  [self createMakeReservationPage];
+  [self createAllReservationsPage];
+  [self activateReservationMaker: self];
+}
 
-  allReservationViewerWindowish = [[CPView alloc] initWithFrame: [[theWindow contentView] frame]];
-  [[theWindow contentView] addSubview: allReservationViewerWindowish];
+-(void)createAllReservationsPage
+{
+  [[AllReservationsPageCib alloc] instantiatePageInWindow: theWindow withOwner: self];
+}
 
-  var cib = [[FakeMainWindowCib alloc] init];
-  [cib loadUsingView: reservationMakerWindowish];
-  [theWindow makeFirstResponder: [cib desiredFirstResponder]];
-
-  cib = [[FakeAllReservationWindowCib alloc] init];
-  [cib loadUsingView: allReservationViewerWindowish];
-
-  [self activateReservationMaker]
+-(void)createMakeReservationPage
+{
+  [[MakeReservationPageCib alloc] instantiatePageInWindow: theWindow withOwner: self];
+  
 }
 
 -(void)createMainMenu
@@ -59,14 +60,15 @@
 
 - (void) activateReservationMaker: (CPMenuItem) sender
 {
-  [reservationMakerWindowish setHidden:NO];
-  [allReservationViewerWindowish setHidden:YES];
+  [makeReservationPageController appear];
+  [makeReservationPageController windowNeedsFirstResponder: theWindow]; // TODO: hack.
+  [allReservationsPageController disappear];
 }
 
 - (void) activateReservationViewer: (CPMenuItem) sender
 {
-  [reservationMakerWindowish setHidden:YES];
-  [allReservationViewerWindowish setHidden:NO];
+  [makeReservationPageController disappear];
+  [allReservationsPageControllerf appear];
 }
 
 @end

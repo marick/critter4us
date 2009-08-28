@@ -12,6 +12,18 @@
   [pageView setSubviews: [randomView]];
 }
 
+- (void) appear
+{
+	[pageView setHidden:NO];
+	alert("This should reload data");
+}
+
+- (void) disappear
+{
+	[pageView setHidden:YES];
+}
+
+
 
 
 @end
