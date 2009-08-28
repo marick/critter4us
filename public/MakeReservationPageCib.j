@@ -8,7 +8,7 @@
 @import "ControllerCoordinator.j"
 @import "CheckboxHacks.j"
 
-@implementation FakeMainWindowCib : CPObject
+@implementation MakeReservationPageCib : CPObject
 {
   CPView theOutermostView;
   PersistentStore persistentStore;
