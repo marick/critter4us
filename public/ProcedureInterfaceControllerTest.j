@@ -81,20 +81,20 @@
 {
   [scenario
    previousAction: function() {
-      [sut beginUsingProcedures: ["chosen", "unchosen"]];
+      [sut beginUsingProcedures: ["artificial insemination", "floating teeth"]];
     }
   during: function() {
-      [self selectProcedure: "chosen"];
+      [self selectProcedure: "artificial insemination"];
     }
   behold: function() {
       [self listenersWillReceiveNotification: ProcedureUpdateNews
-            containingObject: [@"chosen"]];
+            containingObject: [@"artificial insemination"]];
       [sut.unchosenProcedureTable shouldReceive: @selector(reloadData)];
       [sut.chosenProcedureTable shouldReceive: @selector(reloadData)];
     }
   andSo: function() {
-      [self unchosenProcedureTableWillContain: ["unchosen"]];
-      [self chosenProcedureTableWillContain: ["chosen"]];
+      [self unchosenProcedureTableWillContain: ["floating teeth"]];
+      [self chosenProcedureTableWillContain: ["artificial insemination"]];
     }
    ];
 }
