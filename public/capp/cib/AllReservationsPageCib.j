@@ -1,5 +1,5 @@
-@import "Constants.j"
-@import "AllReservationsPageController.j"
+@import "../util/Constants.j"
+@import "../controller/AllReservationsPageController.j"
 
 @implementation AllReservationsPageCib : CPObject
 {

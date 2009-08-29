@@ -1,4 +1,4 @@
-@import "Time.j"
+@import "../util/Time.j"
 
 @implementation TimeTest : OJTestCase
 {

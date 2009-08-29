@@ -1,7 +1,7 @@
 @import <AppKit/AppKit.j>
-@import "MakeReservationPageCib.j"
-@import "AllReservationsPageCib.j"
-@import "MainMenuCib.j"
+@import "cib/MakeReservationPageCib.j"
+@import "cib/AllReservationsPageCib.j"
+@import "cib/MainMenuCib.j"
 
 @implementation App : CPObject
 {

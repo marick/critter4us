@@ -1,6 +1,6 @@
-@import "ControllerCoordinator.j"
+@import "../controller/ControllerCoordinator.j"
 @import "ScenarioTestCase.j"
-@import "Time.j"
+@import "../util/Time.j"
 
 @implementation Spiller : Mock
 {

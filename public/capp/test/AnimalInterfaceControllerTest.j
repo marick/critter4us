@@ -1,6 +1,6 @@
-@import "AnimalInterfaceController.j"
+@import "../controller/AnimalInterfaceController.j"
 @import "ScenarioTestCase.j"
-@import "Time.j"
+@import "../util/Time.j"
 
 @implementation AnimalInterfaceControllerTest : ScenarioTestCase
 {
