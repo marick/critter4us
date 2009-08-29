@@ -1,4 +1,4 @@
-@import "AwakeningObject.j"
+@import "../util/AwakeningObject.j"
 
 @implementation ResultController : AwakeningObject
 {
