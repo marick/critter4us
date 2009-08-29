@@ -22,4 +22,10 @@ ObjectiveJ::BundleTask.new(:critter4us) do |t|
     t.flag          = '-O' if ENV['CONFIG'] == 'Release'
 end
 
-task :default => [:critter4us]
+desc "Run Critter4Us tests"
+task :test do
+  system("cd Critter4Us/test; ojtest *Test.j")
+end
+
+task :default => :test
+# task :default => [:critter4us]

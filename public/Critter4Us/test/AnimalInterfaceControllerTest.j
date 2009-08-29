@@ -1,6 +1,6 @@
-@import "../controller/AnimalInterfaceController.j"
+@import <Critter4Us/controller/AnimalInterfaceController.j>
+@import <Critter4Us/util/Time.j>
 @import "ScenarioTestCase.j"
-@import "../util/Time.j"
 
 @implementation AnimalInterfaceControllerTest : ScenarioTestCase
 {

@@ -1,4 +1,4 @@
-@import "CheckboxHacks.j"
+@import <Critter4Us/util/CheckboxHacks.j>
 
 @implementation CritterCheckBoxTest : OJTestCase
 {

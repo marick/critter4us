@@ -1,6 +1,6 @@
-@import "PersistentStore.j"
+@import <Critter4Us/util/Time.j>
+@import <Critter4Us/PersistentStore.j>
 @import "ScenarioTestCase.j"
-@import "Time.j"
 
 @implementation PersistentStoreTest : ScenarioTestCase
 {

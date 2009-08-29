@@ -1,4 +1,4 @@
-@import "../util/Time.j"
+@import <Critter4Us/util/Time.j>
 
 @implementation TimeTest : OJTestCase
 {

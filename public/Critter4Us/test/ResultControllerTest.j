@@ -1,4 +1,4 @@
-@import "ResultController.j"
+@import <Critter4Us/controller/ResultController.j>
 @import "ScenarioTestCase.j"
 
 @implementation ResultControllerTest : ScenarioTestCase

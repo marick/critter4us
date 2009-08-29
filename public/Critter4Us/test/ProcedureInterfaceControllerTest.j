@@ -1,4 +1,4 @@
-@import "ProcedureInterfaceController.j"
+@import <Critter4Us/controller/ProcedureInterfaceController.j>
 @import "ScenarioTestCase.j"
 
 @implementation ProcedureInterfaceControllerTest : ScenarioTestCase

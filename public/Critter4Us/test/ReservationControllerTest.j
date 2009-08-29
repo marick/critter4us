@@ -1,6 +1,6 @@
-@import "ReservationController.j"
+@import <Critter4Us/util/Time.j>
+@import <Critter4Us/controller/ReservationController.j>
 @import "ScenarioTestCase.j"
-@import "Time.j"
 
 
 @implementation ReservationControllerTest : ScenarioTestCase

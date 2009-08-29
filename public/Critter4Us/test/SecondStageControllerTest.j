@@ -1,4 +1,4 @@
-@import "SecondStageController.j"
+@import <Critter4Us/controller/SecondStageController.j>
 @import "ScenarioTestCase.j"
 
 @implementation SecondStageControllerTest : ScenarioTestCase

@@ -1,4 +1,4 @@
-@import "CourseSessionController.j"
+@import <Critter4Us/controller/CourseSessionController.j>
 @import "ScenarioTestCase.j"
 
 @implementation CourseSessionControllerTest : ScenarioTestCase
