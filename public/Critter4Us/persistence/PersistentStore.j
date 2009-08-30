@@ -44,7 +44,7 @@
 
 - (CPString) pendingReservationTableAsHtml
 {
-    return "<html><head><title>foo</title></head><body>hi</body></html>";
+  return [network GETHtmlfromURL: AllReservationsTableRoute];
 }
 
 // util

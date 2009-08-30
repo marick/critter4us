@@ -12,6 +12,14 @@
   return [data description];
 }
 
+- (CPString)GETHtmlfromURL: (CPString) url
+{
+  var request = [CPURLRequest requestWithURL: url];
+  var data = [CPURLConnection sendSynchronousRequest: request   
+	      returningResponse:nil error:nil]; 
+  return [data description];
+}
+
 - (CPString)POSTFormDataTo: (CPString) url withContent: content
 {
   var request = [CPURLRequest requestWithURL: url];

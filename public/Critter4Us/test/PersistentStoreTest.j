@@ -34,7 +34,6 @@
     }]
 }
 
-
 -(void)testPostingOfReservation
 {
   [scenario 
@@ -63,6 +62,24 @@
    ];
   [self assert: '1' equals: scenario.result];
 }
+
+-(void)testCanFetchTableInfoFromNetwork
+{
+  [scenario
+    during: function() { 
+      return [sut pendingReservationTableAsHtml];
+    }
+  behold: function() {
+      [sut.network shouldReceive: @selector(GETHtmlfromURL:) 
+                            with: AllReservationsTableRoute
+                       andReturn: "<html>stuff</html>"];
+    }
+  andSo: function() { 
+      [self assert: "<html>stuff</html>" equals: scenario.result];
+    }];
+}
+
+// Test utility methods
 
 -(void) testDictionaryToJSStringifiesObjects
 {
