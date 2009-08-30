@@ -79,9 +79,9 @@
   [myView addSubview: buildingView];
   [finishedView setHidden:YES];
 
-  var optionsView = [[CPWebView alloc] initWithFrame: CGRectMake(10,30, 700,40)];
-  [optionsView loadHTMLString:@"1. Fill in the information, then click the button. <a href=\"reservations\" target=\"_blank\">Or click here to see all reservations.</a>" baseURL: nil];
-  [buildingView addSubview: optionsView];
+  var instructionLabel = [[CPTextField alloc] initWithFrame:CGRectMake(10, 30, 400, 30)];
+  [instructionLabel setStringValue: "1. Fill in the information, then click the button."];
+  [buildingView addSubview: instructionLabel];
 
 
   var x = 10;
