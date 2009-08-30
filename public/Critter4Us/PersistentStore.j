@@ -56,7 +56,7 @@
   exclusions = [CPDictionary dictionaryWithJSObject: jsHash['exclusions']];
 }
 
-- (void) makeReservation: dict
+- (CPInteger) makeReservation: dict
 {
   [self checkValidity: dict];
   var jsData = [self dictionaryToJS: dict];
