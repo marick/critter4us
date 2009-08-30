@@ -3,19 +3,26 @@
 
 @implementation AllReservationsPageCib : CPObject
 {
+  
 }
 
 - (void)instantiatePageInWindow: (CPWindow) window withOwner: (CPObject) owner
 {
 	var containingView = [window contentView];
+	
 	var pageView = [[CPView alloc] initWithFrame: [containingView frame]];
   [containingView addSubview: pageView];
+	[pageView setHidden:YES];
+
+	var table = [[CPWebView alloc] initWithFrame: CGRectMake(10,30, 700,40)];
+  [pageView addSubview: table];
 
 	var pageController = [[AllReservationsPageController alloc] init];
 	pageController.pageView = pageView;
-	owner.allReservationsPageController = pageController;
+	pageController.table = table;
+	owner.allReservationsPageController = pageController;	
 	
-	[pageView setHidden:YES];
+	[pageController awakeFromCib];
 }
 
 @end
