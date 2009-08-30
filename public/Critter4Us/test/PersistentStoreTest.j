@@ -1,5 +1,5 @@
 @import <Critter4Us/util/Time.j>
-@import <Critter4Us/PersistentStore.j>
+@import <Critter4Us/persistence/PersistentStore.j>
 @import "ScenarioTestCase.j"
 
 @implementation PersistentStoreTest : ScenarioTestCase

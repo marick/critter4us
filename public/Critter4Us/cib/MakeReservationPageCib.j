@@ -1,5 +1,5 @@
 @import "../util/Constants.j"
-@import "../PersistentStore.j"
+@import "../persistence/PersistentStore.j"
 @import "../controller/CourseSessionController.j"
 @import "../controller/ProcedureInterfaceController.j"
 @import "../controller/AnimalInterfaceController.j"

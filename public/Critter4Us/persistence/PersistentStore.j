@@ -1,6 +1,6 @@
-@import <Foundation/CPObject.j>
-@import "util/Time.j"
-@import "util/AwakeningObject.j"
+@import <Foundation/Foundation.j>
+@import "../util/Time.j"
+@import "../util/AwakeningObject.j"
 
 @implementation NetworkConnection : CPObject
 {
