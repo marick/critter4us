@@ -1,21 +1,24 @@
 @import <AppKit/AppKit.j>
+@import "../util/AwakeningObject.j"
 
-@implementation AllReservationsPageController : CPObject
+@implementation AllReservationsPageController : AwakeningObject
 {
 	CPView pageView;
+	CPView table;
+	PersistentStore persistentStore;
 }
 
-- (void)reloadData
+- (void)reloadData // old
 {
-  var randomView = [[CPWebView alloc] initWithFrame: CGRectMake(10,30, 700,40)];
-  [randomView loadHTMLString:@"<b>Some text will go here!</b>" baseURL: nil];
-  [pageView setSubviews: [randomView]];
+  [table loadHTMLString:@"<b>Some bew text will go here!</b>" baseURL: nil];
 }
 
 - (void) appear
 {
 	[pageView setHidden:NO];
-	alert("This should reload data");
+	
+	var tableHtml = [persistentStore pendingReservationTableAsHtml];
+	[table loadHTMLString:tableHtml baseURL: nil];
 }
 
 - (void) disappear
