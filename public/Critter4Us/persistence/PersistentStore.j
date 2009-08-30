@@ -1,38 +1,8 @@
 @import <Foundation/Foundation.j>
 @import "../util/Time.j"
 @import "../util/AwakeningObject.j"
+@import "NetworkConnection.j"
 
-@implementation NetworkConnection : CPObject
-{
-  CPArray allAnimalNames;
-  id kindMap;   // TODO: this should probably turn into a dictionary.
-  CPDictionary exclusions;
-}
-
-
-- (CPString)GETJsonFromURL: (CPString) url
-{
-  var request = [CPURLRequest requestWithURL: url];
-  var data = [CPURLConnection sendSynchronousRequest: request   
-	      returningResponse:nil error:nil]; 
-  return [data description];
-}
-
-- (CPString)POSTFormDataTo: (CPString) url withContent: content
-{
-  var request = [CPURLRequest requestWithURL: url];
-  [request setHTTPMethod:@"POST"]; 
-  [request setHTTPBody:content]; 
-  [request setValue:"application/x-www-form-urlencoded"
-           forHTTPHeaderField:@"Content-Type"]; 
-
-  var data = [CPURLConnection sendSynchronousRequest: request   
-	      returningResponse:nil error:nil]; 
-  return [data description];
-}
-
-
-@end
 
 @implementation PersistentStore : AwakeningObject
 {
