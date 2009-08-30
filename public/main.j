@@ -9,7 +9,7 @@
 @import <Foundation/Foundation.j>
 @import <AppKit/AppKit.j>
 
-@import "capp/App.j"
+@import "Critter4Us/App.j"
 
 
 function main(args, namedArgs)
