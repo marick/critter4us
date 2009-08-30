@@ -136,6 +136,10 @@
 	{
 	  goodArg = expected(actual);
 	}
+      else if (expected === nil)
+	{
+	  goodArg = (actual === nil);
+	}
       else if (expected.isa != undefined) // There is probably a better test.
 	{
 	  goodArg = [expected isEqual: actual];

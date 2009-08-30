@@ -58,6 +58,13 @@
   [self assertTrue: [mock wereExpectationsFulfilled]];
 }
 
+- (void)testNilCanBeAnExpectedArgument
+{
+  [mock shouldReceive: @selector(foo:bar:) with: [1, nil]];
+  [mock foo: 1 bar: nil];
+  [self assertTrue: [mock wereExpectationsFulfilled]];
+}
+
 - (void)testSingleArgumentsDoNotHaveToBeInArray
 {
   [mock shouldReceive: @selector(foo:) with: "5"];
