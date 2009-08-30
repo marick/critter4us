@@ -3,6 +3,9 @@
 @import "../util/AwakeningObject.j"
 @import "NetworkConnection.j"
 
+// TODO: this is not a singleton/global object. I'm not wild about
+// that because focusOnDate:time: causes state to be set in one
+// "persistent store" and not in "another".
 
 @implementation PersistentStore : AwakeningObject
 {
@@ -37,6 +40,11 @@
   var jsHash = [jsonString objectFromJSON];
   var result = jsHash["reservation"];
   return result;
+}
+
+- (CPString) pendingReservationTableAsHtml
+{
+    return "<html><head><title>foo</title></head><body>hi</body></html>";
 }
 
 // util

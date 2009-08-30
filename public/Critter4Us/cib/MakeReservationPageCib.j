@@ -12,7 +12,7 @@
 @implementation MakeReservationPageCib : CPObject
 {
   CPView pageView;
-	CPObject pageController;
+  CPObject pageController;
   PersistentStore persistentStore;
   CPArray customObjectsLoaded;
   CPResponder desiredFirstResponder;

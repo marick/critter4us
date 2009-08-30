@@ -22,6 +22,10 @@
 	pageController.table = table;
 	owner.allReservationsPageController = pageController;	
 	
+        var persistentStore = [[PersistentStore alloc] init];
+        persistentStore.network = [[NetworkConnection alloc] init];
+        pageController.persistentStore = persistentStore;
+
 	[pageController awakeFromCib];
 }
 
