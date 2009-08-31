@@ -18,7 +18,9 @@
   [scenario
    whileAwakening: function() {
       [sut.window shouldReceive: @selector(registerForDraggedTypes:)
-                                   with: [[ProcedureDragType, AnimalDragType]]];
+                           with: [[ProcedureDragType, AnimalDragType]]];
+      [sut.window shouldReceive: @selector(setDelegate:)
+                           with: sut];
     }];
 }
 @end
