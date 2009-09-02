@@ -77,12 +77,21 @@ Procedure.create(:name => 'embryo transfer (cattle)', :days_delay => 21)
 Procedure.create(:name => 'treadmill exercise (horses)', :days_delay => 0)
 
 
+Animal.create(:name => 'All Star', :kind => 'stallion')
+Animal.create(:name => 'Genesis', :kind => 'gelding')
+Animal.create(:name => 'Ivory', :kind => 'mare')
+Animal.create(:name => 'Pumpkin', :kind => 'mare')
+Animal.create(:name => 'Misty', :kind => 'mare')
+Animal.create(:name => 'Good Morning Sunshine', :kind => 'mare')
+Animal.create(:name => 'Bloombird', :kind => 'mare')
+Animal.create(:name => 'Sunny', :kind => 'mare')
+Animal.create(:name => 'Brooke', :kind => 'cow')
+ 
 
-
-Animal.create(:name => 'brooke', :kind => 'bovine cow')
-Animal.create(:name => 'genesis', :kind => 'equine gelding')
-Animal.create(:name => 'sunny', :kind => 'equine mare')
-Animal.create(:name => 'pumpkin', :kind => 'equine mare')
+# Animal.create(:name => 'brooke', :kind => 'bovine cow')
+# Animal.create(:name => 'genesis', :kind => 'equine gelding')
+# Animal.create(:name => 'sunny', :kind => 'equine mare')
+# Animal.create(:name => 'pumpkin', :kind => 'equine mare')
 
 puts Animal.all.inspect
 
