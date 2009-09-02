@@ -20,12 +20,12 @@ end
 
 desc "Create Database on this machine."
 task :local_db_create do
-     puts "Hello!"
-     $stderr.puts "erristic"
+     puts "1"
      require 'rubygems'
-     require 'path-setting'
-     require 'config'
-     require "admin/create.rb"
+     puts "2"
+#     require 'path-setting'
+#     require 'config'
+#     require "admin/create.rb"
 end
 
 desc "Deploy new version on staging server."
