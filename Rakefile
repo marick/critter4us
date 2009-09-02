@@ -21,11 +21,14 @@ end
 desc "Create Database on this machine."
 task :local_db_create do
      puts "1"
-#     require 'rubygems'
-#     puts "2"
-#     require 'path-setting'
-#     require 'config'
-#     require "admin/create.rb"
+     require 'rubygems'
+     puts "2"
+     require 'path-setting'
+     puts "3"
+     require 'config'
+     puts "4"
+     require "admin/create.rb"
+     puts "5"
 end
 
 desc "Deploy new version on staging server."
