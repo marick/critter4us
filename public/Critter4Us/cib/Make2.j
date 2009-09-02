@@ -21,7 +21,7 @@ DragSourceNumberOfLines = 15;
 DragSourceWindowHeight = DragSourceNumberOfLines * TextLineHeight;
 DragSourceWindowWidth = CompleteTextLineWidth + ScrollbarWidth;
 
-FirstGroupingWindowX = FarthestLeftWindowX + DragSourceWindowWidth + 10;
+FirstGroupingWindowX = FarthestLeftWindowX + DragSourceWindowWidth + 20;
 GroupingWindowVerticalMargin = 10 ;
 TargetWidth = TruncatedTextLineWidth;
 GroupingWindowWidth = TargetWidth * 2 + GroupingWindowVerticalMargin * 3;
@@ -31,26 +31,28 @@ TargetWindowHeight = TargetViewHeight + WindowBottomMargin;
 FirstTargetX = GroupingWindowVerticalMargin
 SecondTargetX = FirstTargetX + TargetWidth + GroupingWindowVerticalMargin
 
-FarthestRightWindowX = FirstGroupingWindowX + GroupingWindowWidth + 30
+FarthestRightWindowX = FirstGroupingWindowX + GroupingWindowWidth + 20
 
 
 
 @implementation Make2 : CPObject
 {
+  CPPanel procedureDragList;
+  CPPanel animalDragList;
+  CPPanel target;
+  
 }
 
 - (void)instantiatePageInWindow: theWindow withOwner: owner
 {
   var contentView = [theWindow contentView];
 
-  var target = [[CPPanel alloc] initWithContentRect:CGRectMake(FirstGroupingWindowX, WindowTops, GroupingWindowWidth, TargetWindowHeight) styleMask:CPHUDBackgroundWindowMask | CPResizableWindowMask];
+  target = [[CPPanel alloc] initWithContentRect:CGRectMake(FirstGroupingWindowX, WindowTops, GroupingWindowWidth, TargetWindowHeight) styleMask:CPHUDBackgroundWindowMask | CPResizableWindowMask];
   [target setTitle:@"Drag from left and right to group procedures with animals used for them"];
   [target setLevel:CPFloatingWindowLevel];
 
   var groupingController = [[GroupingController alloc] initWithWindow:target];
   [groupingController showWindow: self];
-
-
 
   var procedures = [ @"castration",
                         @"floating",
@@ -74,17 +76,34 @@ FarthestRightWindowX = FirstGroupingWindowX + GroupingWindowWidth + 30
 
   var animals = ["betsy", "galaxy", "etc."];
 
-  [[[DragList alloc] initWithTitle: "Procedures"
-                               atX: FarthestLeftWindowX
-                   backgroundColor: ProcedureHintColor
-                           content: procedures
-                            ofType: ProcedureDragType] orderFront:nil];
-  [[[DragList alloc] initWithTitle: "Animals"
-                               atX: FarthestRightWindowX
-                   backgroundColor: AnimalHintColor
-                           content: animals
-                            ofType: AnimalDragType] orderFront:nil];
+  procedureDragList = [[DragList alloc] initWithTitle: "Procedures"
+                                                   atX: FarthestLeftWindowX
+                                       backgroundColor: ProcedureHintColor
+                                               content: procedures
+                                                ofType: ProcedureDragType];
+
+  animalDragList = [[DragList alloc] initWithTitle: "Animals"
+                                                atX: FarthestRightWindowX
+                                    backgroundColor: AnimalHintColor
+                                            content: animals
+                                             ofType: AnimalDragType];
   [groupingController awakeFromCib];
+
+  owner.newMakeReservationPageController = self;
+}
+
+-(void) appear
+{
+  [procedureDragList orderFront: self];
+  [animalDragList orderFront: self];
+  [target orderFront: self];
+}
+
+-(void) disappear
+{
+  [procedureDragList orderOut: self];
+  [animalDragList orderOut: self];
+  [target orderOut: self];
 }
 
 @end
@@ -339,6 +358,5 @@ FarthestRightWindowX = FirstGroupingWindowX + GroupingWindowWidth + 30
   [animalView setContent: [[animalView content] arrayByAddingObject: aName]];
   [[window contentView] setNeedsDisplay: YES];
 }
-
 
 @end

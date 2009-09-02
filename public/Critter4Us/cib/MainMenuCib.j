@@ -6,6 +6,7 @@
   CPMenu mainMenu;
   CPMenu windowMenu;
   CPMenuItem reservationMakerMenuItem;
+  CPMenuItem newReservationMakerMenuItem;
   CPMenuItem reservationViewerMenuItem;
 }
 
@@ -17,6 +18,8 @@
   [self addWindowMenuToMainMenu];
   [self addWindowMenuItemThatMakesReservation];
   [self addWindowMenuItemThatViewsAllReservations];
+  [self separate];
+  [self addWindowNewMenuItemThatMakesReservation];
 }
 
 -(void)addMainMenu
@@ -38,13 +41,20 @@
 }
 
 
-
 -(void)addWindowMenuItemThatMakesReservation
 {
   reservationMakerMenuItem = 
        [self aWindowMenuItemwithTitle:@"Make a Reservation"
                                action:@selector(activateReservationMaker:)
                         keyEquivalent:'M'];
+}
+
+-(void)addWindowNewMenuItemThatMakesReservation
+{
+  newReservationMakerMenuItem = 
+       [self aWindowMenuItemwithTitle:@"Mockup of New Way to Make a Reservation"
+                               action:@selector(activateNewReservationMaker:)
+                        keyEquivalent:'N'];
 }
 
 -(void)addWindowMenuItemThatViewsAllReservations
@@ -57,6 +67,11 @@
 
 // Util
 
+-(void) separate
+{
+  [windowMenu addItem: [CPMenuItem separatorItem]];
+}
+
 -(CPMenuItem)aWindowMenuItemwithTitle: aTitle action: anAction keyEquivalent: aKeyEquivalent
 {
   var item = [[CPMenuItem alloc] initWithTitle:aTitle
@@ -67,6 +82,5 @@
   [windowMenu addItem:item];
   return item;
 }
-
 
 @end
