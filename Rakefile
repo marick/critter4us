@@ -11,7 +11,7 @@ end
 
 desc "Create Database on staging server." 
 task :staging_db_create do 
-     `heroku rake local_db_create --app critter4us-staging`
+     system("heroku rake local_db_create --app critter4us-staging")
 end
 
 task :echo do
