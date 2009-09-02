@@ -14,8 +14,14 @@ task :staging_db_create do
      `heroku rake local_db_create --app critter4us-staging`
 end
 
+task :echo do
+     puts "HI"
+end
+
 desc "Create Database on this machine."
 task :local_db_create do
+     puts "Hello!"
+     $stderr.puts "erristic"
      require 'rubygems'
      require 'path-setting'
      require 'config'
