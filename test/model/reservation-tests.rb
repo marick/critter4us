@@ -59,6 +59,13 @@ class ReservationModelTests < Test::Unit::TestCase
       assert { Use[:procedure_id => @p2.id, :animal_id => @a2.id] } 
     end
 
+    should "include the cross-product in a single grouping" do
+      assert { @reservation.groupings.size == 1 } 
+      Use.all.each do | use |
+        assert { use.grouping.id == Grouping.first.id }
+      end
+    end
+
     should "be able to list all the animals involved" do
       assert { @reservation.animal_names == [ @a1.name, @a2.name] }
     end

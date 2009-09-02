@@ -13,6 +13,7 @@ class Reservation < Sequel::Model
     def initialize(data)
       reservation_part = partition_reservation_data(data)
       @reservation = Reservation.create(reservation_part)
+      @grouping = Grouping.create(:reservation => reservation)
       cross_product_of_procedures_and_animals
     end
 
@@ -38,18 +39,22 @@ class Reservation < Sequel::Model
       animal = Animal[:name => animal_name]
       Use.create(:procedure => procedure,
                  :animal => animal,
-                 :reservation => @reservation)
+                 :grouping => @grouping)
     end
   end
 
-  one_to_many :uses
+  one_to_many :groupings
 
   def before_destroy
-    uses.each { | use | use.destroy }
+    groupings.each { | grouping | grouping.destroy }
   end
 
   def self.create_with_uses(data)
     ReservationStructureBuilder.build_from(data)
+  end
+
+  def uses
+    groupings.collect{ | grouping | grouping.uses }.flatten
   end
 
   def animal_names; x_names(:animal); end
@@ -70,7 +75,8 @@ class Reservation < Sequel::Model
     if block
       class_eval(&block)
 
-      Use.create(:reservation => reservation, 
+      grouping = Grouping.create(:reservation => reservation)
+      Use.create(:grouping => grouping, 
                  :animal => @animal_created_in_block,
                  :procedure => @procedure_created_in_block)
     end

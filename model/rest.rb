@@ -56,7 +56,20 @@ end
 class Use < Sequel::Model
   many_to_one :procedure
   many_to_one :animal
+  many_to_one :grouping
+
+  def reservation
+    grouping.reservation
+  end
+end
+
+class Grouping < Sequel::Model
   many_to_one :reservation
+  one_to_many :uses
+
+  def before_destroy
+    uses.each { | use | use.destroy }
+  end
 end
 
 

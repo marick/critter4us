@@ -20,18 +20,24 @@ def create_tables
     String :instructor
   end
 
+  DB.create_table! :groupings do
+    primary_key :id
+    foreign_key :reservation_id, :reservations
+  end
+
   DB.create_table! :uses do
     primary_key :id
     foreign_key :procedure_id, :procedures
     foreign_key :animal_id, :animals
-    foreign_key :reservation_id, :reservations
+    foreign_key :grouping_id, :groupings
   end
 
   DB.create_view(:expanded_uses,
-                 DB[:procedures, :animals, :uses, :reservations].
+                 DB[:procedures, :animals, :uses, :groupings, :reservations].
                  filter(:procedures__id => :uses__procedure_id).
                  filter(:animals__id => :uses__animal_id).
-                 filter(:reservations__id => :uses__reservation_id).
+                 filter(:groupings__id => :uses__grouping_id).
+                 filter(:reservations__id => :groupings__reservation_id).
                  select(:procedures__name.as(:procedure_name),
                         :animals__name.as(:animal_name),
                         :reservations__date.as(:reservation_date),
@@ -54,6 +60,7 @@ def drop_tables
   DB.drop_table :uses
   DB.drop_table :reservations
   DB.drop_table :authorizations
+  DB.drop_table :groupings
 end
 
 
@@ -61,6 +68,7 @@ def empty_tables
   DB[:uses].delete
   DB[:animals].delete
   DB[:procedures].delete
+  DB[:groupings].delete
   DB[:reservations].delete
   DB[:authorizations].delete
 end
