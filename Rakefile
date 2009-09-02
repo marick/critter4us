@@ -21,8 +21,8 @@ end
 desc "Create Database on this machine."
 task :local_db_create do
      puts "1"
-     require 'rubygems'
-     puts "2"
+#     require 'rubygems'
+#     puts "2"
 #     require 'path-setting'
 #     require 'config'
 #     require "admin/create.rb"
