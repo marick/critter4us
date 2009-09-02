@@ -31,6 +31,8 @@
 
 - (CPData)collectionView:(CPCollectionView)aCollectionView dataForItemsAtIndexes:(CPIndexSet)indices forType:(CPString)aType
 {
+  alert("here's drop data");
+
   return [CPKeyedArchiver archivedDataWithRootObject:["foo"]];
 }
 

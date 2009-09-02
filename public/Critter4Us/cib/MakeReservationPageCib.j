@@ -8,23 +8,8 @@
 @import "../controller/ControllerCoordinator.j"
 @import "../util/CheckboxHacks.j"
 @import "../controller/MakeReservationPageController.j"
-@import "../controller/GroupingController.j"
-@import "../controller/ProcedureDragListController.j"
 
-@implementation DragListItemView : CPTextField
-{
-}
 
-- (void)setSelected:(BOOL)isSelected
-{
-  [self setBackgroundColor:isSelected ? [CPColor grayColor] : nil];
-}
-
-- (void)setRepresentedObject:(id)anObject
-{
-  [self setStringValue: anObject];
-}
-@end
 
 @implementation MakeReservationPageCib : CPObject
 {
@@ -55,14 +40,11 @@
 
   [self loadGlobalPersistentStore];
   var courseSessionController = [self loadAndConnectCourseSessionController];
-  var procedureDragListController = [self loadAndConnectProcedureDragListController];
   var procedureController = [self loadAndConnectProcedureInterfaceController];
   var animalController = [self loadAndConnectAnimalInterfaceController];
   var reservationController = [self loadAndConnectReservationController];
 
   var resultController = [self loadAndConnectResultController];
-
-  var groupingController = [self loadAndConnectGroupingController];
 
   var controllerCoordinator = [self loadAndConnectControllerCoordinator];
   controllerCoordinator.courseSessionController = courseSessionController;
@@ -90,18 +72,6 @@
   persistentStore.network = [[NetworkConnection alloc] init];
 }
 
--(id) loadAndConnectGroupingController
-{
-  var target = [[CPPanel alloc] initWithContentRect:CGRectMake(400, 400, 425, 225) styleMask:CPHUDBackgroundWindowMask | CPResizableWindowMask];
-  [target setTitle:@"Drag Procedures, then Animals onto Here"];
-  [target setLevel:CPFloatingWindowLevel];
-
-  groupingController = [[GroupingController alloc] initWithWindow: target];
-  [groupingController showWindow: self];
-
-  [customObjectsLoaded addObject:groupingController];
-  return groupingController;
-}
 
 -(id) loadAndConnectCourseSessionController
 {  
@@ -273,41 +243,6 @@
   return procedureController;
 }
 
-- (id) loadAndConnectProcedureDragListController
-{
-  var window = [[CPPanel alloc] initWithContentRect:CGRectMake(10, 400, 425, 225) styleMask:CPHUDBackgroundWindowMask | CPResizableWindowMask];
-  [window setTitle:@"Procedures"];
-  [window setLevel:CPFloatingWindowLevel];
-
-  controller = [[ProcedureDragListController alloc] initWithWindow: window];
-
-  var bounds = [[window contentView] bounds];
-  var collectionView = [[CPCollectionView alloc] initWithFrame:bounds];
-  [collectionView setAutoresizingMask:CPViewHeightSizable];
-  [collectionView setMinItemSize:CGSizeMake(300, 30)];
-  [collectionView setMaxItemSize:CGSizeMake(300, 30)];
-  [collectionView setDelegate:controller];
-
-  var itemPrototype = [[CPCollectionViewItem alloc] init];
-  [itemPrototype setView:[[DragListItemView alloc] initWithFrame:CGRectMakeZero()]];
-  [collectionView setItemPrototype:itemPrototype];
-
-  var scrollView = [[CPScrollView alloc] initWithFrame: bounds];
-  [scrollView setDocumentView:collectionView];
-  [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
-  [scrollView setAutohidesScrollers:YES];
-  [[scrollView contentView] setBackgroundColor: [CPColor whiteColor]];
-  [[window contentView] addSubview:scrollView];
-
-  [collectionView setContent: ["one", "two"]];
-
-
-
-  [controller showWindow: self];
-
-  [customObjectsLoaded addObject:controller];
-  return controller;
-}
 
 
 -(id)loadAndConnectAnimalInterfaceController
