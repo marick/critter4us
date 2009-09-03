@@ -3,7 +3,8 @@
 @import "Constants.j"
 @import "DragList.j"
 @import "../view/DropTarget.j"
-@import "MakeReservationsPageController.j"
+@import "PMRPageController.j"
+@import "PMRGroupingsController.j"
 @import "ReservationDataController.j"
 
   // TODO: Hook up to real controller.
@@ -30,7 +31,7 @@ FakeProcedures = [ @"castration",
 FakeAnimals = ["betsy", "galaxy", "etc."];
 
 
-@implementation NewMakeReservationsCib : CPObject
+@implementation PageForMakingReservations : CPObject
 {
   CPArray customObjectsLoaded;
 
@@ -38,36 +39,36 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   CPPanel procedureDragList;
   CPPanel animalDragList;
   CPPanel target;
-  MakeReservationsPageController pageController;
+  PMRPageController pageController;
+  PMRGroupingsController groupingsController;
 }
 
 - (void)instantiatePageInWindow: theWindow withOwner: owner
 {
   customObjectsLoaded = [[CPArray alloc] init];
+
+  pageController = [self custom: [[PMRPageController alloc] init]];
+  groupingsController = [self custom: [[PMRGroupingsController alloc] init]];
+
   pageView = [self putPageViewOverWindow: theWindow];
   [self drawControlsOnPageView];
+
   target = [self placeAnimalAndProcedureTargetPanel];
 
-  pageController = [[MakeReservationsPageController alloc] initWithWindow:target];
-  [pageController showWindow: nil];
+  var procedureCollectionView = [self dropTargetForDragType: ProcedureDragType
+                                                normalColor: ProcedureHintColor
+                                                 hoverColor: ProcedureStrongHintColor
+                                                 controller: groupingsController
+                                                   selector: @selector(addProcedure:) // TODO replce with notifications
+                                                startingAtX: FirstTargetX];
 
 
-  var procedureView = [self dropTargetForDragType: ProcedureDragType
-                                      normalColor: ProcedureHintColor
-                                       hoverColor: ProcedureStrongHintColor
-                                       controller: pageController
-                                         selector: @selector(addProcedure:) // TODO replce with notifications
-                                      startingAtX: FirstTargetX];
-  pageController.procedureView = procedureView;
-
-
-  var animalView = [self dropTargetForDragType: AnimalDragType
-                                   normalColor: AnimalHintColor
-                                    hoverColor: AnimalStrongHintColor
-                                    controller: pageController
-                                      selector: @selector(addAnimal:) // TODO replce with notifications
-                                   startingAtX: SecondTargetX];
-  pageController.animalView = animalView;
+  var animalCollectionView = [self dropTargetForDragType: AnimalDragType
+                                             normalColor: AnimalHintColor
+                                              hoverColor: AnimalStrongHintColor
+                                              controller: pageController
+                                                selector: @selector(addAnimal:) // TODO replce with notifications
+                                             startingAtX: SecondTargetX];
 
   procedureDragList = [[DragList alloc] initWithTitle: "Procedures"
                                                    atX: FarthestLeftWindowX
@@ -80,9 +81,24 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
                                     backgroundColor: AnimalHintColor
                                             content: FakeAnimals
                                              ofType: AnimalDragType];
-  owner.newMakeReservationPageController = self;
+
+
+  // Connect outlets
+
+  pageController.pageView = pageView;
+  pageController.target = target;
+  pageController.animalDragList = animalDragList;
+  pageController.procedureDragList = procedureDragList;
+
+  groupingsController.procedureView = procedureCollectionView;
+  groupingsController.animalView = animalCollectionView;
+  groupingsController.redisplayView = [target contentView];
+
+  owner.pmrPageController = pageController;
+  
   [self awakenAllObjects];
 }
+
 
 
 -(CPView) putPageViewOverWindow: window
@@ -191,7 +207,8 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   [courseField setStringValue: "VM333"];
   [dateField setStringValue: "2009-09-23"];
 
-  [pageController setDesiredFirstResponder:courseField];
+  // TODO: do this with notifications.
+  // [pageController setDesiredFirstResponder:courseField];
   [courseField setNextKeyView: dateField];
   [dateField setNextKeyView: afternoonButton];
 
@@ -269,19 +286,10 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   return dropTarget;
 }
 
-
--(void) appear // TODO: move
+- (id) custom: anObject
 {
-  [procedureDragList orderFront: self];
-  [animalDragList orderFront: self];
-  [target orderFront: self];
-}
-
--(void) disappear // TODO: move to window controller
-{
-  [procedureDragList orderOut: self];
-  [animalDragList orderOut: self];
-  [target orderOut: self];
+  [customObjectsLoaded addObject:anObject];
+  return anObject;
 }
 
 - (void) awakenAllObjects

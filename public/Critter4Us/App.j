@@ -2,14 +2,14 @@
 @import "cib/MakeReservationPageCib.j"
 @import "cib/AllReservationsPageCib.j"
 @import "cib/MainMenuCib.j"
-@import "make-reservations/NewMakeReservationsCib.j"
+@import "make-reservations/PageForMakingReservations.j"
 
 @implementation App : CPObject
 {
   CPWindow theWindow;
   CPObject makeReservationPageController;
   CPObject allReservationsPageController;
-  CPObject newMakeReservationPageController;
+  CPObject pmrPageController;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -21,7 +21,7 @@
   [self createMainMenu];
   [self createMakeReservationPage];
   [self createAllReservationsPage];
-  [self createNewMakeReservationPage];
+  [self createPageForMakingReservations];
   
   [self activateReservationMaker: self];
 }
@@ -36,9 +36,9 @@
   [[MakeReservationPageCib alloc] instantiatePageInWindow: theWindow withOwner: self];  
 }
 
--(void)createNewMakeReservationPage
+-(void)createPageForMakingReservations
 {
-  [[NewMakeReservationsCib alloc] instantiatePageInWindow: theWindow withOwner: self];
+  [[PageForMakingReservations alloc] instantiatePageInWindow: theWindow withOwner: self];
 }
 
 -(void)createMainMenu
@@ -51,20 +51,20 @@
   [makeReservationPageController appear];
   [makeReservationPageController windowNeedsFirstResponder: theWindow]; // TODO: hack.
   [allReservationsPageController disappear];
-  [newMakeReservationPageController disappear];
+  [pmrPageController disappear];
 }
 
 - (void) activateReservationViewer: (CPMenuItem) sender
 {
   [makeReservationPageController disappear];
-  [newMakeReservationPageController disappear];
+  [pmrPageController disappear];
   [allReservationsPageController appear];
 }
 
 - (void) activateNewReservationMaker: (CPMenuItem) sender
 {
   [makeReservationPageController disappear];
-  [newMakeReservationPageController appear];
+  [pmrPageController appear];
   [allReservationsPageController disappear];
 }
 
