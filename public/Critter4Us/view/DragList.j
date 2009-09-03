@@ -8,48 +8,78 @@
 - (id)initWithTitle: title atX: x backgroundColor: color content: someContent ofType: someDragType
 {
   dragType = someDragType;
-    self = [self initWithContentRect:CGRectMake(x, WindowTops, DragSourceWindowWidth, DragSourceWindowHeight) styleMask:CPHUDBackgroundWindowMask | CPResizableWindowMask];
+  content = someContent;
+  
+  self = [self placePanelAtX: x withTitle: title];
+  if (! self) return nil;
+        
+  var bounds = [self usableArea];
+  var collectionView = [self placeCollectionViewAt: bounds];
+        
+  [collectionView setDelegate:self]; // TODO get rid of this?
+  [self describeItemsTo: collectionView];
+  [self surround: collectionView withScrollViewColored: color];
+  
+  [collectionView setContent:content]; // TODO delete
 
-    if (self)
-    {
-        [self setTitle:title];
-        [self setFloatingPanel:YES];
-        
-        var contentView = [self contentView],
-            bounds = [contentView bounds];
-        
-        bounds.size.height -= WindowBottomMargin;
-
-        var collectionView = [[CPCollectionView alloc] initWithFrame:bounds];
-        
-        [collectionView setAutoresizingMask:CPViewWidthSizable];
-        [collectionView setMinItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
-        [collectionView setMaxItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
-        [collectionView setDelegate:self];
-        
-        var itemPrototype = [[CPCollectionViewItem alloc] init];
-        
-        [itemPrototype setView:[[DragListItemView alloc] initWithFrame:CGRectMakeZero()]];
-        
-        [collectionView setItemPrototype:itemPrototype];
-        
-        var scrollView = [[CPScrollView alloc] initWithFrame:bounds];
-        
-        [scrollView setDocumentView:collectionView];
-        [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
-        [scrollView setAutohidesScrollers:YES];
-
-        [[scrollView contentView] setBackgroundColor:color];
-
-        [contentView addSubview:scrollView];
-        
-        content = someContent;
-        [collectionView setContent:content];
-    }
-
-    return self;
+  return self;
 }
 
+- (DragList) placePanelAtX: x withTitle: title
+{
+  var panelRect = CGRectMake(x, WindowTops, DragSourceWindowWidth,
+                             DragSourceWindowHeight);
+  self = [self initWithContentRect: panelRect
+                         styleMask: CPHUDBackgroundWindowMask | CPResizableWindowMask];
+  if (! self) return nil;
+
+  [self setFloatingPanel:YES];
+  [self setTitle:title];
+  return self;
+}
+
+- (CPRect) usableArea
+{
+  var contentView = [self contentView];
+  var bounds = [contentView bounds];
+  bounds.size.height -= WindowBottomMargin;
+  return bounds;
+}
+
+- (CPCollectionView) placeCollectionViewAt: rect
+{
+    var collectionView = [[CPCollectionView alloc] initWithFrame:rect];
+        
+    [collectionView setAutoresizingMask:CPViewWidthSizable];
+    return collectionView;
+}
+
+- (void) describeItemsTo: (CPCollectionView) collectionView
+{
+  var itemPrototype = [[CPCollectionViewItem alloc] init];
+        
+  [itemPrototype setView:[[DragListItemView alloc] initWithFrame:CGRectMakeZero()]];
+  [collectionView setItemPrototype:itemPrototype];
+
+  [collectionView setMinItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
+  [collectionView setMaxItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
+}
+
+
+- (void) surround: collectionView withScrollViewColored: color
+{
+    var scrollView = [[CPScrollView alloc] initWithFrame: [collectionView bounds]];
+        
+    [scrollView setDocumentView:collectionView];
+    [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+    [scrollView setAutohidesScrollers:YES];
+
+    [[scrollView contentView] setBackgroundColor:color];
+
+    [[self contentView] addSubview:scrollView];
+}
+        
+        
 
 - (CPData)collectionView:(CPCollectionView)aCollectionView dataForItemsAtIndexes:(CPIndexSet)indices forType:(CPString)aType
 {
@@ -78,6 +108,3 @@
 }
 
 @end
-
-
-
