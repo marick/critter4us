@@ -5,6 +5,9 @@
   CPCollectionView animalView;
 }
 
+
+
+
 - (id)initWithWindow: aWindow
 {
     self = [super initWithWindow: aWindow];
