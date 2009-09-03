@@ -2,7 +2,7 @@
 @import "cib/MakeReservationPageCib.j"
 @import "cib/AllReservationsPageCib.j"
 @import "cib/MainMenuCib.j"
-@import "make-reservations/PageForMakingReservations.j"
+@import "page-for-making-reservations/PageForMakingReservations.j"
 
 @implementation App : CPObject
 {

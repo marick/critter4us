@@ -1,4 +1,4 @@
-@import <Critter4Us/make-reservations/PMRPageController.j>
+@import <Critter4Us/page-for-making-reservations/PMRPageController.j>
 @import "ScenarioTestCase.j"
 
 @implementation PMRPageControllerTest : ScenarioTestCase
