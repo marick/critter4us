@@ -83,7 +83,7 @@ Animal.create(:name => 'Ivory', :kind => 'mare')
 Animal.create(:name => 'Pumpkin', :kind => 'mare')
 Animal.create(:name => 'Misty', :kind => 'mare')
 Animal.create(:name => 'Good Morning Sunshine', :kind => 'mare')
-Animal.create(:name => 'Bloombird', :kind => 'mare')
+Animal.create(:name => 'Boombird', :kind => 'mare')
 Animal.create(:name => 'Sunny', :kind => 'mare')
 Animal.create(:name => 'Brooke', :kind => 'cow')
  
