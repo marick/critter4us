@@ -13,7 +13,7 @@
   CPButton restartButton;
 }
 
-- (void) commitToReservation: sender
+- (void) commitToParticularCourseSession: sender
 {
   [courseField setEnabled: NO];
   [instructorField setEnabled: NO];
@@ -27,6 +27,18 @@
   [NotificationCenter postNotificationName:CourseSessionDescribedNews
                                     object:nil];
 }
+
+- (void) makeReservation: (CPButton) sender
+{
+  [NotificationCenter postNotificationName: ReservationRequestedNews
+                                    object: nil];
+}
+
+- (void) abandonReservation: (CPButton) sender
+{
+  alert("Does nothing yet.");
+}
+
 
 - (id) spillIt: (CPMutableDictionary) dict
 {

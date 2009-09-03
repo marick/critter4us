@@ -14,7 +14,7 @@
                                                      'beginButton', 'restartButton', 'reserveButton']];
 }
 
-- (void) testCommittingToReservationDisablesDataFields
+- (void) testCommittingToParticularCourseSessionDisablesDataFields
 {
   [scenario
    previousAction: function() {
@@ -24,7 +24,7 @@
       [sut.morningButton setEnabled: YES];
     }
   testAction: function() {
-      [sut commitToReservation: sut.beginButton];
+      [sut commitToParticularCourseSession: sut.beginButton];
     }
   andSo: function() {
       [self assertFalse: [sut.courseField hidden]];
@@ -35,7 +35,7 @@
 }
 
 
-- (void) testCommittingToReservationReplacesBeginButtonWithRestartAndReserve
+- (void) testCommittingToParticularCourseSessionReplacesBeginButtonWithRestartAndReserve
 {
   [scenario
    previousAction: function() {
@@ -44,7 +44,7 @@
       [sut.reserveButton setHidden: YES];
     }
   testAction: function() {
-      [sut commitToReservation: sut.beginButton];
+      [sut commitToParticularCourseSession: sut.beginButton];
     }
   andSo: function() {
       [self assertTrue: [sut.beginButton hidden]];
@@ -53,11 +53,11 @@
     }];
 }
 
-- (void)testCommittingToReservationNotifiesListenersOfEvent
+- (void)testCommittingToParticularCourseSessionNotifiesListenersOfEvent
 {
   [scenario 
    during: function() {
-      [sut commitToReservation: sut.beginButton];
+      [sut commitToParticularCourseSession: sut.beginButton];
     }
   behold: function() {
       [self listenersWillReceiveNotification: CourseSessionDescribedNews];
@@ -102,6 +102,18 @@
       [self assert: [Time afternoon] equals: [dict valueForKey:'time']];
     }];
 }
+
+- (void)testReserveButtonClickJustSendsANotification
+{
+  [scenario
+   during: function() {
+      [sut makeReservation: sut.reserveButton];
+    }
+   behold: function() {
+      [self listenersWillReceiveNotification: ReservationRequestedNews];
+    }];
+}
+
 
 -(void) userBeginsWithSomeValues
 {

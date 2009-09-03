@@ -112,7 +112,7 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
 }
 
 
--(id) drawControlsOnPage: pageView andConnectTo: reservationController
+-(id) drawControlsOnPage: pageView andConnectTo: reservationDataController
 {  
   // TODO: get rid of at least some of thest manifest constants.
 
@@ -182,6 +182,9 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   var beginButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
   [beginButton setTitle: "Begin"];
   [pageView addSubview:beginButton];
+  [beginButton setTarget: reservationDataController];
+  [beginButton setAction: @selector(commitToParticularCourseSession:)];
+
 
   x += 15;
   width = 80;
@@ -189,6 +192,8 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   [reserveButton setTitle: "Reserve"];
   [reserveButton setHidden: YES];
   [pageView addSubview:reserveButton];
+  [reserveButton setTarget: reservationDataController];
+  [reserveButton setAction: @selector(makeReservation:)];
 
   x += 100;
   width = 180;
@@ -196,8 +201,9 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   [restartButton setTitle: "Restart (doesn't work yet)"];
   [restartButton setHidden: YES];
   [pageView addSubview:restartButton];
+  [restartButton setTarget: reservationDataController];
+  [restartButton setAction: @selector(abandonReservation:)];
 
-  var reservationDataController = [[ReservationDataController alloc] init];
   reservationDataController.courseField = courseField;
   reservationDataController.instructorField = instructorField;
   reservationDataController.dateField = dateField;
@@ -205,9 +211,6 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   reservationDataController.beginButton = beginButton;
   reservationDataController.reserveButton = reserveButton;
   reservationDataController.restartButton = restartButton;
-
-  [beginButton setTarget: reservationDataController];
-  [beginButton setAction: @selector(sessionReady:)];
 
   // Temporary for testing
   [instructorField setStringValue: "morin"];
