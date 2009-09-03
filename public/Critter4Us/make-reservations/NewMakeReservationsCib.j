@@ -1,61 +1,12 @@
 @import <AppKit/AppKit.j>
 @import "../util/Constants.j"
-@import "../view/DragList.j"
+@import "Constants.j"
+@import "DragList.j"
 @import "../view/DropTarget.j"
 @import "MakeReservationsPageController.j"
 
-ProcedureHintColor = [CPColor colorWithRed: 0.8 green: 1.0 blue: 0.8 alpha: 1.0];
-ProcedureStrongHintColor = [CPColor colorWithRed: 0.4 green: 1.0 blue: 0.4 alpha: 1.0];
-AnimalHintColor = [CPColor colorWithRed: 1.0 green: 0.8 blue: 0.8 alpha: 1.0];
-AnimalStrongHintColor = [CPColor colorWithRed: 1.0 green: 0.4 blue: 0.4 alpha: 1.0];
-
-WindowBottomMargin = 20;
-ScrollbarWidth = 20;
-TextLineHeight = 20;
-
-FarthestLeftWindowX = 10;
-WindowTops = 200;
-
-CompleteTextLineWidth = 250-ScrollbarWidth;
-TruncatedTextLineWidth = 200;
-DragSourceNumberOfLines = 15;
-// TODO: Not actually right, since TextLineHeight doesn't include interspacing.
-DragSourceWindowHeight = DragSourceNumberOfLines * TextLineHeight;
-DragSourceWindowWidth = CompleteTextLineWidth + ScrollbarWidth;
-
-FirstGroupingWindowX = FarthestLeftWindowX + DragSourceWindowWidth + 20;
-GroupingWindowVerticalMargin = 10 ;
-TargetWidth = TruncatedTextLineWidth;
-GroupingWindowWidth = TargetWidth * 2 + GroupingWindowVerticalMargin * 3;
-TargetNumberOfLines = 10; // Ditto TODO above
-TargetViewHeight = TargetNumberOfLines * TextLineHeight;
-TargetWindowHeight = TargetViewHeight + WindowBottomMargin;
-FirstTargetX = GroupingWindowVerticalMargin
-SecondTargetX = FirstTargetX + TargetWidth + GroupingWindowVerticalMargin
-
-FarthestRightWindowX = FirstGroupingWindowX + GroupingWindowWidth + 20
-
-
-@implementation NewMakeReservationsCib : CPObject
-{
-  CPPanel procedureDragList;
-  CPPanel animalDragList;
-  CPPanel target;
-  
-}
-
-- (void)instantiatePageInWindow: theWindow withOwner: owner
-{
-  var contentView = [theWindow contentView];
-
-  target = [[CPPanel alloc] initWithContentRect:CGRectMake(FirstGroupingWindowX, WindowTops, GroupingWindowWidth, TargetWindowHeight) styleMask:CPHUDBackgroundWindowMask | CPResizableWindowMask];
-  [target setTitle:@"Drag from left and right to group procedures with animals used for them"];
-  [target setLevel:CPFloatingWindowLevel];
-
-  var groupingController = [[GroupingController alloc] initWithWindow:target];
-  [groupingController showWindow: self];
-
-  var procedures = [ @"castration",
+  // TODO: Hook up to real controller.
+FakeProcedures = [ @"castration",
                         @"floating",
                         @"rumen fluid collection (rumenocentesis)",
                         @"blah",
@@ -75,32 +26,133 @@ FarthestRightWindowX = FirstGroupingWindowX + GroupingWindowWidth + 20
                     @"blah"
                        ];
 
-  var animals = ["betsy", "galaxy", "etc."];
+FakeAnimals = ["betsy", "galaxy", "etc."];
+
+
+@implementation NewMakeReservationsCib : CPObject
+{
+  CPPanel procedureDragList;
+  CPPanel animalDragList;
+  CPPanel target;
+  MakeReservationsPageController pageController;
+}
+
+- (void)instantiatePageInWindow: theWindow withOwner: owner
+{
+  var contentView = [theWindow contentView];
+
+  target = [self placeAnimalAndProcedureTargetPanel];
+
+  pageController = [[MakeReservationsPageController alloc] initWithWindow:target];
+  [pageController showWindow: self];
+
+
+  var procedureView = [self dropTargetForDragType: ProcedureDragType
+                                      normalColor: ProcedureHintColor
+                                       hoverColor: ProcedureStrongHintColor
+                                       controller: pageController
+                                         selector: @selector(addProcedure:) // TODO replce with notifications
+                                      startingAtX: FirstTargetX];
+  pageController.procedureView = procedureView;
+
+
+  var animalView = [self dropTargetForDragType: AnimalDragType
+                                   normalColor: AnimalHintColor
+                                    hoverColor: AnimalStrongHintColor
+                                    controller: pageController
+                                      selector: @selector(addAnimal:) // TODO replce with notifications
+                                   startingAtX: SecondTargetX];
+  pageController.animalView = animalView;
 
   procedureDragList = [[DragList alloc] initWithTitle: "Procedures"
                                                    atX: FarthestLeftWindowX
                                        backgroundColor: ProcedureHintColor
-                                               content: procedures
+                                               content: FakeProcedures
                                                 ofType: ProcedureDragType];
 
   animalDragList = [[DragList alloc] initWithTitle: "Animals"
                                                 atX: FarthestRightWindowX
                                     backgroundColor: AnimalHintColor
-                                            content: animals
+                                            content: FakeAnimals
                                              ofType: AnimalDragType];
-  [groupingController awakeFromCib];
-
   owner.newMakeReservationPageController = self;
 }
 
--(void) appear
+-(CPPanel) placeAnimalAndProcedureTargetPanel
+{
+  var rect = CGRectMake(FirstGroupingWindowX, WindowTops, GroupingWindowWidth,
+                        TargetWindowHeight);
+  var target = [[CPPanel alloc] initWithContentRect: rect
+                                          styleMask:CPHUDBackgroundWindowMask | CPResizableWindowMask];
+  [target setLevel:CPFloatingWindowLevel];
+  [target setTitle:@"Drag from left and right to group procedures with animals used for them"];
+  return target;
+}
+
+- (CPCollectionView) dropTargetForDragType: dragType
+                               normalColor: normalColor
+                                hoverColor: hoverColor
+                                controller: controller
+                                  selector: selector
+                               startingAtX: x
+{
+  var collectionView = [[CPCollectionView alloc] initWithFrame: CGRectMakeZero()];
+
+  var dropTarget = [[DropTarget alloc] initWithFrame: CGRectMakeZero()];
+  dropTarget.controller = controller;
+  dropTarget.dropAction = selector;
+  [dropTarget registerForDraggedTypes:[dragType]];
+  [dropTarget setBackgroundColor: normalColor];
+  dropTarget.subtleHint = normalColor;
+  dropTarget.strongHint = hoverColor;
+  dropTarget.dragType = dragType;
+
+  [self arrangeDropTarget: dropTarget
+        andCollectionView: collectionView
+                    under: [target contentView]
+              startingAtX: x];
+  return collectionView;
+}
+
+
+-(id) arrangeDropTarget: dropTarget andCollectionView: collectionView under: contentView startingAtX: x
+{
+  [dropTarget setFrame: CGRectMake(x, 0, TargetWidth, TargetViewHeight)];
+  [contentView addSubview:dropTarget];
+
+  var scrollViewFrame = [dropTarget bounds];
+  var scrollView = [[CPScrollView alloc] initWithFrame: scrollViewFrame];
+  [dropTarget addSubview: scrollView];
+        
+  [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+  [scrollView setAutohidesScrollers:YES];
+
+  var collectionViewFrame = [[scrollView contentView] bounds];
+  // collectionView = [[CPCollectionView alloc] initWithFrame: CGRectMakeZero()];
+  //  collectionView = [[CPCollectionView alloc] initWithFrame: collectionViewFrame];
+  [collectionView setFrame: collectionViewFrame];
+  [collectionView setMinItemSize:CGSizeMake(TruncatedTextLineWidth, TextLineHeight)];
+  [collectionView setMaxItemSize:CGSizeMake(TruncatedTextLineWidth, TextLineHeight)];
+  [collectionView setDelegate:self];
+  [scrollView setDocumentView:collectionView];
+
+
+  var itemPrototype = [[CPCollectionViewItem alloc] init];
+  [itemPrototype setView:[[DragListItemView alloc] initWithFrame:CGRectMakeZero()]];
+        
+  [collectionView setItemPrototype:itemPrototype];
+  return dropTarget;
+}
+
+
+-(void) appear // TODO: move
 {
   [procedureDragList orderFront: self];
   [animalDragList orderFront: self];
   [target orderFront: self];
 }
 
--(void) disappear
+-(void) disappear // TODO: move to window controller
 {
   [procedureDragList orderOut: self];
   [animalDragList orderOut: self];

@@ -20,7 +20,6 @@
   [self setBackgroundColor: strongHint];
 }
 
-
 - (CPBoolean) prepareForDragOperation: (id) aSender
 {
   return YES;
@@ -30,7 +29,6 @@
 {
   var value = [CPKeyedUnarchiver unarchiveObjectWithData:[[aSender draggingPasteboard] dataForType:dragType]];
   [controller performSelector: dropAction withObject: value];
-  //  [controller newProcedure: value];
   return YES;
 }
 

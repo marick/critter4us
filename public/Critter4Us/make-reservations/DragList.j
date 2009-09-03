@@ -1,11 +1,14 @@
 @import <AppKit/AppKit.j>
+@import "Constants.j"
+
 @implementation DragList : CPPanel
 {
   CPArray content;
   CPDragType dragType;
 }
 
-- (id)initWithTitle: title atX: x backgroundColor: color content: someContent ofType: someDragType
+- (id)initWithTitle: title atX: x backgroundColor: color content: someContent
+             ofType: someDragType
 {
   dragType = someDragType;
   content = someContent;
@@ -24,6 +27,19 @@
 
   return self;
 }
+
+- (CPData)collectionView:(CPCollectionView)aCollectionView dataForItemsAtIndexes:(CPIndexSet)indices forType:(CPString)aType
+{
+    return [CPKeyedArchiver archivedDataWithRootObject:[content objectAtIndex:[indices firstIndex]]];
+}
+
+- (CPArray)collectionView:(CPCollectionView)aCollectionView dragTypesForItemsAtIndexes:(CPIndexSet)indices
+{
+    return [dragType];
+}
+
+
+// Util
 
 - (DragList) placePanelAtX: x withTitle: title
 {
@@ -77,18 +93,6 @@
     [[scrollView contentView] setBackgroundColor:color];
 
     [[self contentView] addSubview:scrollView];
-}
-        
-        
-
-- (CPData)collectionView:(CPCollectionView)aCollectionView dataForItemsAtIndexes:(CPIndexSet)indices forType:(CPString)aType
-{
-    return [CPKeyedArchiver archivedDataWithRootObject:[content objectAtIndex:[indices firstIndex]]];
-}
-
-- (CPArray)collectionView:(CPCollectionView)aCollectionView dragTypesForItemsAtIndexes:(CPIndexSet)indices
-{
-    return [dragType];
 }
 
 @end
