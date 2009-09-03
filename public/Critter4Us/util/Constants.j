@@ -2,7 +2,7 @@
 
 // Notification Names
 
-CourseSessionDescribedNews = "course session described";
+CourseSessionDescribedNews = "course session described";  // TODO: change name
 ProcedureUpdateNews = "procedures chosen";
 ReservationRequestedNews = "reservation requested";
 NewReservationNews = "new reservation created";

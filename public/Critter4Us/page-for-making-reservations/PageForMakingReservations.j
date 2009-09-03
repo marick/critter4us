@@ -41,6 +41,7 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   CPPanel target;
   PMRPageController pageController;
   PMRGroupingsController groupingsController;
+  ReservationDataController reservationDataController;
 }
 
 - (void)instantiatePageInWindow: theWindow withOwner: owner
@@ -48,10 +49,11 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   customObjectsLoaded = [[CPArray alloc] init];
 
   pageController = [self custom: [[PMRPageController alloc] init]];
+  reservationDataController = [self custom: [[ReservationDataController alloc] init]];
   groupingsController = [self custom: [[PMRGroupingsController alloc] init]];
 
   pageView = [self putPageViewOverWindow: theWindow];
-  [self drawControlsOnPageView];
+  [self drawControlsOnPage: pageView andConnectTo: reservationDataController];
 
   target = [self placeAnimalAndProcedureTargetPanel];
 
@@ -110,54 +112,48 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
 }
 
 
--(id) drawControlsOnPageView
+-(id) drawControlsOnPage: pageView andConnectTo: reservationController
 {  
   // TODO: get rid of at least some of thest manifest constants.
-  var myView = pageView;
-  var buildingView = [[CPView alloc] initWithFrame:CGRectMake(0, 0, 900, 120)];
-  var finishedView = [[CPView alloc] initWithFrame:CGRectMake(0, 0, 900, 120)];
-  [myView addSubview: finishedView];
-  [myView addSubview: buildingView];
-  [finishedView setHidden:YES];
 
   var instructionLabel = [[CPTextField alloc] initWithFrame:CGRectMake(10, 30, 400, 30)];
-  [instructionLabel setStringValue: "1. Fill in the information, then click the button."];
-  [buildingView addSubview: instructionLabel];
+  [instructionLabel setStringValue: "Fill in the information, then click the button."];
+  [pageView addSubview: instructionLabel];
 
 
   var x = 10;
   var width = 45
   var courseLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 75, width, 30)];
   [courseLabel setStringValue: "Course: "];
-  [buildingView addSubview:courseLabel];
+  [pageView addSubview:courseLabel];
   x += width;
 
   width = 100;
   var courseField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
   [courseField setEditable:YES];
   [courseField setBezeled:YES];
-  [buildingView addSubview:courseField];
+  [pageView addSubview:courseField];
   x+= width;
 
   x += 10;
   width = 90;
   var instructorLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 75, width, 30)];
   [instructorLabel setStringValue: "Instructor NetID: "];
-  [buildingView addSubview:instructorLabel];
+  [pageView addSubview:instructorLabel];
   x += width;
 
   width = 100;
   var instructorField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
   [instructorField setEditable:YES];
   [instructorField setBezeled:YES];
-  [buildingView addSubview:instructorField];
+  [pageView addSubview:instructorField];
   x += width;
 
   x += 10;
   width = 20;
   var onLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 75, width, 30)];
   [onLabel setStringValue: "on: "];
-  [buildingView addSubview:onLabel];
+  [pageView addSubview:onLabel];
   x += width;
 
   width = 100;
@@ -165,7 +161,7 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   [dateField setEditable:YES];
   [dateField setBezeled:YES];
   [dateField setStringValue: "2009-"];
-  [buildingView addSubview:dateField];
+  [pageView addSubview:dateField];
   x += width;
 
   x += 10;
@@ -177,30 +173,41 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   var afternoonButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 87, width, 20) radioGroup:[morningButton radioGroup]];
   [afternoonButton setTitle:"afternoon"];
 
-  [buildingView addSubview: morningButton];
-  [buildingView addSubview: afternoonButton];
+  [pageView addSubview: morningButton];
+  [pageView addSubview: afternoonButton];
   x += width;
     
   x += 15;
   width = 80;
-  var goButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
-  [goButton setTitle: "Begin"];
-  [buildingView addSubview:goButton];
+  var beginButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
+  [beginButton setTitle: "Begin"];
+  [pageView addSubview:beginButton];
 
-  var summaryField = [[CPTextField alloc] initWithFrame:CGRectMake(10, 45, 500, 30)];
-  [finishedView addSubview: summaryField];
+  x += 15;
+  width = 80;
+  var reserveButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
+  [reserveButton setTitle: "Reserve"];
+  [reserveButton setHidden: YES];
+  [pageView addSubview:reserveButton];
+
+  x += 100;
+  width = 180;
+  var restartButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
+  [restartButton setTitle: "Restart (doesn't work yet)"];
+  [restartButton setHidden: YES];
+  [pageView addSubview:restartButton];
 
   var reservationDataController = [[ReservationDataController alloc] init];
   reservationDataController.courseField = courseField;
   reservationDataController.instructorField = instructorField;
   reservationDataController.dateField = dateField;
   reservationDataController.morningButton = morningButton;
-  reservationDataController.summaryField = summaryField;
-  reservationDataController.buildingView = buildingView;
-  reservationDataController.finishedView = finishedView;
+  reservationDataController.beginButton = beginButton;
+  reservationDataController.reserveButton = reserveButton;
+  reservationDataController.restartButton = restartButton;
 
-  [goButton setTarget: reservationDataController];
-  [goButton setAction: @selector(sessionReady:)];
+  [beginButton setTarget: reservationDataController];
+  [beginButton setAction: @selector(sessionReady:)];
 
   // Temporary for testing
   [instructorField setStringValue: "morin"];

@@ -3,49 +3,29 @@
 
 @implementation ReservationDataController : AwakeningObject
 {
-  CPView buildingView; // contains
-    CPTextField courseField;
-    CPTextField instructorField;
-    CPTextField dateField;
-    CPRadio morningButton;
+  CPTextField courseField;
+  CPTextField instructorField;
+  CPTextField dateField;
+  CPRadio morningButton;
 
-  CPView finishedView; // contains
-    CPTextField summaryField;
+  CPButton beginButton;
+  CPButton reserveButton;
+  CPButton restartButton;
 }
 
-- (void)makeViewsAcceptData
+- (void) commitToReservation: sender
 {
-  [buildingView setHidden:NO];
-  [finishedView setHidden:YES];
-}
+  [courseField setEnabled: NO];
+  [instructorField setEnabled: NO];
+  [dateField setEnabled: NO];
+  [morningButton setEnabled: NO];
 
-- (void)displaySelectedSession
-{
-  [buildingView setHidden:YES];
-  [finishedView setHidden:NO];
+  [beginButton setHidden: YES];
+  [reserveButton setHidden: NO];
+  [restartButton setHidden: NO];
 
-  var date = [dateField stringValue];
-  var time = [self deduceTime];
-
-  var instructor = [instructorField stringValue];
-  var course = [courseField stringValue];
-
-  var summaryText = [CPString stringWithFormat: "%s@illinois.edu needs animals for %s on the %s of %s.", instructor, course, [time description], date];
-  [summaryField setStringValue: summaryText];
-}
-
-- (void)sessionReady:(id)sender
-{
   [NotificationCenter postNotificationName:CourseSessionDescribedNews
                                     object:nil];
-}
-
-- (id) deduceTime
-{
-  if ([morningButton state] == CPOnState) 
-    return [Time morning];
-  else
-    return [Time afternoon];
 }
 
 - (id) spillIt: (CPMutableDictionary) dict
@@ -54,6 +34,16 @@
   [dict setValue: [instructorField stringValue] forKey: 'instructor'];
   [dict setValue: [dateField stringValue] forKey: 'date'];
   [dict setValue: [self deduceTime] forKey: 'time'];
+}
+
+// Util
+
+- (id) deduceTime
+{
+  if ([morningButton state] == CPOnState) 
+    return [Time morning];
+  else
+    return [Time afternoon];
 }
 
 - (id) setIt: (id) jsHash
