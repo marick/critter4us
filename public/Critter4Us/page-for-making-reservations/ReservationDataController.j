@@ -11,6 +11,20 @@
   CPButton beginButton;
   CPButton reserveButton;
   CPButton restartButton;
+
+  CPWebView linkToPreviousResults;
+}
+
+- (void) allowUserToChooseParticularCourseSession
+{
+  [courseField setEnabled: YES];
+  [instructorField setEnabled: YES];
+  [dateField setEnabled: YES];
+  [morningButton setEnabled: YES];
+
+  [beginButton setHidden: NO];
+  [reserveButton setHidden: YES];
+  [restartButton setHidden: YES];
 }
 
 - (void) commitToParticularCourseSession: sender
@@ -32,6 +46,17 @@
 {
   [NotificationCenter postNotificationName: ReservationRequestedNews
                                     object: nil];
+}
+
+- (void) offerReservationView: id
+{
+  [linkToPreviousResults setHidden: NO];
+  var href = "/reservation/" + id;
+  var message = "Click to view the reservation in a new window.";
+  var line1 = @"<a href='" + href + "' target=\"_blank\">" + message + "</a>";
+  var line2 = "Or start another reservation using the form on the right.";
+  [linkToPreviousResults loadHTMLString: '<p>' + line1 + "<br/>" + line2 + '</p>'
+                                baseURL: nil];
 }
 
 - (void) abandonReservation: (CPButton) sender

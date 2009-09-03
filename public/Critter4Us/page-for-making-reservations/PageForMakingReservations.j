@@ -165,7 +165,7 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   x += width;
 
   x += 10;
-  width = 100
+  width = 90
   var morningButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 67, width, 20)];
   [morningButton setState:CPOnState];
   [morningButton setTitle:"morning"];
@@ -184,9 +184,11 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   [pageView addSubview:beginButton];
   [beginButton setTarget: reservationDataController];
   [beginButton setAction: @selector(commitToParticularCourseSession:)];
+  x += width;
 
 
   x += 15;
+  var placeForLink = x;
   width = 80;
   var reserveButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
   [reserveButton setTitle: "Reserve"];
@@ -194,8 +196,9 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   [pageView addSubview:reserveButton];
   [reserveButton setTarget: reservationDataController];
   [reserveButton setAction: @selector(makeReservation:)];
+  x += width;
 
-  x += 100;
+  x += 15;
   width = 180;
   var restartButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
   [restartButton setTitle: "Restart (doesn't work yet)"];
@@ -204,6 +207,12 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   [restartButton setTarget: reservationDataController];
   [restartButton setAction: @selector(abandonReservation:)];
 
+
+  var webView = [[CPWebView alloc] initWithFrame: CGRectMake(placeForLink,60,500,100)];
+  [webView setHidden: YES];
+  [pageView addSubview: webView];
+
+  reservationDataController.linkToPreviousResults = webView;
   reservationDataController.courseField = courseField;
   reservationDataController.instructorField = instructorField;
   reservationDataController.dateField = dateField;

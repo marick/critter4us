@@ -103,7 +103,7 @@
     }];
 }
 
-- (void)testReserveButtonClickJustSendsANotification
+- (void)testReserveButtonSendsANotification
 {
   [scenario
    during: function() {
@@ -111,6 +111,41 @@
     }
    behold: function() {
       [self listenersWillReceiveNotification: ReservationRequestedNews];
+    }];
+}
+
+- (void)testAllowChoiceOfNextParticularCourseSession
+{
+  [scenario
+   during: function() {
+      [sut allowUserToChooseParticularCourseSession];
+    }
+   behold: function() {
+      [sut.courseField shouldReceive:@selector(setEnabled:) with:YES];
+      [sut.instructorField shouldReceive:@selector(setEnabled:) with:YES];
+      [sut.dateField shouldReceive:@selector(setEnabled:) with:YES];
+      [sut.morningButton shouldReceive:@selector(setEnabled:) with:YES];
+
+      [sut.beginButton shouldReceive:@selector(setHidden:) with:NO];
+      [sut.reserveButton shouldReceive:@selector(setHidden:) with:YES];
+      [sut.restartButton shouldReceive:@selector(setHidden:) with:YES];
+    }];
+}
+
+- (void)testLinkToAReservationCanBeOffered
+{
+  [scenario
+   during: function() {
+      [sut offerReservationView: 55];
+    }
+   behold: function() {
+      [sut.linkToPreviousResults shouldReceive:@selector(setHidden:) 
+                                          with: NO];
+      [sut.linkToPreviousResults shouldReceive:@selector(loadHTMLString:baseURL:) 
+       with: [function(arg) {
+	    return arg.match(/\/reservation\/55/)
+	  }, function(x) { return YES }] // TODO: define "any" somewhere.
+       ]; 
     }];
 }
 
