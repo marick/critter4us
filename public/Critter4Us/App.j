@@ -2,7 +2,7 @@
 @import "cib/MakeReservationPageCib.j"
 @import "cib/AllReservationsPageCib.j"
 @import "cib/MainMenuCib.j"
-@import "make-reservations/Make2.j"
+@import "make-reservations/NewMakeReservationsCib.j"
 
 @implementation App : CPObject
 {
@@ -38,7 +38,7 @@
 
 -(void)createNewMakeReservationPage
 {
-  [[Make2 alloc] instantiatePageInWindow: theWindow withOwner: self];
+  [[NewMakeReservationsCib alloc] instantiatePageInWindow: theWindow withOwner: self];
 }
 
 -(void)createMainMenu
