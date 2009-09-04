@@ -289,6 +289,11 @@ var Skip = function() {}
   [self sutHasCollaborators: anArray];
 }
 
+- (void)sutHasDownwardCollaborators: anArray
+{
+  [self sutHasCollaborators: anArray];
+}
+
 - (void)sutHasSidewaysCollaborators: anArray
 {
   [self sutHasCollaborators: anArray];
