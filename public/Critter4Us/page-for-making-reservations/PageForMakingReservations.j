@@ -1,7 +1,7 @@
 @import <AppKit/AppKit.j>
 @import "../util/Constants.j"
-@import "Constants.j"
-@import "DragList.j"
+@import "PMRConstants.j"
+@import "PMRDragList.j"
 @import "../view/DropTarget.j"
 @import "PMRPageController.j"
 @import "PMRGroupingsController.j"
@@ -72,13 +72,13 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
                                                 selector: @selector(addAnimal:) // TODO replce with notifications
                                              startingAtX: SecondTargetX];
 
-  procedureDragList = [[DragList alloc] initWithTitle: "Procedures"
+  procedureDragList = [[PMRDragList alloc] initWithTitle: "Procedures"
                                                    atX: FarthestLeftWindowX
                                        backgroundColor: ProcedureHintColor
                                                content: FakeProcedures
                                                 ofType: ProcedureDragType];
 
-  animalDragList = [[DragList alloc] initWithTitle: "Animals"
+  animalDragList = [[PMRDragList alloc] initWithTitle: "Animals"
                                                 atX: FarthestRightWindowX
                                     backgroundColor: AnimalHintColor
                                             content: FakeAnimals
@@ -308,7 +308,7 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
 
 
   var itemPrototype = [[CPCollectionViewItem alloc] init];
-  [itemPrototype setView:[[DragListItemView alloc] initWithFrame:CGRectMakeZero()]];
+  [itemPrototype setView:[[PMRDragListItemView alloc] initWithFrame:CGRectMakeZero()]];
         
   [collectionView setItemPrototype:itemPrototype];
   return dropTarget;
