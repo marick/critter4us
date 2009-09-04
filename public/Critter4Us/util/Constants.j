@@ -2,10 +2,16 @@
 
 // Notification Names
 
-CourseSessionDescribedNews = "course session described";  // TODO: change name
+// TODO: these need to be deleted after new implementation finished
+CourseSessionDescribedNews = "course session described";
 ProcedureUpdateNews = "procedures chosen";
 ReservationRequestedNews = "reservation requested";
 NewReservationNews = "new reservation created";
+
+// TODO: these are tne new ones
+ReservationDataCollectedNews = "reservation data collected";
+ProcedureChangeNews = "procedures have changed";
+GroupingsDataCollectedNews = "all reservation data is ready now";
 
 
 // Route names

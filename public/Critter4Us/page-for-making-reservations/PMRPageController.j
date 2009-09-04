@@ -9,33 +9,43 @@
   CPPanel procedureDragList;
   CPObject groupingsController;
 
-  CPBoolean displayFloatingWindows;
+  CPBoolean displayFloatingWindowsOnPageReveal;
 }
 
 -(void) awakeFromCib
 {
-  displayFloatingWindows = NO;
+  displayFloatingWindowsOnPageReveal = NO;
 }
 
--(void) setDisplayFloatingWindows: (CPBoolean) value
+-(void) setDisplayFloatingWindowsOnPageReveal: (CPBoolean) value
 {
-  displayFloatingWindows = value;
+  displayFloatingWindowsOnPageReveal = value;
 }
 
 -(void) appear
 {
   [pageView setHidden: NO];
-  if (displayFloatingWindows)
+  if (displayFloatingWindowsOnPageReveal)
   {
-    [procedureDragList orderFront: self];
-    [animalDragList orderFront: self];
-    [target orderFront: self];
+    [self showFloatingWindows];
   }
+}
+
+-(void) showFloatingWindows
+{
+  [procedureDragList orderFront: self];
+  [animalDragList orderFront: self];
+  [target orderFront: self];
 }
 
 -(void) disappear
 {
   [pageView setHidden: YES];
+  [self hideFloatingWindows];
+}
+
+-(void) hideFloatingWindows
+{
   [procedureDragList orderOut: self];
   [animalDragList orderOut: self];
   [target orderOut: self];

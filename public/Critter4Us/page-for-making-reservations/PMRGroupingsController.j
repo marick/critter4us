@@ -8,6 +8,15 @@
 }
 
 
+-(void) hideViews
+{
+  // TODO
+}
+
+-(void) showViews
+{
+  // TODO
+}
 
 -(void) addProcedure: aName
 {

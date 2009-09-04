@@ -5,7 +5,10 @@
 @import "../view/DropTarget.j"
 @import "PMRPageController.j"
 @import "PMRGroupingsController.j"
+@import "AnimalControllerPMR.j"
+@import "ProcedureControllerPMR.j"
 @import "ReservationDataController.j"
+@import "CoordinatorPMR.j"
 
   // TODO: Hook up to real controller.
 FakeProcedures = [ @"castration",
@@ -39,9 +42,12 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   CPPanel procedureDragList;
   CPPanel animalDragList;
   CPPanel target;
+  CoordinatorPMR coordinator;
   PMRPageController pageController;
   PMRGroupingsController groupingsController;
   ReservationDataController reservationDataController;
+  AnimalControllerPMR animalController;
+  ProcedureControllerPMR procedureController;
 }
 
 - (void)instantiatePageInWindow: theWindow withOwner: owner
@@ -51,6 +57,9 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   pageController = [self custom: [[PMRPageController alloc] init]];
   reservationDataController = [self custom: [[ReservationDataController alloc] init]];
   groupingsController = [self custom: [[PMRGroupingsController alloc] init]];
+  coordinator = [self custom: [[CoordinatorPMR alloc] init]];
+  animalController = [self custom: [[AnimalControllerPMR alloc] init]];
+  procedureController = [self custom: [[ProcedureControllerPMR alloc] init]];
 
   pageView = [self putPageViewOverWindow: theWindow];
   [self drawControlsOnPage: pageView andConnectTo: reservationDataController];
@@ -95,6 +104,13 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   groupingsController.procedureView = procedureCollectionView;
   groupingsController.animalView = animalCollectionView;
   groupingsController.redisplayView = [target contentView];
+
+  coordinator.reservationDataController = reservationDataController;
+  coordinator.animalController = animalController;
+  coordinator.procedureController = procedureController;
+  coordinator.groupingsController = groupingsController;
+  coordinator.pageController = pageController;
+  
 
   owner.pmrPageController = pageController;
   
