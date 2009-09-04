@@ -1,13 +1,13 @@
-@import <Critter4Us/page-for-making-reservations/PMRPageController.j>
+@import <Critter4Us/page-for-making-reservations/PageControllerPMR.j>
 @import "ScenarioTestCase.j"
 
-@implementation PMRPageControllerTest : ScenarioTestCase
+@implementation PageControllerPMRTest : ScenarioTestCase
 {
 }
 
 - (void)setUp
 {
-  sut = [[PMRPageController alloc] init];
+  sut = [[PageControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
 
   [scenario sutHasUpwardCollaborators:

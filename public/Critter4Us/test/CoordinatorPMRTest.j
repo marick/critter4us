@@ -48,7 +48,7 @@
   [scenario
    whileAwakening: function() {
       [sut.reservationDataController shouldReceive: @selector(allowUserToChooseParticularCourseSession)];
-      [sut.groupingController shouldReceive: @selector(hideViews)];
+      [sut.groupingController shouldReceive: @selector(hideOnPageControls)];
       [sut.pageController shouldReceive: @selector(hideFloatingWindows)];
       [sut.pageController shouldReceive: @selector(setDisplayFloatingWindowsOnPageReveal:)
                                    with:NO];
@@ -62,8 +62,8 @@
       [self sendNotification: ReservationDataCollectedNews];
     }
    behold: function() {
-      [sut.groupingsController shouldReceive: @selector(showViews)];
-      [sut.reservationDataController shouldReceive: @selector(commitToParticularCourseSession)];
+      [sut.groupingsController shouldReceive: @selector(showOnPageControls)];
+      [sut.reservationDataController shouldReceive: @selector(freezeCourseSessionInput)];
       [sut.pageController shouldReceive: @selector(showFloatingWindows)];
       [sut.pageController shouldReceive: @selector(setDisplayFloatingWindowsOnPageReveal:)
                                    with:YES];
@@ -190,7 +190,7 @@
    behold: function() {
       // 
       [sut.reservationDataController shouldReceive: @selector(allowUserToChooseParticularCourseSession)];
-      [sut.groupingsController shouldReceive: @selector(hideViews)];
+      [sut.groupingsController shouldReceive: @selector(hideOnPageControls)];
       [sut.pageController shouldReceive: @selector(hideFloatingWindows)];
       [sut.pageController shouldReceive: @selector(setDisplayFloatingWindowsOnPageReveal:)
                                    with: NO];

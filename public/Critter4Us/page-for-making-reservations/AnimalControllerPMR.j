@@ -1,5 +1,5 @@
 @import <Foundation/CPObject.j>
-@import "AwakeningObject.j"
+@import "../util/AwakeningObject.j"
 
 @implementation AnimalControllerPMR : AwakeningObject
 {

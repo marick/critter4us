@@ -1,20 +1,20 @@
-@import <Critter4Us/page-for-making-reservations/ReservationDataController.j>
+@import <Critter4Us/page-for-making-reservations/ReservationDataControllerPMR.j>
 @import "ScenarioTestCase.j"
 
-@implementation ReservationDataControllerTest : ScenarioTestCase
+@implementation ReservationDataControllerPMRTest : ScenarioTestCase
 {
 }
 
 - (void)setUp
 {
-  sut = [[ReservationDataController alloc] init];
+  sut = [[ReservationDataControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasUpwardCollaborators: ['courseField', 'instructorField',
                                                      'dateField', 'morningButton',
                                                      'beginButton', 'restartButton', 'reserveButton']];
 }
 
-- (void) testCommittingToParticularCourseSessionDisablesDataFields
+- (void) testCourseSessionInputFieldsCanBeFrozen
 {
   [scenario
    previousAction: function() {
@@ -24,7 +24,7 @@
       [sut.morningButton setEnabled: YES];
     }
   testAction: function() {
-      [sut commitToParticularCourseSession: sut.beginButton];
+      [sut freezeCourseSessionInput];
     }
   andSo: function() {
       [self assertFalse: [sut.courseField hidden]];
@@ -35,7 +35,7 @@
 }
 
 
-- (void) testCommittingToParticularCourseSessionReplacesBeginButtonWithRestartAndReserve
+- (void) testFreezingDataInputAlsoReplacesButtons
 {
   [scenario
    previousAction: function() {
@@ -44,7 +44,7 @@
       [sut.reserveButton setHidden: YES];
     }
   testAction: function() {
-      [sut commitToParticularCourseSession: sut.beginButton];
+      [sut freezeCourseSessionInput];
     }
   andSo: function() {
       [self assertTrue: [sut.beginButton hidden]];
@@ -60,7 +60,7 @@
       [sut commitToParticularCourseSession: sut.beginButton];
     }
   behold: function() {
-      [self listenersWillReceiveNotification: CourseSessionDescribedNews];
+      [self listenersWillReceiveNotification: ReservationDataCollectedNews];
     }
    ];
 }
@@ -110,7 +110,7 @@
       [sut makeReservation: sut.reserveButton];
     }
    behold: function() {
-      [self listenersWillReceiveNotification: ReservationRequestedNews];
+      [self listenersWillReceiveNotification: GroupingsDataCollectedNews];
     }];
 }
 

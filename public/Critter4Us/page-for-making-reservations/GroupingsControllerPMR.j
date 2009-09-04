@@ -1,4 +1,4 @@
-@implementation PMRGroupingsController : CPWindowController
+@implementation GroupingsControllerPMR : CPObject
 {
   CPView redisplayAll;
   CPCollectionView procedureView;
@@ -8,14 +8,14 @@
 }
 
 
--(void) hideViews
+-(void) hideOnPageControls
 {
-  // TODO
+  [newGroupButton setHidden: YES];
 }
 
--(void) showViews
+-(void) showOnPageControls
 {
-  // TODO
+  [newGroupButton setHidden: NO];
 }
 
 -(void) addProcedure: aName

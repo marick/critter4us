@@ -1,7 +1,7 @@
 @import <AppKit/AppKit.j>
 @import "../util/AwakeningObject.j"
 
-@implementation PMRPageController : AwakeningObject
+@implementation PageControllerPMR : AwakeningObject
 {
   CPView pageView;
   CPPanel target;

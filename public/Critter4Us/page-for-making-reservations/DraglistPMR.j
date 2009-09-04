@@ -1,7 +1,7 @@
 @import <AppKit/AppKit.j>
-@import "PMRConstants.j"
+@import "ConstantsPMR.j"
 
-@implementation PMRDragList : CPPanel
+@implementation DragListPMR : CPPanel
 {
   CPArray content;
   CPDragType dragType;
@@ -41,7 +41,7 @@
 
 // Util
 
-- (PMRDragList) placePanelAtX: x withTitle: title
+- (DragListPMR) placePanelAtX: x withTitle: title
 {
   var panelRect = CGRectMake(x, WindowTops, DragSourceWindowWidth,
                              DragSourceWindowHeight);
@@ -74,7 +74,7 @@
 {
   var itemPrototype = [[CPCollectionViewItem alloc] init];
         
-  [itemPrototype setView:[[PMRDragListItemView alloc] initWithFrame:CGRectMakeZero()]];
+  [itemPrototype setView:[[DragListItemViewPMR alloc] initWithFrame:CGRectMakeZero()]];
   [collectionView setItemPrototype:itemPrototype];
 
   [collectionView setMinItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
@@ -97,7 +97,7 @@
 
 @end
 
-@implementation PMRDragListItemView : CPTextField
+@implementation DragListItemViewPMR : CPTextField
 {
 }
 

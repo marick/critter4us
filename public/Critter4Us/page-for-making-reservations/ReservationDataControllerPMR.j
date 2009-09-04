@@ -1,7 +1,7 @@
 @import "../util/AwakeningObject.j"
 @import "../util/Time.j"
 
-@implementation ReservationDataController : AwakeningObject
+@implementation ReservationDataControllerPMR : AwakeningObject
 {
   CPTextField courseField;
   CPTextField instructorField;
@@ -27,7 +27,7 @@
   [restartButton setHidden: YES];
 }
 
-- (void) commitToParticularCourseSession: sender
+- (void) freezeCourseSessionInput
 {
   [courseField setEnabled: NO];
   [instructorField setEnabled: NO];
@@ -37,14 +37,17 @@
   [beginButton setHidden: YES];
   [reserveButton setHidden: NO];
   [restartButton setHidden: NO];
+}
 
-  [NotificationCenter postNotificationName:CourseSessionDescribedNews
+- (void) commitToParticularCourseSession: sender
+{
+  [NotificationCenter postNotificationName:ReservationDataCollectedNews
                                     object:nil];
 }
 
 - (void) makeReservation: (CPButton) sender
 {
-  [NotificationCenter postNotificationName: ReservationRequestedNews
+  [NotificationCenter postNotificationName: GroupingsDataCollectedNews
                                     object: nil];
 }
 

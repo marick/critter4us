@@ -1,7 +1,7 @@
 @import "../util/AwakeningObject.j"
-@import "PMRPageController.j"
-@import "PMRGroupingsController.j"
-@import "ReservationDataController.j"
+@import "PageControllerPMR.j"
+@import "GroupingsControllerPMR.j"
+@import "ReservationDataControllerPMR.j"
 
 
 @implementation CoordinatorPMR : AwakeningObject
@@ -11,6 +11,8 @@
   ProcedureControllerPMR procedureController;
   PMRGroupingsController groupingsController;
   PMRPageController pageController;
+  
+  PersistentStore persistentStore;
 }
 
 
@@ -18,7 +20,7 @@
 {
   [super awakeFromCib];
   [reservationDataController allowUserToChooseParticularCourseSession];
-  [groupingsController hideViews];
+  [groupingsController hideOnPageControls];
   [pageController hideFloatingWindows];
   [pageController setDisplayFloatingWindowsOnPageReveal: NO];
 }
@@ -48,8 +50,9 @@
 
 - (void) switchToAnimalChoosing: (CPNotification) ignored
 {
-  [reservationDataController commitToParticularCourseSession];
-  [groupingsController showViews];
+  alert('snatch!');
+  [reservationDataController freezeCourseSessionInput];
+  [groupingsController showOnPageControls];
   [pageController showFloatingWindows];
   [pageController setDisplayFloatingWindowsOnPageReveal: YES];
 
@@ -58,6 +61,10 @@
 
   [persistentStore focusOnDate: [dict valueForKey: 'date']
                           time: [dict valueForKey: 'time']];
+
+  alert("probe!");
+  alert(persistentStore);
+  alert([persistentStore.allAnimalNames description]);
 
   [animalController beginUsingAnimals: persistentStore.allAnimalNames
                           withKindMap: persistentStore.kindMap];
@@ -84,7 +91,7 @@
   [reservationDataController offerReservationView: reservationID];
 
   [reservationDataController allowUserToChooseParticularCourseSession];
-  [groupingsController hideViews];
+  [groupingsController hideOnPageControls];
   [pageController hideFloatingWindows];
   [pageController setDisplayFloatingWindowsOnPageReveal:NO];
   [procedureController hideViews];

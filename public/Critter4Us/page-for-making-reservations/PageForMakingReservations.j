@@ -1,13 +1,14 @@
 @import <AppKit/AppKit.j>
 @import "../util/Constants.j"
-@import "PMRConstants.j"
-@import "PMRDragList.j"
 @import "../view/DropTarget.j"
-@import "PMRPageController.j"
-@import "PMRGroupingsController.j"
+@import "../persistence/PersistentStore.j"
+@import "ConstantsPMR.j"
+@import "DragListPMR.j"
+@import "PageControllerPMR.j"
+@import "GroupingsControllerPMR.j"
 @import "AnimalControllerPMR.j"
 @import "ProcedureControllerPMR.j"
-@import "ReservationDataController.j"
+@import "ReservationDataControllerPMR.j"
 @import "CoordinatorPMR.j"
 
   // TODO: Hook up to real controller.
@@ -37,15 +38,16 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
 @implementation PageForMakingReservations : CPObject
 {
   CPArray customObjectsLoaded;
+  PersistentStore persistentStore;
 
   CPView pageView;
   CPPanel procedureDragList;
   CPPanel animalDragList;
   CPPanel target;
   CoordinatorPMR coordinator;
-  PMRPageController pageController;
-  PMRGroupingsController groupingsController;
-  ReservationDataController reservationDataController;
+  PageControllerPMR pageController;
+  GroupingsControllerPMR groupingsController;
+  ReservationDataControllerPMR reservationDataController;
   AnimalControllerPMR animalController;
   ProcedureControllerPMR procedureController;
 }
@@ -54,9 +56,11 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
 {
   customObjectsLoaded = [[CPArray alloc] init];
 
-  pageController = [self custom: [[PMRPageController alloc] init]];
-  reservationDataController = [self custom: [[ReservationDataController alloc] init]];
-  groupingsController = [self custom: [[PMRGroupingsController alloc] init]];
+  persistentStore = [self loadGlobalPersistentStore];
+
+  pageController = [self custom: [[PageControllerPMR alloc] init]];
+  reservationDataController = [self custom: [[ReservationDataControllerPMR alloc] init]];
+  groupingsController = [self custom: [[GroupingsControllerPMR alloc] init]];
   coordinator = [self custom: [[CoordinatorPMR alloc] init]];
   animalController = [self custom: [[AnimalControllerPMR alloc] init]];
   procedureController = [self custom: [[ProcedureControllerPMR alloc] init]];
@@ -81,13 +85,13 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
                                                 selector: @selector(addAnimal:) // TODO replce with notifications
                                              startingAtX: SecondTargetX];
 
-  procedureDragList = [[PMRDragList alloc] initWithTitle: "Procedures"
+  procedureDragList = [[DragListPMR alloc] initWithTitle: "Procedures"
                                                    atX: FarthestLeftWindowX
                                        backgroundColor: ProcedureHintColor
                                                content: FakeProcedures
                                                 ofType: ProcedureDragType];
 
-  animalDragList = [[PMRDragList alloc] initWithTitle: "Animals"
+  animalDragList = [[DragListPMR alloc] initWithTitle: "Animals"
                                                 atX: FarthestRightWindowX
                                     backgroundColor: AnimalHintColor
                                             content: FakeAnimals
@@ -105,6 +109,7 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   groupingsController.animalView = animalCollectionView;
   groupingsController.redisplayView = [target contentView];
 
+  coordinator.persistentStore = persistentStore;
   coordinator.reservationDataController = reservationDataController;
   coordinator.animalController = animalController;
   coordinator.procedureController = procedureController;
@@ -115,6 +120,13 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   owner.pmrPageController = pageController;
   
   [self awakenAllObjects];
+}
+
+- (PersistentStore) loadGlobalPersistentStore
+{
+  var persistentStore = [self custom: [[PersistentStore alloc] init]];
+  persistentStore.network = [[NetworkConnection alloc] init];
+  return persistentStore;
 }
 
 
@@ -324,7 +336,7 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
 
 
   var itemPrototype = [[CPCollectionViewItem alloc] init];
-  [itemPrototype setView:[[PMRDragListItemView alloc] initWithFrame:CGRectMakeZero()]];
+  [itemPrototype setView:[[DragListItemViewPMR alloc] initWithFrame:CGRectMakeZero()]];
         
   [collectionView setItemPrototype:itemPrototype];
   return dropTarget;
