@@ -8,13 +8,24 @@
   CPPanel animalDragList;
   CPPanel procedureDragList;
   CPObject groupingsController;
+
+  CPBoolean displayFloatingWindows;
 }
 
+-(void) awakeFromCib
+{
+  displayFloatingWindows = NO;
+}
 
--(void) appear // TODO: move
+-(void) setDisplayFloatingWindows: (CPBoolean) value
+{
+  displayFloatingWindows = value;
+}
+
+-(void) appear
 {
   [pageView setHidden: NO];
-  if ([groupingsController isInputDesired])
+  if (displayFloatingWindows)
   {
     [procedureDragList orderFront: self];
     [animalDragList orderFront: self];
@@ -22,7 +33,7 @@
   }
 }
 
--(void) disappear // TODO: move to window controller
+-(void) disappear
 {
   [pageView setHidden: YES];
   [procedureDragList orderOut: self];

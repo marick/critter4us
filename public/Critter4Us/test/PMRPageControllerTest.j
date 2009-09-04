@@ -12,54 +12,50 @@
 
   [scenario sutHasUpwardCollaborators:
               ['pageView', 'target', 'animalDragList', 'procedureDragList']];
-  [scenario sutHasSidewaysCollaborators: ['groupingsController']];
 }
 
 -(void) testAppearingUnhidesPage
 {
   [scenario
    previousAction: function() { 
-     [sut.pageView setHidden:NO];
+     [sut.pageView setHidden:YES];
    }
-   during: function() {
-     [sut appear];
+  testAction: function() {
+      [sut appear];
    }
-  behold: function() {
-      [sut.groupingsController shouldReceive:@selector(isInputDesired)
-                                   andReturn:NO]; // see below for meaning
-      
-    }
   andSo: function() {
      [self assertFalse: [sut.pageView hidden]];
    }];
 }
 
--(void) testAppearingLeavesGroupingControlsInvisibleIfDesired
+-(void) testAppearingLeavesGroupingWindowsInvisibleIfDesired
 {
   [sut.target.failOnUnexpectedSelector = YES];
   [sut.animalDragList.failOnUnexpectedSelector = YES];
   [sut.procedureDragList.failOnUnexpectedSelector = YES];
 
   [scenario
+    previousAction: function() {
+      [sut setDisplayFloatingWindows: NO];
+    }
    during: function() {
       [sut appear];
     }
   behold: function() {
-      [sut.groupingsController shouldReceive:@selector(isInputDesired)
-                                   andReturn:NO];
-      // but nothing else.
+      // Nothing
     }];
 }
 
 -(void) testAppearingCanAlsoShowGroupingControls
 {
   [scenario 
+    previousAction: function() {
+      [sut setDisplayFloatingWindows:YES];
+    }
    during: function() {
       [sut appear];
     }
   behold: function() {
-      [sut.groupingsController shouldReceive:@selector(isInputDesired)
-                                   andReturn:YES];
       [sut.target shouldReceive:@selector(orderFront:)];
       [sut.animalDragList shouldReceive:@selector(orderFront:)];
       [sut.procedureDragList shouldReceive:@selector(orderFront:)];
@@ -84,7 +80,5 @@
      [self assertTrue: [sut.pageView hidden]];
    }];
 }
-
-
 
 @end
