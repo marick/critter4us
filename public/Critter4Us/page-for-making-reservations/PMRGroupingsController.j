@@ -3,6 +3,8 @@
   CPView redisplayAll;
   CPCollectionView procedureView;
   CPCollectionView animalView;
+
+  CPButton newGroupButton;
 }
 
 

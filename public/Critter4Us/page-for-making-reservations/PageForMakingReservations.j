@@ -221,6 +221,15 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   reservationDataController.reserveButton = reserveButton;
   reservationDataController.restartButton = restartButton;
 
+  var newGroupButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
+  [newGroupButton setTitle: "New Group (doesn't work yet)"];
+  [newGroupButton setHidden: YES];
+  [pageView addSubview:newGroupButton];
+  // [restartButton setTarget: reservationDataController];
+  // [restartButton setAction: @selector(abandonReservation:)];
+  groupingsController.newGroupButton = newGroupButton;
+
+
   // Temporary for testing
   [instructorField setStringValue: "morin"];
   [courseField setStringValue: "VM333"];
