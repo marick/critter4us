@@ -57,4 +57,10 @@
   // TODO
 }
 
+- (void) setContent
+{
+  alert("drop target content set");
+  // TODO
+}
+
 @end

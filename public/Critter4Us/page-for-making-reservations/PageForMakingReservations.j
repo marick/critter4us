@@ -73,16 +73,16 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   var procedureCollectionView = [self dropTargetForDragType: ProcedureDragType
                                                 normalColor: ProcedureHintColor
                                                  hoverColor: ProcedureStrongHintColor
-                                                 controller: groupingsController
-                                                   selector: @selector(addProcedure:) // TODO replce with notifications
+                                                 controller: procedureController
+                                                   selector: @selector(selectProcedure:)
                                                 startingAtX: FirstTargetX];
 
 
   var animalCollectionView = [self dropTargetForDragType: AnimalDragType
                                              normalColor: AnimalHintColor
                                               hoverColor: AnimalStrongHintColor
-                                              controller: pageController
-                                                selector: @selector(addAnimal:) // TODO replce with notifications
+                                              controller: animalController
+                                                selector: @selector(selectAnimal:)
                                              startingAtX: SecondTargetX];
 
   procedureDragList = [[DragListPMR alloc] initWithTitle: "Procedures"
