@@ -139,13 +139,9 @@
 	                                   'time':[Time afternoon],
 					   'course':'vm333',
 					   'instructor':'fred'}];
-      sut.procedureController = 
-    	  [[Spiller alloc] initWithValue: {'procedures':
-					   ['procedure 1','procedure 2']}];
-
-      sut.animalController = 
-	[[Spiller alloc] initWithValue: {'animals':
-					 ['animal 1', 'animal 2']}];
+      sut.groupingsController = 
+    	  [[Spiller alloc] initWithValue: {'procedures':['procedure 1','procedure 2'],
+                                           'animals':['animal 1', 'animal 2']}];
     }
    during: function() {
       [self sendNotification: GroupingsDataCollectedNews];

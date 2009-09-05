@@ -116,7 +116,7 @@
                  withKindMap: {"alpha":"akind", "delta":"dkind", "betty":"bkind"}];
     }
   during: function() { 
-      [self selectAnimal: "betty"];
+      [sut selectAnimal: "betty"];
     }
   behold: function() {
       // Source view does not change.
@@ -137,7 +137,7 @@
                    andChoose: ['betty']];
     }
   during: function() { 
-      [self selectAnimal: "alpha"];
+      [sut selectAnimal: "alpha"];
     }
   behold: function() { 
       [sut.targetView shouldReceive: @selector(setContent:)
@@ -208,48 +208,5 @@
 }
 
 
-- (void) testSpillingData
-{
-  var dict = [CPMutableDictionary dictionary];
-  [scenario
-  previousAction: function() {
-      [sut beginUsingAnimals: ["alpha",  "delta", "betty"]
-                 withKindMap: {"alpha":"akind", "delta":"dkind", "betty":"bkind"}
-                   andChoose: ["betty", "delta"]];
-    }
-  testAction: function() { 
-      [sut spillIt: dict];
-    }
-  andSo: function() {
-      [self assert: ["betty", "delta"]
-            equals: [dict objectForKey: "animals"]];
-    }];
-}
-
-
-
-
-
--(void) selectAnimal: aName
-{
-  [sut.targetView shouldReceive: @selector(droppedString)
-                      andReturn: aName];
-  [sut selectAnimal: sut.targetView];
-}
-
--(void) DRAGselectAnimal: aName
-{
-  dataglob = [CPKeyedArchiver archivedDataWithRootObject: aName];
-  pasteboard = [[Mock alloc] initWithName: "pasteboard"];
-  [pasteboard shouldReceive: @selector(dataForType:)
-                  andReturn: dataglob];
-  fakeDragSource = [[Mock alloc] initWithName: "drag source"];
-  [fakeDragSource shouldReceive: @selector(draggingPasteboard)
-                      andReturn: pasteboard];
-
-  [sut.targetView draggingEntered: fakeDragSource];
-  [sut.targetView prepareForDragOperation: fakeDragSource];
-  [sut.targetView performDragOperation: fakeDragSource];
-}
 
 @end	
