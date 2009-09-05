@@ -2,7 +2,7 @@
 @import "cib/MakeReservationPageCib.j"
 @import "cib/AllReservationsPageCib.j"
 @import "cib/MainMenuCib.j"
-@import "page-for-making-reservations/PageForMakingReservations.j"
+@import "page-for-making-reservations/CibPMR.j"
 
 @implementation App : CPObject
 {
@@ -21,7 +21,7 @@
   [self createMainMenu];
   [self createMakeReservationPage];
   [self createAllReservationsPage];
-  [self createPageForMakingReservations];
+  [self createCibPMR];
   
   [self activateReservationMaker: self];
 }
@@ -36,9 +36,9 @@
   [[MakeReservationPageCib alloc] instantiatePageInWindow: theWindow withOwner: self];  
 }
 
--(void)createPageForMakingReservations
+-(void)createCibPMR
 {
-  [[PageForMakingReservations alloc] instantiatePageInWindow: theWindow withOwner: self];
+  [[CibPMR alloc] instantiatePageInWindow: theWindow withOwner: self];
 }
 
 -(void)createMainMenu

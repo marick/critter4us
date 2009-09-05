@@ -12,7 +12,7 @@
 @import "CoordinatorPMR.j"
 
 
-@implementation PageForMakingReservations : CPObject
+@implementation CibPMR : CPObject
 {
   CPArray customObjectsLoaded;
   PersistentStore persistentStore;
