@@ -7,7 +7,7 @@
   CPCollectionView collectionView;
 }
 
-- (id)initWithTitle: title atX: x backgroundColor: color content: someContent
+- (id)initWithTitle: title atX: x backgroundColor: color 
              ofType: someDragType
 {
   dragType = someDragType;

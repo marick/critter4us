@@ -11,29 +11,6 @@
 @import "ReservationDataControllerPMR.j"
 @import "CoordinatorPMR.j"
 
-  // TODO: Hook up to real controller.
-FakeProcedures = [ @"castration",
-                        @"floating",
-                        @"rumen fluid collection (rumenocentesis)",
-                        @"blah",
-                        @"blah",
-                        @"blah",
-                        @"blah",
-                        @"blah",
-                        @"blah",
-                        @"blah",
-                        @"blah",
-                        @"blah",
-                        @"blah",
-                        @"blah",
-                        @"blah",
-                        @"blah",
-                        @"blah",
-                    @"blah"
-                       ];
-
-FakeAnimals = ["betsy", "galaxy", "etc."];
-
 
 @implementation PageForMakingReservations : CPObject
 {
@@ -88,13 +65,11 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   procedureDragList = [[DragListPMR alloc] initWithTitle: "Procedures"
                                                    atX: FarthestLeftWindowX
                                        backgroundColor: ProcedureHintColor
-                                               content: FakeProcedures
                                                 ofType: ProcedureDragType];
 
   animalDragList = [[DragListPMR alloc] initWithTitle: "Animals"
                                                 atX: FarthestRightWindowX
                                     backgroundColor: AnimalHintColor
-                                            content: FakeAnimals
                                              ofType: AnimalDragType];
 
 
