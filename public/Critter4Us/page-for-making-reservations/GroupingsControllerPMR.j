@@ -1,9 +1,9 @@
 @implementation GroupingsControllerPMR : CPObject
 {
-  CPView redisplayAll;
-  CPCollectionView procedureView;
-  CPCollectionView animalView;
+  //  CPView redisplayAll;
 
+  AnimalControllerPMR animalController;
+  ProcedureControllerPMR procedureController;
   CPButton newGroupButton;
 }
 
@@ -18,18 +18,29 @@
   [newGroupButton setHidden: NO];
 }
 
--(void) addProcedure: aName
+-(void) droppedProcedure: sender
 {
+  var name = [sender droppedString];
   // alert("new procedure to add to " + [[procedureView content] description]);
-  [procedureView setContent: [[procedureView content] arrayByAddingObject: aName]];
-  [redisplayAll setNeedsDisplay: YES];
+  [procedureView setContent: [[procedureView content] arrayByAddingObject: name]];
+  //  [redisplayAll setNeedsDisplay: YES];
 }
 
--(void) addAnimal: aName
+-(void) droppedAnimal: sender
 {
+  var name = [sender droppedString];
   //  alert("new procedure to add to " + [[procedureView content] description]);
-  [animalView setContent: [[animalView content] arrayByAddingObject: aName]];
-  [redisplayAll setNeedsDisplay: YES];
+  [animalController selectAnimal: name];
+  //  [animalView setContent: [[animalView content] arrayByAddingObject: name]];
+  //  [redisplayAll setNeedsDisplay: YES];
+}
+
+-(void) spillIt: (CPMutableDictionary) dict
+{
+  // TODO: This should do work, rather than animalinterfacecontroller and procedureController
 }
 
 @end
+
+
+

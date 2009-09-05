@@ -31,9 +31,8 @@
   [self pushDisplay];
 }
 
-- (void) selectAnimal: (DropTarget) sender
+- (void) selectAnimal: animal
 {
-  animal = [sender droppedString];
   [alreadyUsed addObject: animal];
   [self push: [self displayize: alreadyUsed] into: targetView];
 }

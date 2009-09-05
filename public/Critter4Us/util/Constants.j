@@ -12,6 +12,7 @@ NewReservationNews = "new reservation created";
 ReservationDataCollectedNews = "reservation data collected";
 ProcedureChangeNews = "procedures have changed";
 GroupingsDataCollectedNews = "all reservation data is ready now";
+OneAnimalChosenNews = "one animal has been chosen";
 
 
 // Route names

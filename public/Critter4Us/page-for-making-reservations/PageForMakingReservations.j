@@ -62,8 +62,8 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   reservationDataController = [self custom: [[ReservationDataControllerPMR alloc] init]];
   groupingsController = [self custom: [[GroupingsControllerPMR alloc] init]];
   coordinator = [self custom: [[CoordinatorPMR alloc] init]];
-  animalController = [self custom: [[AnimalInterfaceController alloc] init]];
-  procedureController = [self custom: [[ProcedureInterfaceController alloc] init]];
+  animalController = [self custom: [[AnimalControllerPMR alloc] init]];
+  procedureController = [self custom: [[ProcedureControllerPMR alloc] init]];
 
   pageView = [self putPageViewOverWindow: theWindow];
   [self drawControlsOnPage: pageView andConnectTo: reservationDataController];
@@ -73,16 +73,16 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   var procedureCollectionView = [self dropTargetForDragType: ProcedureDragType
                                                 normalColor: ProcedureHintColor
                                                  hoverColor: ProcedureStrongHintColor
-                                                 controller: procedureController
-                                                   selector: @selector(selectProcedure:)
+                                                 controller: groupingsController
+                                                   selector: @selector(droppedProcedure:)
                                                 startingAtX: FirstTargetX];
 
 
   var animalCollectionView = [self dropTargetForDragType: AnimalDragType
                                              normalColor: AnimalHintColor
                                               hoverColor: AnimalStrongHintColor
-                                              controller: animalController
-                                                selector: @selector(selectAnimal:)
+                                              controller: groupingsController // TODO: use notifications
+                                                selector: @selector(droppedAnimal:)
                                              startingAtX: SecondTargetX];
 
   procedureDragList = [[DragListPMR alloc] initWithTitle: "Procedures"
@@ -105,9 +105,15 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   pageController.animalDragList = animalDragList;
   pageController.procedureDragList = procedureDragList;
 
-  groupingsController.procedureView = procedureCollectionView;
-  groupingsController.animalView = animalCollectionView;
-  groupingsController.redisplayView = [target contentView];
+  animalController.sourceView = animalDragList;
+  animalController.targetView = animalCollectionView;
+
+  procedureController.sourceView = procedureDragList;
+  procedureController.targetView = procedureCollectionView;
+
+  // TODO needed?
+  groupingsController.animalController = animalController;
+  groupingsController.procedureController = procedureController;
 
   coordinator.persistentStore = persistentStore;
   coordinator.reservationDataController = reservationDataController;

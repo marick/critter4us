@@ -11,4 +11,9 @@
 }
 
 
+-(void) beginUsingProcedures: procedures
+{
+  // TODO
+}
+
 @end

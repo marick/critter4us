@@ -12,14 +12,15 @@
   [scenario sutHasDownwardCollaborators: ['controller']];
 }
 
--(void) testDroppingSetsDroppedString
+-(void) testDroppingThrowsNotification
 {
   [scenario
-   testAction: function() {
+   during: function() {
       [self drop: "some string"];
     }
-  andSo: function() {
-      [self assert: "some string" equals: [sut droppedString]];
+  behold: function() { 
+      [self listenersWillReceiveNotification: OneAnimalChosenNews
+                            containingObject: "some string"];
     }
    ];
 }

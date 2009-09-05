@@ -1,7 +1,7 @@
-@import <Critter4Us/view/DropTarget.j>
+@import <Critter4Us/page-for-making-reservations/GroupingsControllerPMR.j>
 @import "ScenarioTestCase.j"
 
-@implementation DropTargetTest : ScenarioTestCase
+@implementation GroupingsControllerPMRTest : ScenarioTestCase
 {
 }
 
@@ -9,25 +9,27 @@
 {
   sut = [[DropTarget alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasDownwardCollaborators: ['controller']];
+  [scenario sutHasSidewaysCollaborators: ['animalController', 'procedureController']];
 }
 
--(void) selectAnimal: aName
+-(void) testInstructsAnimalControllerWhenAnAnimalIsChosen
 {
-  [sut.targetView shouldReceive: @selector(droppedString)
-                      andReturn: aName];
-  [sut selectAnimal: sut.targetView];
+  // TODO: should this be done by AnimalController
+  [self assertFalse: YES];
+  [scenario
+   during: function() {
+      [self sendNotification: OneAnimalChosenNews];
+    }
+   behold: function() {
+    }];
 }
-
 
 - (void) testSpillingData
 {
+  return; // TODO: this test.
   var dict = [CPMutableDictionary dictionary];
   [scenario
-  previousAction: function() {
-      [sut beginUsingAnimals: ["alpha",  "delta", "betty"]
-                 withKindMap: {"alpha":"akind", "delta":"dkind", "betty":"bkind"}
-                   andChoose: ["betty", "delta"]];
+    previousAction: function() {
     }
   testAction: function() { 
       [sut spillIt: dict];
@@ -35,6 +37,8 @@
   andSo: function() {
       [self assert: ["betty", "delta"]
             equals: [dict objectForKey: "animals"]];
+      [self assert: ["procedure"]
+            equals: [dict objectForKey: "procedures"]];
     }];
 }
 

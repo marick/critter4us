@@ -3,41 +3,52 @@
 
 @implementation DragListPMR : CPPanel
 {
-  CPArray content;
   CPDragType dragType;
+  CPCollectionView collectionView;
 }
 
 - (id)initWithTitle: title atX: x backgroundColor: color content: someContent
              ofType: someDragType
 {
   dragType = someDragType;
-  content = someContent;
   
   self = [self placePanelAtX: x withTitle: title];
   if (! self) return nil;
         
   var bounds = [self usableArea];
-  var collectionView = [self placeCollectionViewAt: bounds];
+  collectionView = [self placeCollectionViewAt: bounds];
         
   [collectionView setDelegate:self]; // TODO get rid of this?
   [self describeItemsTo: collectionView];
   [self surround: collectionView withScrollViewColored: color];
-  
-  [collectionView setContent:content]; // TODO delete
 
   return self;
 }
 
+
 - (CPData)collectionView:(CPCollectionView)aCollectionView dataForItemsAtIndexes:(CPIndexSet)indices forType:(CPString)aType
 {
-    return [CPKeyedArchiver archivedDataWithRootObject:[content objectAtIndex:[indices firstIndex]]];
+  var element = [[aCollectionView content] objectAtIndex:[indices firstIndex]];
+  return [CPKeyedArchiver archivedDataWithRootObject:element];
 }
 
 - (CPArray)collectionView:(CPCollectionView)aCollectionView dragTypesForItemsAtIndexes:(CPIndexSet)indices
 {
-    return [dragType];
+  return [dragType];
 }
 
+
+// CollectionView protocol implemented 
+- (void) setContent: content
+{
+  [collectionView setContent: content];
+}
+
+// View protocol implemented
+- (void) setNeedsDisplay: value
+{
+  [[self contentView] setNeedsDisplay: value];
+}
 
 // Util
 

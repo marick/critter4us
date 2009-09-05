@@ -78,8 +78,7 @@
 {
   var dict = [CPMutableDictionary dictionary];
   [reservationDataController spillIt: dict];
-  [procedureController spillIt: dict];
-  [animalController spillIt: dict];
+  [groupingsController spillIt: dict];
 
   var reservationID = [persistentStore makeReservation: dict];
   
