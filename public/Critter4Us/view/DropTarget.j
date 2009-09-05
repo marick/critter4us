@@ -27,6 +27,7 @@
 
 - (CPBoolean)performDragOperation:(CPDraggingInfo)aSender
 {
+  // TODO: do we really need to encode this?
   var value = [CPKeyedUnarchiver unarchiveObjectWithData:[[aSender draggingPasteboard] dataForType:dragType]];
   [controller performSelector: dropAction withObject: value];
   return YES;
@@ -50,4 +51,10 @@
 {
   [self giveSubtleHint];
 }
+
+- (CPString) droppedString
+{
+  // TODO
+}
+
 @end

@@ -50,7 +50,6 @@
 
 - (void) switchToAnimalChoosing: (CPNotification) ignored
 {
-  alert('snatch!');
   [reservationDataController freezeCourseSessionInput];
   [groupingsController showOnPageControls];
   [pageController showFloatingWindows];
@@ -61,10 +60,6 @@
 
   [persistentStore focusOnDate: [dict valueForKey: 'date']
                           time: [dict valueForKey: 'time']];
-
-  alert("probe!");
-  alert(persistentStore);
-  alert([persistentStore.allAnimalNames description]);
 
   [animalController beginUsingAnimals: persistentStore.allAnimalNames
                           withKindMap: persistentStore.kindMap];
