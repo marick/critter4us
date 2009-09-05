@@ -62,8 +62,8 @@ FakeAnimals = ["betsy", "galaxy", "etc."];
   reservationDataController = [self custom: [[ReservationDataControllerPMR alloc] init]];
   groupingsController = [self custom: [[GroupingsControllerPMR alloc] init]];
   coordinator = [self custom: [[CoordinatorPMR alloc] init]];
-  animalController = [self custom: [[AnimalControllerPMR alloc] init]];
-  procedureController = [self custom: [[ProcedureControllerPMR alloc] init]];
+  animalController = [self custom: [[AnimalInterfaceController alloc] init]];
+  procedureController = [self custom: [[ProcedureInterfaceController alloc] init]];
 
   pageView = [self putPageViewOverWindow: theWindow];
   [self drawControlsOnPage: pageView andConnectTo: reservationDataController];
