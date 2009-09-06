@@ -4,6 +4,7 @@
 @implementation DragListPMR : CPPanel
 {
   CPDragType dragType;
+  CPCollectionView collectionView;
 }
 
 
@@ -15,18 +16,18 @@
   return self;
 }
 
-- (CPCollectionView)addCollectionViewSupplying: someDragType signalingWith: color 
+- (id)addCollectionViewSupplying: someDragType signalingWith: color 
 {
   dragType = someDragType;
   
   var bounds = [self usableArea];
-  var collectionView = [self placeCollectionViewAt: bounds];
+  collectionView = [self placeCollectionViewAt: bounds];
         
   [collectionView setDelegate:self]; // TODO get rid of this? or point to controller?
   [self describeItemsTo: collectionView];
   [self surround: collectionView withScrollViewColored: color];
 
-  return collectionView;
+  return self;
 }
 
 
@@ -39,6 +40,13 @@
 - (CPArray)collectionView:(CPCollectionView)aCollectionView dragTypesForItemsAtIndexes:(CPIndexSet)indices
 {
   return [dragType];
+}
+
+
+// CollectionView protocol implemented 
+- (void) setContent: content
+{
+  [collectionView setContent: content];
 }
 
 // View protocol implemented

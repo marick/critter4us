@@ -4,9 +4,10 @@
 @implementation PageControllerPMR : AwakeningObject
 {
   CPView pageView;
-  DragListPMR animalDragList;
-  DragListPMR procedureDragList;
-  CPPanel workupHerdPanel;
+  CPPanel target;
+  CPPanel animalDragList;
+  CPPanel procedureDragList;
+  CPObject workupHerdController;
 
   CPBoolean displayFloatingWindowsOnPageReveal;
 }
@@ -23,7 +24,6 @@
 
 -(void) appear
 {
-  alert([[pageView subviews] description]);
   [pageView setHidden: NO];
   if (displayFloatingWindowsOnPageReveal)
   {
@@ -35,7 +35,7 @@
 {
   [procedureDragList orderFront: self];
   [animalDragList orderFront: self];
-  [workupHerdPanel orderFront: self];
+  [target orderFront: self];
 }
 
 -(void) disappear
@@ -48,6 +48,8 @@
 {
   [procedureDragList orderOut: self];
   [animalDragList orderOut: self];
-  [workupHerdPanel orderOut: self];
+  [target orderOut: self];
 }
+
+
 @end

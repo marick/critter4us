@@ -3,12 +3,42 @@
 
 @implementation DropTarget : CPView
 {
-  id controller;
-  SEL dropAction;
   CPColor subtleHint;
   CPColor strongHint;
   CPDragType dragType;
+  CPCollectionView collectionView;
 }
+
+- (void) initWithNormalColor: aNormalColor hoverColor: aHoverColor frame: aRect accepting: aDragType
+{
+  self = [super initWithFrame: aRect];
+  subtleHint = aNormalColor;
+  strongHint = aHoverColor;
+  dragType = aDragType;
+  [collectionView registerForDraggedTypes:[dragType]];
+  [self giveSubtleHint];
+  return self;
+}
+
+- (void) surround: aCollectionView
+{
+  collectionView = aCollectionView;
+
+  var scrollView = [[CPScrollView alloc] initWithFrame: [self bounds]];
+  [self addSubview: scrollView];
+        
+  [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+  [scrollView setAutohidesScrollers:YES];
+
+  var collectionViewFrame = [[scrollView contentView] bounds];
+;
+  [collectionView setFrame: collectionViewFrame];
+  [collectionView setMinItemSize:CGSizeMake(TruncatedTextLineWidth, TextLineHeight)];
+  [collectionView setMaxItemSize:CGSizeMake(TruncatedTextLineWidth, TextLineHeight)];
+  [scrollView setDocumentView:collectionView];
+}
+
+
 
 - (void) giveSubtleHint
 {

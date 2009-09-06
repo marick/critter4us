@@ -3,12 +3,17 @@
 
 @implementation ProcedureControllerPMR : AwakeningObject
 {
-  DragListPMR dragList;
 }
 
 -(void) awakeFromCib
 {
   [super awakeFromCib];
+}
+
+
+-(void) beginUsingProcedures: procedures
+{
+  // TODO
 }
 
 @end

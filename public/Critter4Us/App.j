@@ -22,7 +22,7 @@
   [self createMakeReservationPage];
   [self createAllReservationsPage];
   [self createCibPMR];
-  
+
   [self activateReservationMaker: self];
 }
 

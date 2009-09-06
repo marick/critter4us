@@ -4,7 +4,7 @@
 
   AnimalControllerPMR animalController;
   ProcedureControllerPMR procedureController;
-  CPButton newGroupButton;
+  CPButton newWorkupHerdButton;
 }
 
 

@@ -32,7 +32,7 @@
   [self drawControlledSubgraphsIn: theWindow];
   coordinator = [self custom: [[CoordinatorPMR alloc] init]];
   persistentStore = [self loadGlobalPersistentStore];
-  [self connectRemainingOutlets];
+  [self connectOutlets];
 
   owner.pmrPageController = pageControllerSubgraph.controller;
 
@@ -44,28 +44,19 @@
   pageControllerSubgraph =
     [[PageControllerSubgraph alloc]
       initWithWindow: theWindow];
-  [pageControllerSubgraph connectOutlets];
-
   reservationDataControllerSubgraph =
     [[ReservationDataControllerSubgraph alloc]
       initOnPage: pageControllerSubgraph.pageView];
-  [reservationDataControllerSubgraph connectOutlets];
-
   procedureControllerSubgraph =
     [[ProcedureControllerSubgraph alloc]
-      initWithDragListPanel: pageControllerSubgraph.procedureDragList];
-  [procedureControllerSubgraph connectOutlets];
-
+      initWithDragListPanel: pageControllerSubgraph.procedurePanel];
   animalControllerSubgraph =
     [[AnimalControllerSubgraph alloc]
-        initWithDragListPanel: pageControllerSubgraph.animalDragList];
-  [animalControllerSubgraph connectOutlets];
-
+        initWithDragListPanel: pageControllerSubgraph.animalPanel];
   workupHerdControllerSubgraph =
     [[WorkupHerdControllerSubgraph alloc]
         initWithPanel: pageControllerSubgraph.workupHerdPanel
             abovePage: pageControllerSubgraph.pageView];
-  [workupHerdControllerSubgraph connectOutlets];
 }
 
 - (PersistentStore) loadGlobalPersistentStore
@@ -76,7 +67,7 @@
 }
 
 
-- (void) connectRemainingOutlets
+- (void) connectOutlets
 {
   return;
   pageControllerSubgraph.controller.target = target;

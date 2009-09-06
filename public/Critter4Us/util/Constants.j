@@ -11,7 +11,7 @@ NewReservationNews = "new reservation created";
 // TODO: these are tne new ones
 ReservationDataCollectedNews = "reservation data collected";
 ProcedureChangeNews = "procedures have changed";
-GroupingsDataCollectedNews = "all reservation data is ready now";
+WorkupHerdDataCollectedNews = "all reservation data is ready now"; // TODO: better name
 OneAnimalChosenNews = "one animal has been chosen";
 
 
