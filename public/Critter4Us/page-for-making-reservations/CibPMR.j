@@ -19,10 +19,10 @@
 {
   PersistentStore persistentStore;
 
-  CPView pageView;
   CPPanel procedureDragList;
   CPPanel animalDragList;
   CPPanel target;
+
   CoordinatorPMR coordinator;
   PageControllerPMR pageController;
   GroupingsControllerPMR groupingsController;
@@ -40,7 +40,8 @@
 
   persistentStore = [self loadGlobalPersistentStore];
 
-  pageControllerSubgraph = [[PageControllerSubgraph alloc] init];
+  pageControllerSubgraph = [[PageControllerSubgraph alloc] initWithWindow: theWindow];
+
   animalControllerSubgraph = [[AnimalControllerSubgraph alloc] init];
 
   reservationDataController = [self custom: [[ReservationDataControllerPMR alloc] init]];
@@ -49,8 +50,7 @@
   animalController = [self custom: [[AnimalControllerPMR alloc] init]];
   procedureController = [self custom: [[ProcedureControllerPMR alloc] init]];
 
-  pageView = [self putPageViewOverWindow: theWindow];
-  [self drawControlsOnPage: pageView andConnectTo: reservationDataController];
+  [self drawControlsOnPage: pageControllerSubgraph.pageView andConnectTo: reservationDataController];
 
   target = [self placeAnimalAndProcedureTargetPanel];
 
@@ -82,7 +82,6 @@
 
   // Connect outlets
 
-  pageControllerSubgraph.controller.pageView = pageView;
   pageControllerSubgraph.controller.target = target;
   pageControllerSubgraph.controller.animalDragList = animalDragList;
   pageControllerSubgraph.controller.procedureDragList = procedureDragList;
@@ -118,14 +117,6 @@
 }
 
 
-
--(CPView) putPageViewOverWindow: window
-{
-  var containingView = [window contentView];
-  var pageView = [[CPView alloc] initWithFrame: [containingView frame]];
-  [containingView addSubview: pageView];
-  return pageView;
-}
 
 
 -(id) drawControlsOnPage: pageView andConnectTo: reservationDataController
@@ -252,7 +243,6 @@
   [dateField setStringValue: "2009-09-23"];
 
   // TODO: do this with notifications.
-  // [pageControllerSubgraph.controller setDesiredFirstResponder:courseField];
   [courseField setNextKeyView: dateField];
   [dateField setNextKeyView: afternoonButton];
 
