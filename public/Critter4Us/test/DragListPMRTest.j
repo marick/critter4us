@@ -5,8 +5,4 @@
 {
 }
 
--(void) testSomething
-{
-}
-
 @end
