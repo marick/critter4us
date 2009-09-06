@@ -41,13 +41,14 @@
   persistentStore = [self loadGlobalPersistentStore];
 
   pageControllerSubgraph = [[PageControllerSubgraph alloc] initWithWindow: theWindow];
-
   animalControllerSubgraph = [[AnimalControllerSubgraph alloc] init];
+
+
+
 
   reservationDataController = [self custom: [[ReservationDataControllerPMR alloc] init]];
   groupingsController = [self custom: [[GroupingsControllerPMR alloc] init]];
   coordinator = [self custom: [[CoordinatorPMR alloc] init]];
-  animalController = [self custom: [[AnimalControllerPMR alloc] init]];
   procedureController = [self custom: [[ProcedureControllerPMR alloc] init]];
 
   [self drawControlsOnPage: pageControllerSubgraph.pageView andConnectTo: reservationDataController];
@@ -86,19 +87,19 @@
   pageControllerSubgraph.controller.animalDragList = animalDragList;
   pageControllerSubgraph.controller.procedureDragList = procedureDragList;
 
-  animalController.sourceView = animalDragList;
-  animalController.targetView = animalCollectionView;
+  animalControllerSubgraph.controller.sourceView = animalDragList;
+  animalControllerSubgraph.controller.targetView = animalCollectionView;
 
   procedureController.sourceView = procedureDragList;
   procedureController.targetView = procedureCollectionView;
 
   // TODO needed?
-  groupingsController.animalController = animalController;
+  groupingsController.animalController = animalControllerSubgraph.controller;
   groupingsController.procedureController = procedureController;
 
   coordinator.persistentStore = persistentStore;
   coordinator.reservationDataController = reservationDataController;
-  coordinator.animalController = animalController;
+  coordinator.animalController = animalControllerSubgraph.controller;
   coordinator.procedureController = procedureController;
   coordinator.groupingsController = groupingsController;
   coordinator.pageController = pageControllerSubgraph.controller;
