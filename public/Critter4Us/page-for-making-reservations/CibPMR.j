@@ -2,6 +2,8 @@
 @import "../util/Constants.j"
 @import "../view/DropTarget.j"
 @import "../persistence/PersistentStore.j"
+@import "cib/AnimalControllerSubgraph.j"
+
 @import "ConstantsPMR.j"
 @import "DragListPMR.j"
 @import "PageControllerPMR.j"
@@ -12,9 +14,8 @@
 @import "CoordinatorPMR.j"
 
 
-@implementation CibPMR : CPObject
+@implementation CibPMR : Subgraph
 {
-  CPArray customObjectsLoaded;
   PersistentStore persistentStore;
 
   CPView pageView;
@@ -31,9 +32,11 @@
 
 - (void)instantiatePageInWindow: theWindow withOwner: owner
 {
-  customObjectsLoaded = [[CPArray alloc] init];
+  self = [super init];
 
   persistentStore = [self loadGlobalPersistentStore];
+
+  var animalControllerSubgraph = [[AnimalControllerSubgraph alloc] init];
 
   pageController = [self custom: [[PageControllerPMR alloc] init]];
   reservationDataController = [self custom: [[ReservationDataControllerPMR alloc] init]];
@@ -100,7 +103,7 @@
 
   owner.pmrPageController = pageController;
   
-  [self awakenAllObjects];
+  [self awakeFromCib];
 }
 
 - (PersistentStore) loadGlobalPersistentStore
@@ -321,24 +324,6 @@
         
   [collectionView setItemPrototype:itemPrototype];
   return dropTarget;
-}
-
-- (id) custom: anObject
-{
-  [customObjectsLoaded addObject:anObject];
-  return anObject;
-}
-
-- (void) awakenAllObjects
-{
-  for(i=0; i < [customObjectsLoaded count]; i++)
-    {
-      var obj = [customObjectsLoaded objectAtIndex: i];
-      if ([obj respondsToSelector: @selector(awakeFromCib)])
-	{
-	  [obj awakeFromCib];
-	}
-    }
 }
 
 @end

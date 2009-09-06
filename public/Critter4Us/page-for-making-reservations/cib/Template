@@ -1,0 +1,5 @@
+@implementation CibPMR : CPObject
+{
+}
+
+@end
