@@ -3,6 +3,7 @@
 @import "../view/DropTarget.j"
 @import "../persistence/PersistentStore.j"
 @import "cib/AnimalControllerSubgraph.j"
+@import "cib/PageControllerSubgraph.j"
 
 @import "ConstantsPMR.j"
 @import "DragListPMR.j"
@@ -28,6 +29,9 @@
   ReservationDataControllerPMR reservationDataController;
   AnimalControllerPMR animalController;
   ProcedureControllerPMR procedureController;
+
+  PageControllerSubgraph pageControllerSubgraph;
+  AnimalControllerSubgraph animalControllerSubgraph;
 }
 
 - (void)instantiatePageInWindow: theWindow withOwner: owner
@@ -36,9 +40,9 @@
 
   persistentStore = [self loadGlobalPersistentStore];
 
-  var animalControllerSubgraph = [[AnimalControllerSubgraph alloc] init];
+  pageControllerSubgraph = [[PageControllerSubgraph alloc] init];
+  animalControllerSubgraph = [[AnimalControllerSubgraph alloc] init];
 
-  pageController = [self custom: [[PageControllerPMR alloc] init]];
   reservationDataController = [self custom: [[ReservationDataControllerPMR alloc] init]];
   groupingsController = [self custom: [[GroupingsControllerPMR alloc] init]];
   coordinator = [self custom: [[CoordinatorPMR alloc] init]];
@@ -78,10 +82,10 @@
 
   // Connect outlets
 
-  pageController.pageView = pageView;
-  pageController.target = target;
-  pageController.animalDragList = animalDragList;
-  pageController.procedureDragList = procedureDragList;
+  pageControllerSubgraph.controller.pageView = pageView;
+  pageControllerSubgraph.controller.target = target;
+  pageControllerSubgraph.controller.animalDragList = animalDragList;
+  pageControllerSubgraph.controller.procedureDragList = procedureDragList;
 
   animalController.sourceView = animalDragList;
   animalController.targetView = animalCollectionView;
@@ -98,10 +102,10 @@
   coordinator.animalController = animalController;
   coordinator.procedureController = procedureController;
   coordinator.groupingsController = groupingsController;
-  coordinator.pageController = pageController;
+  coordinator.pageController = pageControllerSubgraph.controller;
   
 
-  owner.pmrPageController = pageController;
+  owner.pmrPageController = pageControllerSubgraph.controller;
   
   [self awakeFromCib];
 }
@@ -248,7 +252,7 @@
   [dateField setStringValue: "2009-09-23"];
 
   // TODO: do this with notifications.
-  // [pageController setDesiredFirstResponder:courseField];
+  // [pageControllerSubgraph.controller setDesiredFirstResponder:courseField];
   [courseField setNextKeyView: dateField];
   [dateField setNextKeyView: afternoonButton];
 
