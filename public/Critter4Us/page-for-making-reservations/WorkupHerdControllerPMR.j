@@ -1,4 +1,6 @@
-@implementation WorkupHerdControllerPMR : CPObject
+@import "../controller/PanelController.j"
+
+@implementation WorkupHerdControllerPMR : PanelController
 {
   CPButton newWorkupHerdButton;
   CPDropTarget procedureDropTarget;

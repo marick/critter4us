@@ -32,7 +32,7 @@
 - (void) connectOutlets
 {
   controller.collectionView = collectionView;
-  controller.dragList = dragList;
+  controller.panel = dragList;
 }
 
 

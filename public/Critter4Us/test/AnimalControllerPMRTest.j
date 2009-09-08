@@ -13,4 +13,5 @@
   [scenario sutHasUpwardCollaborators: ['collectionView']]
 }
 
+
 @end	

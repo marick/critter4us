@@ -1,7 +1,6 @@
-@import <Foundation/CPObject.j>
-@import "../util/AwakeningObject.j"
+@import "../controller/PanelController.j"
 
-@implementation ProcedureControllerPMR : AwakeningObject
+@implementation ProcedureControllerPMR : PanelController
 {
   CPCollectionView collectionView;
   DragListPMR dragList;

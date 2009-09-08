@@ -85,6 +85,11 @@
   coordinator.animalController = animalControllerSubgraph.controller;
   coordinator.procedureController = procedureControllerSubgraph.controller;
   coordinator.workupHerdController = workupHerdControllerSubgraph.controller;
+
+  pageControllerSubgraph.controller.panelControllers =
+                                    [animalControllerSubgraph.controller,
+                                     procedureControllerSubgraph.controller,
+                                     workupHerdControllerSubgraph.controller];
 }
 @end
 

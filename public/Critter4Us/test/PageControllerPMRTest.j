@@ -10,22 +10,44 @@
   sut = [[PageControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
 
-  [scenario sutHasUpwardCollaborators:
-              ['pageView']];
+  [scenario sutHasUpwardCollaborators: ['pageView']];
 }
--(void) testAppearingUnhidesPage
+
+
+-(void) testDisappearingHidesPage
 {
   [scenario
    previousAction: function() { 
-     [sut.pageView setHidden:YES];
+     [sut.pageView setHidden:NO];
    }
   testAction: function() {
-      [sut appear];
+      [sut disappear];
    }
   andSo: function() {
-     [self assertFalse: [sut.pageView hidden]];
+      [self assertTrue: [sut.pageView hidden]];
    }];
 }
+
+
+-(void) testDisappearingTellsControllersToHideAnyPanelsTheyAreShowing
+{
+  var panelController1 = [[Mock alloc] initWithName: 'panelController 1'];
+  var panelController2 = [[Mock alloc] initWithName: 'panelController 2'];
+  [scenario
+   previousAction: function() { 
+      [sut.panelControllers = [panelController1, panelController2]];
+    }
+  during: function() {
+      [sut disappear];
+    }
+  behold: function() {
+      [panelController1 shouldReceive: @selector(hideAnyVisiblePanels)];
+      [panelController2 shouldReceive: @selector(hideAnyVisiblePanels)];
+   }];
+  [self assertTrue: [panelController1 wereExpectationsFulfilled]];
+  [self assertTrue: [panelController2 wereExpectationsFulfilled]];
+}
+
 
 -(void) testAppearingUnhidesPage
 {
@@ -40,6 +62,7 @@
      [self assertFalse: [sut.pageView hidden]];
    }];
 }
+
 
 
 @end

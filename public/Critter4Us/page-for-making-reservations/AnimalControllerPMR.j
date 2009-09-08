@@ -1,10 +1,8 @@
-@import "../util/AwakeningObject.j"
+@import "../controller/PanelController.j"
 
-@implementation AnimalControllerPMR : AwakeningObject
+@implementation AnimalControllerPMR : PanelController
 {
   CPCollectionView collectionView;
-  DragListPMR dragList;
 }
-
 
 @end
