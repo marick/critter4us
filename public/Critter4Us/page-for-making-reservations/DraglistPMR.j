@@ -22,7 +22,6 @@
   var bounds = [self usableArea];
   var collectionView = [self placeCollectionViewAt: bounds];
         
-  [collectionView setDelegate:self]; // TODO get rid of this? or point to controller?
   [self describeItemsTo: collectionView];
   [self surround: collectionView withScrollViewColored: color];
 
@@ -41,14 +40,7 @@
   return [dragType];
 }
 
-// View protocol implemented
-- (void) setNeedsDisplay: value
-{
-  [[self contentView] setNeedsDisplay: value];
-}
-
 // Util
-
 
 - (CPRect) usableArea
 {

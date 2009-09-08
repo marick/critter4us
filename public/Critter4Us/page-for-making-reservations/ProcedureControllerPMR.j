@@ -3,12 +3,8 @@
 
 @implementation ProcedureControllerPMR : AwakeningObject
 {
+  CPCollectionView collectionView;
   DragListPMR dragList;
-}
-
--(void) awakeFromCib
-{
-  [super awakeFromCib];
 }
 
 @end

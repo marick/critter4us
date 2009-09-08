@@ -15,6 +15,10 @@
 
 @implementation CibPMR : Subgraph
 {
+  CPPanel procedureDragList;
+  DragListPMR animalDragList;
+  CPPanel workupHerdPanel;
+
   PageControllerSubgraph pageControllerSubgraph;
   WorkupHerdControllerSubgraph workupHerdControllerSubgraph;
   ReservationDataControllerSubgraph reservationDataControllerSubgraph;
@@ -39,6 +43,7 @@
   [self awakeFromCib];
 }
 
+
 - (void) drawControlledSubgraphsIn: (CPWindow) theWindow
 {
   pageControllerSubgraph =
@@ -52,19 +57,16 @@
   [reservationDataControllerSubgraph connectOutlets];
 
   procedureControllerSubgraph =
-    [[ProcedureControllerSubgraph alloc]
-      initWithDragListPanel: pageControllerSubgraph.procedureDragList];
+    [[ProcedureControllerSubgraph alloc] init]
   [procedureControllerSubgraph connectOutlets];
 
   animalControllerSubgraph =
-    [[AnimalControllerSubgraph alloc]
-        initWithDragListPanel: pageControllerSubgraph.animalDragList];
+    [[AnimalControllerSubgraph alloc] init];
   [animalControllerSubgraph connectOutlets];
 
   workupHerdControllerSubgraph =
     [[WorkupHerdControllerSubgraph alloc]
-        initWithPanel: pageControllerSubgraph.workupHerdPanel
-            abovePage: pageControllerSubgraph.pageView];
+        initAbovePage: pageControllerSubgraph.pageView];
   [workupHerdControllerSubgraph connectOutlets];
 }
 
@@ -78,24 +80,11 @@
 
 - (void) connectRemainingOutlets
 {
-  return;
-  pageControllerSubgraph.controller.target = target;
-  pageControllerSubgraph.controller.animalDragList = animalControllerSubgraph.dragList;
-  pageControllerSubgraph.controller.procedureDragList = procedureDragList;
-
-  procedureController.sourceView = procedureDragList;
-  procedureController.targetView = procedureCollectionView;
-
-  // TODO needed?
-  workupHerdController.animalController = animalControllerSubgraph.controller;
-  workupHerdController.procedureController = procedureController;
-
   coordinator.persistentStore = persistentStore;
-  coordinator.reservationDataController = reservationDataController;
+  coordinator.reservationDataController = reservationDataControllerSubgraph.controller;
   coordinator.animalController = animalControllerSubgraph.controller;
-  coordinator.procedureController = procedureController;
-  coordinator.workupHerdController = workupHerdController;
-  coordinator.pageController = pageControllerSubgraph.controller;
+  coordinator.procedureController = procedureControllerSubgraph.controller;
+  coordinator.workupHerdController = workupHerdControllerSubgraph.controller;
 }
 @end
 

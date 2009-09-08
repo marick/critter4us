@@ -55,16 +55,15 @@
   return YES;
 }
 
-// TODO: Does it make sense to follow target/action protocol? 
 - (CPBoolean)performDragOperation:(CPDraggingInfo)aSender
 {
   // TODO: do we really need to encode this?
-  var data = [[aSender draggingPasteboard] dataForType:dragType];
-  var droppedString = [CPKeyedUnarchiver unarchiveObjectWithData:data];
+  // var data = [[aSender draggingPasteboard] dataForType:dragType];
+  //var droppedString = [CPKeyedUnarchiver unarchiveObjectWithData:data];
   
-  [NotificationCenter postNotificationName: OneAnimalChosenNews
-                                    object: droppedString];
-  return YES;
+  //  [NotificationCenter postNotificationName: OneAnimalChosenNews
+  //                                    object: droppedString];
+  //  return YES;
 }
 
 - (CPDragOperation)draggingEntered:(CPDraggingInfo)aSender
@@ -86,21 +85,9 @@
   [self giveSubtleHint];
 }
 
-- (CPString) droppedString
-{
-  return droppedString;
-}
-
-- (void) setContent
-{
-  alert("drop target content set");
-  // TODO
-}
-
-
 - (void) stopObserving
 {
-  // Required by ScenarioTestCase.up
+  // Required by ScenarioTestCase.setup
 }
 
 

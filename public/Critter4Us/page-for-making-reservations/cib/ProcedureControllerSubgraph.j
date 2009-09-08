@@ -1,21 +1,39 @@
-@import "Subgraph.j"
 @import "../ProcedureControllerPMR.j"
+@import "DragListControllerSubgraph.j"
 
-@implementation ProcedureControllerSubgraph : Subgraph
+@implementation ProcedureControllerSubgraph : DragListControllerSubgraph
 {
-  ProcedureControllerPMR controller;
-  CPCollectionView collectionView;
+}
+
+- (CPInteger) xPosition
+{
+  return FarthestLeftWindowX;
+}
+
+- (CPString) dragListTitle
+{
+  return "Procedures";
+}
+
+- (id) dragType
+{
+  return ProcedureDragType;
+}
+
+- (CPColor) color
+{
+  return ProcedureHintColor;
+}
+
+- (id) newController
+{
+  return [[ProcedureControllerPMR alloc] init];
 }
 
 
-- (id) initWithDragListPanel: (DragListPMR) aPanel
+- (void) mockupSetup  // TODO: Delete this
 {
-  self = [super init];
-
-  controller = [self custom: [[ProcedureControllerPMR alloc] init]];
-  
-  collectionView = [aPanel addCollectionViewSupplying: ProcedureDragType 
-                                       signalingWith: ProcedureHintColor];
+  [super mockupSetup];
   [collectionView setContent: ["abdominocentesis", 
                                                  "Caslick's operation (horses)",
                                                  'CSF collection (lumbosacral)',
@@ -29,14 +47,6 @@
                                                  'zzzz',
                                                  'zzzzz'
                                ]];
-  return self;
-}
-
-
-
-- (void) connectOutlets
-{
-  controller.collectionView = collectionView;
 }
 
 

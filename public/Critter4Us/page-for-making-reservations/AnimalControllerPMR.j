@@ -2,7 +2,8 @@
 
 @implementation AnimalControllerPMR : AwakeningObject
 {
-  CollectionView collectionView;
+  CPCollectionView collectionView;
+  DragListPMR dragList;
 }
 
 

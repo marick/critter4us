@@ -1,30 +1,38 @@
-@import "Subgraph.j"
+@import "DragListControllerSubgraph.j"
 @import "../AnimalControllerPMR.j"
 
-@implementation AnimalControllerSubgraph : Subgraph
+@implementation AnimalControllerSubgraph : DragListControllerSubgraph
 {
-  AnimalControllerPMR controller;
-  CPCollectionView collectionView;
+}
+- (CPInteger) xPosition
+{
+  return FarthestRightWindowX;
 }
 
-- (id) initWithDragListPanel: (DragListPMR) aPanel
+- (CPString) dragListTitle
 {
-  self = [super init];
+  return "Animals";
+}
 
-  controller = [self custom: [[AnimalControllerPMR alloc] init]];
-  
-  collectionView = [aPanel addCollectionViewSupplying: AnimalDragType 
-                                        signalingWith: AnimalHintColor];
+- (id) dragType
+{
+  return AnimalDragType;
+}
 
+- (CPColor) color
+{
+  return AnimalHintColor;
+}
+
+- (id) newController
+{
+  return [[AnimalControllerPMR alloc] init];
+}
+
+-(void) mockupSetup  // TODO: Delete this
+{
+  [super mockupSetup];
   [collectionView setContent: ["All Star (stallion)", "Brooke (cow)", "Pumpkin (mare)"]];
-  return self;
 }
-
-- (void) connectOutlets
-{
-  controller.collectionView = collectionView;
-}
-
-
 
 @end

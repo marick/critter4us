@@ -10,7 +10,6 @@
   AnimalControllerPMR animalController;
   ProcedureControllerPMR procedureController;
   WorkupHerdControllerPMR workupHerdController;
-  PageControllerPMR pageController;
   
   PersistentStore persistentStore;
 }

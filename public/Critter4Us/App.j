@@ -23,7 +23,7 @@
   [self createAllReservationsPage];
   [self createCibPMR];
 
-  [self activateReservationMaker: self];
+  [self activateNewReservationMaker: self];
 }
 
 -(void)createAllReservationsPage

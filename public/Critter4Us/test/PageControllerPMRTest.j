@@ -11,7 +11,34 @@
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
 
   [scenario sutHasUpwardCollaborators:
-              ['pageView', 'workupHerdPanel', 'animalDragList', 'procedureDragList']];
+              ['pageView']];
+}
+-(void) testAppearingUnhidesPage
+{
+  [scenario
+   previousAction: function() { 
+     [sut.pageView setHidden:YES];
+   }
+  testAction: function() {
+      [sut appear];
+   }
+  andSo: function() {
+     [self assertFalse: [sut.pageView hidden]];
+   }];
+}
+
+-(void) testAppearingUnhidesPage
+{
+  [scenario
+   previousAction: function() { 
+     [sut.pageView setHidden:YES];
+   }
+  testAction: function() {
+      [sut appear];
+   }
+  andSo: function() {
+     [self assertFalse: [sut.pageView hidden]];
+   }];
 }
 
 

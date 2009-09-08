@@ -12,21 +12,14 @@
   CPCollectionView procedureCollectionView;
   CPDropTarget animalDropTarget;
   CPCollectionView animalCollectionView;
+  CPanel panel;
 }
 
-- (void) connectOutlets
-{
-  controller.newWorkupHerdButton = newWorkupHerdButton;
-  controller.procedureDropTarget = procedureDropTarget;
-  controller.procedureCollectionView = procedureCollectionView;
-  controller.animalDropTarget = animalDropTarget;
-  controller.animalCollectionView = animalCollectionView;
-}
-r
-
-- (id) initWithPanel: (CPPanel) aPanel abovePage: (CPView) aPage
+- (id) initAbovePage: (CPView) aPage
 {
   self = [super init];
+  panel = [self firstWorkupHerdPanel];
+
   controller = [self custom: [[WorkupHerdControllerPMR alloc] init]];
   [self placeNewButtonOn: aPage];
 
@@ -39,7 +32,7 @@ r
                                                      hoverColor: ProcedureStrongHintColor
                                                           frame: CGRectMake(FirstTargetX, 0, TargetWidth, TargetViewHeight)
                                                       accepting: ProcedureDragType];
-  [[aPanel contentView] addSubview: procedureDropTarget];
+  [[panel contentView] addSubview: procedureDropTarget];
   procedureCollectionView = [[CPCollectionView alloc]
                               initWithFrame: CGRectMakeZero()];
   [procedureDropTarget surround: procedureCollectionView];
@@ -52,7 +45,7 @@ r
                                                      hoverColor: AnimalStrongHintColor
                                                           frame: CGRectMake(SecondTargetX, 0, TargetWidth, TargetViewHeight)
                                                       accepting: AnimalDragType];
-  [[aPanel contentView] addSubview: animalDropTarget];
+  [[panel contentView] addSubview: animalDropTarget];
   animalCollectionView = [[CPCollectionView alloc]
                               initWithFrame: CGRectMakeZero()];
   [animalDropTarget surround: animalCollectionView];
@@ -60,6 +53,31 @@ r
   [animalCollectionView setContent: ["All Star"]];
   return self;
 }
+
+-(CPPanel) firstWorkupHerdPanel
+{
+  var rect = CGRectMake(FirstGroupingWindowX, WindowTops, GroupingWindowWidth,
+                        TargetWindowHeight);
+  var panel = [[CPPanel alloc] initWithContentRect: rect
+                                          styleMask:CPHUDBackgroundWindowMask | CPResizableWindowMask];
+  [panel setLevel:CPFloatingWindowLevel];
+  [panel setTitle:@"Drag from left and right to group procedures with animals used for them"];
+  [panel orderFront: self]; // TODO: delete when page layout done.
+  return panel;
+}
+
+
+- (void) connectOutlets
+{
+  controller.newWorkupHerdButton = newWorkupHerdButton;
+  controller.procedureDropTarget = procedureDropTarget;
+  controller.procedureCollectionView = procedureCollectionView;
+  controller.animalDropTarget = animalDropTarget;
+  controller.animalCollectionView = animalCollectionView;
+  controller.panel = panel;
+}
+
+
 
 - (CPButton) placeNewButtonOn: pageView
 {

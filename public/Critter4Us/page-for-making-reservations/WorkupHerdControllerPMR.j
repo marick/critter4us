@@ -5,6 +5,7 @@
   CPCollectionView procedureCollectionView;
   CPDropTarget animalDropTarget;
   CPCollectionView animalCollectionView;
+  CPPanel panel;
 }
 
 
