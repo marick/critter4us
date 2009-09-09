@@ -24,4 +24,15 @@
    }];
 }
 
+-(void) testPanelControllersCanShowPanels
+{
+  [scenario
+    during: function() {
+      [sut showPanelIfAppropriate];
+    }
+  behold: function() {
+      [sut.panel shouldReceive: @selector(orderFront:)];
+    }];
+}
+
 @end	

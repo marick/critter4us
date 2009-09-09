@@ -10,5 +10,10 @@
   [panel orderOut: nil];
 }
 
+-(void) showPanelIfAppropriate
+{
+  [panel orderFront: nil];
+}
+
 
 @end

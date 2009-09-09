@@ -11,6 +11,10 @@
 -(void) appear
 {
   [pageView setHidden:NO];
+  for(var i=0; i < [panelControllers count]; i++)
+  {
+    [panelControllers[i] showPanelIfAppropriate];
+  }
 }
 
 -(void) disappear

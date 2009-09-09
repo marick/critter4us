@@ -63,6 +63,25 @@
    }];
 }
 
+-(void) testAppearingTellsControllersToDisplayTheirPanelIfAppropriate
+{
+  var panelController1 = [[Mock alloc] initWithName: 'panelController 1'];
+  var panelController2 = [[Mock alloc] initWithName: 'panelController 2'];
+  [scenario
+    previousAction: function() {
+      [sut.panelControllers = [panelController1, panelController2]];
+    }
+  during: function() {
+      [sut appear];
+    }
+  behold: function() {
+      [panelController1 shouldReceive: @selector(showPanelIfAppropriate)];
+      [panelController2 shouldReceive: @selector(showPanelIfAppropriate)];
+    }];
+  [self assertTrue: [panelController1 wereExpectationsFulfilled]];
+  [self assertTrue: [panelController2 wereExpectationsFulfilled]];
+}
+
 
 
 @end
