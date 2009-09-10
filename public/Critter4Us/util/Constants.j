@@ -28,3 +28,7 @@ jsonURI = function(route)
 // Drag and drop
 ProcedureDragType = "ProcedureDragType";
 AnimalDragType = "AnimalDragType";
+
+
+// Misc
+UnusedArgument = nil;

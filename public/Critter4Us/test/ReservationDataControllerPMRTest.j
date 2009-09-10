@@ -20,11 +20,22 @@
 - (void)testNotifiesListenersWhenReservingStarts
 {
   [scenario
+    previousAction: function() {
+      [sut.dateField setStringValue: '2009-12-10'];
+      [sut.morningButton setState: CPOffState];
+    }
     during: function() {
-      [sut beginReserving: nil];
+      [sut beginReserving: UnusedArgument];
     }
   behold: function() {
-      [self listenersWillReceiveNotification: ReservationDataAvailable];
+
+      [self listenersWillReceiveNotification: ReservationDataAvailable
+                                checkingWith: function(notification) {
+          var dict = [notification object];
+          [self assert: '2009-12-10' equals: [dict valueForKey: 'date']];
+          [self assert: [Time afternoon] equals: [dict valueForKey: 'time']];
+          return YES;
+        }];
     }
    ]   
 }

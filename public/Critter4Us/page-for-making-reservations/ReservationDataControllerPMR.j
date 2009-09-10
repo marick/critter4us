@@ -18,8 +18,13 @@
 
 - (void) beginReserving: sender
 {
+  var data = [CPDictionary dictionary];
+  [data setValue: [dateField stringValue] forKey: 'date'];
+  time = ([morningButton state] == CPOnState) ? [Time morning] : [Time afternoon];
+  [data setValue: time forKey: 'time'];
+
   [NotificationCenter postNotificationName: ReservationDataAvailable
-                                    object: nil];
+                                    object: data];
 }
 
 - (void) allowNoDataChanges

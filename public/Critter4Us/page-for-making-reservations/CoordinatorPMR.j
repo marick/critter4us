@@ -25,6 +25,9 @@
 
 - (void) reservationDataAvailable: aNotification
 {
+  [persistentStore focusOnDate: [[aNotification object] valueForKey: 'date']
+                          time: [[aNotification object] valueForKey: 'time']];
+
   [reservationDataController allowNoDataChanges];
   [reservationDataController prepareToFinishReservation];
   [procedureController appear];
