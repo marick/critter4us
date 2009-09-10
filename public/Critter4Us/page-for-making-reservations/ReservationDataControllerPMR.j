@@ -22,7 +22,7 @@
                                     object: nil];
 }
 
-- (void) disable
+- (void) allowNoDataChanges
 {
   [courseField setEnabled: NO];
   [instructorField setEnabled: NO];
@@ -30,6 +30,13 @@
   [morningButton setEnabled: NO];
   [afternoonButton setEnabled: NO];
   [beginButton setEnabled: NO];
+}
+
+- (void) prepareToFinishReservation
+{
+  [beginButton setHidden: YES];
+  [restartButton setHidden: NO];
+  [reserveButton setHidden: NO];
 }
 
 @end

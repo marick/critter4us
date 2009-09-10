@@ -30,7 +30,7 @@
 }
 
 
-- (void)testDisables
+- (void)testCanBeToldToAllowNoDataChanges
 {
   [scenario
     previousAction: function() {
@@ -42,7 +42,7 @@
       [sut.beginButton setEnabled: YES];
     }
     testAction: function() {
-      [sut disable];
+      [sut allowNoDataChanges];
     }
   andSo: function() {
       [self assert: NO equals: [sut.courseField enabled]];
@@ -53,6 +53,26 @@
       [self assert: NO equals: [sut.beginButton enabled]];
     }
    ];
+}
+
+- (void) testCanBeToldToPrepareForCompletionOfReservation
+{
+  [scenario
+    previousAction: function() {
+      [sut.beginButton setHidden: NO];
+      [sut.restartButton setHidden: YES];
+      [sut.reserveButton setHidden: YES];
+    }
+    testAction: function() {
+      [sut prepareToFinishReservation];
+    }
+  andSo: function() {
+      [self assert: [sut.beginButton hidden] equals: YES];
+      [self assert: [sut.restartButton hidden] equals: NO];
+      [self assert: [sut.reserveButton hidden] equals: NO];
+    }
+   ];
+  
 }
 
 @end
