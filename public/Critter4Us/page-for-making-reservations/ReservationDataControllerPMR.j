@@ -16,12 +16,20 @@
   CPWebView linkToPreviousResults;
 }
 
-
 - (void) beginReserving: sender
 {
   [NotificationCenter postNotificationName: ReservationDataAvailable
                                     object: nil];
 }
 
+- (void) disable
+{
+  [courseField setEnabled: NO];
+  [instructorField setEnabled: NO];
+  [dateField setEnabled: NO];
+  [morningButton setEnabled: NO];
+  [afternoonButton setEnabled: NO];
+  [beginButton setEnabled: NO];
+}
 
 @end

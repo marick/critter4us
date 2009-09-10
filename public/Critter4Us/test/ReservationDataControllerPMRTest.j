@@ -28,4 +28,31 @@
     }
    ]   
 }
+
+
+- (void)testDisables
+{
+  [scenario
+    previousAction: function() {
+      [sut.courseField setEnabled: YES];
+      [sut.instructorField setEnabled: YES];
+      [sut.dateField setEnabled: YES];
+      [sut.morningButton setEnabled: YES];
+      [sut.afternoonButton setEnabled: YES];
+      [sut.beginButton setEnabled: YES];
+    }
+    testAction: function() {
+      [sut disable];
+    }
+  andSo: function() {
+      [self assert: NO equals: [sut.courseField enabled]];
+      [self assert: NO equals: [sut.instructorField enabled]];
+      [self assert: NO equals: [sut.dateField enabled]];
+      [self assert: NO equals: [sut.morningButton enabled]];
+      [self assert: NO equals: [sut.afternoonButton enabled]];
+      [self assert: NO equals: [sut.beginButton enabled]];
+    }
+   ];
+}
+
 @end

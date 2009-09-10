@@ -25,6 +25,7 @@
 
 - (void) reservationDataAvailable: aNotification
 {
+  [reservationDataController disable];
   [procedureController appear];
   [animalController appear];
   [workupHerdController appear];
