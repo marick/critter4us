@@ -20,7 +20,8 @@
       [self sendNotification: ReservationDataAvailable withObject: nil];
     }
   behold: function() {
-      [sut.reservationDataController shouldReceive:@selector(disable)];
+      [sut.reservationDataController shouldReceive:@selector(allowNoDataChanges)];
+      [sut.reservationDataController shouldReceive:@selector(prepareToFinishReservation)];
       [sut.procedureController shouldReceive:@selector(appear)];
       [sut.animalController shouldReceive:@selector(appear)];
       [sut.workupHerdController shouldReceive:@selector(appear)];
