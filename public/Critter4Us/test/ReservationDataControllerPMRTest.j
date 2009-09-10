@@ -72,7 +72,6 @@
       [self assert: [sut.reserveButton hidden] equals: NO];
     }
    ];
-  
 }
 
 @end

@@ -105,7 +105,7 @@
   width = 80;
   var reserveButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
   [reserveButton setTitle: "Reserve"];
-  //  [reserveButton setHidden: YES];  TODO: turn on
+  [reserveButton setHidden: YES];
   [pageView addSubview:reserveButton];
   [reserveButton setTarget: controller];
   [reserveButton setAction: @selector(makeReservation:)];
@@ -115,14 +115,13 @@
   width = 180;
   var restartButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
   [restartButton setTitle: "Restart (doesn't work yet)"];
-  //  [restartButton setHidden: YES];  TODO turn on
+  [restartButton setHidden: YES];
   [pageView addSubview:restartButton];
   [restartButton setTarget: controller];
   [restartButton setAction: @selector(abandonReservation:)];
 
-
   var webView = [[CPWebView alloc] initWithFrame: CGRectMake(placeForLink,60,500,100)];
-  //  [webView setHidden: YES]; TODO turn on
+  [webView setHidden: YES];
   [pageView addSubview: webView];
 
   controller.linkToPreviousResults = webView;
