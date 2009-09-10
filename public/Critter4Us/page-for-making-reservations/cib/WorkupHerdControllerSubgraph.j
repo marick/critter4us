@@ -83,7 +83,7 @@
 {
   newWorkupHerdButton = [[CPButton alloc] initWithFrame:CGRectMake(385, 400, 220, 30)];
   [newWorkupHerdButton setTitle: "New group (doesn't work yet)"];
-  //  [newWorkupHerdButton setHidden: YES]; TODO: delete when layup right.
+  [newWorkupHerdButton setHidden: YES]; 
   [pageView addSubview:newWorkupHerdButton];
   // [restartButton setTarget: controller];
   // [restartButton setAction: @selector(abandonReservation:)];

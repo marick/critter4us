@@ -12,7 +12,7 @@
 
 -(void) showPanelIfAppropriate
 {
-  [panel orderFront: nil];
+  [panel orderOut: nil];
 }
 
 

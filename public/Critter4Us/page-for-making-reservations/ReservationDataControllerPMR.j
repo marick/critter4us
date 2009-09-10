@@ -16,4 +16,11 @@
 }
 
 
+- (void) beginReserving: sender
+{
+  [NotificationCenter postNotificationName: "Reservation data available"
+                                    object: nil];
+}
+
+
 @end

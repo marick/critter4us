@@ -16,5 +16,15 @@
                                         'linkToPreviousResults']];
 }
 
-
+- (void)testNotifiesListenersWhenReservingStarts
+{
+  [scenario
+    during: function() {
+      [sut beginReserving: nil];
+    }
+  behold: function() {
+      [self listenersWillReceiveNotification: "Reservation data available"];
+    }
+   ]   
+}
 @end

@@ -24,14 +24,14 @@
    }];
 }
 
--(void) testPanelControllersCanShowPanels
+-(void) testPanelControllerKnowsItsNotAppropriateToBeVisibleWhenCreated
 {
   [scenario
     during: function() {
       [sut showPanelIfAppropriate];
     }
   behold: function() {
-      [sut.panel shouldReceive: @selector(orderFront:)];
+      [sut.panel shouldReceive: @selector(orderOut:)];
     }];
 }
 

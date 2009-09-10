@@ -96,7 +96,7 @@
   [beginButton setTitle: "Begin"];
   [pageView addSubview:beginButton];
   [beginButton setTarget: controller];
-  [beginButton setAction: @selector(commitToParticularCourseSession:)];
+  [beginButton setAction: @selector(beginReserving:)];
   x += width;
 
 
