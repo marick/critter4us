@@ -10,7 +10,8 @@
   sut = [[ReservationDataControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasUpwardCollaborators: ['courseField', 'instructorField',
-                                        'dateField', 'morningButton',
+                                        'dateField',
+                                        'morningButton', 'afternoonButton',
                                         'beginButton', 'restartButton',
                                         'reserveButton',
                                         'linkToPreviousResults']];

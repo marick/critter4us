@@ -7,6 +7,7 @@
   CPTextField instructorField;
   CPTextField dateField;
   CPRadio morningButton;
+  CPRadio afternoonButton;
 
   CPButton beginButton;
   CPButton reserveButton;

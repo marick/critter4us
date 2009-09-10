@@ -13,13 +13,14 @@
   [scenario sutHasDownwardCollaborators: ['persistentStore']];
 }
 
-- (void) testTellsPanelsToAppearWhenReservationReady
+- (void) testSetsUpControlsAppropriatelyWhenReservationsStart
 {
   [scenario
     during: function() {
       [self sendNotification: ReservationDataAvailable withObject: nil];
     }
   behold: function() {
+      [sut.reservationDataController shouldReceive:@selector(disable)];
       [sut.procedureController shouldReceive:@selector(appear)];
       [sut.animalController shouldReceive:@selector(appear)];
       [sut.workupHerdController shouldReceive:@selector(appear)];

@@ -130,6 +130,7 @@
   controller.instructorField = instructorField;
   controller.dateField = dateField;
   controller.morningButton = morningButton;
+  controller.afternoonButton = afternoonButton;
   controller.beginButton = beginButton;
   controller.reserveButton = reserveButton;
   controller.restartButton = restartButton;
