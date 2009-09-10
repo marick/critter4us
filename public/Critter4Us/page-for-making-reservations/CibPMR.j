@@ -57,7 +57,7 @@
   [reservationDataControllerSubgraph connectOutlets];
 
   procedureControllerSubgraph =
-    [[ProcedureControllerSubgraph alloc] init]
+    [[ProcedureControllerSubgraph alloc] init];
   [procedureControllerSubgraph connectOutlets];
 
   animalControllerSubgraph =
@@ -66,7 +66,7 @@
 
   workupHerdControllerSubgraph =
     [[WorkupHerdControllerSubgraph alloc]
-        initAbovePage: pageControllerSubgraph.pageView];
+                    initAbovePage: pageControllerSubgraph.pageView];
   [workupHerdControllerSubgraph connectOutlets];
 }
 

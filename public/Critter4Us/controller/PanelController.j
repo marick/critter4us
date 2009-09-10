@@ -3,6 +3,26 @@
 @implementation PanelController : AwakeningObject
 {
   CPPanel panel;
+  CPBoolean visibilityAppropriate;
+}
+
+-(id) init
+{
+  self = [super init];
+  visibilityAppropriate = NO;
+  return self;
+}
+
+-(void) appear
+{
+  visibilityAppropriate = YES;
+  [panel orderFront: nil];
+}
+
+-(void) disappear
+{
+  visibilityAppropriate = NO;
+  [panel orderOut: nil];
 }
 
 -(void) hideAnyVisiblePanels
@@ -12,7 +32,12 @@
 
 -(void) showPanelIfAppropriate
 {
-  [panel orderOut: nil];
+  if (visibilityAppropriate) {
+    [panel orderFront: nil];
+  }
+  else {
+    [panel orderOut: nil];
+  }
 }
 
 
