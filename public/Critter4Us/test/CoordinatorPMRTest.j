@@ -17,10 +17,12 @@
 {
   [scenario
     during: function() {
-      [self sendNotification: "Reservation data available" withObject: nil];
+      [self sendNotification: ReservationDataAvailable withObject: nil];
     }
   behold: function() {
       [sut.procedureController shouldReceive:@selector(appear)];
+      [sut.animalController shouldReceive:@selector(appear)];
+      [sut.workupHerdController shouldReceive:@selector(appear)];
     }];
 }
 

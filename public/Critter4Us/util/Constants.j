@@ -9,11 +9,7 @@ ReservationRequestedNews = "reservation requested";
 NewReservationNews = "new reservation created";
 
 // TODO: these are tne new ones
-ReservationDataCollectedNews = "reservation data collected";
-ProcedureChangeNews = "procedures have changed";
-WorkupHerdDataCollectedNews = "all reservation data is ready now"; // TODO: better name
-OneAnimalChosenNews = "one animal has been chosen";
-
+ReservationDataAvailable="Reservation data available";
 
 // Route names
 StoreReservationRoute = @"store_reservation";

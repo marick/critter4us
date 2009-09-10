@@ -23,7 +23,7 @@
       [sut beginReserving: nil];
     }
   behold: function() {
-      [self listenersWillReceiveNotification: "Reservation data available"];
+      [self listenersWillReceiveNotification: ReservationDataAvailable];
     }
    ]   
 }

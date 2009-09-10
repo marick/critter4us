@@ -14,5 +14,20 @@
   PersistentStore persistentStore;
 }
 
+- (void) awakeFromCib
+{
+  [NotificationCenter
+   addObserver: self
+      selector: @selector(reservationDataAvailable:)
+          name: ReservationDataAvailable
+        object: nil];
+}
+
+- (void) reservationDataAvailable: aNotification
+{
+  [procedureController appear];
+  [animalController appear];
+  [workupHerdController appear];
+}
 
 @end

@@ -18,7 +18,7 @@
 
 - (void) beginReserving: sender
 {
-  [NotificationCenter postNotificationName: "Reservation data available"
+  [NotificationCenter postNotificationName: ReservationDataAvailable
                                     object: nil];
 }
 
