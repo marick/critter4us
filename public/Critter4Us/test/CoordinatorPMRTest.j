@@ -13,4 +13,15 @@
   [scenario sutHasDownwardCollaborators: ['persistentStore']];
 }
 
+- (void) testTellsPanelsToAppearWhenReservationReady
+{
+  [scenario
+    during: function() {
+      [self sendNotification: "Reservation data available" withObject: nil];
+    }
+  behold: function() {
+      [sut.procedureController shouldReceive:@selector(appear)];
+    }];
+}
+
 @end
