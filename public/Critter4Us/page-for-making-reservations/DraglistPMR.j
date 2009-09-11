@@ -60,7 +60,7 @@
 
 - (void) describeItemsTo: (CPCollectionView) collectionView
 {
-  [self useNewClass: AnimalItemView forCollectionView: collectionView];
+  [self useNewClass: DragListItemView forCollectionView: collectionView];
   [collectionView setMinItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
   [collectionView setMaxItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
 }
@@ -103,3 +103,5 @@
 }
 
 @end
+
+
