@@ -31,4 +31,19 @@
    ];
 }
 
+- (void) testProvidesDraggingInformationForCollectionView
+{
+  var animals = [ [[Animal alloc] initWithName: 'betsy' kind: 'cow'],
+                  [[Animal alloc] initWithName: 'josie' kind: 'horse']];
+
+  [sut beginUsing: animals];
+  [self assert: [AnimalDragType]
+        equals: [sut collectionView: UnusedArgument
+                     dragTypesForItemsAtIndexes: UnusedArgument]];
+  [self assert: [ animals[0] ] 
+        equals: [sut collectionView: UnusedArgument
+                     dataForItemsAtIndexes: [CPIndexSet indexSetWithIndex: 0]
+                            forType: AnimalDragType]];
+}
+
 @end	

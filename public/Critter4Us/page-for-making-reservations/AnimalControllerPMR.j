@@ -15,22 +15,18 @@
   [collectionView setNeedsDisplay: YES];
 }
 
-/* These implement dragging
-
-- (CPData)collectionView:(CPCollectionView)aCollectionView dataForItemsAtIndexes:(CPIndexSet)indices forType:(CPString)aType
+- (CPData)collectionView:(CPCollectionView)aCollectionView dataForItemsAtIndexes:(CPIndexSet)indexes forType:(CPString)aType
 {
-  //  alert('animal dragging' + [indices description])
+  return [animals objectsAtIndexes: indexes];
+  // TODO: It may be that objects have to be serialized.
   //  var element = [[aCollectionView content] objectAtIndex:[indices firstIndex]];
   //  return [CPKeyedArchiver archivedDataWithRootObject:element];
 }
 
 - (CPArray)collectionView:(CPCollectionView)aCollectionView dragTypesForItemsAtIndexes:(CPIndexSet)indices
 {
-  alert('animal dragging')
-  return [dragType];
+  return [AnimalDragType];
 }
-
-*/
 
 -(CPArray) animalDescriptionList
 {
