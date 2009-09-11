@@ -146,7 +146,6 @@
   // Doesn't work.
   //  [theWindow setDefaultButton: goButton];
   //  [theWindow enableKeyEquivalentForDefaultButton];
-  [customObjectsLoaded addObject:controller];
 }
 
 
