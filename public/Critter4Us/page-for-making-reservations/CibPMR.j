@@ -47,26 +47,26 @@
 - (void) drawControlledSubgraphsIn: (CPWindow) theWindow
 {
   pageControllerSubgraph =
-    [[PageControllerSubgraph alloc]
-      initWithWindow: theWindow];
+    [self custom: [[PageControllerSubgraph alloc]
+                    initWithWindow: theWindow]];
   [pageControllerSubgraph connectOutlets];
 
   reservationDataControllerSubgraph =
-    [[ReservationDataControllerSubgraph alloc]
-      initOnPage: pageControllerSubgraph.pageView];
+    [self custom: [[ReservationDataControllerSubgraph alloc]
+      initOnPage: pageControllerSubgraph.pageView]];
   [reservationDataControllerSubgraph connectOutlets];
 
   procedureControllerSubgraph =
-    [[ProcedureControllerSubgraph alloc] init];
+    [self custom: [[ProcedureControllerSubgraph alloc] init]];
   [procedureControllerSubgraph connectOutlets];
 
   animalControllerSubgraph =
-    [[AnimalControllerSubgraph alloc] init];
+    [self custom: [[AnimalControllerSubgraph alloc] init]];
   [animalControllerSubgraph connectOutlets];
 
   workupHerdControllerSubgraph =
-    [[WorkupHerdControllerSubgraph alloc]
-                    initAbovePage: pageControllerSubgraph.pageView];
+    [self custom: [[WorkupHerdControllerSubgraph alloc]
+                    initAbovePage: pageControllerSubgraph.pageView]];
   [workupHerdControllerSubgraph connectOutlets];
 }
 
