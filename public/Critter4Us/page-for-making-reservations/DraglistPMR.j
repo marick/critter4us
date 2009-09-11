@@ -60,13 +60,16 @@
 
 - (void) describeItemsTo: (CPCollectionView) collectionView
 {
-  var itemPrototype = [[CPCollectionViewItem alloc] init];
-        
-  [itemPrototype setView:[[DragListItemViewPMR alloc] initWithFrame:CGRectMakeZero()]];
-  [collectionView setItemPrototype:itemPrototype];
-
+  [self useNewClass: AnimalItemView forCollectionView: collectionView];
   [collectionView setMinItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
   [collectionView setMaxItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
+}
+
+- (void) useNewClass: klass forCollectionView: collectionView
+{
+  var itemPrototype = [[CPCollectionViewItem alloc] init];
+  [itemPrototype setView:[[klass alloc] initWithFrame:CGRectMakeZero()]];
+  [collectionView setItemPrototype:itemPrototype];
 }
 
 
