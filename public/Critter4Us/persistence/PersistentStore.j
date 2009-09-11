@@ -1,5 +1,7 @@
 @import <Foundation/Foundation.j>
 @import "../util/Time.j"
+@import "../model/Animal.j"
+@import "../model/Procedure.j"
 @import "../util/AwakeningObject.j"
 @import "NetworkConnection.j"
 
@@ -29,6 +31,28 @@
   exclusions = [CPDictionary dictionaryWithJSObject: jsHash['exclusions']];
 }
 
+- (CPArray) animals
+{
+  var result = [CPArray array];
+  for(var i = 0; i < [allAnimalNames count]; i++)
+  {
+    var name = allAnimalNames[i];
+    [result addObject: [[Animal alloc] initWithName: name kind: kindMap[name]]];
+  }
+  return result;
+}
+
+- (CPArray) procedures
+{
+  var result = [CPArray array];
+  for(var i = 0; i < [allProcedureNames count]; i++)
+  {
+    var name = allProcedureNames[i];
+    [result addObject: [[Procedure alloc] initWithName: name]];
+  }
+  return result;
+}
+
 - (CPInteger) makeReservation: dict
 {
   [self checkValidity: dict];
@@ -41,6 +65,7 @@
   var result = jsHash["reservation"];
   return result;
 }
+
 
 - (CPString) pendingReservationTableAsHtml
 {

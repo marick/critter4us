@@ -26,11 +26,22 @@
                        andReturn: '{"animals":["betsy","josie"],"kindMap":{"betsy":"cow","josie":"horse"},"procedures":["proc1"],"exclusions":{"proc1":["betsy"]}}'];
     }
   andSo: function() {
-      [self assert: ["betsy", "josie"] equals: sut.allAnimalNames];
+      [self assert: ["betsy", "josie"] equals: sut.allAnimalNames]; // TODO delete old accessors
       [self assert: "cow" equals: sut.kindMap['betsy']];
       [self assert: "horse" equals: sut.kindMap['josie']];
       [self assert: ["proc1"] equals: sut.allProcedureNames];
+
+      var expectedAnimals = [ [[Animal alloc] initWithName: 'betsy' kind: 'cow'],
+                              [[Animal alloc] initWithName: 'josie' kind: 'horse']];
+      var expectedProcedures = [ [[Procedure alloc] initWithName: 'proc1']];
+
+
+      [self assert: expectedAnimals equals: [sut animals]];
+      [self assert: expectedProcedures equals: [sut procedures]];
+
       [self assert: ['betsy'] equals: [sut.exclusions valueForKey: 'proc1']];
+
+
     }]
 }
 

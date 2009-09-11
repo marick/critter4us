@@ -1,5 +1,6 @@
 @import <Critter4Us/page-for-making-reservations/CoordinatorPMR.j>
 @import <Critter4Us/model/Animal.j>
+@import <Critter4Us/model/Procedure.j>
 @import "ScenarioTestCase.j"
 
 
@@ -32,13 +33,12 @@
 
 -(void) testHandsControllersValuableDataWhenCourseSessionIsIdentified
 {
+  var animals = [  [[Animal alloc] initWithName: 'animal1' kind: 'cow'],
+                   [[Animal alloc] initWithName: 'animal2' kind: 'horse']];
+
+  var procedures = [ [[Procedure alloc] initWithName: 'procedure1'],
+                     [[Procedure alloc] initWithName: 'procedure2']];
   [scenario
-   previousAction: function() {
-      sut.persistentStore.allAnimals = 
-        [  [[Animal alloc] initWithName: 'animal1' kind: 'cow'],
-           [[Animal alloc] initWithName: 'animal2' kind: 'horse']
-           ];
-    }
    during: function() {
       var dict = [CPDictionary dictionary];
       [dict setValue: '2009-02-02' forKey: 'date'];
@@ -49,7 +49,16 @@
    behold: function() {
       [sut.persistentStore shouldReceive: @selector(focusOnDate:time:)
                                     with: ['2009-02-02', [Time morning]]];
+      [sut.persistentStore shouldReceive: @selector(animals)
+                               andReturn: animals];
+      [sut.animalController shouldReceive: @selector(beginUsing:)
+                                     with: [animals]];
+      [sut.persistentStore shouldReceive: @selector(procedures)
+                               andReturn: procedures];
+      [sut.procedureController shouldReceive: @selector(beginUsing:)
+                                     with: [procedures]];
     }];
+  
 }
 
 

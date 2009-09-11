@@ -27,6 +27,8 @@
 {
   [persistentStore focusOnDate: [[aNotification object] valueForKey: 'date']
                           time: [[aNotification object] valueForKey: 'time']];
+  [animalController beginUsing: [persistentStore animals]];
+  [procedureController beginUsing: [persistentStore procedures]];
 
   [reservationDataController allowNoDataChanges];
   [reservationDataController prepareToFinishReservation];
