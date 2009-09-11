@@ -26,6 +26,14 @@
   return hashval;
 }
 
+- (CPString) summary
+{
+  return name + ' (' + kind + ')';
+}
 
+- (CPString) description
+{
+  return [super description] + ' "' + [self summary] + '"';
+}
 
 @end

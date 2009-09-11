@@ -29,6 +29,14 @@
   [self assertTrue: [[base hash] isEqual: [equal hash]]];
 }
 
+- (void) testSummary
+{
+  [self assert: "base (base kind)" equals: [base summary]];
+}
 
+- (void) testDescription
+{
+  [self assertTrue: [ [base description] hasPrefix: "<Animal"]];
+}
 
 @end
