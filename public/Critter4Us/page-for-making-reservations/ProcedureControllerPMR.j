@@ -3,7 +3,10 @@
 @implementation ProcedureControllerPMR : PanelController
 {
   CPCollectionView collectionView;
-  DragListPMR dragList;
+}
+
+- (void) beginUsing: procedures
+{
 }
 
 @end
