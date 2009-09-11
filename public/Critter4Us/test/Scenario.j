@@ -271,7 +271,7 @@ var Skip = function() {}
 
 - (void)checkAllExpectations
 {
-  for(i=0; i<[collaboratorNames count]; i++)
+  for(var i=0; i<[collaboratorNames count]; i++)
     {
       var name = [collaboratorNames objectAtIndex: i];
       [test assertTrue: [sut[name] wereExpectationsFulfilled]];

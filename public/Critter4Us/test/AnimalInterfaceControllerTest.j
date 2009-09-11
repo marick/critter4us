@@ -228,7 +228,7 @@
 // I think it's a hack.
 -(void) alreadySelected: animalNames
 {
-  for(i=0; i<[animalNames count]; i++)
+  for(var i=0; i<[animalNames count]; i++)
     {
       var aName = animalNames[i];
       var index = [sut.availableAnimals indexOfObject: aName];

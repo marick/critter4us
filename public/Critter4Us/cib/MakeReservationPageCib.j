@@ -346,7 +346,7 @@
 
 - (void) awakenAllObjects
 {
-  for(i=0; i < [customObjectsLoaded count]; i++)
+  for(var i=0; i < [customObjectsLoaded count]; i++)
     {
       var obj = [customObjectsLoaded objectAtIndex: i];
       if ([obj respondsToSelector: @selector(awakeFromCib)])
