@@ -28,18 +28,6 @@
   return collectionView;
 }
 
-
-- (CPData)collectionView:(CPCollectionView)aCollectionView dataForItemsAtIndexes:(CPIndexSet)indices forType:(CPString)aType
-{
-  var element = [[aCollectionView content] objectAtIndex:[indices firstIndex]];
-  return [CPKeyedArchiver archivedDataWithRootObject:element];
-}
-
-- (CPArray)collectionView:(CPCollectionView)aCollectionView dragTypesForItemsAtIndexes:(CPIndexSet)indices
-{
-  return [dragType];
-}
-
 // Util
 
 - (CPRect) usableArea
