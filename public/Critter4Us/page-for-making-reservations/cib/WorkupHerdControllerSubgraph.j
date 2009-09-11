@@ -38,6 +38,7 @@
   [procedureDropTarget surround: procedureCollectionView];
   [procedureCollectionView setItemPrototype:itemPrototype];
   [procedureCollectionView setContent: ["abdominocentesis", "rumen fluid collection (rumenocentesis)"]];
+  [procedureCollectionView setDelegate: controller];
 
         
   // Animal half
@@ -51,6 +52,7 @@
   [animalDropTarget surround: animalCollectionView];
   [animalCollectionView setItemPrototype:itemPrototype];
   [animalCollectionView setContent: ["All Star"]];
+  [animalCollectionView setDelegate: controller];
   return self;
 }
 
