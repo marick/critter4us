@@ -19,6 +19,7 @@
   collectionView = [dragList addCollectionViewSupplying: [self dragType]
                                           signalingWith: [self color]];
 
+  [collectionView setDelegate: controller];
   [self mockupSetup]; // delete eventually;
   return self;
 }
