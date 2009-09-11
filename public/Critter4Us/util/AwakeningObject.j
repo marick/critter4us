@@ -11,6 +11,9 @@
 
 - (void)awakeFromCib
 {
+  if (awakened) {
+    alert([self description] + " has awoken twice. This may not be a problem, but should be reported.");
+  }
   awakened = YES;
   [self setUpNotifications];
 }
