@@ -60,17 +60,13 @@
 
 - (void) describeItemsTo: (CPCollectionView) collectionView
 {
-  [self useNewClass: DragListItemView forCollectionView: collectionView];
+  var itemPrototype = [[CPCollectionViewItem alloc] init];
+  [itemPrototype setView:[[DragListItemViewPMR alloc] initWithFrame:CGRectMakeZero()]];
+  [collectionView setItemPrototype:itemPrototype];
   [collectionView setMinItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
   [collectionView setMaxItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
 }
 
-- (void) useNewClass: klass forCollectionView: collectionView
-{
-  var itemPrototype = [[CPCollectionViewItem alloc] init];
-  [itemPrototype setView:[[klass alloc] initWithFrame:CGRectMakeZero()]];
-  [collectionView setItemPrototype:itemPrototype];
-}
 
 
 - (void) surround: collectionView withScrollViewColored: color
