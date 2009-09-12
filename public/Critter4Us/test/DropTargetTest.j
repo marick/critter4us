@@ -57,7 +57,7 @@
     }];
 }
 
-- (void)testDropTargetTellsControllerWhatWasDropped
+- (void)testDropTargetTellsControllerWhatWasDroppedAndWhere
 {
   [scenario 
     previousAction: function() {
@@ -67,8 +67,8 @@
       return [sut performDragOperation: [self dropInfoContaining: 'arbitrary data']];
     }
   behold: function() {
-      [sut.controller shouldReceive: @selector(receiveNewItem:)
-                               with: 'arbitrary data'
+      [sut.controller shouldReceive: @selector(receiveNewItem:forCollectionView:)
+                               with: ['arbitrary data', sut.collectionView]
                           andReturn: YES];
     }
   andSo: function() {

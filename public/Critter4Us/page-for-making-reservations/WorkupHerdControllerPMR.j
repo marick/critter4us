@@ -15,6 +15,16 @@
   [animalDropTarget acceptDragType: AnimalDragType];
 }
 
+- (CPBoolean) receiveNewItem: animal
+{
+  
+}
+
+- (CPBoolean) canBeDropped: animal
+{
+  return YES;
+}
+
 @end
 
 
