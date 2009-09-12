@@ -85,14 +85,7 @@
 
 - (void)setRepresentedObject:(id)anObject
 {
-  if ([anObject respondsToSelector: @selector(summary)]) // TODO temp during migration from strings to objects.
-  {
-    [self setStringValue: [anObject summary]];
-  }
-  else
-  {
-    [self setStringValue: anObject];
-  }
+  [self setStringValue: [anObject summary]];
 }
 
 @end
