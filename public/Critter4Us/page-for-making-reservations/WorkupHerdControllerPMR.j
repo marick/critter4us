@@ -3,9 +3,9 @@
 @implementation WorkupHerdControllerPMR : PanelController
 {
   CPButton newWorkupHerdButton;
-  CPDropTarget procedureDropTarget;
+  DropTarget procedureDropTarget;
   CPCollectionView procedureCollectionView;
-  CPDropTarget animalDropTarget;
+  DropTarget animalDropTarget;
   CPCollectionView animalCollectionView;
 }
 
@@ -15,9 +15,13 @@
   [animalDropTarget acceptDragType: AnimalDragType];
 }
 
-- (CPBoolean) receiveNewItem: animal
+- (CPBoolean) receiveNewItem: animalArray
 {
-  
+  var originalArray = [animalCollectionView content];
+  [animalCollectionView setContent:
+                          [originalArray arrayByAddingObjectsFromArray: animalArray]];
+  [animalCollectionView setNeedsDisplay: YES];
+  return YES;
 }
 
 - (CPBoolean) canBeDropped: animal

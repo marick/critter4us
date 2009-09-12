@@ -23,5 +23,24 @@
     }];
 }
 
+-(void) testCanReceiveNewItemOnBehalfOfACollectionAndPutItIn
+{
+  [scenario
+    during: function() {
+      return [sut receiveNewItem: ['zz']];
+    }
+  behold: function() {
+      [sut.animalCollectionView shouldReceive: @selector(content)
+                                    andReturn: ['this', 'that']];
+      [sut.animalCollectionView shouldReceive: @selector(setContent:)
+                                   with: [['this', 'that', 'zz']]];
+      [sut.animalCollectionView shouldReceive: @selector(setNeedsDisplay:)
+                                         with: YES];
+    }
+  andSo: function() {
+      [self assertTrue: scenario.result];
+    }];
+}
+
 
 @end
