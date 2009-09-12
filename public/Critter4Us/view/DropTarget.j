@@ -61,8 +61,7 @@
 - (CPBoolean)performDragOperation:(CPDraggingInfo)aSender
 {
   var data = [[aSender draggingPasteboard] dataForType:dragType];
-  var result = [controller receiveNewItem: data
-                        forCollectionView: collectionView];
+  var result = [controller receiveNewItem: data];
   return result;
 }
 
