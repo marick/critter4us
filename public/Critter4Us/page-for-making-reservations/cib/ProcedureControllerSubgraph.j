@@ -31,24 +31,5 @@
 }
 
 
-- (void) mockupSetup  // TODO: Delete this
-{
-  [super mockupSetup];
-  [collectionView setContent: ["abdominocentesis", 
-                                                 "Caslick's operation (horses)",
-                                                 'CSF collection (lumbosacral)',
-                                                 'MRI (horses)',
-                                                 'rumen fluid collection (rumenocentesis)',
-                                                 'rumen fluid collection (tube)',
-                                                 'transtracheal wash (cattle)',
-                                                 'z',
-                                                 'zz',
-                                                 'zzz',
-                                                 'zzzz',
-                                                 'zzzzz'
-                               ]];
-}
-
-
 
 @end

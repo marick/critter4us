@@ -29,10 +29,4 @@
   return [[AnimalControllerPMR alloc] init];
 }
 
--(void) mockupSetup  // TODO: Delete this
-{
-  [super mockupSetup];
-  [collectionView setContent: ["All Star (stallion)", "Brooke (cow)", "Pumpkin (mare)"]];
-}
-
 @end

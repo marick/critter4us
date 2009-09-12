@@ -20,15 +20,10 @@
                                           signalingWith: [self color]];
 
   [collectionView setDelegate: controller];
-  [self mockupSetup]; // delete eventually;
   return self;
 }
 
 
-- (void) mockupSetup  // TODO: Delete this
-{
-  [dragList orderFront: self];
-}
 
 - (void) connectOutlets
 {
