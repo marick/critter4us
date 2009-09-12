@@ -9,7 +9,10 @@
 
 - (void)tearDown
 {
-  [sut stopObserving];
+  if ([sut respondsToSelector: @selector(stopObserving)])
+  {
+    [sut stopObserving];
+  }
 }
 
 
