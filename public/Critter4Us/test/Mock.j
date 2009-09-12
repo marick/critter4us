@@ -42,12 +42,10 @@
 
 -(Mock)init
 {
-  expectationDictionary = [[CPMutableDictionary alloc] init];
-  actualities = [[CPArray alloc] init];
+  [self clear]
   printErrors = YES;
   happiness = YES;
   failOnUnexpectedSelector = YES;
-  storedValues = [CPMutableDictionary dictionary];
   return self;
 }
 
@@ -56,6 +54,13 @@
   [self init];
   name = aString;
   return self;
+}
+
+-(void) clear
+{
+  expectationDictionary = [[CPMutableDictionary alloc] init];
+  actualities = [[CPArray alloc] init];
+  storedValues = [CPMutableDictionary dictionary];
 }
 
 - (CPString) description

@@ -33,6 +33,7 @@ var Skip = function() {}
   mockSettings();
   [test.sut awakeFromCib];
   [self checkAllExpectations];
+  [self removeAllExpectations];
   consequence();
 }
 
@@ -279,6 +280,17 @@ var Skip = function() {}
     }
   [randomListener wereExpectationsFulfilled];
 }
+
+- (void)removeAllExpectations
+{
+  for(var i=0; i<[collaboratorNames count]; i++)
+    {
+      var name = [collaboratorNames objectAtIndex: i];
+      [sut[name] clear];
+    }
+  [randomListener clear];
+}
+
 
 - (void)sutHasUpwardCollaborators: anArray
 {
