@@ -17,6 +17,7 @@ var Skip = function() {}
   sut = aSut;
   collaboratorNames = [];
   randomListener = [[Mock alloc] initWithName: "any old listener"];
+  result = 'a value that indicates the result was not set';
   return self;
 }
 
