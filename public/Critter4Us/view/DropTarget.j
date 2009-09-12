@@ -41,8 +41,6 @@
   [scrollView setDocumentView:collectionView];
 }
 
-
-
 - (void) giveSubtleHint
 {
   [self setBackgroundColor: subtleHint];
@@ -65,14 +63,6 @@
   var data = [[aSender draggingPasteboard] dataForType:dragType];
   var result = [controller receiveNewItem: data];
   return result;
-}
-  // TODO: do we really need to encode this?
-
-  //var droppedString = [CPKeyedUnarchiver unarchiveObjectWithData:data];
-  
-  //  [NotificationCenter postNotificationName: OneAnimalChosenNews
-  //                                    object: droppedString];
-  //  return YES;
 }
 
 - (CPDragOperation)draggingEntered:(CPDraggingInfo)aSender
