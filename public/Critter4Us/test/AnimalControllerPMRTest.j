@@ -13,7 +13,7 @@
   [scenario sutHasUpwardCollaborators: ['collectionView']];
 }
 
-- (void) testHandsAnimalNamesToCollectionView
+- (void) testHandsAnimalsThemselvesToCollectionView
 {
   var animals = [ [[Animal alloc] initWithName: 'betsy' kind: 'cow'],
                   [[Animal alloc] initWithName: 'josie' kind: 'horse']];
@@ -24,7 +24,7 @@
     } 
   behold: function() {
       [sut.collectionView shouldReceive: @selector(setContent:)
-                                   with: [['betsy (cow)', 'josie (horse)']]];
+                                   with: [animals]];
       [sut.collectionView shouldReceive: @selector(setNeedsDisplay:)
                                    with: YES];
     }

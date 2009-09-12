@@ -11,7 +11,7 @@
 {
   animals = someAnimals;
   //  [panel useNewClass: AnimalItemView forCollectionView: collectionView];
-  [collectionView setContent: [self animalDescriptionList]];
+  [collectionView setContent: someAnimals]
   [collectionView setNeedsDisplay: YES];
 }
 
@@ -27,17 +27,5 @@
 {
   return [AnimalDragType];
 }
-
--(CPArray) animalDescriptionList
-{
-  var retval = [CPArray array];
-  for(var i=0; i < [animals count]; i++)
-  {
-    var animal = animals[i];
-    [retval addObject: [animal summary]];
-  }
-  return retval;
-}
-
 
 @end
