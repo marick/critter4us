@@ -22,15 +22,16 @@
 
 -(void)xxx_setContent: anArray
 {
-  //  alert("setting content to " + [anArray description]);
+  alert("setting content to " + [anArray description]);
+  alert("previous content is " + _content);
   [super setContent: anArray];
 }
 
 -(void) xxx_reloadContent
 {
-  //  alert("reload content _items starting with " + _items);
-  //  alert("reload content _content is: " + _content);
-  //  alert("reload content _itemData is: " + _itemData);
+  alert("reload content _items starting with " + _items);
+  alert("reload content _content is: " + _content);
+  alert("reload content _itemData is: " + _itemData);
   [super reloadContent];
 }
 
