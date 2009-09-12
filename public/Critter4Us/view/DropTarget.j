@@ -7,17 +7,20 @@
   CPColor strongHint;
   CPDragType dragType;
   CPCollectionView collectionView;
+  id controller;
 }
 
-- (void) initWithNormalColor: aNormalColor hoverColor: aHoverColor frame: aRect accepting: aDragType
+-(void) setNormalColor: aNormalColor andHoverColor: aHoverColor
 {
-  self = [super initWithFrame: aRect];
   subtleHint = aNormalColor;
   strongHint = aHoverColor;
-  dragType = aDragType;
-  [collectionView registerForDraggedTypes:[dragType]];
   [self giveSubtleHint];
-  return self;
+}
+
+-(void) acceptDragType: aDragType
+{
+  dragType = aDragType;
+  [self registerForDraggedTypes:[dragType]];
 }
 
 - (void) surround: aCollectionView
@@ -50,15 +53,21 @@
   [self setBackgroundColor: strongHint];
 }
 
-- (CPBoolean) prepareForDragOperation: (id) aSender
+- (CPBoolean) prepareForDragOperation: (CPDraggingInfo) aSender
 {
-  return YES;
+  var data = [self dataWithin: aSender];        
+  var result = [controller canBeDropped: data];
+  return result;
 }
 
 - (CPBoolean)performDragOperation:(CPDraggingInfo)aSender
 {
+  var data = [[aSender draggingPasteboard] dataForType:dragType];
+  var result = [controller receiveNewItem: data];
+  return result;
+}
   // TODO: do we really need to encode this?
-  // var data = [[aSender draggingPasteboard] dataForType:dragType];
+
   //var droppedString = [CPKeyedUnarchiver unarchiveObjectWithData:data];
   
   //  [NotificationCenter postNotificationName: OneAnimalChosenNews
@@ -90,5 +99,10 @@
   // Required by ScenarioTestCase.setup
 }
 
+
+-(id) dataWithin: (CPDraggingInfo) aSender
+{
+  return [[aSender draggingPasteboard] dataForType:dragType];
+}
 
 @end
