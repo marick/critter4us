@@ -7,9 +7,13 @@
   CPCollectionView procedureCollectionView;
   CPDropTarget animalDropTarget;
   CPCollectionView animalCollectionView;
-  CPPanel panel;
 }
 
+-(void) awakeFromCib
+{
+  [animalDropTarget setNormalColor: AnimalHintColor andHoverColor: AnimalStrongHintColor];
+  [animalDropTarget acceptDragType: AnimalDragType];
+}
 
 @end
 
