@@ -1,6 +1,6 @@
 @import <AppKit/AppKit.j>
 @import "ConstantsPMR.j"
-@import "SummaryShowingCollectionViewItem.j"
+@import "../view/SummaryShowingCollectionViewItem.j"
 
 @implementation DragListPMR : CPPanel
 {
@@ -49,7 +49,7 @@
 
 - (void) describeItemsTo: (CPCollectionView) collectionView
 {
-  var itemPrototype = [[CPCollectionViewItem alloc] init];
+  var itemPrototype = [[SummaryShowingCollectionViewItem alloc] init];
   [itemPrototype setView:[[DragListItemViewPMR alloc] initWithFrame:CGRectMakeZero()]];
   [collectionView setItemPrototype:itemPrototype];
   [collectionView setMinItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
