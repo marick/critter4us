@@ -5,6 +5,7 @@
 {
   CPColor normalColor;
   CPColor hoverColor;
+  CPArray dataArray;
 }
 
 - (void)setUp
@@ -14,6 +15,7 @@
   [scenario sutHasDownwardCollaborators: ['controller']];
   normalColor = [CPColor greenColor];
   hoverColor = [CPColor redColor];
+  dataArray = ['arbitrary data'];
 }
 
 - (void)testColorHintsAreGivenAppropriately
@@ -45,11 +47,11 @@
       [sut acceptDragType: AnimalDragType];
     }
   during: function() {
-      return [sut prepareForDragOperation: [self dropInfoContaining: 'arbitrary data']];
+      return [sut prepareForDragOperation: [self dropInfoContaining: dataArray]];
     }
   behold: function() {
       [sut.controller shouldReceive: @selector(canBeDropped:)
-                               with: 'arbitrary data'
+                               with: [dataArray]
                           andReturn: YES];
     }
   andSo: function() {
@@ -64,11 +66,11 @@
       [sut acceptDragType: AnimalDragType];
     }
   during: function() {
-      return [sut performDragOperation: [self dropInfoContaining: 'arbitrary data']];
+      return [sut performDragOperation: [self dropInfoContaining: dataArray]];
     }
   behold: function() {
-      [sut.controller shouldReceive: @selector(receiveNewItem:forCollectionView:)
-                               with: ['arbitrary data', sut.collectionView]
+      [sut.controller shouldReceive: @selector(receiveNewItem:)
+                               with: [dataArray]
                           andReturn: YES];
     }
   andSo: function() {
