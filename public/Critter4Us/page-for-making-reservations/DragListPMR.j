@@ -1,6 +1,7 @@
 @import <AppKit/AppKit.j>
 @import "ConstantsPMR.j"
-@import "../view/SummaryShowingCollectionViewItem.j"
+// @import "../view/SummaryShowingCollectionViewItem.j"
+@import "../view/DebuggableCollectionView.j"
 
 @implementation DragListPMR : CPPanel
 {
@@ -41,7 +42,7 @@
 
 - (CPCollectionView) placeCollectionViewAt: rect
 {
-    var collectionView = [[CPCollectionView alloc] initWithFrame:rect];
+    var collectionView = [[DebuggableCollectionView alloc] initWithFrame:rect];
         
     [collectionView setAutoresizingMask:CPViewWidthSizable];
     return collectionView;
@@ -49,7 +50,7 @@
 
 - (void) describeItemsTo: (CPCollectionView) collectionView
 {
-  var itemPrototype = [[SummaryShowingCollectionViewItem alloc] init];
+  var itemPrototype = [[CPCollectionViewItem alloc] init];
   [itemPrototype setView:[[DragListItemViewPMR alloc] initWithFrame:CGRectMakeZero()]];
   [collectionView setItemPrototype:itemPrototype];
   [collectionView setMinItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
@@ -84,7 +85,14 @@
 
 - (void)setRepresentedObject:(id)anObject
 {
-  [self setStringValue: anObject];
+  if ([anObject respondsToSelector: @selector(summary)]) // TODO temp during migration from strings to objects.
+  {
+    [self setStringValue: [anObject summary]];
+  }
+  else
+  {
+    [self setStringValue: anObject];
+  }
 }
 
 @end
