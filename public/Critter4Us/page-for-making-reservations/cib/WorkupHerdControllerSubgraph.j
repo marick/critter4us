@@ -30,22 +30,20 @@
   // Procedure half
   procedureDropTarget = [[DropTarget alloc] initWithFrame: CGRectMake(FirstTargetX, 0, TargetWidth, TargetViewHeight)];
   [[panel contentView] addSubview: procedureDropTarget];
-  procedureCollectionView = [[CPCollectionView alloc]
+  procedureCollectionView = [[DebuggableCollectionView alloc]
                               initWithFrame: CGRectMakeZero()];
   [procedureDropTarget surround: procedureCollectionView];
   [procedureCollectionView setItemPrototype:itemPrototype];
-  [procedureCollectionView setContent: ["abdominocentesis", "rumen fluid collection (rumenocentesis)"]];
   [procedureCollectionView setDelegate: controller];
   [procedureDropTarget.controller = controller];
         
   // Animal half
   animalDropTarget = [[DropTarget alloc] initWithFrame: CGRectMake(SecondTargetX, 0, TargetWidth, TargetViewHeight)];
   [[panel contentView] addSubview: animalDropTarget];
-  animalCollectionView = [[CPCollectionView alloc]
+  animalCollectionView = [[DebuggableCollectionView alloc]
                               initWithFrame: CGRectMakeZero()];
   [animalDropTarget surround: animalCollectionView];
   [animalCollectionView setItemPrototype:itemPrototype];
-  [animalCollectionView setContent: ["All Star"]];
   [animalCollectionView setDelegate: controller];
   [animalDropTarget.controller = controller];
   return self;
