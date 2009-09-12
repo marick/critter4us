@@ -1,5 +1,6 @@
 @import <AppKit/AppKit.j>
 @import "ConstantsPMR.j"
+@import "SummaryShowingCollectionViewItem.j"
 
 @implementation DragListPMR : CPPanel
 {
