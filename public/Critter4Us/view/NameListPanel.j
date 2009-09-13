@@ -3,7 +3,6 @@
 
 @implementation NameListPanel : CPPanel
 {
-  CPDragType dragType;
 }
 
 
@@ -15,10 +14,8 @@
   return self;
 }
 
-- (CPCollectionView)addCollectionViewSupplying: someDragType signalingWith: color 
+- (CPCollectionView)addCollectionWithBackgroundColor: color 
 {
-  dragType = someDragType;
-  
   var bounds = [self usableArea];
   var collectionView = [[NamedObjectCollectionView alloc] initWithFrame:bounds];
         

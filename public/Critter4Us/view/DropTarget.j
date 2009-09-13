@@ -17,12 +17,6 @@
   [self giveSubtleHint];
 }
 
--(void) acceptDragType: aDragType
-{
-  dragType = aDragType;
-  [self registerForDraggedTypes:[dragType]];
-}
-
 - (void) surround: aCollectionView
 {
   collectionView = aCollectionView;

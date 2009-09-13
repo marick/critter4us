@@ -4,9 +4,4 @@
 {
 }
 
-- (id) dragType
-{
-  return [ProcedureDragType];
-}
-
 @end

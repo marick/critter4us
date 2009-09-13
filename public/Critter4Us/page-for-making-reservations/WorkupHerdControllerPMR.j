@@ -14,10 +14,8 @@
 {
   [animalDropTarget setNormalColor: AnimalHintColor
                      andHoverColor: AnimalStrongHintColor];
-  [animalDropTarget acceptDragType: AnimalDragType];
   [procedureDropTarget setNormalColor: ProcedureHintColor
                         andHoverColor: ProcedureStrongHintColor];
-  [procedureDropTarget acceptDragType: ProcedureDragType];
 }
 
 - (CPBoolean) receiveNewItem: objectArray

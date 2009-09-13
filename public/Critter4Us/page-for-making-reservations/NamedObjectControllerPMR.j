@@ -16,17 +16,6 @@
   [used setNeedsDisplay: YES];
 }
 
-- (CPData)collectionView:(CPCollectionView)aCollectionView dataForItemsAtIndexes:(CPIndexSet)indexes forType:(CPString)aType
-{
-  return [objects objectsAtIndexes: indexes];
-}
-
-- (CPArray)collectionView:(CPCollectionView)aCollectionView dragTypesForItemsAtIndexes:(CPIndexSet)indices
-{
-  return [self dragType];
-}
-
-
 // Delegate methods
 - (void) objectsRemoved: (CPArray) removed fromList: (NamedObjectCollectionView) list
 {

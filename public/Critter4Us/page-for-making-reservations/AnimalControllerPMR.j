@@ -4,9 +4,4 @@
 {
 }
 
-- (id) dragType
-{
-  return [AnimalDragType];
-}
-
 @end

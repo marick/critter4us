@@ -17,8 +17,7 @@
 
   controller = [self custom: [self newController]];
   
-  collectionView = [nameList addCollectionViewSupplying: [self dragType]
-                                          signalingWith: [self color]];
+  collectionView = [nameList addCollectionWithBackgroundColor: [self color]];
 
   [collectionView setDelegate: controller];
   return self;
