@@ -1,10 +1,11 @@
 @import "Subgraph.j"
+@import "../../view/NameListPanel.j"
 
 @implementation DragListControllerSubgraph : Subgraph
 {
   id controller;
   CPCollectionView collectionView;
-  DragListPMR dragList;
+  NameListPanel dragList;
 }
 
 
@@ -27,7 +28,7 @@
 
 - (void) connectOutlets
 {
-  controller.collectionView = collectionView;
+  controller.available = collectionView;
   controller.panel = dragList;
 }
 

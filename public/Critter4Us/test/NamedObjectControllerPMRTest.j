@@ -4,13 +4,20 @@
 
 @implementation NamedObjectControllerPMRTest : ScenarioTestCase
 {
+  NamedObject detsy, aaab, cetsy, Abnot, aaa;
 }
 
 - (void)setUp
 {
   sut = [[NamedObjectControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardCollaborators: ['collectionView']];
+  [scenario sutHasUpwardCollaborators: ['available', 'used']];
+
+  detsy = [[NamedObject alloc] initWithName: 'detsy'];
+  aaab = [[NamedObject alloc] initWithName: 'aaab'];
+  cetsy = [[NamedObject alloc] initWithName: 'cetsy'];
+  Abnot = [[NamedObject alloc] initWithName: 'Abnot']
+  aaaa = [[NamedObject alloc] initWithName: 'aaaa'];
 }
 
 - (void) testHandsObjectsThemselvesToCollectionView
@@ -23,9 +30,14 @@
       [sut beginUsing: objects];
     } 
   behold: function() {
-      [sut.collectionView shouldReceive: @selector(setContent:)
+      [sut.available shouldReceive: @selector(setContent:)
                                    with: [objects]];
-      [sut.collectionView shouldReceive: @selector(setNeedsDisplay:)
+      [sut.available shouldReceive: @selector(setNeedsDisplay:)
+                                   with: YES];
+
+      [sut.used shouldReceive: @selector(setContent:)
+                                   with: [[]]];
+      [sut.used shouldReceive: @selector(setNeedsDisplay:)
                                    with: YES];
     }
    ];
@@ -33,11 +45,6 @@
 
 - (void) testInitialContentIsOrderedCaseInsensitiveAlphabetical
 {
-  var detsy = [[NamedObject alloc] initWithName: 'detsy'];
-  var aaab = [[NamedObject alloc] initWithName: 'aaab'];
-  var cetsy = [[NamedObject alloc] initWithName: 'cetsy'];
-  var Abnot = [[NamedObject alloc] initWithName: 'Abnot']
-  var aaaa = [[NamedObject alloc] initWithName: 'aaaa'];
 
   var objects = [ detsy, aaab, cetsy, Abnot, aaaa];
 
@@ -46,10 +53,15 @@
       [sut beginUsing: objects];
     } 
   behold: function() {
-      [sut.collectionView shouldReceive: @selector(setContent:)
+      [sut.available shouldReceive: @selector(setContent:)
                                    with: [ [aaaa, aaab, Abnot, cetsy, detsy] ]];
     }
    ];
+}
+
+- (void) testSelectionMovesAnimalFromAvailableToUsed
+{
+  CPLog('not done');
 }
 
 @end	
