@@ -30,5 +30,9 @@ ProcedureDragType = "ProcedureDragType";
 AnimalDragType = "AnimalDragType";
 
 
+// Standard windows
+WindowBottomMargin = 20;
+
+
 // Misc
 UnusedArgument = nil;

@@ -5,7 +5,6 @@ ProcedureStrongHintColor = [CPColor colorWithRed: 0.4 green: 1.0 blue: 0.4 alpha
 AnimalHintColor = [CPColor colorWithRed: 1.0 green: 0.8 blue: 0.8 alpha: 1.0];
 AnimalStrongHintColor = [CPColor colorWithRed: 1.0 green: 0.4 blue: 0.4 alpha: 1.0];
 
-WindowBottomMargin = 20;
 ScrollbarWidth = 20;
 TextLineHeight = 20;
 
