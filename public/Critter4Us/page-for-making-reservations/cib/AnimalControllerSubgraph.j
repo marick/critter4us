@@ -14,11 +14,6 @@
   return "Animals";
 }
 
-- (id) dragType
-{
-  return AnimalDragType;
-}
-
 - (CPColor) color
 {
   return AnimalHintColor;

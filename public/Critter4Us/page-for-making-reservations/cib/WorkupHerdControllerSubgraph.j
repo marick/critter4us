@@ -44,7 +44,7 @@
   var panel = [[CPPanel alloc] initWithContentRect: rect
                                           styleMask:CPHUDBackgroundWindowMask | CPResizableWindowMask];
   [panel setLevel:CPFloatingWindowLevel];
-  [panel setTitle:@"Drag from left and right to group procedures with animals used for them"];
+  [panel setTitle:@"A group of procedures and the animals they will be performed on"];
   [panel orderFront: self]; // TODO: delete when page layout done.
   return panel;
 }

@@ -15,11 +15,6 @@
   return "Procedures";
 }
 
-- (id) dragType
-{
-  return ProcedureDragType;
-}
-
 - (CPColor) color
 {
   return ProcedureHintColor;

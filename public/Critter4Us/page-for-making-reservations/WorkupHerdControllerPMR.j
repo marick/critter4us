@@ -22,11 +22,6 @@
   return YES;
 }
 
-- (CPBoolean) canBeDropped: animal
-{
-  return YES;
-}
-
 @end
 
 

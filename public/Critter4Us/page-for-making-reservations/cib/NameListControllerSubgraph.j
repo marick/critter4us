@@ -12,8 +12,8 @@
 - (id) init
 {
   self = [super init];
-  nameList = [self dragPanelOutlineAtX: [self xPosition]
-                             withTitle: [self nameListTitle]];
+  nameList = [self panelOutlineAtX: [self xPosition]
+                         withTitle: [self nameListTitle]];
 
   controller = [self custom: [self newController]];
   
@@ -32,10 +32,10 @@
 }
 
 
--(CPPanel) dragPanelOutlineAtX: x withTitle: aTitle
+-(CPPanel) panelOutlineAtX: x withTitle: aTitle
 {
-  var panelRect = CGRectMake(x, WindowTops, DragSourceWindowWidth,
-                             DragSourceWindowHeight);
+  var panelRect = CGRectMake(x, WindowTops, SourceWindowWidth,
+                             SourceWindowHeight);
   panel = [self custom: [[NameListPanel alloc] initWithContentRect: panelRect]];
   [panel setTitle: aTitle];
   [panel orderFront: self]; // TODO: delete when page layout done.

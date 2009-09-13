@@ -14,8 +14,8 @@
 
 @implementation CibPMR : Subgraph
 {
-  CPPanel procedureDragList;
-  DragListPMR animalDragList;
+  CPPanel procedurePanel;
+  CPanel animalPanel;
   CPPanel workupHerdPanel;
 
   PageControllerSubgraph pageControllerSubgraph;

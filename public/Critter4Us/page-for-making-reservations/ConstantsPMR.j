@@ -9,12 +9,12 @@ AnimalStrongHintColor = [CPColor colorWithRed: 1.0 green: 0.4 blue: 0.4 alpha: 1
 FarthestLeftWindowX = 10;
 WindowTops = 200;
 
-DragSourceNumberOfLines = 15;
+SourceNumberOfLines = 15;
 // TODO: Not actually right, since TextLineHeight doesn't include interspacing.
-DragSourceWindowHeight = DragSourceNumberOfLines * TextLineHeight;
-DragSourceWindowWidth = CompleteTextLineWidth + ScrollbarWidth;
+SourceWindowHeight = SourceNumberOfLines * TextLineHeight;
+SourceWindowWidth = CompleteTextLineWidth + ScrollbarWidth;
 
-FirstGroupingWindowX = FarthestLeftWindowX + DragSourceWindowWidth + 20;
+FirstGroupingWindowX = FarthestLeftWindowX + SourceWindowWidth + 20;
 GroupingWindowVerticalMargin = 10 ;
 TargetWidth = TruncatedTextLineWidth;
 GroupingWindowWidth = TargetWidth * 2 + GroupingWindowVerticalMargin * 3;
