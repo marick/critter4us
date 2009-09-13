@@ -11,8 +11,12 @@
 
 -(void) awakeFromCib
 {
-  [animalDropTarget setNormalColor: AnimalHintColor andHoverColor: AnimalStrongHintColor];
+  [animalDropTarget setNormalColor: AnimalHintColor
+                     andHoverColor: AnimalStrongHintColor];
   [animalDropTarget acceptDragType: AnimalDragType];
+  [procedureDropTarget setNormalColor: ProcedureHintColor
+                        andHoverColor: ProcedureStrongHintColor];
+  [procedureDropTarget acceptDragType: ProcedureDragType];
 }
 
 - (CPBoolean) receiveNewItem: animalArray

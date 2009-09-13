@@ -20,6 +20,10 @@
                                      with: [AnimalDragType]];
       [sut.animalDropTarget shouldReceive: @selector(setNormalColor:andHoverColor:)
                                      with: [AnimalHintColor, AnimalStrongHintColor]];
+      [sut.procedureDropTarget shouldReceive: @selector(acceptDragType:)
+                                        with: [ProcedureDragType]];
+      [sut.procedureDropTarget shouldReceive: @selector(setNormalColor:andHoverColor:)
+                                        with: [ProcedureHintColor, ProcedureStrongHintColor]];
     }];
 }
 
