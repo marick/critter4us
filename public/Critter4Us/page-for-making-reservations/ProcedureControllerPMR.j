@@ -1,4 +1,4 @@
-@import "../controller/PanelController.j"
+@import "NamedObjectControllerPMR.j"
 
 @implementation ProcedureControllerPMR : NamedObjectControllerPMR
 {
