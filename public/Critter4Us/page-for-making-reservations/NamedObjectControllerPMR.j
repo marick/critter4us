@@ -2,15 +2,18 @@
 
 @implementation NamedObjectControllerPMR : PanelController
 {
-  CPCollectionView collectionView;
+  CPCollectionView available;
+  CPCollectionView used;
   CPArray objects;
 }
 
 - (void) beginUsing: someObjects
 {
   objects = [someObjects sortedArrayUsingSelector: @selector(compareNames:)];
-  [collectionView setContent: objects]
-  [collectionView setNeedsDisplay: YES];
+  [available setContent: objects];
+  [used setContent: []];
+  [available setNeedsDisplay: YES];
+  [used setNeedsDisplay: YES];
 }
 
 - (CPData)collectionView:(CPCollectionView)aCollectionView dataForItemsAtIndexes:(CPIndexSet)indexes forType:(CPString)aType
