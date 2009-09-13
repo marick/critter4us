@@ -25,20 +25,41 @@
 
 -(void) testCanReceiveNewItemOnBehalfOfACollectionAndPutItIn
 {
+  var zz = [[Animal alloc] initWithName: 'zz' kind: 'x'];
+  var one = [[Animal alloc] initWithName: 'one' kind: 'x'];
+  var two = [[Animal alloc] initWithName: 'two' kind: 'x'];
   [scenario
     during: function() {
-      return [sut receiveNewItem: ['zz']];
+      return [sut receiveNewItem: [zz]];
     }
   behold: function() {
       [sut.animalCollectionView shouldReceive: @selector(content)
-                                    andReturn: ['this', 'that']];
+                                    andReturn: [one, two]];
       [sut.animalCollectionView shouldReceive: @selector(setContent:)
-                                   with: [['this', 'that', 'zz']]];
+                                   with: [[one, two, zz]]];
       [sut.animalCollectionView shouldReceive: @selector(setNeedsDisplay:)
                                          with: YES];
     }
   andSo: function() {
       [self assertTrue: scenario.result];
+    }];
+}
+
+-(void) testTheResultingCollectionIsSorted
+{
+  var animalA = [[Animal alloc] initWithName: 'a' kind: 'Z'];
+  var animalB = [[Animal alloc] initWithName: 'b' kind: '-'];
+  var animalC = [[Animal alloc] initWithName: 'c' kind: ''];
+
+  [scenario
+    during: function() {
+      [sut receiveNewItem: animalB];
+    }
+  behold: function() {
+      [sut.animalCollectionView shouldReceive: @selector(content)
+                                    andReturn: [animalC, animalA]];
+      [sut.animalCollectionView shouldReceive: @selector(setContent:)
+                                         with: [[animalA, animalB, animalC]]];
     }];
 }
 

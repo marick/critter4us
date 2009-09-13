@@ -20,6 +20,11 @@
   return YES;
 }
 
+- (id) compareNames: other
+{
+  return [self.name caseInsensitiveCompare: other.name];
+}
+
 - (id) hash
 {
   hashval = (([name hash] << 5) ^ [kind hash]) & 0xFFFFFF;

@@ -18,8 +18,9 @@
 - (CPBoolean) receiveNewItem: animalArray
 {
   var originalArray = [animalCollectionView content];
-  [animalCollectionView setContent:
-                          [originalArray arrayByAddingObjectsFromArray: animalArray]];
+  var newArray = [originalArray arrayByAddingObjectsFromArray: animalArray];
+  [newArray sortUsingSelector: @selector(compareNames:)];
+  [animalCollectionView setContent: newArray];
   [animalCollectionView setNeedsDisplay: YES];
   return YES;
 }

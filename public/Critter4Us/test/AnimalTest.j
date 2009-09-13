@@ -29,6 +29,21 @@
   [self assertTrue: [[base hash] isEqual: [equal hash]]];
 }
 
+- (void) testComparison
+{
+  [self assert: CPOrderedSame equals: [base compareNames: diffKind]];
+  [self assert: CPOrderedAscending equals: [base compareNames: diffName]];
+  [self assert: CPOrderedDescending equals: [diffName compareNames: base]];
+}
+
+- (void) testComparisonIsCaseInsensitive
+{
+  var one = [[Animal alloc] initWithName: 'a' kind: 'b'];
+  var two = [[Animal alloc] initWithName: 'A' kind: 'not b'];
+
+  [self assert: CPOrderedSame equals: [one compareNames: two]];
+}
+
 - (void) testSummary
 {
   [self assert: "base (base kind)" equals: [base summary]];
