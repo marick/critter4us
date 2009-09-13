@@ -1,7 +1,7 @@
 @import <AppKit/AppKit.j>
 @import "ConstantsPMR.j"
 // @import "../view/SummaryShowingCollectionViewItem.j"
-@import "../view/DebuggableCollectionView.j"
+@import "../view/NamedObjectCollectionView.j"
 
 @implementation DragListPMR : CPPanel
 {
@@ -22,9 +22,8 @@
   dragType = someDragType;
   
   var bounds = [self usableArea];
-  var collectionView = [self placeCollectionViewAt: bounds];
+  var collectionView = [[NamedObjectCollectionView alloc] initWithFrame:bounds];
         
-  [self describeItemsTo: collectionView];
   [self surround: collectionView withScrollViewColored: color];
 
   return collectionView;
@@ -39,24 +38,6 @@
   bounds.size.height -= WindowBottomMargin;
   return bounds;
 }
-
-- (CPCollectionView) placeCollectionViewAt: rect
-{
-    var collectionView = [[DebuggableCollectionView alloc] initWithFrame:rect];
-        
-    [collectionView setAutoresizingMask:CPViewWidthSizable];
-    return collectionView;
-}
-
-- (void) describeItemsTo: (CPCollectionView) collectionView
-{
-  var itemPrototype = [[CPCollectionViewItem alloc] init];
-  [itemPrototype setView:[[DragListItemViewPMR alloc] initWithFrame:CGRectMakeZero()]];
-  [collectionView setItemPrototype:itemPrototype];
-  [collectionView setMinItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
-  [collectionView setMaxItemSize:CGSizeMake(CompleteTextLineWidth, TextLineHeight)];
-}
-
 
 
 - (void) surround: collectionView withScrollViewColored: color
@@ -74,6 +55,8 @@
 
 @end
 
+
+// TODO: this can be deleted.
 @implementation DragListItemViewPMR : CPTextField
 {
 }
