@@ -86,6 +86,9 @@
   coordinator.procedureController = procedureControllerSubgraph.controller;
   coordinator.workupHerdController = workupHerdControllerSubgraph.controller;
 
+  coordinator.animalController.used = workupHerdControllerSubgraph.controller.animalCollectionView
+  coordinator.procedureController.used = workupHerdControllerSubgraph.controller.procedureCollectionView
+
   pageControllerSubgraph.controller.panelControllers =
                                     [animalControllerSubgraph.controller,
                                      procedureControllerSubgraph.controller,
