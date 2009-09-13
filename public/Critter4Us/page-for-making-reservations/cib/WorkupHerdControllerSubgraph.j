@@ -2,15 +2,11 @@
 @import "../WorkupHerdControllerPMR.j"
 @import "../../view/NameListPanel.j"
 @import "../ConstantsPMR.j"
-@import "../../view/DropTarget.j"
-
 @implementation WorkupHerdControllerSubgraph : Subgraph
 {
   id controller;
   CPButton newWorkupHerdButton;
-  CPDropTarget procedureDropTarget;
   CPCollectionView procedureCollectionView;
-  CPDropTarget animalDropTarget;
   CPCollectionView animalCollectionView;
   CPanel panel;
 }
@@ -24,23 +20,20 @@
   [self placeNewButtonOn: aPage];
 
   // Procedure half
-  procedureDropTarget = [[CPView alloc] initWithFrame: CGRectMake(FirstTargetX, 0, TargetWidth, TargetViewHeight)];
-  [[panel contentView] addSubview: procedureDropTarget];
   procedureCollectionView = [[NamedObjectCollectionView alloc]
                               initWithFrame: CGRectMakeZero()];
-  [procedureCollectionView fitTidilyWithin: procedureDropTarget];
-
+  [procedureCollectionView placeWithin: [panel contentView]
+                              withRect: CGRectMake(FirstTargetX, 0, TargetWidth, TargetViewHeight)
+                   withBackgroundColor: ProcedureHintColor];
   [procedureCollectionView setDelegate: controller];
-  [procedureDropTarget.controller = controller];
         
   // Animal half
-  animalDropTarget = [[DropTarget alloc] initWithFrame: CGRectMake(SecondTargetX, 0, TargetWidth, TargetViewHeight)];
-  [[panel contentView] addSubview: animalDropTarget];
   animalCollectionView = [[NamedObjectCollectionView alloc]
                               initWithFrame: CGRectMakeZero()];
-  [animalDropTarget surround: animalCollectionView];
+  [animalCollectionView placeWithin: [panel contentView]
+                           withRect: CGRectMake(SecondTargetX, 0, TargetWidth, TargetViewHeight)
+                withBackgroundColor: AnimalHintColor];
   [animalCollectionView setDelegate: controller];
-  [animalDropTarget.controller = controller];
   return self;
 }
 
@@ -60,9 +53,7 @@
 - (void) connectOutlets
 {
   controller.newWorkupHerdButton = newWorkupHerdButton;
-  controller.procedureDropTarget = procedureDropTarget;
   controller.procedureCollectionView = procedureCollectionView;
-  controller.animalDropTarget = animalDropTarget;
   controller.animalCollectionView = animalCollectionView;
   controller.panel = panel;
 }

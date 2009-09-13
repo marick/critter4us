@@ -4,16 +4,8 @@
 @implementation WorkupHerdControllerPMR : PanelController
 {
   CPButton newWorkupHerdButton;
-  DropTarget procedureDropTarget;
   CPCollectionView procedureCollectionView;
-  DropTarget animalDropTarget;
   CPCollectionView animalCollectionView;
-}
-
--(void) awakeFromCib
-{
-  [animalDropTarget setBackgroundColor: AnimalHintColor];
-  [procedureDropTarget setBackgroundColor: ProcedureHintColor];
 }
 
 - (CPBoolean) receiveNewItem: objectArray

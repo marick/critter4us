@@ -10,18 +10,7 @@
 {
   sut = [[WorkupHerdControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardCollaborators: ['newWorkupHerdButton', 'procedureDropTarget', 'procedureCollectionView', 'animalDropTarget', 'animalCollectionView']];
-}
-
--(void) testInitialBehavior
-{
-  [scenario
-   whileAwakening: function() {
-      [sut.animalDropTarget shouldReceive: @selector(setNormalColor:andHoverColor:)
-                                     with: [AnimalHintColor, AnimalStrongHintColor]];
-      [sut.procedureDropTarget shouldReceive: @selector(setNormalColor:andHoverColor:)
-                                        with: [ProcedureHintColor, ProcedureStrongHintColor]];
-    }];
+  [scenario sutHasUpwardCollaborators: ['newWorkupHerdButton', 'procedureCollectionView', 'animalCollectionView']];
 }
 
 -(void) testCanReceiveNewItemOnBehalfOfACollectionAndPutItIn

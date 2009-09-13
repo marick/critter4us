@@ -54,13 +54,14 @@
     [aView addSubview:scrollView];
 }
 
-- (void) fitTidilyWithin: aView
+- (void) placeWithin: aView withRect: aRect withBackgroundColor: aColor
 {
-  var scrollView = [[CPScrollView alloc] initWithFrame: [aView bounds]];
+  var scrollView = [[CPScrollView alloc] initWithFrame: aRect];
   [aView addSubview: scrollView];
         
   [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
   [scrollView setAutohidesScrollers:YES];
+  [[scrollView contentView] setBackgroundColor:aColor];
 
   var collectionViewFrame = [[scrollView contentView] bounds];
 ;
