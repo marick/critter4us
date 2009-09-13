@@ -8,9 +8,8 @@
 
 - (void) beginUsing: someObjects
 {
-  objects = someObjects;
-  //  [panel useNewClass: AnimalItemView forCollectionView: collectionView];
-  [collectionView setContent: someObjects]
+  objects = [someObjects sortedArrayUsingSelector: @selector(compareNames:)];
+  [collectionView setContent: objects]
   [collectionView setNeedsDisplay: YES];
 }
 
