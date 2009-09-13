@@ -13,24 +13,6 @@
   [scenario sutHasUpwardCollaborators: ['collectionView']];
 }
 
-- (void) testHandsAnimalsThemselvesToCollectionView
-{
-  var animals = [ [[Animal alloc] initWithName: 'betsy' kind: 'cow'],
-                  [[Animal alloc] initWithName: 'josie' kind: 'horse']];
-
-  [scenario
-    during: function() {
-      [sut beginUsing: animals];
-    } 
-  behold: function() {
-      [sut.collectionView shouldReceive: @selector(setContent:)
-                                   with: [animals]];
-      [sut.collectionView shouldReceive: @selector(setNeedsDisplay:)
-                                   with: YES];
-    }
-   ];
-}
-
 - (void) testProvidesDraggingInformationForCollectionView
 {
   var animals = [ [[Animal alloc] initWithName: 'betsy' kind: 'cow'],
