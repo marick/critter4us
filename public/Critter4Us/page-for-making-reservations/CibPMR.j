@@ -86,8 +86,11 @@
   coordinator.procedureController = procedureControllerSubgraph.controller;
   coordinator.workupHerdController = workupHerdControllerSubgraph.controller;
 
-  coordinator.animalController.used = workupHerdControllerSubgraph.controller.animalCollectionView
-  coordinator.procedureController.used = workupHerdControllerSubgraph.controller.procedureCollectionView
+  coordinator.animalController.used = workupHerdControllerSubgraph.controller.animalCollectionView;
+  coordinator.procedureController.used = workupHerdControllerSubgraph.controller.procedureCollectionView;
+  [coordinator.workupHerdController.animalCollectionView setDelegate: coordinator.animalController];
+  [coordinator.workupHerdController.procedureCollectionView setDelegate: coordinator.procedureController];
+  
 
   pageControllerSubgraph.controller.panelControllers =
                                     [animalControllerSubgraph.controller,
