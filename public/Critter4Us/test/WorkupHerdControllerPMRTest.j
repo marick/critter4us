@@ -57,7 +57,7 @@
 
   [scenario
     during: function() {
-      [sut receiveNewItem: animalB];
+      [sut receiveNewItem: [animalB]];
     }
   behold: function() {
       [sut.animalCollectionView shouldReceive: @selector(content)

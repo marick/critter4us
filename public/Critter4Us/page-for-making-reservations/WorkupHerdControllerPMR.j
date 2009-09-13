@@ -19,13 +19,17 @@
   [procedureDropTarget acceptDragType: ProcedureDragType];
 }
 
-- (CPBoolean) receiveNewItem: animalArray
+- (CPBoolean) receiveNewItem: objectArray
 {
-  var originalArray = [animalCollectionView content];
-  var newArray = [originalArray arrayByAddingObjectsFromArray: animalArray];
+  var elementClassName = [[objectArray lastObject] className];
+  var viewInQuestion =  [elementClassName isEqual: "Animal"] ? animalCollectionView
+                                                             : procedureCollectionView;
+
+  var originalArray = [viewInQuestion content];
+  var newArray = [originalArray arrayByAddingObjectsFromArray: objectArray];
   [newArray sortUsingSelector: @selector(compareNames:)];
-  [animalCollectionView setContent: newArray];
-  [animalCollectionView setNeedsDisplay: YES];
+  [viewInQuestion setContent: newArray];
+  [viewInQuestion setNeedsDisplay: YES];
   return YES;
 }
 
