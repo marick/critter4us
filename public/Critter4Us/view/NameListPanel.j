@@ -19,7 +19,8 @@
   var bounds = [self usableArea];
   var collectionView = [[NamedObjectCollectionView alloc] initWithFrame:bounds];
         
-  [self surround: collectionView withScrollViewColored: color];
+  [collectionView placeScrollablyWithin: [self contentView]
+                    withBackgroundColor: color];
 
   return collectionView;
 }
@@ -32,20 +33,6 @@
   var bounds = [contentView bounds];
   bounds.size.height -= WindowBottomMargin;
   return bounds;
-}
-
-
-- (void) surround: collectionView withScrollViewColored: color
-{
-    var scrollView = [[CPScrollView alloc] initWithFrame: [collectionView bounds]];
-        
-    [scrollView setDocumentView:collectionView];
-    [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
-    [scrollView setAutohidesScrollers:YES];
-
-    [[scrollView contentView] setBackgroundColor:color];
-
-    [[self contentView] addSubview:scrollView];
 }
 
 @end

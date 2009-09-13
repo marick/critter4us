@@ -37,6 +37,39 @@
   [[self delegate] objectsRemoved: removed fromList: self];
 }
 
+
+// It's totally bogus that I have these two procedures.  The first is
+// for the case where the collectionView has the known size and the
+// scrollview goes around it. The second is for the case where there's
+// a known frame and the collectionView is sized to fit within it.
+- (void) placeScrollablyWithin: aView withBackgroundColor: color
+{
+    var scrollView = [[CPScrollView alloc] initWithFrame: [self bounds]];
+        
+    [scrollView setDocumentView:self];
+    [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+    [scrollView setAutohidesScrollers:YES];
+
+    [[scrollView contentView] setBackgroundColor:color];
+    [aView addSubview:scrollView];
+}
+
+- (void) fitTidilyWithin: aView
+{
+  var scrollView = [[CPScrollView alloc] initWithFrame: [aView bounds]];
+  [aView addSubview: scrollView];
+        
+  [scrollView setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
+  [scrollView setAutohidesScrollers:YES];
+
+  var collectionViewFrame = [[scrollView contentView] bounds];
+;
+  [self setFrame: collectionViewFrame];
+  [self setMinItemSize:CGSizeMake(TruncatedTextLineWidth, TextLineHeight)];
+  [self setMaxItemSize:CGSizeMake(TruncatedTextLineWidth, TextLineHeight)];
+  [scrollView setDocumentView: self];
+}
+
 @end
 
 @implementation NamedObjectCollectionItemView : CPTextField

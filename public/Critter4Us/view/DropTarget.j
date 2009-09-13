@@ -3,18 +3,8 @@
 
 @implementation DropTarget : CPView
 {
-  CPColor subtleHint;
-  CPColor strongHint;
-  CPDragType dragType;
   CPCollectionView collectionView;
   id controller;
-}
-
--(void) setNormalColor: aNormalColor andHoverColor: aHoverColor
-{
-  subtleHint = aNormalColor;
-  strongHint = aHoverColor;
-  [self giveSubtleHint];
 }
 
 - (void) surround: aCollectionView
@@ -35,58 +25,5 @@
   [scrollView setDocumentView:collectionView];
 }
 
-- (void) giveSubtleHint
-{
-  [self setBackgroundColor: subtleHint];
-}
-
-- (void) giveStrongHint
-{
-  [self setBackgroundColor: strongHint];
-}
-
-- (CPBoolean) prepareForDragOperation: (CPDraggingInfo) aSender
-{
-  var data = [self dataWithin: aSender];        
-  var result = [controller canBeDropped: data];
-  return result;
-}
-
-- (CPBoolean)performDragOperation:(CPDraggingInfo)aSender
-{
-  var data = [[aSender draggingPasteboard] dataForType:dragType];
-  var result = [controller receiveNewItem: data];
-  return result;
-}
-
-- (CPDragOperation)draggingEntered:(CPDraggingInfo)aSender
-{
-  [self giveStrongHint];
-  // TODO: return value CPDragOperationCopy should have. Don't know why
-  // definition is inaccessible. In current Cappuccino, value is ignored
-  // anyway.
-  return 1<<1;
-}
-
-- (void)draggingExited:(CPDraggingInfo)aSender
-{
-  [self giveSubtleHint];
-}
-
-- (void) concludeDragOperation: (id) aSender
-{
-  [self giveSubtleHint];
-}
-
-- (void) stopObserving
-{
-  // Required by ScenarioTestCase.setup
-}
-
-
--(id) dataWithin: (CPDraggingInfo) aSender
-{
-  return [[aSender draggingPasteboard] dataForType:dragType];
-}
 
 @end

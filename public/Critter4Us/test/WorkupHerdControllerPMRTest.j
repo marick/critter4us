@@ -1,5 +1,6 @@
 @import <Critter4Us/page-for-making-reservations/WorkupHerdControllerPMR.j>
 @import "ScenarioTestCase.j"
+@import <Critter4Us/model/Animal.j>
 
 @implementation WorkupHerdControllerPMRTest : ScenarioTestCase
 {
@@ -16,12 +17,8 @@
 {
   [scenario
    whileAwakening: function() {
-      [sut.animalDropTarget shouldReceive: @selector(acceptDragType:)
-                                     with: [AnimalDragType]];
       [sut.animalDropTarget shouldReceive: @selector(setNormalColor:andHoverColor:)
                                      with: [AnimalHintColor, AnimalStrongHintColor]];
-      [sut.procedureDropTarget shouldReceive: @selector(acceptDragType:)
-                                        with: [ProcedureDragType]];
       [sut.procedureDropTarget shouldReceive: @selector(setNormalColor:andHoverColor:)
                                         with: [ProcedureHintColor, ProcedureStrongHintColor]];
     }];

@@ -24,11 +24,12 @@
   [self placeNewButtonOn: aPage];
 
   // Procedure half
-  procedureDropTarget = [[DropTarget alloc] initWithFrame: CGRectMake(FirstTargetX, 0, TargetWidth, TargetViewHeight)];
+  procedureDropTarget = [[CPView alloc] initWithFrame: CGRectMake(FirstTargetX, 0, TargetWidth, TargetViewHeight)];
   [[panel contentView] addSubview: procedureDropTarget];
   procedureCollectionView = [[NamedObjectCollectionView alloc]
                               initWithFrame: CGRectMakeZero()];
-  [procedureDropTarget surround: procedureCollectionView];
+  [procedureCollectionView fitTidilyWithin: procedureDropTarget];
+
   [procedureCollectionView setDelegate: controller];
   [procedureDropTarget.controller = controller];
         
