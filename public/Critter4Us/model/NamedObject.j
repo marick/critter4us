@@ -28,5 +28,10 @@
   return [self.name caseInsensitiveCompare: other.name];
 }
 
+- (CPString) summary
+{
+  return name;
+}
+
 
 @end

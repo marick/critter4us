@@ -41,5 +41,10 @@
   [self assert: CPOrderedSame equals: [one compareNames: two]];
 }
 
+- (void) testSummary
+{
+  [self assert: "base" equals: [base summary]];
+}
+
 
 @end

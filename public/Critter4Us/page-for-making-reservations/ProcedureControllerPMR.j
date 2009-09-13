@@ -1,12 +1,12 @@
 @import "../controller/PanelController.j"
 
-@implementation ProcedureControllerPMR : PanelController
+@implementation ProcedureControllerPMR : NamedObjectControllerPMR
 {
-  CPCollectionView collectionView;
 }
 
-- (void) beginUsing: procedures
+- (id) dragType
 {
+  return [ProcedureDragType];
 }
 
 @end
