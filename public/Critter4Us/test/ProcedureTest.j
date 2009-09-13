@@ -26,6 +26,4 @@
   [self assertTrue: [[base hash] isEqual: [equal hash]]];
 }
 
-
-
 @end

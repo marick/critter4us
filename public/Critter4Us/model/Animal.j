@@ -1,28 +1,23 @@
 @import <Foundation/Foundation.j>
+@import "NamedObject.j"
 
-@implementation Animal : CPObject
+@implementation Animal : NamedObject
 {
-  CPString name;
   CPString kind;
 }
 
 - (id) initWithName: aName kind: aKind
 {
-  name = aName;
+  self = [super initWithName: aName];
   kind = aKind;
   return self;
 }
 
 - (CPBoolean) isEqual: other
 {
-  if (! [name isEqual: other.name]) return NO;
+  if (! [super isEqual: other]) return NO;
   if (! [kind isEqual: other.kind]) return NO;
   return YES;
-}
-
-- (id) compareNames: other
-{
-  return [self.name caseInsensitiveCompare: other.name];
 }
 
 - (id) hash

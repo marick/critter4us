@@ -1,27 +1,8 @@
 @import <Foundation/Foundation.j>
+@import "NamedObject.j"
 
-@implementation Procedure : CPObject
+@implementation Procedure : NamedObject
 {
-  CPString name;
 }
-
-- (id) initWithName: aName
-{
-  name = aName;
-  return self;
-}
-
-- (CPBoolean) isEqual: other
-{
-  if (! [name isEqual: other.name]) return NO;
-  return YES;
-}
-
-- (id) hash
-{
-  hashval = [name hash];
-  return hashval;
-}
-
 
 @end
