@@ -1,7 +1,7 @@
-@import "DragListControllerSubgraph.j"
+@import "NameListControllerSubgraph.j"
 @import "../AnimalControllerPMR.j"
 
-@implementation AnimalControllerSubgraph : DragListControllerSubgraph
+@implementation AnimalControllerSubgraph : NameListControllerSubgraph
 {
 }
 - (CPInteger) xPosition
@@ -9,7 +9,7 @@
   return FarthestRightWindowX;
 }
 
-- (CPString) dragListTitle
+- (CPString) nameListTitle
 {
   return "Animals";
 }

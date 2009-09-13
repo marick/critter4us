@@ -1,10 +1,10 @@
 @import <AppKit/AppKit.j>
 @import "../util/Constants.j"
 @import "../view/DropTarget.j"
+@import "../view/NameListPanel.j"
 @import "../persistence/PersistentStore.j"
 
 @import "ConstantsPMR.j"
-@import "DragListPMR.j"
 @import "CoordinatorPMR.j"
 
 @import "cib/AnimalControllerSubgraph.j"

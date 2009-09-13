@@ -30,8 +30,12 @@ ProcedureDragType = "ProcedureDragType";
 AnimalDragType = "AnimalDragType";
 
 
-// Standard windows
+// Standard window and view size information
 WindowBottomMargin = 20;
+ScrollbarWidth = 20;
+TextLineHeight = 20;
+CompleteTextLineWidth = 250-ScrollbarWidth;
+TruncatedTextLineWidth = 200;
 
 
 // Misc

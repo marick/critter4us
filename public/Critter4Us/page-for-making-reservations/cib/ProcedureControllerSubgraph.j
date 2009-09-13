@@ -1,7 +1,7 @@
 @import "../ProcedureControllerPMR.j"
-@import "DragListControllerSubgraph.j"
+@import "NameListControllerSubgraph.j"
 
-@implementation ProcedureControllerSubgraph : DragListControllerSubgraph
+@implementation ProcedureControllerSubgraph : NameListControllerSubgraph
 {
 }
 
@@ -10,7 +10,7 @@
   return FarthestLeftWindowX;
 }
 
-- (CPString) dragListTitle
+- (CPString) nameListTitle
 {
   return "Procedures";
 }

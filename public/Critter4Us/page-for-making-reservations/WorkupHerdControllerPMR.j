@@ -1,4 +1,5 @@
 @import "../controller/PanelController.j"
+@import "ConstantsPMR.j"
 
 @implementation WorkupHerdControllerPMR : PanelController
 {

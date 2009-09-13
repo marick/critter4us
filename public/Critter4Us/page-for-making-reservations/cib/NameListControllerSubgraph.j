@@ -1,23 +1,23 @@
 @import "Subgraph.j"
 @import "../../view/NameListPanel.j"
 
-@implementation DragListControllerSubgraph : Subgraph
+@implementation NameListControllerSubgraph : Subgraph
 {
   id controller;
   CPCollectionView collectionView;
-  NameListPanel dragList;
+  NameListPanel nameList;
 }
 
 
 - (id) init
 {
   self = [super init];
-  dragList = [self dragPanelOutlineAtX: [self xPosition]
-                             withTitle: [self dragListTitle]];
+  nameList = [self dragPanelOutlineAtX: [self xPosition]
+                             withTitle: [self nameListTitle]];
 
   controller = [self custom: [self newController]];
   
-  collectionView = [dragList addCollectionViewSupplying: [self dragType]
+  collectionView = [nameList addCollectionViewSupplying: [self dragType]
                                           signalingWith: [self color]];
 
   [collectionView setDelegate: controller];
@@ -29,7 +29,7 @@
 - (void) connectOutlets
 {
   controller.available = collectionView;
-  controller.panel = dragList;
+  controller.panel = nameList;
 }
 
 
@@ -37,7 +37,7 @@
 {
   var panelRect = CGRectMake(x, WindowTops, DragSourceWindowWidth,
                              DragSourceWindowHeight);
-  panel = [self custom: [[DragListPMR alloc] initWithContentRect: panelRect]];
+  panel = [self custom: [[NameListPanel alloc] initWithContentRect: panelRect]];
   [panel setTitle: aTitle];
   [panel orderFront: self]; // TODO: delete when page layout done.
   return panel;

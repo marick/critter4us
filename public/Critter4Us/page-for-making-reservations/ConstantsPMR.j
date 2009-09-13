@@ -5,14 +5,10 @@ ProcedureStrongHintColor = [CPColor colorWithRed: 0.4 green: 1.0 blue: 0.4 alpha
 AnimalHintColor = [CPColor colorWithRed: 1.0 green: 0.8 blue: 0.8 alpha: 1.0];
 AnimalStrongHintColor = [CPColor colorWithRed: 1.0 green: 0.4 blue: 0.4 alpha: 1.0];
 
-ScrollbarWidth = 20;
-TextLineHeight = 20;
 
 FarthestLeftWindowX = 10;
 WindowTops = 200;
 
-CompleteTextLineWidth = 250-ScrollbarWidth;
-TruncatedTextLineWidth = 200;
 DragSourceNumberOfLines = 15;
 // TODO: Not actually right, since TextLineHeight doesn't include interspacing.
 DragSourceWindowHeight = DragSourceNumberOfLines * TextLineHeight;

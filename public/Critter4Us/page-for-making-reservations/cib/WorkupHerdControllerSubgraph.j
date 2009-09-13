@@ -1,6 +1,6 @@
 @import "Subgraph.j"
 @import "../WorkupHerdControllerPMR.j"
-@import "../DragListPMR.j"
+@import "../../view/NameListPanel.j"
 @import "../ConstantsPMR.j"
 @import "../../view/DropTarget.j"
 
@@ -23,27 +23,21 @@
   controller = [self custom: [[WorkupHerdControllerPMR alloc] init]];
   [self placeNewButtonOn: aPage];
 
-  var itemPrototype = [[CPCollectionViewItem alloc] init];
-  [itemPrototype setView:[[DragListItemViewPMR alloc] initWithFrame:CGRectMakeZero()]];
-
-  
   // Procedure half
   procedureDropTarget = [[DropTarget alloc] initWithFrame: CGRectMake(FirstTargetX, 0, TargetWidth, TargetViewHeight)];
   [[panel contentView] addSubview: procedureDropTarget];
-  procedureCollectionView = [[DebuggableCollectionView alloc]
+  procedureCollectionView = [[NamedObjectCollectionView alloc]
                               initWithFrame: CGRectMakeZero()];
   [procedureDropTarget surround: procedureCollectionView];
-  [procedureCollectionView setItemPrototype:itemPrototype];
   [procedureCollectionView setDelegate: controller];
   [procedureDropTarget.controller = controller];
         
   // Animal half
   animalDropTarget = [[DropTarget alloc] initWithFrame: CGRectMake(SecondTargetX, 0, TargetWidth, TargetViewHeight)];
   [[panel contentView] addSubview: animalDropTarget];
-  animalCollectionView = [[DebuggableCollectionView alloc]
+  animalCollectionView = [[NamedObjectCollectionView alloc]
                               initWithFrame: CGRectMakeZero()];
   [animalDropTarget surround: animalCollectionView];
-  [animalCollectionView setItemPrototype:itemPrototype];
   [animalCollectionView setDelegate: controller];
   [animalDropTarget.controller = controller];
   return self;
