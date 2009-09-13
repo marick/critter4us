@@ -22,7 +22,20 @@
 {
   [super setContent: [anArray sortedArrayUsingSelector: @selector(compareNames:)]];
 }
+
+- (void) addContent: (CPArray) anArray
+{
+  [self setContent: [[self content] arrayByAddingObjectsFromArray: anArray]];
+}
   
+- (void) setSelectionIndexes: indexes
+{
+  var content = [self content];
+  var removed = [content objectsAtIndexes: indexes];
+  [content removeObjectsAtIndexes: indexes];
+  [self setContent: content];
+  [[self delegate] objectsRemoved: removed fromList: self];
+}
 
 @end
 

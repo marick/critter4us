@@ -26,4 +26,13 @@
   return [self dragType];
 }
 
+
+// Delegate methods
+- (void) objectsRemoved: (CPArray) removed fromList: (NamedObjectCollectionView) list
+{
+  var sink = (list == used) ? available : used;
+  [sink addContent:removed];
+  [sink setNeedsDisplay: YES];
+}
+
 @end

@@ -33,5 +33,9 @@
   return name;
 }
 
+- (CPString) description
+{
+  return [super description] + " " + name;
+}
 
 @end
