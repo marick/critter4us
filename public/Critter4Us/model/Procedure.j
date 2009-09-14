@@ -35,6 +35,28 @@
   return animalsThisProcedureExcludes;
 }
 
+-(CPArray) filter: anAnimalArray
+{
+  var result = [];
+  var enumerator = [anAnimalArray objectEnumerator];
+  var animal; // This makes the enumerator no better than the stupid counting loop.
+  while (animal = [enumerator nextObject])
+  {
+    if (! [self excludes: animal] )
+    {
+      [result addObject: animal];
+    }
+  }
+  return result;
+}
+
+-(CPBoolean) excludes: anAnimal
+{
+  return [[self animalsThisProcedureExcludes] containsObject: anAnimal];
+}
+
+
+
 -(CPBoolean) isEqual: other
 {
   if (! [super isEqual: other]) return NO;

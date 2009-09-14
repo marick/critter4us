@@ -3,7 +3,7 @@
 
 @implementation ProcedureTest : OJTestCase
 {
-  Animal oneAnimal, another, aThird;
+  Animal oneAnimal, another, aThird, duplicate;
 }
 
 - (void) setUp
@@ -11,6 +11,9 @@
   oneAnimal = [[Animal alloc] initWithName: 'one' kind: 'b'];
   another = [[Animal alloc] initWithName: 'another' kind: 'b'];
   aThird = [[Animal alloc] initWithName: 'a third' kind: 'b'];
+  duplicate = [[Animal alloc] initWithName: [oneAnimal name]
+                                      kind: [oneAnimal kind]];
+
 }
 
 
@@ -54,8 +57,6 @@
 
 - (void) testAggregateProceduresDoNotIncludeDuplicates
 {
-  var duplicate = [[Animal alloc] initWithName: [oneAnimal name]
-                                          kind: [oneAnimal kind]];
   var oneProc = [[Procedure alloc] initWithName: 'one' 
                                       excluding: [oneAnimal]];
   var twoProc = [[Procedure alloc] initWithName: 'two'
@@ -65,6 +66,25 @@
   var actual = [CPSet setWithArray: [composite animalsThisProcedureExcludes]];
   var expected = [CPSet setWithArray: [duplicate]];
   [self assertTrue: [expected isEqualToSet: actual]];
+}
+
+- (void) testProceduresCanAnswerIfAnAnimalIsExcluded
+{
+  var procedure = [[Procedure alloc] initWithName: "name"
+                                        excluding: [oneAnimal]];
+
+  [self assertTrue: [procedure excludes: duplicate]];
+  [self assertFalse: [procedure excludes: aThird]];
+}
+
+
+- (void) testProceduresCanFilterAnimalsAccordingToTheirExclusionList
+{
+  var procedure = [[Procedure alloc] initWithName: "name"
+                                        excluding: [oneAnimal, another]];
+
+  [self assert: [aThird]
+        equals: [procedure filter: [oneAnimal, another, aThird]]];
 }
 
 
