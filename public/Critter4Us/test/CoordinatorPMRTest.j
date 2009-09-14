@@ -31,7 +31,7 @@
     }];
 }
 
--(void) testAsksPersistentStoreForInformationWhenDataIsAvailable
+-(void) testAsksPersistentStoreForInformationWhenReservationDataIsAvailable
 {
   var animals = [  [[Animal alloc] initWithName: 'animal1' kind: 'cow'],
                    [[Animal alloc] initWithName: 'animal2' kind: 'horse']];
@@ -47,34 +47,31 @@
       [self sendNotification: ReservationDataAvailable withObject: dict];
     }
    behold: function() {
-      [sut.persistentStore shouldReceive: @selector(focusOnDate:time:)
+      [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:)
                                     with: ['2009-02-02', [Time morning]]];
-      [sut.persistentStore shouldReceive: @selector(animals)
-                               andReturn: animals];
-      [sut.animalController shouldReceive: @selector(beginUsing:)
-                                     with: [animals]];
-      [sut.persistentStore shouldReceive: @selector(procedures)
-                               andReturn: procedures];
-      [sut.procedureController shouldReceive: @selector(beginUsing:)
-                                     with: [procedures]];
     }];
 }
--(void) testAsksPersistentStoreForInformationWhenDataIsAvailable
+-(void) testPassesNewInformationAlongToControllers
 {
+  var animal = [[Animal alloc] initWithName: "fred" kind: 'cow'];
+  var proc = [[Procedure alloc] initWithName: 'procme'];
+  var jsdict = {'animals':[animal], 'procedures':[proc]};
+  var dict = [CPDictionary dictionaryWithJSObject: jsdict];
   [scenario
    during: function() {
-      var dict = [CPDictionary dictionary];
-      [dict setValue: '2009-02-02' forKey: 'date'];
-      [dict setValue: [Time morning] forKey: 'time'];
-      [self sendNotification: ReservationDataAvailable withObject: dict];
+      [self sendNotification: InitialDataForACourseSessionNews
+                  withObject: dict];
     }
    behold: function() {
-      [sut.persistentStore shouldReceive: @selector(focusOnDate:time:)
-                                    with: ['2009-02-02', [Time morning]]];
+      [sut.animalController shouldReceive: @selector(beginUsing:)
+                                     with: [[animal]]];
+      [sut.procedureController shouldReceive: @selector(beginUsing:)
+                                     with: [[proc]]];
     }];
 }
 
--(void)xxx_testThatUpdatesAnimalControllerWhenReceivingProcedureNotification
+/*
+-(void)xx_testThatUpdatesAnimalControllerWhenReceivingProcedureNotification
 {
   var animals = [  [[Animal alloc] initWithName: 'animal0' kind: 'cow'],
                    [[Animal alloc] initWithName: 'animal1' kind: 'horse']];
@@ -93,7 +90,7 @@
       [self sendNotification: ReservationDataAvailable withObject: dict];
     }
    behold: function() {
-      [sut.persistentStore shouldReceive: @selector(focusOnDate:time:)
+      [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:)
                                     with: ['2009-02-02', [Time morning]]];
       [sut.persistentStore shouldReceive: @selector(animals)
                                andReturn: animals];
@@ -101,6 +98,6 @@
                                andReturn: procedures];
     }];
 }
-
+*/
 
 @end

@@ -15,15 +15,32 @@
 
 - (void)testPersistentStoreMakesNetworkInfoAvailable
 {
+  var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
+  var josie = [[Animal alloc] initWithName: 'josie' kind: 'horse'];
+
+  var expectedAnimals = [betsy, josie];
+  var expectedProcedures = [CPArray arrayWithObject:
+                                 [[Procedure alloc] initWithName: 'proc1'
+                                                       excluding: [betsy]]];
   [scenario 
    during: function() { 
-      [sut focusOnDate: '2009-02-02' time: [Time morning]];
+      [sut loadInfoRelevantToDate: '2009-02-02' time: [Time morning]];
     }
   behold: function() {
       uri = jsonURI(CourseSessionDataBlobRoute+"?date=2009-02-02&time=morning");
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
                             with: uri
                        andReturn: '{"animals":["betsy","josie"],"kindMap":{"betsy":"cow","josie":"horse"},"procedures":["proc1"],"exclusions":{"proc1":["betsy"]}}'];
+
+      [self listenersWillReceiveNotification: InitialDataForACourseSessionNews
+                                checkingWith: function(notification) {
+          var dict = [notification object];
+          var actualAnimals = [dict valueForKey: 'animals'];
+          var actualProcedures = [dict valueForKey: 'procedures'];
+          if (! [actualAnimals isEqual: expectedAnimals]) return NO;
+          if (! [actualProcedures isEqual: expectedProcedures]) return NO;
+          return YES;
+        }];
     }
   andSo: function() {
       [self assert: ["betsy", "josie"] equals: sut.allAnimalNames]; // TODO delete old accessors
@@ -31,19 +48,9 @@
       [self assert: "horse" equals: sut.kindMap['josie']];
       [self assert: ["proc1"] equals: sut.allProcedureNames];
 
-      var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
-      var josie = [[Animal alloc] initWithName: 'josie' kind: 'horse'];
-
-      var expectedAnimals = [betsy, josie];
-      var expectedProcedures = [CPArray arrayWithObject:
-                                 [[Procedure alloc] initWithName: 'proc1'
-                                                       excluding: [betsy]]];
-
-
-      [self assert: expectedAnimals equals: [sut animals]];
+      [self assert: expectedAnimals equals: [sut animals]]; // TODO these can go as well.
       [self assert: expectedProcedures equals: [sut procedures]];
       [self assert: ['betsy'] equals: [sut.exclusions valueForKey: 'proc1']];
-
     }]
 }
 

@@ -31,6 +31,25 @@
   exclusions = [CPDictionary dictionaryWithJSObject: jsHash['exclusions']];
 }
 
+-(void) loadInfoRelevantToDate: date time: time
+{
+  [self focusOnDate: date time: time];
+  // Doing this rigamarole with dictionaryWithJSObject because the commented-out
+  // code below produces a doubly-nested array when a singly-nested one is put 
+  // in.
+  var animals = [self animals];
+  var procedures = [self procedures];
+  var jsdict = {'animals':animals, 'procedures':procedures}
+  var dict = [CPDictionary dictionaryWithJSObject: jsdict];
+  //  var a = [self animals];
+  //  CPLog("++++++++ puting animals in " + [a description]);
+  //  [dict setValue: a forKey: 'animals'];
+  //  [dict setValue: [self procedures] forKey: 'procedures'];
+  // CPLog("++++++++ taking animals out " + [[dict valueForKey: 'animals'] description]);
+  [NotificationCenter postNotificationName: InitialDataForACourseSessionNews
+                                    object: dict];
+}
+
 - (CPArray) animals
 {
   return [self animalsFromNames: allAnimalNames];

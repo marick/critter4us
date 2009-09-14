@@ -21,20 +21,32 @@
       selector: @selector(reservationDataAvailable:)
           name: ReservationDataAvailable
         object: nil];
+
+  [NotificationCenter
+   addObserver: self
+      selector: @selector(reservationDataRetrieved:)
+          name: InitialDataForACourseSessionNews
+        object: nil];
 }
 
 - (void) reservationDataAvailable: aNotification
 {
-  [persistentStore focusOnDate: [[aNotification object] valueForKey: 'date']
-                          time: [[aNotification object] valueForKey: 'time']];
-  [animalController beginUsing: [persistentStore animals]];
-  [procedureController beginUsing: [persistentStore procedures]];
+  [persistentStore loadInfoRelevantToDate: [[aNotification object] valueForKey: 'date']
+                                     time: [[aNotification object] valueForKey: 'time']];
 
   [reservationDataController allowNoDataChanges];
   [reservationDataController prepareToFinishReservation];
   [procedureController appear];
   [animalController appear];
   [workupHerdController appear];
+}
+
+- (void) reservationDataRetrieved: aNotification
+{
+  var animals = [[aNotification object] valueForKey: 'animals'];
+  var procedures = [[aNotification object] valueForKey: 'procedures'];
+  [animalController beginUsing: animals];
+  [procedureController beginUsing: procedures];
 }
 
 @end

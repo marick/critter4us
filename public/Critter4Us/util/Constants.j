@@ -11,6 +11,7 @@ NewReservationNews = "new reservation created";
 // TODO: these are tne new ones
 ReservationDataAvailable="Reservation data available";
 ProceduresChosenNews = "These procedures have been chosen";
+InitialDataForACourseSessionNews = "course focus data has arrived"
 
 // Route names
 StoreReservationRoute = @"store_reservation";
