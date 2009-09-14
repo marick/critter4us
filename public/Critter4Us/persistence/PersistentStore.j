@@ -33,10 +33,15 @@
 
 - (CPArray) animals
 {
+  return [self animalsFromNames: allAnimalNames];
+}
+
+- (CPArray) animalsFromNames: someNames
+{
   var result = [CPArray array];
-  for(var i = 0; i < [allAnimalNames count]; i++)
+  for(var i = 0; i < [someNames count]; i++)
   {
-    var name = allAnimalNames[i];
+    var name = someNames[i];
     [result addObject: [[Animal alloc] initWithName: name kind: kindMap[name]]];
   }
   return result;
@@ -45,10 +50,14 @@
 - (CPArray) procedures
 {
   var result = [CPArray array];
-  for(var i = 0; i < [allProcedureNames count]; i++)
+  var keys = [exclusions allKeys];
+  for(var i = 0; i < [keys count]; i++)
   {
-    var name = allProcedureNames[i];
-    [result addObject: [[Procedure alloc] initWithName: name]];
+    var name = keys[i];
+    var animalNames =  [exclusions valueForKey: name];
+    var animals = [self animalsFromNames: animalNames];
+    [result addObject: [[Procedure alloc] initWithName: name
+                                             excluding: animals]];
   }
   return result;
 }

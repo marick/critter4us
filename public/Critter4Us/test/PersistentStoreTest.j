@@ -31,16 +31,18 @@
       [self assert: "horse" equals: sut.kindMap['josie']];
       [self assert: ["proc1"] equals: sut.allProcedureNames];
 
-      var expectedAnimals = [ [[Animal alloc] initWithName: 'betsy' kind: 'cow'],
-                              [[Animal alloc] initWithName: 'josie' kind: 'horse']];
-      var expectedProcedures = [ [[Procedure alloc] initWithName: 'proc1']];
+      var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
+      var josie = [[Animal alloc] initWithName: 'josie' kind: 'horse'];
+
+      var expectedAnimals = [betsy, josie];
+      var expectedProcedures = [CPArray arrayWithObject:
+                                 [[Procedure alloc] initWithName: 'proc1'
+                                                       excluding: [betsy]]];
 
 
       [self assert: expectedAnimals equals: [sut animals]];
       [self assert: expectedProcedures equals: [sut procedures]];
-
       [self assert: ['betsy'] equals: [sut.exclusions valueForKey: 'proc1']];
-
 
     }]
 }
