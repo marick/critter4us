@@ -6,6 +6,18 @@
   CPArray animalsThisProcedureExcludes;
 }
 
++(Procedure) compositeFrom: (CPArray) procedures
+{
+  var animalSet = [CPMutableSet set];
+  for(var i=0; i < [procedures count]; i++)
+  {
+    var one = procedures[i];
+    [animalSet addObjectsFromArray: [one animalsThisProcedureExcludes]]
+  }
+  return [[Procedure alloc] initWithName: "a composite procedure"
+                               excluding: [animalSet allObjects]];
+}
+
 -(id) initWithName: aName
 {
   return [self initWithName: aName excluding: []];

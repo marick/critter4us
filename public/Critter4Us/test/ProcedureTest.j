@@ -3,10 +3,14 @@
 
 @implementation ProcedureTest : OJTestCase
 {
+  Animal oneAnimal, another, aThird;
 }
 
 - (void) setUp
 {
+  oneAnimal = [[Animal alloc] initWithName: 'one' kind: 'b'];
+  another = [[Animal alloc] initWithName: 'another' kind: 'b'];
+  aThird = [[Animal alloc] initWithName: 'a third' kind: 'b'];
 }
 
 
@@ -25,9 +29,6 @@
 
 - (void) testEqualityAlsoChecksExclusions
 {
-  var oneAnimal = [[Animal alloc] initWithName: 'one' kind: 'b'];
-  var another = [[Animal alloc] initWithName: 'another' kind: 'b'];
-
   var oneWithExclusions = [[Procedure alloc] initWithName: 'base'
                                             excluding: [oneAnimal]];
   var equalNotIdentical = [[Procedure alloc] initWithName: 'base'
@@ -37,5 +38,34 @@
   [self assertFalse: [oneWithExclusions isEqual: different]];
   [self assertTrue: [oneWithExclusions isEqual: equalNotIdentical]];
 }
+
+- (void) testAggregateProceduresAggregateExcludedAnimalsFromMultipleProcedures
+{
+  var oneProc = [[Procedure alloc] initWithName: 'one' 
+                                      excluding: [oneAnimal]];
+  var twoProc = [[Procedure alloc] initWithName: 'two'
+                                      excluding: [another, aThird]];
+
+  var composite = [Procedure compositeFrom: [oneProc, twoProc]];
+  var actual = [CPSet setWithArray: [composite animalsThisProcedureExcludes]];
+  var expected = [CPSet setWithArray: [oneAnimal, another, aThird]];
+  [self assertTrue: [expected isEqualToSet: actual]];
+}
+
+- (void) testAggregateProceduresDoNotIncludeDuplicates
+{
+  var duplicate = [[Animal alloc] initWithName: [oneAnimal name]
+                                          kind: [oneAnimal kind]];
+  var oneProc = [[Procedure alloc] initWithName: 'one' 
+                                      excluding: [oneAnimal]];
+  var twoProc = [[Procedure alloc] initWithName: 'two'
+                                      excluding: [duplicate]];
+
+  var composite = [Procedure compositeFrom: [oneProc, twoProc]];
+  var actual = [CPSet setWithArray: [composite animalsThisProcedureExcludes]];
+  var expected = [CPSet setWithArray: [duplicate]];
+  [self assertTrue: [expected isEqualToSet: actual]];
+}
+
 
 @end

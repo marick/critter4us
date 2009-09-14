@@ -13,6 +13,11 @@
   return self;
 }
 
+- (CPString) kind
+{
+  return kind;
+}
+
 - (CPBoolean) isEqual: other
 {
   if (! [super isEqual: other]) return NO;

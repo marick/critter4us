@@ -11,6 +11,11 @@
   return self;
 }
 
+- (CPString) name
+{
+  return name;
+}
+
 - (CPBoolean) isEqual: other
 {
   if (! [name isEqual: other.name]) return NO;
