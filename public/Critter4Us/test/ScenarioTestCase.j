@@ -77,6 +77,9 @@
 {
   [self listenersWillReceiveNotification:aNotificationName
    checkingWith:function(notification) {
+      //CPLog([notification name]);
+      //      CPLog([[notification object] description]);
+      //      CPLog([anObject description]);
       return [[notification object] isEqual: anObject];
     }];
 }
