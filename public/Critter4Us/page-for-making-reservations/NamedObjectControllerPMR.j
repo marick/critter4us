@@ -4,13 +4,11 @@
 {
   CPCollectionView available;
   CPCollectionView used;
-  CPArray objects;
 }
 
 - (void) beginUsing: someObjects
 {
-  objects = [someObjects sortedArrayUsingSelector: @selector(compareNames:)];
-  [available setContent: objects];
+  [available setContent: someObjects];
   [used setContent: []];
   [available setNeedsDisplay: YES];
   [used setNeedsDisplay: YES];
