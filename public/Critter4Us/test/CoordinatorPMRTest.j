@@ -16,7 +16,7 @@
   [scenario sutHasDownwardCollaborators: ['persistentStore']];
 }
 
-- (void) testSetsUpControlsAppropriatelyWhenReservationsStart
+- (void) testSetsUpControlsAppropriatelyWhenReservationDataIsAvailable
 {
   [scenario
     during: function() {
@@ -31,7 +31,7 @@
     }];
 }
 
--(void) testHandsControllersValuableDataWhenCourseSessionIsIdentified
+-(void) testAsksPersistentStoreForInformationWhenDataIsAvailable
 {
   var animals = [  [[Animal alloc] initWithName: 'animal1' kind: 'cow'],
                    [[Animal alloc] initWithName: 'animal2' kind: 'horse']];
@@ -58,7 +58,48 @@
       [sut.procedureController shouldReceive: @selector(beginUsing:)
                                      with: [procedures]];
     }];
-  
+}
+-(void) testAsksPersistentStoreForInformationWhenDataIsAvailable
+{
+  [scenario
+   during: function() {
+      var dict = [CPDictionary dictionary];
+      [dict setValue: '2009-02-02' forKey: 'date'];
+      [dict setValue: [Time morning] forKey: 'time'];
+      [self sendNotification: ReservationDataAvailable withObject: dict];
+    }
+   behold: function() {
+      [sut.persistentStore shouldReceive: @selector(focusOnDate:time:)
+                                    with: ['2009-02-02', [Time morning]]];
+    }];
+}
+
+-(void)xxx_testThatUpdatesAnimalControllerWhenReceivingProcedureNotification
+{
+  var animals = [  [[Animal alloc] initWithName: 'animal0' kind: 'cow'],
+                   [[Animal alloc] initWithName: 'animal1' kind: 'horse']];
+                   [[Animal alloc] initWithName: 'animal2' kind: 'horse']];
+
+  var procedures = [ [[Procedure alloc] initWithName: 'procedure0'
+                                           excluding: animals[0]],
+                     [[Procedure alloc] initWithName: 'procedure1'
+                                           excluding: animals[2]]]];
+  [scenario
+   during: function() {
+      var dict = [CPDictionary dictionary];
+      [dict setValue: '2009-02-02' forKey: 'date'];
+      [dict setValue: [Time morning] forKey: 'time'];
+          
+      [self sendNotification: ReservationDataAvailable withObject: dict];
+    }
+   behold: function() {
+      [sut.persistentStore shouldReceive: @selector(focusOnDate:time:)
+                                    with: ['2009-02-02', [Time morning]]];
+      [sut.persistentStore shouldReceive: @selector(animals)
+                               andReturn: animals];
+      [sut.persistentStore shouldReceive: @selector(procedures)
+                               andReturn: procedures];
+    }];
 }
 
 
