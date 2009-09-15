@@ -96,5 +96,26 @@
     }];
 }
 
+-(void)testCanSpillSessionData
+{
+  var dict = [CPMutableDictionary dictionary];
+  [scenario
+   previousAction: function() { 
+      [sut.courseField setStringValue: "some course"];
+      [sut.instructorField setStringValue: "some instructor"];
+      [sut.dateField setStringValue: "some date"];
+      [sut.morningButton setState:CPOnState];
+    }
+   testAction: function() {
+      [sut spillIt: dict];
+    }
+  andSo: function() {
+      [self assert: "some course" equals: [dict valueForKey: 'course']];
+      [self assert: "some instructor" equals: [dict valueForKey: 'instructor']];
+      [self assert: "some date" equals: [dict valueForKey:'date']];
+      [self assert: [Time morning] equals: [dict valueForKey:'time']];
+    }];
+}
+
 
 @end
