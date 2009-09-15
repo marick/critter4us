@@ -35,4 +35,22 @@
     }];
 }
 
+- (void) testSpillingData
+{
+  var dict = [CPMutableDictionary dictionary];
+  [scenario
+  previousAction: function() {
+      [sut.used setContent: [floating, milking, dancing]];
+    }
+  testAction: function() { 
+      [sut spillIt: dict];
+
+    }
+  andSo: function() {
+      [self assert: ["floating", "milking", "dancing"]
+            equals: [dict objectForKey: "procedures"]];
+    }];
+}
+
+
 @end	

@@ -10,5 +10,10 @@
   [NotificationCenter postNotificationName: ProceduresChosenNews object: [used content]];
 }
 
+- (void) spillIt: (CPMutableDictionary) dict
+{
+  [dict setValue: [self usedNames] forKey: 'procedures'];
+}
+
 
 @end
