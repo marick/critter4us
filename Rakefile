@@ -26,6 +26,11 @@ task :local_db_create do
      require "admin/create.rb"
 end
 
+desc "Clear password on this machine"
+task :clear_password do 
+     require 'admin/clear-password'
+end
+
 desc "Deploy new version on staging server."
 task :stage do 
      `git push staging master`
