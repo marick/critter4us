@@ -5,7 +5,6 @@
   CPObject owner;
   CPMenu mainMenu;
   CPMenu windowMenu;
-  CPMenuItem reservationMakerMenuItem;
   CPMenuItem newReservationMakerMenuItem;
   CPMenuItem reservationViewerMenuItem;
 }
@@ -16,8 +15,7 @@
   
   [self addMainMenu];
   [self addWindowMenuToMainMenu];
-  //  [self addWindowMenuItemThatMakesReservation];
-  [self addWindowNewMenuItemThatMakesReservation];
+  [self addWindowMenuItemThatMakesReservation];
   [self addWindowMenuItemThatViewsAllReservations];
 }
 
@@ -40,19 +38,12 @@
 }
 
 
--(void)addWindowMenuItemThatMakesReservation
-{
-  reservationMakerMenuItem = 
-       [self aWindowMenuItemwithTitle:@"Make a Reservation"
-                               action:@selector(activateReservationMaker:)
-                        keyEquivalent:'M'];
-}
 
--(void)addWindowNewMenuItemThatMakesReservation
+-(void)addWindowMenuItemThatMakesReservation
 {
   newReservationMakerMenuItem = 
        [self aWindowMenuItemwithTitle:@"Make a Reservation"
-                               action:@selector(activateNewReservationMaker:)
+                               action:@selector(activateReservationMaker:)
                         keyEquivalent:'N'];
 }
 

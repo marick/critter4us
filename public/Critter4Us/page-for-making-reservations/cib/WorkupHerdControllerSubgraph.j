@@ -1,6 +1,5 @@
 @import "Subgraph.j"
 @import "../WorkupHerdControllerPMR.j"
-@import "../../view/NameListPanel.j"
 @import "../ConstantsPMR.j"
 @implementation WorkupHerdControllerSubgraph : Subgraph
 {
