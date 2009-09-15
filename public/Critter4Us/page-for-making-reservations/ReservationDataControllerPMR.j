@@ -49,4 +49,21 @@
   [NotificationCenter postNotificationName: TimeToReserveNews object: nil];
 }
 
+- (id) spillIt: (CPMutableDictionary) dict
+{
+  [dict setValue: [courseField stringValue] forKey: 'course'];
+  [dict setValue: [instructorField stringValue] forKey: 'instructor'];
+  [dict setValue: [dateField stringValue] forKey: 'date'];
+  [dict setValue: [self deduceTime] forKey: 'time'];
+}
+
+- (id) deduceTime
+{
+  if ([morningButton state] == CPOnState) 
+    return [Time morning];
+  else
+    return [Time afternoon];
+}
+
+
 @end
