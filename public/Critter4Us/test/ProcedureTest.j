@@ -78,14 +78,5 @@
 }
 
 
-- (void) testProceduresCanFilterAnimalsAccordingToTheirExclusionList
-{
-  var procedure = [[Procedure alloc] initWithName: "name"
-                                        excluding: [oneAnimal, another]];
-
-  [self assert: [aThird]
-        equals: [procedure filter: [oneAnimal, another, aThird]]];
-}
-
 
 @end

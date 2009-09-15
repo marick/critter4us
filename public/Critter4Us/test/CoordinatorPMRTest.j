@@ -70,34 +70,26 @@
     }];
 }
 
-/*
--(void)xx_testThatUpdatesAnimalControllerWhenReceivingProcedureNotification
+
+-(void)testThatUpdatesAnimalControllerWhenReceivingProcedureNotification
 {
-  var animals = [  [[Animal alloc] initWithName: 'animal0' kind: 'cow'],
-                   [[Animal alloc] initWithName: 'animal1' kind: 'horse']];
-                   [[Animal alloc] initWithName: 'animal2' kind: 'horse']];
+  var animals = [ [[Animal alloc] initWithName: 'animal0' kind: 'cow'],
+                  [[Animal alloc] initWithName: 'animal1' kind: 'horse'],
+                  [[Animal alloc] initWithName: 'animal2' kind: 'horse']];
 
   var procedures = [ [[Procedure alloc] initWithName: 'procedure0'
-                                           excluding: animals[0]],
+                                           excluding: [animals[0]]],
                      [[Procedure alloc] initWithName: 'procedure1'
-                                           excluding: animals[2]]]];
+                                           excluding: [animals[2]]]];
   [scenario
    during: function() {
-      var dict = [CPDictionary dictionary];
-      [dict setValue: '2009-02-02' forKey: 'date'];
-      [dict setValue: [Time morning] forKey: 'time'];
-          
-      [self sendNotification: ReservationDataAvailable withObject: dict];
+      [self sendNotification: ProceduresChosenNews
+                  withObject: procedures];
     }
    behold: function() {
-      [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:)
-                                    with: ['2009-02-02', [Time morning]]];
-      [sut.persistentStore shouldReceive: @selector(animals)
-                               andReturn: animals];
-      [sut.persistentStore shouldReceive: @selector(procedures)
-                               andReturn: procedures];
+      [sut.animalController shouldReceive:@selector(withholdAnimals:)
+                                     with: [[animals[0], animals[2]]]];
     }];
 }
-*/
 
 @end

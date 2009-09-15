@@ -12,10 +12,12 @@
   for(var i=0; i < [procedures count]; i++)
   {
     var one = procedures[i];
-    [animalSet addObjectsFromArray: [one animalsThisProcedureExcludes]]
+    var excluded = [one animalsThisProcedureExcludes];
+    [animalSet addObjectsFromArray: excluded];
   }
-  return [[Procedure alloc] initWithName: "a composite procedure"
-                               excluding: [animalSet allObjects]];
+  var composite = [[Procedure alloc] initWithName: "a composite procedure"
+                                        excluding: [animalSet allObjects]];
+  return composite;
 }
 
 -(id) initWithName: aName
@@ -35,27 +37,11 @@
   return animalsThisProcedureExcludes;
 }
 
--(CPArray) filter: anAnimalArray
-{
-  var result = [];
-  var enumerator = [anAnimalArray objectEnumerator];
-  var animal; // This makes the enumerator no better than the stupid counting loop.
-  while (animal = [enumerator nextObject])
-  {
-    if (! [self excludes: animal] )
-    {
-      [result addObject: animal];
-    }
-  }
-  return result;
-}
 
 -(CPBoolean) excludes: anAnimal
 {
   return [[self animalsThisProcedureExcludes] containsObject: anAnimal];
 }
-
-
 
 -(CPBoolean) isEqual: other
 {

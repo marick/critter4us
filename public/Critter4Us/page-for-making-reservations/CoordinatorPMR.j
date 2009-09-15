@@ -27,6 +27,12 @@
       selector: @selector(reservationDataRetrieved:)
           name: InitialDataForACourseSessionNews
         object: nil];
+
+  [NotificationCenter
+   addObserver: self
+      selector: @selector(proceduresInUse:)
+          name: ProceduresChosenNews
+        object: nil];
 }
 
 - (void) reservationDataAvailable: aNotification
@@ -47,6 +53,13 @@
   var procedures = [[aNotification object] valueForKey: 'procedures'];
   [animalController beginUsing: animals];
   [procedureController beginUsing: procedures];
+}
+
+- (void) proceduresInUse: aNotification
+{
+  var procedures = [aNotification object];
+  var aggregate = [Procedure compositeFrom: procedures];
+  [animalController withholdAnimals: [aggregate animalsThisProcedureExcludes]];
 }
 
 @end
