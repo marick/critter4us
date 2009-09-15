@@ -108,6 +108,26 @@
     }];
 }
 
+- (void) testSpillingData
+{
+  var dict = [CPMutableDictionary dictionary];
+  [scenario
+  previousAction: function() {
+      [sut beginUsing: [betty, dave, fred]];
+      [self simulateChoiceOf: [dave, fred]];
+    }
+  testAction: function() { 
+      [sut spillIt: dict];
+
+    }
+  andSo: function() {
+      [self assert: ["dave", "fred"]
+            equals: [dict objectForKey: "animals"]];
+    }];
+}
+
+
+
 -(void) simulateChoiceOf: animals
 {
   var copy = [[sut.available content] copy];
