@@ -9,7 +9,7 @@
 @import "cib/AnimalControllerSubgraph.j"
 @import "cib/ProcedureControllerSubgraph.j"
 @import "cib/WorkupHerdControllerSubgraph.j"
-@import "cib/reservationDataControllerSubgraph.j"
+@import "cib/ReservationDataControllerSubgraph.j"
 @import "cib/PageControllerSubgraph.j"
 
 @implementation CibPMR : Subgraph
