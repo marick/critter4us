@@ -16,10 +16,9 @@
   
   [self addMainMenu];
   [self addWindowMenuToMainMenu];
-  [self addWindowMenuItemThatMakesReservation];
-  [self addWindowMenuItemThatViewsAllReservations];
-  [self separate];
+  //  [self addWindowMenuItemThatMakesReservation];
   [self addWindowNewMenuItemThatMakesReservation];
+  [self addWindowMenuItemThatViewsAllReservations];
 }
 
 -(void)addMainMenu
@@ -52,7 +51,7 @@
 -(void)addWindowNewMenuItemThatMakesReservation
 {
   newReservationMakerMenuItem = 
-       [self aWindowMenuItemwithTitle:@"Mockup of New Way to Make a Reservation"
+       [self aWindowMenuItemwithTitle:@"Make a Reservation"
                                action:@selector(activateNewReservationMaker:)
                         keyEquivalent:'N'];
 }
