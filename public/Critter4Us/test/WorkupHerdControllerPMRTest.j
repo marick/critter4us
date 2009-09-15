@@ -10,7 +10,7 @@
 {
   sut = [[WorkupHerdControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardCollaborators: ['newWorkupHerdButton', 'procedureCollectionView', 'animalCollectionView']];
+  [scenario sutHasUpwardCollaborators: ['procedureCollectionView', 'animalCollectionView']];
 }
 
 -(void) testCanReceiveNewItemOnBehalfOfACollectionAndPutItIn

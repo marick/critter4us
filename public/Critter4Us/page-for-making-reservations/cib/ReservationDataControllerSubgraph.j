@@ -90,7 +90,7 @@
   [pageView addSubview: afternoonButton];
   x += width;
     
-  x += 15;
+  x += 15
   width = 80;
   var beginButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
   [beginButton setTitle: "Begin"];
@@ -102,19 +102,26 @@
 
   x += 15;
   var placeForLink = x;
-  width = 80;
-  var reserveButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
-  [reserveButton setTitle: "Reserve"];
+  width = 160;
+
+  var reserveButton = [[CPButton alloc] initWithFrame:CGRectMake(320, 410, width, 30)];
+  [reserveButton setTitle: "Finish this Reservation"];
   [reserveButton setHidden: YES];
   [pageView addSubview:reserveButton];
   [reserveButton setTarget: controller];
   [reserveButton setAction: @selector(makeReservation:)];
-  x += width;
 
-  x += 15;
-  width = 180;
+  newWorkupHerdButton = [[CPButton alloc] initWithFrame:CGRectMake(510, 410, 160, 30)];
+  [newWorkupHerdButton setTitle: "Add a New Group"];
+  [newWorkupHerdButton setHidden: YES]; 
+  [pageView addSubview:newWorkupHerdButton];
+  [newWorkupHerdButton setTarget: controller];
+  [newWorkupHerdButton setAction: @selector(newWorkupHerd:)];
+
+  width = 80;
+  x = [pageView bounds].size.width - width - 35
   var restartButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
-  [restartButton setTitle: "Restart (doesn't work yet)"];
+  [restartButton setTitle: "Start Over"];
   [restartButton setHidden: YES];
   [pageView addSubview:restartButton];
   [restartButton setTarget: controller];
@@ -133,6 +140,7 @@
   controller.beginButton = beginButton;
   controller.reserveButton = reserveButton;
   controller.restartButton = restartButton;
+  controller.newWorkupHerdButton = newWorkupHerdButton;
 
   // Temporary for testing
   [instructorField setStringValue: "morin"];

@@ -5,7 +5,6 @@
 @implementation WorkupHerdControllerSubgraph : Subgraph
 {
   id controller;
-  CPButton newWorkupHerdButton;
   CPCollectionView procedureCollectionView;
   CPCollectionView animalCollectionView;
   CPanel panel;
@@ -17,7 +16,6 @@
   panel = [self firstWorkupHerdPanel];
 
   controller = [self custom: [[WorkupHerdControllerPMR alloc] init]];
-  [self placeNewButtonOn: aPage];
 
   // Procedure half
   procedureCollectionView = [[NamedObjectCollectionView alloc]
@@ -60,15 +58,6 @@
 
 
 
-- (CPButton) placeNewButtonOn: pageView
-{
-  newWorkupHerdButton = [[CPButton alloc] initWithFrame:CGRectMake(385, 400, 220, 30)];
-  [newWorkupHerdButton setTitle: "New group (doesn't work yet)"];
-  [newWorkupHerdButton setHidden: YES]; 
-  [pageView addSubview:newWorkupHerdButton];
-  // [restartButton setTarget: controller];
-  // [restartButton setAction: @selector(abandonReservation:)];
-}
 
 
 @end
