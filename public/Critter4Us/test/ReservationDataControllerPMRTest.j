@@ -85,4 +85,16 @@
    ];
 }
 
+- (void)testCompletionButtonClickJustSendsANotification
+{
+  [scenario
+   during: function() {
+      [sut makeReservation: 'ignored'];
+    }
+   behold: function() {
+      [self listenersWillReceiveNotification: TimeToReserveNews];
+    }];
+}
+
+
 @end

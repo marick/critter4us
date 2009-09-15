@@ -44,4 +44,9 @@
   [reserveButton setHidden: NO];
 }
 
+- (void) makeReservation: sender
+{
+  [NotificationCenter postNotificationName: TimeToReserveNews object: nil];
+}
+
 @end

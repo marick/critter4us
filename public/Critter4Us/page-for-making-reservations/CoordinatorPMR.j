@@ -33,6 +33,12 @@
       selector: @selector(proceduresInUse:)
           name: ProceduresChosenNews
         object: nil];
+
+  [NotificationCenter
+   addObserver: self
+      selector: @selector(gatherAndSendNewReservation:)
+          name: TimeToReserveNews
+        object: nil];
 }
 
 - (void) reservationDataAvailable: aNotification
@@ -60,6 +66,15 @@
   var procedures = [aNotification object];
   var aggregate = [Procedure compositeFrom: procedures];
   [animalController withholdAnimals: [aggregate animalsThisProcedureExcludes]];
+}
+
+- (void) gatherAndSendNewReservation: aNotification
+{
+  var dict = [CPMutableDictionary dictionary];
+  [reservationDataController spillIt: dict];
+  [procedureController spillIt: dict];
+  [animalController spillIt: dict];
+  var reservationID = [persistentStore makeReservation: dict];
 }
 
 @end

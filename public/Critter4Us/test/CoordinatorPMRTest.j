@@ -92,4 +92,72 @@
     }];
 }
 
+
+-(void) testCollectsReservationDataAndSendsToPersistentStore
+{
+  [scenario
+   previousAction: function() { 
+      sut.reservationDataController = 
+          [[Spiller alloc] initWithValue: {'date':'2009-03-05',
+	                                   'time':[Time afternoon],
+					   'course':'vm333',
+					   'instructor':'fred'}];
+      sut.procedureController = 
+    	  [[Spiller alloc] initWithValue: {'procedures':
+					   ['procedure 1','procedure 2']}];
+
+      sut.animalController = 
+	[[Spiller alloc] initWithValue: {'animals':
+					 ['animal 1', 'animal 2']}];
+    }
+   during: function() {
+      [self sendNotification: TimeToReserveNews];
+    }
+   behold: function() {
+      var dictTester = function (h) {
+	[self assert: '2009-03-05' equals: [h valueForKey: 'date'] ];
+	[self assert: [Time afternoon] equals: [h valueForKey: 'time' ]];
+	[self assert: 'vm333' equals: [h valueForKey: 'course'] ];
+	[self assert: 'fred' equals: [h valueForKey: 'instructor'] ];
+	[self assert: ["procedure 1", "procedure 2"] equals: [h valueForKey: 'procedures']];
+	 [self assert: ["animal 1", "animal 2"] equals: [h valueForKey: 'animals']];
+ 	return YES;
+      }
+      [sut.persistentStore shouldReceive: @selector(makeReservation:)
+                                    with: dictTester
+                                    andReturn: "reservation-identifier"];
+    }];
+}
+
+
+@end
+
+@implementation Spiller : Mock
+{
+  (CPDictionary) internal;
+}
+
+- (void) initWithValue: aValue
+{
+  self = [super init];
+  internal =[CPDictionary dictionaryWithJSObject: aValue];
+  failOnUnexpectedSelector = NO;
+  return self;
+}
+
+- (void) spillIt: (CPMutableDictionary) dest
+{
+  var keys = [internal allKeys];
+  for (var i=0; i < [keys count]; i++)
+    {
+      var key = [keys objectAtIndex: i];
+      [dest setValue: [internal valueForKey: key] forKey: key];
+    }
+}
+
+- (BOOL) wereExpectationsFulfilled
+{
+  return YES;
+}
+
 @end
