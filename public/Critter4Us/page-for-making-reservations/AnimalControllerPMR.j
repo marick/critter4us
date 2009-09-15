@@ -37,4 +37,11 @@
   [used setNeedsDisplay: YES];
 }
 
+- (void) spillIt: (CPMutableDictionary) dict
+{
+  [dict setValue: [self usedNames] forKey: 'animals'];
+}
+
+
+
 @end

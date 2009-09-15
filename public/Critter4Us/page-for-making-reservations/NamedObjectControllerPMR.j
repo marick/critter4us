@@ -14,6 +14,18 @@
   [used setNeedsDisplay: YES];
 }
 
+- (CPArray) usedNames
+{
+  var enumerator = [[used content] objectEnumerator];
+  var animal;
+  var names = [];
+  while(animal = [enumerator nextObject])
+  {
+    [names addObject: [animal name]];
+  }
+  return names;
+}
+
 // Delegate methods
 - (void) objectsRemoved: (CPArray) removed fromList: (NamedObjectCollectionView) list
 {
