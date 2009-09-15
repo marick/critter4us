@@ -53,5 +53,27 @@
     }];
 }
 
+- (void) testRestarting
+{
+  [scenario
+    previousAction: function() {
+      [sut appear];
+      [self assertTrue: [sut wouldShowPanel]];
+      [sut.animalCollectionView setContent: [[NamedObject alloc] initWithName: 'a']];
+      [sut.procedureCollectionView setContent: [[NamedObject alloc] initWithName: 'u']];
+    }
+    during: function() {
+      [sut restart];
+    }
+  behold: function() {
+      [sut.panel shouldReceive: @selector(orderOut:)];
+    }
+  andSo: function() {
+      [self assertFalse: [sut wouldShowPanel]];
+      [self assert: [] equals: [sut.procedureCollectionView content]];
+      [self assert: [] equals: [sut.animalCollectionView content]];
+    }];
+}
+
 
 @end

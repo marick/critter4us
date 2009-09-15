@@ -14,7 +14,8 @@
                                         'morningButton', 'afternoonButton',
                                         'beginButton', 'restartButton',
                                         'reserveButton',
-                                        'linkToPreviousResults']];
+                                        'linkToPreviousResults'
+                                        ]];
 }
 
 - (void)testNotifiesListenersWhenReservingStarts
@@ -78,9 +79,25 @@
       [sut prepareToFinishReservation];
     }
   andSo: function() {
-      [self assert: [sut.beginButton hidden] equals: YES];
-      [self assert: [sut.restartButton hidden] equals: NO];
-      [self assert: [sut.reserveButton hidden] equals: NO];
+      [self assert: YES equals: [sut.beginButton hidden] ];
+      [self assert: NO equals: [sut.restartButton hidden] ];
+      [self assert: NO equals: [sut.reserveButton hidden] ];
+    }
+   ];
+}
+
+- (void) testPreparingCompletionHidesLinkToPreviousReservation
+  // because it's on top of buttons
+{
+  [scenario
+    previousAction: function() {
+      [sut.linkToPreviousResults setHidden: NO];
+    }
+    testAction: function() {
+      [sut prepareToFinishReservation];
+    }
+  andSo: function() {
+      [self assert: YES equals: [sut.linkToPreviousResults hidden] ];
     }
    ];
 }
@@ -117,5 +134,55 @@
     }];
 }
 
+-(void)testCanBeToldToOfferALinkToPreviousReservation
+{
+  [scenario
+   during: function() {
+      [sut offerReservationView: '33'];
+    }
+    behold: function() {
+      [sut.linkToPreviousResults shouldReceive: @selector(loadHTMLString:baseURL:)
+       with: [function(arg) {
+	    return arg.match(/\/reservation\/33/)
+	  }, function(x) { return YES }] // TODO: Make this any "any".
+       ]; 
+      [sut.linkToPreviousResults shouldReceive: @selector(setHidden:)
+                                          with: NO];
+    }  
+   ];
+}
+
+-(void)testCanRestart
+{
+  [scenario
+    previousAction: function() {
+      [sut.courseField setEnabled: NO];
+      [sut.instructorField setEnabled: NO];
+      [sut.dateField setEnabled: NO];
+      [sut.morningButton setEnabled: NO];
+      [sut.afternoonButton setEnabled: NO];
+      [sut.beginButton setEnabled: NO];
+
+      [sut.beginButton setHidden: YES];
+      [sut.restartButton setHidden: NO];
+      [sut.reserveButton setHidden: NO];
+    }
+    testAction: function() {
+      [sut restart];
+    }
+  andSo: function() {
+      [self assert: YES equals: [sut.courseField enabled]];
+      [self assert: YES equals: [sut.instructorField enabled]];
+      [self assert: YES equals: [sut.dateField enabled]];
+      [self assert: YES equals: [sut.morningButton enabled]];
+      [self assert: YES equals: [sut.afternoonButton enabled]];
+      [self assert: YES equals: [sut.beginButton enabled]];
+
+      [self assert: NO equals: [sut.beginButton hidden] ];
+      [self assert: YES equals: [sut.restartButton hidden] ];
+      [self assert: YES equals: [sut.reserveButton hidden] ];
+    }
+   ];
+}
 
 @end

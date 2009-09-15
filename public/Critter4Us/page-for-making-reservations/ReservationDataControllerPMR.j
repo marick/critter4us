@@ -27,21 +27,10 @@
                                     object: data];
 }
 
-- (void) allowNoDataChanges
-{
-  [courseField setEnabled: NO];
-  [instructorField setEnabled: NO];
-  [dateField setEnabled: NO];
-  [morningButton setEnabled: NO];
-  [afternoonButton setEnabled: NO];
-  [beginButton setEnabled: NO];
-}
-
 - (void) prepareToFinishReservation
 {
-  [beginButton setHidden: YES];
-  [restartButton setHidden: NO];
-  [reserveButton setHidden: NO];
+  [self setInitialButtonage: NO];
+  [linkToPreviousResults setHidden: YES];
 }
 
 - (void) makeReservation: sender
@@ -55,6 +44,51 @@
   [dict setValue: [instructorField stringValue] forKey: 'instructor'];
   [dict setValue: [dateField stringValue] forKey: 'date'];
   [dict setValue: [self deduceTime] forKey: 'time'];
+}
+
+- (id) offerReservationView: reservationID
+{
+  var href = "/reservation/" + reservationID;
+  var message = "Click to view the reservation in a new window.";
+  [linkToPreviousResults loadHTMLString:@"<a href='" + href + "' target=\"_blank\">" + message + "</a>"
+               baseURL: nil];
+  [linkToPreviousResults setHidden: NO];
+}
+
+- (void) restart
+{
+  [self allowDataChanges];
+  [self setInitialButtonage: YES];
+}
+
+
+// Util
+
+- (void) allowNoDataChanges
+{
+  [self setEnabledControls: NO];
+}
+
+- (void) allowDataChanges
+{
+  [self setEnabledControls: YES];
+}
+
+- (void) setInitialButtonage: value
+{
+  [beginButton setHidden: !value];
+  [restartButton setHidden: value];
+  [reserveButton setHidden: value];
+}
+
+- (void) setEnabledControls: value
+{
+  [courseField setEnabled: value];
+  [instructorField setEnabled: value];
+  [dateField setEnabled: value];
+  [morningButton setEnabled: value];
+  [afternoonButton setEnabled: value];
+  [beginButton setEnabled: value];
 }
 
 - (id) deduceTime

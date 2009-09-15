@@ -40,5 +40,11 @@
   }
 }
 
+-(void) wouldShowPanel
+{
+  return visibilityAppropriate;
+}
+
+
 
 @end

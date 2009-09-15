@@ -70,4 +70,27 @@
     }];
 }
 
+- (void) testRestarting
+{
+  [scenario
+    previousAction: function() {
+      [sut appear];
+      [self assertTrue: [sut wouldShowPanel]];
+      [sut.available setContent: [[NamedObject alloc] initWithName: 'a']];
+      [sut.used setContent: [[NamedObject alloc] initWithName: 'u']];
+    }
+    during: function() {
+      [sut restart];
+    }
+  behold: function() {
+      [sut.panel shouldReceive: @selector(orderOut:)];
+    }
+  andSo: function() {
+      [self assertFalse: [sut wouldShowPanel]];
+      [self assert: [] equals: [sut.used content]];
+      [self assert: [] equals: [sut.available content]];
+    }];
+}
+
+
 @end	

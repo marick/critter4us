@@ -129,6 +129,36 @@
     }];
 }
 
+-(void) testTellsReservationDataControllerToOfferLinkToNewReservation
+{
+  [scenario
+   during: function() {
+      [self sendNotification: TimeToReserveNews];
+    }
+   behold: function() {
+      // ...
+      [sut.persistentStore shouldReceive: @selector(makeReservation:)
+                               andReturn: "reservation-identifier"];
+      [sut.reservationDataController shouldReceive: @selector(offerReservationView:)
+       with: "reservation-identifier"];
+    }];
+}
+
+
+-(void) testInstructsControllersToPrepareForNewCourseSession
+{
+  [scenario
+   during: function() {
+      [self sendNotification: TimeToReserveNews];
+    }
+   behold: function() {
+      [sut.reservationDataController shouldReceive: @selector(restart)];
+      [sut.animalController shouldReceive: @selector(restart)];
+      [sut.procedureController shouldReceive: @selector(restart)];
+      [sut.workupHerdController shouldReceive: @selector(restart)];
+    }];
+}
+
 
 @end
 

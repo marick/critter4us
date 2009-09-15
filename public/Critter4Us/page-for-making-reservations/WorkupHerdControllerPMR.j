@@ -22,6 +22,12 @@
   return YES;
 }
 
+- (void) restart
+{
+  [self disappear];
+  [procedureCollectionView setContent: []];
+  [animalCollectionView setContent: []];
+}
 @end
 
 

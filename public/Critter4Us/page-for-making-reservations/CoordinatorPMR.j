@@ -75,6 +75,14 @@
   [procedureController spillIt: dict];
   [animalController spillIt: dict];
   var reservationID = [persistentStore makeReservation: dict];
+
+  [reservationDataController offerReservationView: reservationID];
+
+  [reservationDataController restart];
+  [procedureController restart];
+  [animalController restart];
+  [workupHerdController restart];
+
 }
 
 @end

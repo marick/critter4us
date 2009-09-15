@@ -14,6 +14,13 @@
   [used setNeedsDisplay: YES];
 }
 
+- (void) restart
+{
+  [self disappear];
+  [available setContent: []];
+  [used setContent: []];
+}
+
 - (CPArray) usedNames
 {
   var enumerator = [[used content] objectEnumerator];
