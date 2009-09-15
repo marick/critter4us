@@ -1,5 +1,6 @@
 @import <AppKit/AppKit.j>
 @import "../util/Constants.j"
+@import "../view/NameListPanel.j"
 @import "../persistence/PersistentStore.j"
 
 @import "ConstantsPMR.j"
