@@ -1,6 +1,7 @@
 @import <Critter4Us/page-for-making-reservations/CoordinatorPMR.j>
 @import <Critter4Us/model/Animal.j>
 @import <Critter4Us/model/Procedure.j>
+@import <Critter4Us/model/Group.j>
 @import "ScenarioTestCase.j"
 
 
@@ -110,6 +111,17 @@
 
 -(void) testCollectsReservationDataAndSendsToPersistentStore
 {
+  var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
+  var floating = [[Procedure alloc] initWithName: 'floating'];
+  var accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
+
+
+  var group1 = [[Group alloc] initWithProcedures: [floating]
+                                         animals: [betsy]];
+  var group2 = [[Group alloc] initWithProcedures: [accupuncture]
+                                         animals: [betsy]];
+
+
   [scenario
    previousAction: function() { 
       sut.reservationDataController = 
@@ -117,13 +129,9 @@
 	                                   'time':[Time afternoon],
 					   'course':'vm333',
 					   'instructor':'fred'}];
-      sut.procedureController = 
-    	  [[Spiller alloc] initWithValue: {'procedures':
-					   ['procedure 1','procedure 2']}];
 
-      sut.animalController = 
-	[[Spiller alloc] initWithValue: {'animals':
-					 ['animal 1', 'animal 2']}];
+      sut.groupController = 
+    	  [[Spiller alloc] initWithValue: {'groups': [group1, group2]}];
     }
    during: function() {
       [self sendNotification: TimeToReserveNews];
@@ -134,8 +142,21 @@
 	[self assert: [Time afternoon] equals: [h valueForKey: 'time' ]];
 	[self assert: 'vm333' equals: [h valueForKey: 'course'] ];
 	[self assert: 'fred' equals: [h valueForKey: 'instructor'] ];
-	[self assert: ["procedure 1", "procedure 2"] equals: [h valueForKey: 'procedures']];
-	 [self assert: ["animal 1", "animal 2"] equals: [h valueForKey: 'animals']];
+
+        CPLog([[h valueForKey: 'groups'] description]);
+        var group1actual = [[h valueForKey: 'groups'] objectAtIndex: 0];
+        var group2actual = [[h valueForKey: 'groups'] objectAtIndex: 1];
+
+        [self assert: [floating]
+              equals: [group1actual valueForKey: 'procedures']];
+        [self assert: [betsy]
+              equals: [group1actual valueForKey: 'animals']];
+
+        [self assert: [accupuncture]
+              equals: [group2actual valueForKey: 'procedures']];
+        [self assert: [betsy]
+              equals: [group2actual valueForKey: 'animals']];
+
  	return YES;
       }
       [sut.persistentStore shouldReceive: @selector(makeReservation:)
