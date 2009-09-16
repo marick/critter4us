@@ -28,6 +28,7 @@
   [content addObject: group];
   [groupCollectionView setContent: content];
   [groupCollectionView setNeedsDisplay: YES];
+  [NotificationCenter postNotificationName: NewGroupNews object: nil];
 }
 
 - (void) beginningOfReservationWorkflow

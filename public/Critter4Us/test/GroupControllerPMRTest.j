@@ -86,6 +86,18 @@
     }];
 }
 
+-(void) testNewGroupFlingsOutANotification
+{
+  [scenario
+  during: function() {
+      [sut newGroup: UnusedArgument]
+    }
+  behold: function() {
+      [self listenersWillReceiveNotification: NewGroupNews];
+    }];
+}
+
+
 
 - (void) testCanBackUpToBeginningOfReservationWorkflow
 {

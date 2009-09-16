@@ -2,17 +2,11 @@
 
 // Notification Names
 
-// TODO: these need to be deleted after new implementation finished
-CourseSessionDescribedNews = "course session described";
-ProcedureUpdateNews = "procedures chosen";
-ReservationRequestedNews = "reservation requested";
-NewReservationNews = "new reservation created";
-
-// TODO: these are tne new ones
 ReservationDataAvailable="Reservation data available";
 ProceduresChosenNews = "These procedures have been chosen";
 InitialDataForACourseSessionNews = "course focus data has arrived";
 TimeToReserveNews = "time to reserve";
+NewGroupNews = "new group created";
 
 // Route names
 StoreReservationRoute = @"store_reservation";

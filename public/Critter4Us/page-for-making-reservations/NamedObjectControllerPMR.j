@@ -21,6 +21,13 @@
   [used setContent: []];
 }
 
+- (void) stopUsingAll
+{
+  var all = [[available content] arrayByAddingObjectsFromArray: [used content]];
+  [available setContent: all];
+  [used setContent: []];
+}
+
 - (CPArray) usedNames
 {
   var enumerator = [[used content] objectEnumerator];

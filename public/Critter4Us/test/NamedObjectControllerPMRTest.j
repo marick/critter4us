@@ -1,5 +1,5 @@
 @import <Critter4Us/page-for-making-reservations/NamedObjectControllerPMR.j>
-@import <Critter4US/model/Animal.j>
+@import <Critter4US/model/NamedObject.j>
 @import "ScenarioTestCase.j"
 
 @implementation NamedObjectControllerPMRTest : ScenarioTestCase
@@ -38,7 +38,7 @@
 }
 
 
-- (void) testSelectionMovesAnimalFromAvailableToUsed
+- (void) testSelectionMovesObjectFromAvailableToUsed
 {
   var out1 = [[NamedObject alloc] initWithName: 'out1'];
   var out2 = [[NamedObject alloc] initWithName: 'out2'];
@@ -54,7 +54,7 @@
     }];
 }
 
-- (void) testSelectionMovesAnimalFromUsedToAvailable
+- (void) testSelectionMovesObjectFromUsedToAvailable
 {
   var out1 = [[NamedObject alloc] initWithName: 'out1'];
   var out2 = [[NamedObject alloc] initWithName: 'out2'];
@@ -67,6 +67,27 @@
                          with: [[out1, out2]]];
       [sut.available shouldReceive: @selector(setNeedsDisplay:)
                          with: YES];
+    }];
+}
+
+- (void) testCanMoveAllUsedObjectsBack
+{
+  var a = [[NamedObject alloc] initWithName: 'a'];
+  var b = [[NamedObject alloc] initWithName: 'b'];
+  var c = [[NamedObject alloc] initWithName: 'c'];
+  [scenario
+    previousAction: function() { 
+      [sut.available setContent: [a]];
+      [sut.used setContent: [b, c]];
+    }
+    testAction: function() {
+      [sut stopUsingAll];
+    }
+  andSo: function() {
+      [self assert: [a, b, c]
+            equals: [sut.available content]];
+      [self assert: []
+            equals: [sut.used content]];
     }];
 }
 
@@ -91,6 +112,7 @@
       [self assert: [] equals: [sut.available content]];
     }];
 }
+
 
 
 @end	

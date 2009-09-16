@@ -39,6 +39,12 @@
       selector: @selector(gatherAndSendNewReservation:)
           name: TimeToReserveNews
         object: nil];
+
+  [NotificationCenter
+   addObserver: self
+      selector: @selector(returnToBeginningOfGroupCreation:)
+          name: NewGroupNews
+        object: nil];
 }
 
 - (void) reservationDataAvailable: aNotification
@@ -68,6 +74,15 @@
   var aggregate = [Procedure compositeFrom: procedures];
   [animalController withholdAnimals: [aggregate animalsThisProcedureExcludes]];
 }
+
+-(void) returnToBeginningOfGroupCreation: aNotification
+{
+  [animalController withholdAnimals: []];
+  [animalController stopUsingAll];
+  [procedureController stopUsingAll];
+}
+
+
 
 - (void) gatherAndSendNewReservation: aNotification
 {
