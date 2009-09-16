@@ -1,21 +1,24 @@
 @import "Subgraph.j"
-@import "../WorkupHerdControllerPMR.j"
+@import "../GroupControllerPMR.j"
 @import "../ConstantsPMR.j"
-@implementation WorkupHerdControllerSubgraph : Subgraph
+@import "../../view/GroupCollectionView.j"
+
+@implementation GroupControllerSubgraph : Subgraph
 {
   id controller;
   CPCollectionView procedureCollectionView;
   CPCollectionView animalCollectionView;
   CPanel panel;
-  CPButton newWorkupHerdButton;
+  CPButton newGroupButton;
+  CPCollectionView groupCollectionView;
 }
 
 - (id) initAbovePage: (CPView) aPage
 {
   self = [super init];
-  panel = [self firstWorkupHerdPanel];
+  panel = [self firstGroupPanel];
 
-  controller = [self custom: [[WorkupHerdControllerPMR alloc] init]];
+  controller = [self custom: [[GroupControllerPMR alloc] init]];
 
   // Procedure half
   procedureCollectionView = [[NamedObjectCollectionView alloc]
@@ -37,7 +40,7 @@
   return self;
 }
 
--(CPPanel) firstWorkupHerdPanel
+-(CPPanel) firstGroupPanel
 {
   var rect = CGRectMake(FirstGroupingWindowX, WindowTops, GroupingWindowWidth,
                         TargetWindowHeight);
@@ -52,27 +55,26 @@
 
 - (void) placeControlsOn: pageView
 {
-  newWorkupHerdButton = [[CPButton alloc] initWithFrame:CGRectMake(510, 410, 160, 30)];
-  [newWorkupHerdButton setTitle: "Add a New Group"];
-  [newWorkupHerdButton setHidden: YES]; 
-  [pageView addSubview:newWorkupHerdButton];
-  [newWorkupHerdButton setTarget: controller];
-  [newWorkupHerdButton setAction: @selector(newWorkupHerd:)];
+  newGroupButton = [[CPButton alloc] initWithFrame:CGRectMake(510, 410, 160, 30)];
+  [newGroupButton setTitle: "Add a New Group"];
+  [newGroupButton setHidden: YES]; 
+  [pageView addSubview:newGroupButton];
+  [newGroupButton setTarget: controller];
+  [newGroupButton setAction: @selector(newGroup:)];
+
+  var rect = CGRectMake(0, 500, 1000, 100);
+  groupCollectionView = [[GroupCollectionView alloc] initWithFrame: rect];
+  [pageView addSubview: groupCollectionView];
 }
-
-
 
 - (void) connectOutlets
 {
-  controller.newWorkupHerdButton = newWorkupHerdButton;
+  controller.newGroupButton = newGroupButton;
   controller.procedureCollectionView = procedureCollectionView;
   controller.animalCollectionView = animalCollectionView;
   controller.panel = panel;
-  controller.newWorkupHerdButton = newWorkupHerdButton;
+  controller.newGroupButton = newGroupButton;
+  controller.groupCollectionView = groupCollectionView;
 }
-
-
-
-
 
 @end

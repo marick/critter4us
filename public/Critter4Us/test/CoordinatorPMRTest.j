@@ -12,7 +12,7 @@
 {
   sut = [[CoordinatorPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardCollaborators: ['reservationDataController', 'animalController', 'procedureController', 'workupHerdController', 'pageController']];
+  [scenario sutHasUpwardCollaborators: ['reservationDataController', 'animalController', 'procedureController', 'groupController', 'pageController']];
   [scenario sutHasDownwardCollaborators: ['persistentStore']];
 }
 
@@ -25,10 +25,10 @@
   behold: function() {
       [sut.reservationDataController shouldReceive:@selector(allowNoDataChanges)];
       [sut.reservationDataController shouldReceive:@selector(prepareToFinishReservation)];
-      [sut.workupHerdController shouldReceive:@selector(prepareToFinishReservation)];
+      [sut.groupController shouldReceive:@selector(prepareToFinishReservation)];
       [sut.procedureController shouldReceive:@selector(appear)];
       [sut.animalController shouldReceive:@selector(appear)];
-      [sut.workupHerdController shouldReceive:@selector(appear)];
+      [sut.groupController shouldReceive:@selector(appear)];
     }];
 }
 
@@ -156,7 +156,7 @@
       [sut.reservationDataController shouldReceive: @selector(restart)];
       [sut.animalController shouldReceive: @selector(restart)];
       [sut.procedureController shouldReceive: @selector(restart)];
-      [sut.workupHerdController shouldReceive: @selector(restart)];
+      [sut.groupController shouldReceive: @selector(restart)];
     }];
 }
 

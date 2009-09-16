@@ -8,7 +8,7 @@
 
 @import "cib/AnimalControllerSubgraph.j"
 @import "cib/ProcedureControllerSubgraph.j"
-@import "cib/WorkupHerdControllerSubgraph.j"
+@import "cib/GroupControllerSubgraph.j"
 @import "cib/ReservationDataControllerSubgraph.j"
 @import "cib/PageControllerSubgraph.j"
 
@@ -16,10 +16,10 @@
 {
   CPPanel procedurePanel;
   CPanel animalPanel;
-  CPPanel workupHerdPanel;
+  CPPanel groupPanel;
 
   PageControllerSubgraph pageControllerSubgraph;
-  WorkupHerdControllerSubgraph workupHerdControllerSubgraph;
+  GroupControllerSubgraph groupControllerSubgraph;
   ReservationDataControllerSubgraph reservationDataControllerSubgraph;
   ProcedureControllerSubgraph procedureControllerSubgraph;
   AnimalControllerSubgraph animalControllerSubgraph;
@@ -63,10 +63,10 @@
     [self custom: [[AnimalControllerSubgraph alloc] init]];
   [animalControllerSubgraph connectOutlets];
 
-  workupHerdControllerSubgraph =
-    [self custom: [[WorkupHerdControllerSubgraph alloc]
+  groupControllerSubgraph =
+    [self custom: [[GroupControllerSubgraph alloc]
                     initAbovePage: pageControllerSubgraph.pageView]];
-  [workupHerdControllerSubgraph connectOutlets];
+  [groupControllerSubgraph connectOutlets];
 }
 
 - (PersistentStore) loadGlobalPersistentStore
@@ -83,18 +83,18 @@
   coordinator.reservationDataController = reservationDataControllerSubgraph.controller;
   coordinator.animalController = animalControllerSubgraph.controller;
   coordinator.procedureController = procedureControllerSubgraph.controller;
-  coordinator.workupHerdController = workupHerdControllerSubgraph.controller;
+  coordinator.groupController = groupControllerSubgraph.controller;
 
-  coordinator.animalController.used = workupHerdControllerSubgraph.controller.animalCollectionView;
-  coordinator.procedureController.used = workupHerdControllerSubgraph.controller.procedureCollectionView;
-  [coordinator.workupHerdController.animalCollectionView setDelegate: coordinator.animalController];
-  [coordinator.workupHerdController.procedureCollectionView setDelegate: coordinator.procedureController];
+  coordinator.animalController.used = groupControllerSubgraph.controller.animalCollectionView;
+  coordinator.procedureController.used = groupControllerSubgraph.controller.procedureCollectionView;
+  [coordinator.groupController.animalCollectionView setDelegate: coordinator.animalController];
+  [coordinator.groupController.procedureCollectionView setDelegate: coordinator.procedureController];
   
 
   pageControllerSubgraph.controller.panelControllers =
                                     [animalControllerSubgraph.controller,
                                      procedureControllerSubgraph.controller,
-                                     workupHerdControllerSubgraph.controller];
+                                     groupControllerSubgraph.controller];
 }
 @end
 

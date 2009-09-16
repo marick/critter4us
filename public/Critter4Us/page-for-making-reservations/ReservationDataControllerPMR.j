@@ -115,13 +115,3 @@
 @end
 
 
-@implementation MyButton : CPButton
-{
-}
-
-- (void)setRepresentedObject:(id)anObject
-{
-  //  alert("set represented object in" + [anObject description]);
-  [self setTitle: anObject];
-  //alert("set represented object out");
-}

@@ -1,29 +1,29 @@
-@import <Critter4Us/page-for-making-reservations/WorkupHerdControllerPMR.j>
+@import <Critter4Us/page-for-making-reservations/GroupControllerPMR.j>
 @import "ScenarioTestCase.j"
 @import <Critter4Us/model/Animal.j>
 
-@implementation WorkupHerdControllerPMRTest : ScenarioTestCase
+@implementation GroupControllerPMRTest : ScenarioTestCase
 {
 }
 
 - (void)setUp
 {
-  sut = [[WorkupHerdControllerPMR alloc] init];
+  sut = [[GroupControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardCollaborators: ['procedureCollectionView', 'animalCollectionView', 'newWorkupHerdButton']];
+  [scenario sutHasUpwardCollaborators: ['procedureCollectionView', 'animalCollectionView', 'newGroupButton']];
 }
 
 - (void) testCanBeToldToPrepareForCompletionOfReservation
 {
   [scenario
     previousAction: function() {
-      [sut.newWorkupHerdButton setHidden: YES];
+      [sut.newGroupButton setHidden: YES];
     }
     testAction: function() {
       [sut prepareToFinishReservation];
     }
   andSo: function() {
-      [self assert: NO equals: [sut.newWorkupHerdButton hidden] ];
+      [self assert: NO equals: [sut.newGroupButton hidden] ];
     }
    ];
 }
@@ -76,7 +76,7 @@
       [self assertTrue: [sut wouldShowPanel]];
       [sut.animalCollectionView setContent: [[NamedObject alloc] initWithName: 'a']];
       [sut.procedureCollectionView setContent: [[NamedObject alloc] initWithName: 'u']];
-      [sut.newWorkupHerdButton setHidden: NO];
+      [sut.newGroupButton setHidden: NO];
     }
     during: function() {
       [sut restart];
@@ -88,7 +88,7 @@
       [self assertFalse: [sut wouldShowPanel]];
       [self assert: [] equals: [sut.procedureCollectionView content]];
       [self assert: [] equals: [sut.animalCollectionView content]];
-      [self assert: YES equals: [sut.newWorkupHerdButton hidden] ];
+      [self assert: YES equals: [sut.newGroupButton hidden] ];
     }];
 }
 

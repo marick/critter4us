@@ -1,16 +1,17 @@
 @import "../controller/PanelController.j"
 @import "ConstantsPMR.j"
 
-@implementation WorkupHerdControllerPMR : PanelController
+@implementation GroupControllerPMR : PanelController
 {
-  CPButton newWorkupHerdButton;
+  CPButton newGroupButton;
   CPCollectionView procedureCollectionView;
   CPCollectionView animalCollectionView;
+  CPCollectionView groupCollectionView;
 }
 
 - (void) prepareToFinishReservation
 {
-  [newWorkupHerdButton setHidden: NO];
+  [newGroupButton setHidden: NO];
 }
 
 - (CPBoolean) receiveNewItem: objectArray
@@ -30,7 +31,7 @@
 - (void) restart
 {
   [self disappear];
-  [newWorkupHerdButton setHidden: YES];
+  [newGroupButton setHidden: YES];
   [procedureCollectionView setContent: []];
   [animalCollectionView setContent: []];
 }

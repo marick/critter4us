@@ -1,6 +1,6 @@
 @import "../util/AwakeningObject.j"
 @import "PageControllerPMR.j"
-@import "WorkupHerdControllerPMR.j"
+@import "GroupControllerPMR.j"
 @import "ReservationDataControllerPMR.j"
 
 
@@ -9,7 +9,7 @@
   ReservationDataControllerPMR reservationDataController;
   AnimalControllerPMR animalController;
   ProcedureControllerPMR procedureController;
-  WorkupHerdControllerPMR workupHerdController;
+  GroupControllerPMR groupController;
   
   PersistentStore persistentStore;
 }
@@ -48,10 +48,10 @@
 
   [reservationDataController allowNoDataChanges];
   [reservationDataController prepareToFinishReservation];
-  [workupHerdController prepareToFinishReservation];
+  [groupController prepareToFinishReservation];
   [procedureController appear];
   [animalController appear];
-  [workupHerdController appear];
+  [groupController appear];
 }
 
 - (void) reservationDataRetrieved: aNotification
@@ -82,7 +82,7 @@
   [reservationDataController restart];
   [procedureController restart];
   [animalController restart];
-  [workupHerdController restart];
+  [groupController restart];
 
 }
 
