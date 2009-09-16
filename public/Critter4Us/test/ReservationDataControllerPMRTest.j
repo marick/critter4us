@@ -14,7 +14,6 @@
                                         'morningButton', 'afternoonButton',
                                         'beginButton', 'restartButton',
                                         'reserveButton',
-                                        'newWorkupHerdButton',
                                         'linkToPreviousResults'
                                         ]];
 }
@@ -75,7 +74,6 @@
       [sut.beginButton setHidden: NO];
       [sut.restartButton setHidden: YES];
       [sut.reserveButton setHidden: YES];
-      [sut.newWorkupHerdButton setHidden: YES];
     }
     testAction: function() {
       [sut prepareToFinishReservation];
@@ -84,7 +82,6 @@
       [self assert: YES equals: [sut.beginButton hidden] ];
       [self assert: NO equals: [sut.restartButton hidden] ];
       [self assert: NO equals: [sut.reserveButton hidden] ];
-      [self assert: NO equals: [sut.newWorkupHerdButton hidden] ];
     }
    ];
 }
@@ -169,7 +166,6 @@
       [sut.beginButton setHidden: YES];
       [sut.restartButton setHidden: NO];
       [sut.reserveButton setHidden: NO];
-      [sut.newWorkupHerdButton setHidden: NO];
     }
     testAction: function() {
       [sut restart];
@@ -185,7 +181,6 @@
       [self assert: NO equals: [sut.beginButton hidden] ];
       [self assert: YES equals: [sut.restartButton hidden] ];
       [self assert: YES equals: [sut.reserveButton hidden] ];
-      [self assert: YES equals: [sut.newWorkupHerdButton hidden] ];
     }
    ];
 }

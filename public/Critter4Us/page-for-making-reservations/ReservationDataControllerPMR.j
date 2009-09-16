@@ -12,9 +12,14 @@
   CPButton beginButton;
   CPButton reserveButton;
   CPButton restartButton;
-  CPButton newWorkupHerdButton;
 
   CPWebView linkToPreviousResults;
+
+  CPPanel groups;
+  CPCollectionView collectionView;
+  CPInteger pushes;
+  CPArray lines;
+  CPArray subset;
 }
 
 - (void) beginReserving: sender
@@ -67,10 +72,6 @@
   alert("This isn't implemented yet. You can achieve the same effect by reloading this page in your browser.");
 }
 
--(void) newWorkupHerd: sender
-{
-  alert("This isn't implemented yet.");
-}
 
 
 // Util
@@ -90,7 +91,6 @@
   [beginButton setHidden: !value];
   [restartButton setHidden: value];
   [reserveButton setHidden: value];
-  [newWorkupHerdButton setHidden: value];
 }
 
 - (void) setEnabledControls: value
@@ -113,3 +113,15 @@
 
 
 @end
+
+
+@implementation MyButton : CPButton
+{
+}
+
+- (void)setRepresentedObject:(id)anObject
+{
+  //  alert("set represented object in" + [anObject description]);
+  [self setTitle: anObject];
+  //alert("set represented object out");
+}

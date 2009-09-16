@@ -1,7 +1,7 @@
 @import <AppKit/CPCollectionView.j>
 @import "DebuggableCollectionView.j"
 
-@implementation NamedObjectCollectionView : DebuggableCollectionView
+@implementation NamedObjectCollectionView : CPCollectionView
 {
 }
 

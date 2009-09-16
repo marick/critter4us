@@ -25,6 +25,7 @@
   behold: function() {
       [sut.reservationDataController shouldReceive:@selector(allowNoDataChanges)];
       [sut.reservationDataController shouldReceive:@selector(prepareToFinishReservation)];
+      [sut.workupHerdController shouldReceive:@selector(prepareToFinishReservation)];
       [sut.procedureController shouldReceive:@selector(appear)];
       [sut.animalController shouldReceive:@selector(appear)];
       [sut.workupHerdController shouldReceive:@selector(appear)];

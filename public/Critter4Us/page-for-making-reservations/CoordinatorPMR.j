@@ -48,6 +48,7 @@
 
   [reservationDataController allowNoDataChanges];
   [reservationDataController prepareToFinishReservation];
+  [workupHerdController prepareToFinishReservation];
   [procedureController appear];
   [animalController appear];
   [workupHerdController appear];

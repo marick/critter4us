@@ -111,13 +111,6 @@
   [reserveButton setTarget: controller];
   [reserveButton setAction: @selector(makeReservation:)];
 
-  newWorkupHerdButton = [[CPButton alloc] initWithFrame:CGRectMake(510, 410, 160, 30)];
-  [newWorkupHerdButton setTitle: "Add a New Group"];
-  [newWorkupHerdButton setHidden: YES]; 
-  [pageView addSubview:newWorkupHerdButton];
-  [newWorkupHerdButton setTarget: controller];
-  [newWorkupHerdButton setAction: @selector(newWorkupHerd:)];
-
   width = 80;
   x = [pageView bounds].size.width - width - 35
   var restartButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
@@ -140,7 +133,6 @@
   controller.beginButton = beginButton;
   controller.reserveButton = reserveButton;
   controller.restartButton = restartButton;
-  controller.newWorkupHerdButton = newWorkupHerdButton;
 
   // Temporary for testing
   [instructorField setStringValue: "morin"];

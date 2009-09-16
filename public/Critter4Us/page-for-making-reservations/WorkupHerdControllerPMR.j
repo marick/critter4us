@@ -8,6 +8,11 @@
   CPCollectionView animalCollectionView;
 }
 
+- (void) prepareToFinishReservation
+{
+  [newWorkupHerdButton setHidden: NO];
+}
+
 - (CPBoolean) receiveNewItem: objectArray
 {
   var elementClassName = [[objectArray lastObject] className];
@@ -25,6 +30,7 @@
 - (void) restart
 {
   [self disappear];
+  [newWorkupHerdButton setHidden: YES];
   [procedureCollectionView setContent: []];
   [animalCollectionView setContent: []];
 }

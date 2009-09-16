@@ -7,6 +7,7 @@
   CPCollectionView procedureCollectionView;
   CPCollectionView animalCollectionView;
   CPanel panel;
+  CPButton newWorkupHerdButton;
 }
 
 - (id) initAbovePage: (CPView) aPage
@@ -31,6 +32,8 @@
                            withRect: CGRectMake(SecondTargetX, 0, TargetWidth, TargetViewHeight)
                 withBackgroundColor: AnimalHintColor];
   [animalCollectionView setDelegate: controller];
+
+  [self placeControlsOn: aPage];
   return self;
 }
 
@@ -39,12 +42,24 @@
   var rect = CGRectMake(FirstGroupingWindowX, WindowTops, GroupingWindowWidth,
                         TargetWindowHeight);
   var panel = [[CPPanel alloc] initWithContentRect: rect
-                                          styleMask:CPHUDBackgroundWindowMask | CPResizableWindowMask];
+                                          styleMask:CPHUDBackgroundWindowMask | CPResizableWindowMask | CPMiniaturizableWindowMask];
   [panel setLevel:CPFloatingWindowLevel];
   [panel setTitle:@"A group of procedures and the animals they will be performed on"];
   [panel orderFront: self]; // TODO: delete when page layout done.
   return panel;
 }
+
+
+- (void) placeControlsOn: pageView
+{
+  newWorkupHerdButton = [[CPButton alloc] initWithFrame:CGRectMake(510, 410, 160, 30)];
+  [newWorkupHerdButton setTitle: "Add a New Group"];
+  [newWorkupHerdButton setHidden: YES]; 
+  [pageView addSubview:newWorkupHerdButton];
+  [newWorkupHerdButton setTarget: controller];
+  [newWorkupHerdButton setAction: @selector(newWorkupHerd:)];
+}
+
 
 
 - (void) connectOutlets
@@ -53,6 +68,7 @@
   controller.procedureCollectionView = procedureCollectionView;
   controller.animalCollectionView = animalCollectionView;
   controller.panel = panel;
+  controller.newWorkupHerdButton = newWorkupHerdButton;
 }
 
 

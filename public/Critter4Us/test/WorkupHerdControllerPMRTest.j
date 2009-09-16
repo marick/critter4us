@@ -10,7 +10,22 @@
 {
   sut = [[WorkupHerdControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardCollaborators: ['procedureCollectionView', 'animalCollectionView']];
+  [scenario sutHasUpwardCollaborators: ['procedureCollectionView', 'animalCollectionView', 'newWorkupHerdButton']];
+}
+
+- (void) testCanBeToldToPrepareForCompletionOfReservation
+{
+  [scenario
+    previousAction: function() {
+      [sut.newWorkupHerdButton setHidden: YES];
+    }
+    testAction: function() {
+      [sut prepareToFinishReservation];
+    }
+  andSo: function() {
+      [self assert: NO equals: [sut.newWorkupHerdButton hidden] ];
+    }
+   ];
 }
 
 -(void) testCanReceiveNewItemOnBehalfOfACollectionAndPutItIn
@@ -61,6 +76,7 @@
       [self assertTrue: [sut wouldShowPanel]];
       [sut.animalCollectionView setContent: [[NamedObject alloc] initWithName: 'a']];
       [sut.procedureCollectionView setContent: [[NamedObject alloc] initWithName: 'u']];
+      [sut.newWorkupHerdButton setHidden: NO];
     }
     during: function() {
       [sut restart];
@@ -72,6 +88,7 @@
       [self assertFalse: [sut wouldShowPanel]];
       [self assert: [] equals: [sut.procedureCollectionView content]];
       [self assert: [] equals: [sut.animalCollectionView content]];
+      [self assert: YES equals: [sut.newWorkupHerdButton hidden] ];
     }];
 }
 
