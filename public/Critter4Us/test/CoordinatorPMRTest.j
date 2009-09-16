@@ -153,10 +153,10 @@
       [self sendNotification: TimeToReserveNews];
     }
    behold: function() {
-      [sut.reservationDataController shouldReceive: @selector(restart)];
-      [sut.animalController shouldReceive: @selector(restart)];
-      [sut.procedureController shouldReceive: @selector(restart)];
-      [sut.groupController shouldReceive: @selector(restart)];
+      [sut.reservationDataController shouldReceive: @selector(beginningOfReservationWorkflow)];
+      [sut.animalController shouldReceive: @selector(beginningOfReservationWorkflow)];
+      [sut.procedureController shouldReceive: @selector(beginningOfReservationWorkflow)];
+      [sut.groupController shouldReceive: @selector(beginningOfReservationWorkflow)];
     }];
 }
 

@@ -29,9 +29,8 @@
   [groupCollectionView setNeedsDisplay: YES];
 }
 
-- (void) restart
+- (void) beginningOfReservationWorkflow
 {
-  CPLog("what does restart mean?");
   [self disappear];
   [newGroupButton setHidden: YES];
 }

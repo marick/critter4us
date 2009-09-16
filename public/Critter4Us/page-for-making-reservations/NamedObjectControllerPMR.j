@@ -14,7 +14,7 @@
   [used setNeedsDisplay: YES];
 }
 
-- (void) restart
+- (void) beginningOfReservationWorkflow
 {
   [self disappear];
   [available setContent: []];

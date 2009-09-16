@@ -152,7 +152,7 @@
    ];
 }
 
--(void)testCanRestart
+-(void)testCanReturnToBeginningOfReservationWorkflow
 {
   [scenario
     previousAction: function() {
@@ -168,7 +168,7 @@
       [sut.reserveButton setHidden: NO];
     }
     testAction: function() {
-      [sut restart];
+      [sut beginningOfReservationWorkflow];
     }
   andSo: function() {
       [self assert: YES equals: [sut.courseField enabled]];

@@ -61,7 +61,7 @@
   [linkToPreviousResults setHidden: NO];
 }
 
-- (void) restart
+- (void) beginningOfReservationWorkflow
 {
   [self allowDataChanges];
   [self setInitialButtonage: YES];

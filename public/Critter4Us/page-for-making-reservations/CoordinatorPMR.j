@@ -79,10 +79,10 @@
 
   [reservationDataController offerReservationView: reservationID];
 
-  [reservationDataController restart];
-  [procedureController restart];
-  [animalController restart];
-  [groupController restart];
+  [reservationDataController beginningOfReservationWorkflow];
+  [procedureController beginningOfReservationWorkflow];
+  [animalController beginningOfReservationWorkflow];
+  [groupController beginningOfReservationWorkflow];
 
 }
 

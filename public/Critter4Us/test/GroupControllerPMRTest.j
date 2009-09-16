@@ -85,7 +85,7 @@
 }
 
 
-- (void) testRestarting
+- (void) testCanBackUpToBeginningOfReservationWorkflow
 {
   [scenario
     previousAction: function() {
@@ -94,7 +94,7 @@
       [sut.newGroupButton setHidden: NO];
     }
     during: function() {
-      [sut restart];
+      [sut beginningOfReservationWorkflow];
     }
   behold: function() {
       [sut.panel shouldReceive: @selector(orderOut:)];

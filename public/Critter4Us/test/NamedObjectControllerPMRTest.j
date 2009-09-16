@@ -70,7 +70,7 @@
     }];
 }
 
-- (void) testRestarting
+- (void) testCanBackUpToBeginningOfReservationWorkflow
 {
   [scenario
     previousAction: function() {
@@ -80,7 +80,7 @@
       [sut.used setContent: [[NamedObject alloc] initWithName: 'u']];
     }
     during: function() {
-      [sut restart];
+      [sut beginningOfReservationWorkflow];
     }
   behold: function() {
       [sut.panel shouldReceive: @selector(orderOut:)];
