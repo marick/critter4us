@@ -2,11 +2,17 @@
 
 @implementation Group : CPObject
 {
-  CPArray procedures, animals;
+  // In  0.7.1, this breaks:
+  // CPArray procedures, animals;
+
+  // Fix it by separating the variables:
+  CPArray procedures;
+  CPArray animals;
 }
 
 - (void) initWithProcedures: someProcedures animals: someAnimals
 {
+  self = [super init];
   procedures = someProcedures;
   animals = someAnimals;
   return self;
