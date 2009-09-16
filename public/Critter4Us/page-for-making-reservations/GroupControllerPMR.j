@@ -4,9 +4,14 @@
 @implementation GroupControllerPMR : PanelController
 {
   CPButton newGroupButton;
-  CPCollectionView procedureCollectionView;
-  CPCollectionView animalCollectionView;
+  CPCollectionView readOnlyProcedureCollectionView;
+  CPCollectionView readOnlyAnimalCollectionView;
   CPCollectionView groupCollectionView;
+}
+
+- (void) awakeFromCib
+{
+  [groupCollectionView setContent: []];
 }
 
 - (void) prepareToFinishReservation
@@ -14,26 +19,21 @@
   [newGroupButton setHidden: NO];
 }
 
-- (CPBoolean) receiveNewItem: objectArray
+- (void) newGroup: sender
 {
-  var elementClassName = [[objectArray lastObject] className];
-  var viewInQuestion =  [elementClassName isEqual: "Animal"] ? animalCollectionView
-                                                             : procedureCollectionView;
-
-  var originalArray = [viewInQuestion content];
-  var newArray = [originalArray arrayByAddingObjectsFromArray: objectArray];
-  [newArray sortUsingSelector: @selector(compareNames:)];
-  [viewInQuestion setContent: newArray];
-  [viewInQuestion setNeedsDisplay: YES];
-  return YES;
+  var group = [[Group alloc] initWithProcedures: [readOnlyProcedureCollectionView content]
+                                        animals: [readOnlyAnimalCollectionView content]];
+  var content = [[groupCollectionView content] copy];
+  [content addObject: group];
+  [groupCollectionView setContent: content];
+  [groupCollectionView setNeedsDisplay: YES];
 }
 
 - (void) restart
 {
+  CPLog("what does restart mean?");
   [self disappear];
   [newGroupButton setHidden: YES];
-  [procedureCollectionView setContent: []];
-  [animalCollectionView setContent: []];
 }
 @end
 

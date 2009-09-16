@@ -12,6 +12,16 @@
   return self;
 }
 
+- (void) procedures
+{
+  return procedures;
+}
+
+- (void) animals
+{
+  return animals;
+}
+
 - (void) name
 {
   return [self procedureNames].join(', ');
@@ -28,3 +38,10 @@
   }
   return retval;
 }
+
+- (CPString) description
+{
+  return "<Group with" + [procedures description] + " and " + [animals description];
+}
+
+@end

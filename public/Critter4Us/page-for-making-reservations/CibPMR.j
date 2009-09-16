@@ -85,10 +85,10 @@
   coordinator.procedureController = procedureControllerSubgraph.controller;
   coordinator.groupController = groupControllerSubgraph.controller;
 
-  coordinator.animalController.used = groupControllerSubgraph.controller.animalCollectionView;
-  coordinator.procedureController.used = groupControllerSubgraph.controller.procedureCollectionView;
-  [coordinator.groupController.animalCollectionView setDelegate: coordinator.animalController];
-  [coordinator.groupController.procedureCollectionView setDelegate: coordinator.procedureController];
+  coordinator.animalController.used = groupControllerSubgraph.controller.readOnlyAnimalCollectionView;
+  coordinator.procedureController.used = groupControllerSubgraph.controller.readOnlyProcedureCollectionView;
+  [coordinator.groupController.readOnlyAnimalCollectionView setDelegate: coordinator.animalController];
+  [coordinator.groupController.readOnlyProcedureCollectionView setDelegate: coordinator.procedureController];
   
 
   pageControllerSubgraph.controller.panelControllers =

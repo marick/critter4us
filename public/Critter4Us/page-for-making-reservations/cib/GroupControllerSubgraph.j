@@ -6,8 +6,8 @@
 @implementation GroupControllerSubgraph : Subgraph
 {
   id controller;
-  CPCollectionView procedureCollectionView;
-  CPCollectionView animalCollectionView;
+  CPCollectionView readOnlyProcedureCollectionView;
+  CPCollectionView readOnlyAnimalCollectionView;
   CPanel panel;
   CPButton newGroupButton;
   CPCollectionView groupCollectionView;
@@ -21,20 +21,20 @@
   controller = [self custom: [[GroupControllerPMR alloc] init]];
 
   // Procedure half
-  procedureCollectionView = [[NamedObjectCollectionView alloc]
+  readOnlyProcedureCollectionView = [[NamedObjectCollectionView alloc]
                               initWithFrame: CGRectMakeZero()];
-  [procedureCollectionView placeWithin: [panel contentView]
+  [readOnlyProcedureCollectionView placeWithin: [panel contentView]
                               withRect: CGRectMake(FirstTargetX, 0, TargetWidth, TargetViewHeight)
                    withBackgroundColor: ProcedureHintColor];
-  [procedureCollectionView setDelegate: controller];
+  [readOnlyProcedureCollectionView setDelegate: controller];
         
   // Animal half
-  animalCollectionView = [[NamedObjectCollectionView alloc]
+  readOnlyAnimalCollectionView = [[NamedObjectCollectionView alloc]
                               initWithFrame: CGRectMakeZero()];
-  [animalCollectionView placeWithin: [panel contentView]
+  [readOnlyAnimalCollectionView placeWithin: [panel contentView]
                            withRect: CGRectMake(SecondTargetX, 0, TargetWidth, TargetViewHeight)
                 withBackgroundColor: AnimalHintColor];
-  [animalCollectionView setDelegate: controller];
+  [readOnlyAnimalCollectionView setDelegate: controller];
 
   [self placeControlsOn: aPage];
   return self;
@@ -70,8 +70,8 @@
 - (void) connectOutlets
 {
   controller.newGroupButton = newGroupButton;
-  controller.procedureCollectionView = procedureCollectionView;
-  controller.animalCollectionView = animalCollectionView;
+  controller.readOnlyProcedureCollectionView = readOnlyProcedureCollectionView;
+  controller.readOnlyAnimalCollectionView = readOnlyAnimalCollectionView;
   controller.panel = panel;
   controller.newGroupButton = newGroupButton;
   controller.groupCollectionView = groupCollectionView;

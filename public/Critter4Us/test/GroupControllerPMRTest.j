@@ -1,6 +1,6 @@
 @import <Critter4Us/page-for-making-reservations/GroupControllerPMR.j>
 @import "ScenarioTestCase.j"
-@import <Critter4Us/model/Animal.j>
+@import <Critter4Us/model/Group.j>
 
 @implementation GroupControllerPMRTest : ScenarioTestCase
 {
@@ -10,7 +10,18 @@
 {
   sut = [[GroupControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardCollaborators: ['procedureCollectionView', 'animalCollectionView', 'newGroupButton']];
+  [scenario sutHasUpwardCollaborators: [
+       'readOnlyProcedureCollectionView', 'readOnlyAnimalCollectionView',
+        'groupCollectionView', 'newGroupButton']];
+}
+
+- (void) testGroupCollectionStartsEmpty
+{
+  [scenario 
+    whileAwakening: function() {
+      [sut.groupCollectionView shouldReceive: @selector(setContent:)
+                                        with: []];
+    }];
 }
 
 - (void) testCanBeToldToPrepareForCompletionOfReservation
@@ -28,45 +39,51 @@
    ];
 }
 
--(void) testCanReceiveNewItemOnBehalfOfACollectionAndPutItIn
+
+
+-(void) testNewGroupAddsAnEntryToTheGroupCollectionView
 {
-  var zz = [[Animal alloc] initWithName: 'zz' kind: 'x'];
-  var one = [[Animal alloc] initWithName: 'one' kind: 'x'];
-  var two = [[Animal alloc] initWithName: 'two' kind: 'x'];
   [scenario
-    during: function() {
-      return [sut receiveNewItem: [zz]];
+    previousAction: function() {
+      var previously = [[Group alloc] initWithProcedures: []
+                                                 animals: []];
+      [sut.groupCollectionView setContent: [previously]];
+    }
+  during: function() {
+      [sut newGroup: UnusedArgument]
     }
   behold: function() {
-      [sut.animalCollectionView shouldReceive: @selector(content)
-                                    andReturn: [one, two]];
-      [sut.animalCollectionView shouldReceive: @selector(setContent:)
-                                   with: [[one, two, zz]]];
-      [sut.animalCollectionView shouldReceive: @selector(setNeedsDisplay:)
-                                         with: YES];
+      [sut.groupCollectionView shouldReceive: @selector(setNeedsDisplay:)
+                                        with: YES];
     }
   andSo: function() {
-      [self assertTrue: scenario.result];
+      [self assert: 2
+            equals: [[sut.groupCollectionView content] count]];
     }];
 }
 
--(void) testTheResultingCollectionIsSorted
+-(void) testNewGroupAddsAnimalsAndProceduresToNewEntry
 {
-  var animalA = [[Animal alloc] initWithName: 'a' kind: 'Z'];
-  var animalB = [[Animal alloc] initWithName: 'b' kind: '-'];
-  var animalC = [[Animal alloc] initWithName: 'c' kind: ''];
+  var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
+  var floating = [[Procedure alloc] initWithName: 'floating'];
 
   [scenario
-    during: function() {
-      [sut receiveNewItem: [animalB]];
+    previousAction: function() {
+      [sut.readOnlyProcedureCollectionView setContent: [floating]];
+      [sut.readOnlyAnimalCollectionView setContent: [betsy]];
     }
-  behold: function() {
-      [sut.animalCollectionView shouldReceive: @selector(content)
-                                    andReturn: [animalC, animalA]];
-      [sut.animalCollectionView shouldReceive: @selector(setContent:)
-                                         with: [[animalA, animalB, animalC]]];
+  testAction: function() {
+      [sut newGroup: UnusedArgument]
+    }
+  andSo: function() {
+      var group = [[sut.groupCollectionView content] objectAtIndex: 0];
+      [self assert: [betsy]
+            equals: [group animals]];
+      [self assert: [floating]
+            equals: [group procedures]];
     }];
 }
+
 
 - (void) testRestarting
 {
@@ -74,8 +91,6 @@
     previousAction: function() {
       [sut appear];
       [self assertTrue: [sut wouldShowPanel]];
-      [sut.animalCollectionView setContent: [[NamedObject alloc] initWithName: 'a']];
-      [sut.procedureCollectionView setContent: [[NamedObject alloc] initWithName: 'u']];
       [sut.newGroupButton setHidden: NO];
     }
     during: function() {
@@ -86,8 +101,6 @@
     }
   andSo: function() {
       [self assertFalse: [sut wouldShowPanel]];
-      [self assert: [] equals: [sut.procedureCollectionView content]];
-      [self assert: [] equals: [sut.animalCollectionView content]];
       [self assert: YES equals: [sut.newGroupButton hidden] ];
     }];
 }
