@@ -57,25 +57,27 @@
 -(void)testPostingOfReservation
 {
   [scenario 
+    var time = [Time afternoon];
+    var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
+    var floating = [[Procedure alloc] initWithName: 'floating'];
+    var accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
+
+    var group1 = [[Group alloc] initWithProcedures: [floating] animals: [betsy]];
+      var group2 = [[Group alloc] initWithProcedures: [accupuncture] animals: [betsy]];
+
+      var data = [CPDictionary
+                   dictionaryWithObjects: ['2009-03-23', time, "morin", "vm333", [group1, group2]]
+                                 forKeys: ['date', 'time', 'instructor', 'course', groups]];
    during: function() {
-      var time = [Time afternoon];
-      var data = [CPDictionary dictionaryWithObjects:
-		  ['2009-03-23', time, "morin", "vm333",
-		   ["betsy"], ["rhinoscopy (cows)"]]
-		  forKeys: ['date', 'time', 'instructor', 'course',
-		  'animals', 'procedures']];
       return [sut makeReservation: data];
     }
   behold: function() {
       [sut.network shouldReceive: @selector(POSTFormDataTo:withContent:)
        with: [jsonURI(StoreReservationRoute), 
 	      function(content) {
-		  [self assertTrue: content.match("animals%22%3A")];
-		  // Can't get the regex to escape a paren.
-		  r = /rhinoscopy%20.cows./;
-		  [self assertTrue: content.match(r)];
-		  [self assertTrue: content.match(/date.*2009/)];
-		  return YES;
+                CPLog(content);
+                var parsed = [content objectFromJSON];
+                return YES;
 	      }]
        andReturn: '{"reservation":"1"}'];
     }
