@@ -29,12 +29,14 @@
   [scenario
     previousAction: function() {
       [sut.newGroupButton setHidden: YES];
+      [sut.groupCollectionView setHidden: YES];
     }
     testAction: function() {
       [sut prepareToFinishReservation];
     }
   andSo: function() {
       [self assert: NO equals: [sut.newGroupButton hidden] ];
+      [self assert: NO equals: [sut.groupCollectionView hidden] ];
     }
    ];
 }
@@ -92,6 +94,7 @@
       [sut appear];
       [self assertTrue: [sut wouldShowPanel]];
       [sut.newGroupButton setHidden: NO];
+      [sut.groupCollectionView setHidden: NO];
     }
     during: function() {
       [sut beginningOfReservationWorkflow];
@@ -102,6 +105,7 @@
   andSo: function() {
       [self assertFalse: [sut wouldShowPanel]];
       [self assert: YES equals: [sut.newGroupButton hidden] ];
+      [self assert: YES equals: [sut.groupCollectionView hidden] ];
     }];
 }
 

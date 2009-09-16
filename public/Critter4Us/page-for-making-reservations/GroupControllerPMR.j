@@ -17,6 +17,7 @@
 - (void) prepareToFinishReservation
 {
   [newGroupButton setHidden: NO];
+  [groupCollectionView setHidden: NO];
 }
 
 - (void) newGroup: sender
@@ -33,6 +34,7 @@
 {
   [self disappear];
   [newGroupButton setHidden: YES];
+  [groupCollectionView setHidden: YES];
 }
 @end
 

@@ -64,6 +64,7 @@
 
   var rect = CGRectMake(0, 500, 1000, 100);
   groupCollectionView = [[GroupCollectionView alloc] initWithFrame: rect];
+  [groupCollectionView setHidden: YES];
   [pageView addSubview: groupCollectionView];
 }
 
