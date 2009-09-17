@@ -4,16 +4,42 @@
 
 @implementation GroupTest : OJTestCase
 {
+  Procedure floating;
+  Procedure accupuncture;
+  Procedure venipuncture;
+  Animal betsy;
 }
 
-- (void) testNamesAreFormedFromProcedures
+- (void) setUp
 {
   var floating = [[Procedure alloc] initWithName: 'floating'];
   var accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
   var venipuncture = [[Procedure alloc] initWithName: 'venipuncture'];
-
   var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
-  
+}
+
+- (void) testGroupsCanReturnListofProcedureNames
+{
+  var group = [[Group alloc] initWithProcedures: [floating, accupuncture, venipuncture]
+                                        animals: [betsy]];
+
+  [self assert: ["floating", "accupuncture", "venipuncture"]
+        equals: [group procedureNames]];
+}
+
+
+- (void) testGroupsCanReturnListofAnimalNames
+{
+  var group = [[Group alloc] initWithProcedures: [floating, accupuncture, venipuncture]
+                                        animals: [betsy]];
+
+  [self assert: ["betsy"]
+        equals: [group animalNames]];
+}
+
+
+- (void) testNamesAreFormedFromProcedures
+{
   var group = [[Group alloc] initWithProcedures: [floating, accupuncture, venipuncture]
                                         animals: [betsy]];
 
@@ -23,10 +49,6 @@
 
 - (void) testGroupsAreIndependent // old bug in Capp 0.7.1
 {
-  var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
-  var floating = [[Procedure alloc] initWithName: 'floating'];
-  var accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
-
   var group1 = [[Group alloc] initWithProcedures: [floating]
                                          animals: [betsy]];
 

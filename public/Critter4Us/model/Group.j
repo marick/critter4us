@@ -10,7 +10,7 @@
   CPArray animals;
 }
 
-- (void) initWithProcedures: someProcedures animals: someAnimals
+- (Group) initWithProcedures: someProcedures animals: someAnimals
 {
   self = [super init];
   procedures = someProcedures;
@@ -18,25 +18,35 @@
   return self;
 }
 
-- (void) procedures
+- (CPArray) procedures
 {
   return procedures;
 }
 
-- (void) animals
+- (CPArray) animals
 {
   return animals;
 }
 
-- (void) name
+- (CPString) name
 {
   return [self procedureNames].join(', ');
 }
 
-- (void) procedureNames
+- (CPArray) procedureNames
+{
+  return [self nameListFrom: procedures];
+}
+
+- (CPArray) animalNames
+{
+  return [self nameListFrom: animals];
+}
+
+- (void) nameListFrom: namedObjects
 {
   var retval = [];
-  var enumerator = [procedures objectEnumerator];
+  var enumerator = [namedObjects objectEnumerator];
   var element;
   while(element = [enumerator nextObject])
   {
