@@ -79,7 +79,6 @@ Procedure.create(:name => 'treadmill exercise (horses)', :days_delay => 0)
 
 Animal.create(:name => 'All Star', :kind => 'stallion')
 Animal.create(:name => 'Genesis', :kind => 'gelding')
-Animal.create(:name => 'Ivory', :kind => 'mare')
 Animal.create(:name => 'Pumpkin', :kind => 'mare')
 Animal.create(:name => 'Misty', :kind => 'mare')
 Animal.create(:name => 'Good Morning Sunshine', :kind => 'mare')
