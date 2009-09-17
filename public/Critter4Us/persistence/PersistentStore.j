@@ -91,8 +91,17 @@
   var content = [CPString stringWithFormat:@"data=%s", dataString];
   var url = jsonURI(StoreReservationRoute);
   var jsonString = [network POSTFormDataTo: url withContent: content];
+  if (! jsonString)
+    alert("No JSON string received after posting. Please report this.   \nOriginal: " + json);
+
   var jsHash = [jsonString objectFromJSON];
+  if (! jsHash)
+    alert("No hash was obtained from JSON string " + jsonString + "\n Please report this.");
+
   var result = jsHash["reservation"];
+  if (! result)
+    alert("No reservation in JSON string " + jsonString + "\n Please report this.");
+
   return result;
 }
 
