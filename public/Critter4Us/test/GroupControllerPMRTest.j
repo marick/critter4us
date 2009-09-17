@@ -98,6 +98,29 @@
 }
 
 
+-(void) testCanSpillCurrentlyBuildingGroup
+{
+  var dict = [CPMutableDictionary dictionary];
+  var procedure = [[Procedure alloc] initWithName: 'procedure'];
+  var animal = [[Animal alloc] initWithName: 'animal' kind: 'cow'];
+  [scenario
+    during: function() {
+      [sut spillIt: dict];
+    }
+  behold: function() {
+      [sut.readOnlyProcedureCollectionView shouldReceive: @selector(content)
+                                               andReturn: [procedure]];
+      [sut.readOnlyAnimalCollectionView shouldReceive: @selector(content)
+                                            andReturn: [animal]];
+    }
+  andSo: function() {
+      var group = [[dict valueForKey: 'groups'] objectAtIndex: 0];
+      [self assert: [procedure] equals: [group procedures]];
+      [self assert: [animal] equals: [group animals]];
+    }];
+}
+
+
 
 - (void) testCanBackUpToBeginningOfReservationWorkflow
 {

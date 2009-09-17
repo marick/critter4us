@@ -29,6 +29,17 @@
   [groupCollectionView setContent: content];
   [groupCollectionView setNeedsDisplay: YES];
   [NotificationCenter postNotificationName: NewGroupNews object: nil];
+  [newGroupButton setEnabled:NO];
+  [newGroupButton setNeedsDisplay:YES];
+}
+
+- (void) spillIt: (CPMutableDictionary) dict
+{
+  var procedures = [readOnlyProcedureCollectionView content];
+  var animals = [readOnlyAnimalCollectionView content];
+  var group = [[Group alloc] initWithProcedures: procedures animals: animals];
+  [dict setValue: [group] forKey: 'groups'];
+  alert('spilling ' + [dict description]);
 }
 
 - (void) beginningOfReservationWorkflow
