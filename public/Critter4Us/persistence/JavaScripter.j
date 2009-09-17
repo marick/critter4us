@@ -28,7 +28,6 @@
     var procedures = [self parse: [cpObject procedures]];
     return {'animals': animals, 'procedures' : procedures};
   case Time:
-    CPLog('converting time');
     return [cpObject description];
   default:
     alert("Program error: converting unknown object '" + [cpObject description] + "' into javascript.");

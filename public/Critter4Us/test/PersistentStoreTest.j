@@ -1,4 +1,7 @@
 @import <Critter4Us/util/Time.j>
+@import <Critter4Us/model/Animal.j>
+@import <Critter4Us/model/Procedure.j>
+@import <Critter4Us/model/Group.j>
 @import <Critter4Us/persistence/PersistentStore.j>
 @import "ScenarioTestCase.j"
 
@@ -54,20 +57,21 @@
     }]
 }
 
+
 -(void)testPostingOfReservation
 {
+  var time = [Time afternoon];
+  var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
+  var floating = [[Procedure alloc] initWithName: 'floating'];
+  var accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
+
+  var group1 = [[Group alloc] initWithProcedures: [floating] animals: [betsy]];
+  var group2 = [[Group alloc] initWithProcedures: [accupuncture] animals: [betsy]];
+
+  var data = [CPDictionary
+                 dictionaryWithObjects: ['2009-03-23', time, "morin", "vm333", [group1, group2]]
+                               forKeys: ['date', 'time', 'instructor', 'course', 'groups']];
   [scenario 
-    var time = [Time afternoon];
-    var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
-    var floating = [[Procedure alloc] initWithName: 'floating'];
-    var accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
-
-    var group1 = [[Group alloc] initWithProcedures: [floating] animals: [betsy]];
-      var group2 = [[Group alloc] initWithProcedures: [accupuncture] animals: [betsy]];
-
-      var data = [CPDictionary
-                   dictionaryWithObjects: ['2009-03-23', time, "morin", "vm333", [group1, group2]]
-                                 forKeys: ['date', 'time', 'instructor', 'course', groups]];
    during: function() {
       return [sut makeReservation: data];
     }
@@ -75,8 +79,22 @@
       [sut.network shouldReceive: @selector(POSTFormDataTo:withContent:)
        with: [jsonURI(StoreReservationRoute), 
 	      function(content) {
-                CPLog(content);
-                var parsed = [content objectFromJSON];
+                var array = content.split(/=/);
+                var jsonString = decodeURIComponent(array[1]);
+                var parsed = [jsonString objectFromJSON];
+                [self assert: '2009-03-23' equals: parsed['date']];
+                [self assert: 'afternoon' equals: parsed['time']];
+                [self assert: 'morin' equals: parsed['instructor']];
+                [self assert: 'vm333' equals: parsed['course']];
+                [self assert: 2 equals: [parsed['groups'] count]];
+                var groupsactual = parsed['groups'];
+                var group1actual = groupsactual[0];
+                var group2actual = groupsactual[1];
+                [self assert: ['betsy'] equals: group1actual['animals']];
+                [self assert: ['floating'] equals: group1actual['procedures']];
+                [self assert: ['betsy'] equals: group2actual['animals']];
+                [self assert: ['accupuncture'] equals: group2actual['procedures']];
+
                 return YES;
 	      }]
        andReturn: '{"reservation":"1"}'];
@@ -103,19 +121,5 @@
 
 // Test utility methods
 
--(void) testDictionaryToJSStringifiesObjects
-{
-  var dict = [CPDictionary dictionary];
-  [dict setValue: "string" forKey: "string"];
-  [dict setValue: 1 forKey:"number"];
-  [dict setValue: [Time afternoon] forKey: "time"];
-  [dict setValue: ["animal", "also"] forKey: "animals"];
-  
-  var js = [sut dictionaryToJS: dict];
-  [self assert: "string" equals: js['string']];
-  [self assert: "1" equals: js['number']];
-  [self assert: "afternoon" equals: js['time']];
-  [self assert: ["animal", "also"] equals: js['animals']];
-}
 
 @end

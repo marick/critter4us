@@ -4,6 +4,7 @@
 @import "../model/Procedure.j"
 @import "../util/AwakeningObject.j"
 @import "NetworkConnection.j"
+@import "JavaScripter.j"
 
 // TODO: this is not a singleton/global object. I'm not wild about
 // that because focusOnDate:time: causes state to be set in one
@@ -84,8 +85,9 @@
 - (CPInteger) makeReservation: dict
 {
   [self checkValidity: dict];
-  var jsData = [self dictionaryToJS: dict];
-  var dataString = encodeURIComponent([CPString JSONFromObject: jsData]);
+  var jsData = [JavaScripter parse: dict];
+  var json = [CPString JSONFromObject: jsData];
+  var dataString = encodeURIComponent(json);
   var content = [CPString stringWithFormat:@"data=%s", dataString];
   var url = jsonURI(StoreReservationRoute);
   var jsonString = [network POSTFormDataTo: url withContent: content];
@@ -104,7 +106,7 @@
 
 - (void) checkValidity: (CPDictionary) dict
 {
-  var expected = ['date', 'time', 'procedures', 'animals', 'course', 'instructor'];
+  var expected = ['date', 'time', 'groups', 'course', 'instructor'];
   var actual = [dict allKeys];
 
   [actual sortUsingSelector: @selector(compare:)];
@@ -115,20 +117,6 @@
 }
 
 
-- (id) dictionaryToJS: dict
-{
-  var jsData = {};
-  var enumerator = [dict keyEnumerator];
-  var key;
-  while (key = [enumerator nextObject])
-    {
-      if ([[dict valueForKey: key] isMemberOfClass: CPArray])
-	jsData[key] = [dict valueForKey: key];
-      else
-	jsData[key] = [[dict valueForKey: key] description];
-    }
-  return jsData;
-}
 
 @end
 
