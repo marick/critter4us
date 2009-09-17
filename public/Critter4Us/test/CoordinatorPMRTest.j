@@ -143,7 +143,6 @@
 	[self assert: 'vm333' equals: [h valueForKey: 'course'] ];
 	[self assert: 'fred' equals: [h valueForKey: 'instructor'] ];
 
-        CPLog([[h valueForKey: 'groups'] description]);
         var group1actual = [[h valueForKey: 'groups'] objectAtIndex: 0];
         var group2actual = [[h valueForKey: 'groups'] objectAtIndex: 1];
 
