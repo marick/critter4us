@@ -141,7 +141,13 @@
     }
   andSo: function() {
       var groups = [dict valueForKey: 'groups'];
-      [self assert: 2 [groups count]];
+      [self assert: 2 equals: [groups count]];
+      saved = groups[0];
+      building = groups[1];
+      [self assert: [p1] equals: [saved procedures]];
+      [self assert: [a1] equals: [saved animals]];
+      [self assert: [p2] equals: [building procedures]];
+      [self assert: [a2] equals: [building animals]];
     }];
 }
 
@@ -166,6 +172,19 @@
       [self assertFalse: [sut wouldShowPanel]];
       [self assert: YES equals: [sut.newGroupButton hidden] ];
       [self assert: YES equals: [sut.groupCollectionView hidden] ];
+    }];
+}
+
+
+- (void) testBackingUpToTheBeginningForgetsOldGroups
+{
+  [scenario
+    during: function() {
+      [sut beginningOfReservationWorkflow];
+    }
+  behold: function() {
+      [sut.groupCollectionView shouldReceive: @selector(setContent:)
+                                        with:[]];
     }];
 }
 

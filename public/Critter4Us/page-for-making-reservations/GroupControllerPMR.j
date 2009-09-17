@@ -22,32 +22,39 @@
 
 - (void) newGroup: sender
 {
-  var group = [[Group alloc] initWithProcedures: [readOnlyProcedureCollectionView content]
-                                        animals: [readOnlyAnimalCollectionView content]];
+  var group = [self finishEdit];
   var content = [[groupCollectionView content] copy];
   [content addObject: group];
   [groupCollectionView setContent: content];
   [groupCollectionView setNeedsDisplay: YES];
   [NotificationCenter postNotificationName: NewGroupNews object: nil];
-  [newGroupButton setEnabled:NO];
   [newGroupButton setNeedsDisplay:YES];
 }
 
 - (void) spillIt: (CPMutableDictionary) dict
 {
-  var procedures = [readOnlyProcedureCollectionView content];
-  var animals = [readOnlyAnimalCollectionView content];
-  var group = [[Group alloc] initWithProcedures: procedures animals: animals];
-  [dict setValue: [group] forKey: 'groups'];
-  alert('spilling ' + [dict description]);
+  var building = [self finishEdit];
+  var allGroups = [[groupCollectionView content] arrayByAddingObject: building];
+  [dict setValue: allGroups forKey: 'groups'];
 }
 
 - (void) beginningOfReservationWorkflow
 {
+  [groupCollectionView setContent: []];
   [self disappear];
   [newGroupButton setHidden: YES];
   [groupCollectionView setHidden: YES];
 }
+
+// util
+
+-(Group) finishEdit
+{
+  return [[Group alloc] initWithProcedures: [readOnlyProcedureCollectionView content]
+                                   animals: [readOnlyAnimalCollectionView content]];
+}
+
+
 @end
 
 
