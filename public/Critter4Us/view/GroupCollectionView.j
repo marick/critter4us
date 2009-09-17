@@ -9,7 +9,6 @@
 - (id) initWithFrame: rect
 {
   self = [super initWithFrame: rect];
-  [self setBackgroundColor: [CPColor redColor]];
   [self setMinItemSize:CGSizeMake(300, TextLineHeight)];
   [self setMaxItemSize:CGSizeMake(300, TextLineHeight)];
   var itemPrototype = [[CPCollectionViewItem alloc] init];
