@@ -142,7 +142,7 @@ class JsonGenerationTests < Test::Unit::TestCase
       assert { r.morning }
       assert { r.instructor == @data['instructor'] }
       assert { r.course == @data['course'] }
-      assert { r.groupings.size == 1 }
+      assert { r.groups.size == 1 }
       assert { r.uses.size == 4 }
       assert do 
         r.uses.find do | u | 

@@ -56,14 +56,14 @@ end
 class Use < Sequel::Model
   many_to_one :procedure
   many_to_one :animal
-  many_to_one :grouping
+  many_to_one :group
 
   def reservation
-    grouping.reservation
+    group.reservation
   end
 end
 
-class Grouping < Sequel::Model
+class Group < Sequel::Model
   many_to_one :reservation
   one_to_many :uses
 

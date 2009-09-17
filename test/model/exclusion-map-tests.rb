@@ -111,8 +111,8 @@ class ExclusionMapTests < Test::Unit::TestCase
     @procedure = Procedure.random(:name => 'only', :days_delay => delay)
     @reservation = Reservation.random(:date => Date.new(2009, 12, date),
                                       :morning => (time == :morning))
-    grouping = Grouping.create(:reservation => @reservation)
-    @use = Use.create(:animal => @animal, :procedure => @procedure, :grouping => grouping)
+    group = Group.create(:reservation => @reservation)
+    @use = Use.create(:animal => @animal, :procedure => @procedure, :group => group)
     # puts "all uses:"
     # puts DB[:expanded_uses].all.inspect
   end
@@ -145,19 +145,19 @@ class ExclusionMapTests < Test::Unit::TestCase
     nine7 = Reservation.random(:date => Date.new(2009, 9, 7))  # Today, Monday
 
     
-    only_eight31_group = Grouping.create(:reservation => eight31)
-    only_nine1_group = Grouping.create(:reservation => nine1)
-    only_nine7_group = Grouping.create(:reservation => nine7)
+    only_eight31_group = Group.create(:reservation => eight31)
+    only_nine1_group = Group.create(:reservation => nine1)
+    only_nine7_group = Group.create(:reservation => nine7)
 
     
     Use.create(:animal => bossie, :procedure => venipuncture,
-               :grouping => only_eight31_group);
+               :group => only_eight31_group);
     Use.create(:animal => staggers, :procedure => venipuncture,
-               :grouping => only_nine1_group);
+               :group => only_nine1_group);
     Use.create(:animal => veinie, :procedure => venipuncture,
-               :grouping => only_nine7_group);
+               :group => only_nine7_group);
     Use.create(:animal => veinie, :procedure => physical_exam,
-               :grouping => only_nine7_group);
+               :group => only_nine7_group);
 
     # What can not be scheduled today?
     actual = ExclusionMap.new(Date.new(2009, 9, 7), true).to_hash

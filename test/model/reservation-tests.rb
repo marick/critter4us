@@ -22,14 +22,14 @@ class ReservationModelTests < Test::Unit::TestCase
                 ]
     }
     actual_reservation = Reservation.create_with_groups(test_data)
-    assert { actual_reservation.groupings.size == 1 }
+    assert { actual_reservation.groups.size == 1 }
 
-    actual_grouping = actual_reservation.groupings[0]
-    assert { actual_grouping.reservation == actual_reservation } 
-    assert { actual_grouping.uses.size == 1 }
+    actual_group = actual_reservation.groups[0]
+    assert { actual_group.reservation == actual_reservation } 
+    assert { actual_group.uses.size == 1 }
 
-    actual_use = actual_grouping.uses[0]
-    assert { actual_use.grouping == actual_grouping }
+    actual_use = actual_group.uses[0]
+    assert { actual_use.group == actual_group }
 
     assert { actual_use.animal.name == 'animal' }
     assert { actual_use.procedure.name == 'procedure' }
@@ -37,7 +37,7 @@ class ReservationModelTests < Test::Unit::TestCase
     # TODO: these group-erasing methods should be put in own test.
 
     assert { actual_reservation.uses.size == 1 }
-    assert { actual_reservation.uses[0].id == actual_grouping.uses[0].id } 
+    assert { actual_reservation.uses[0].id == actual_group.uses[0].id } 
     assert { actual_use.reservation == actual_reservation }
 
     assert { actual_reservation.animal_names == ['animal'] }
@@ -71,10 +71,10 @@ class ReservationModelTests < Test::Unit::TestCase
       assert { Use[:procedure_id => @p2.id, :animal_id => @a2.id] } 
     end
 
-    should "include the cross-product in a single grouping" do
-      assert { @reservation.groupings.size == 1 } 
+    should "include the cross-product in a single group" do
+      assert { @reservation.groups.size == 1 } 
       Use.all.each do | use |
-        assert { use.grouping.id == Grouping.first.id }
+        assert { use.group.id == Group.first.id }
       end
     end
 
@@ -122,9 +122,9 @@ class ReservationModelTests < Test::Unit::TestCase
     end
 
     should "use two groups" do
-      assert { @reservation.groupings.size == 2 } 
-      assert { @p1_a1.grouping == @p2_a1.grouping  } 
-      assert { @p1_a1.grouping != @p3_a2.grouping } 
+      assert { @reservation.groups.size == 2 } 
+      assert { @p1_a1.group == @p2_a1.group  } 
+      assert { @p1_a1.group != @p3_a2.group } 
     end
 
     should "be able to list all the animals involved" do
@@ -138,7 +138,7 @@ class ReservationModelTests < Test::Unit::TestCase
   end
 
 
-  should "delete both self and associated uses and groupings" do
+  should "delete both self and associated uses and groups" do
     reservation = Reservation.random(:instructor => 'marge') do 
       use Animal.random(:name => 'animal')
       use Procedure.random(:name => 'procedure')
@@ -146,14 +146,14 @@ class ReservationModelTests < Test::Unit::TestCase
 
     assert { Reservation[:instructor => 'marge'] }
     assert { Reservation.all.size == 1 }
-    assert { Grouping.all.size == 1 }
+    assert { Group.all.size == 1 }
     assert { Use.all.size == 1 }
 
     reservation.destroy
 
     deny { Reservation[:instructor => 'marge'] }
     assert { Reservation.all.size == 0 }
-    assert { Grouping.all.size == 0 }
+    assert { Group.all.size == 0 }
     assert { Use.all.size == 0 }
   end
 

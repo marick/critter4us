@@ -15,17 +15,17 @@ class Reservation < Sequel::Model
         partition_reservation_data(data)
       @reservation = Reservation.create(reservation_part)
       data_for_each_group.each do | group_data | 
-        grouping = Grouping.create(:reservation => reservation)
-        cross_product_of_procedures_and_animals(grouping, group_data)
+        group = Group.create(:reservation => reservation)
+        cross_product_of_procedures_and_animals(group, group_data)
       end
     end
 
     private
 
-    def cross_product_of_procedures_and_animals(grouping, group_data)
+    def cross_product_of_procedures_and_animals(group, group_data)
       group_data[:procedures].each do | procedure_name | 
         group_data[:animals].each do | animal_name |
-          build_use(grouping, procedure_name, animal_name)
+          build_use(group, procedure_name, animal_name)
         end
       end
     end
@@ -36,19 +36,19 @@ class Reservation < Sequel::Model
       [data, data_for_each_group]
     end
 
-    def build_use(grouping, procedure_name, animal_name)
+    def build_use(group, procedure_name, animal_name)
       procedure = Procedure[:name => procedure_name]
       animal = Animal[:name => animal_name]
       Use.create(:procedure => procedure,
                  :animal => animal,
-                 :grouping => grouping)
+                 :group => group)
     end
   end
 
-  one_to_many :groupings
+  one_to_many :groups
 
   def before_destroy
-    groupings.each { | grouping | grouping.destroy }
+    groups.each { | group | group.destroy }
   end
 
   def self.create_with_groups(data)
@@ -56,7 +56,7 @@ class Reservation < Sequel::Model
   end
 
   def uses
-    groupings.collect{ | grouping | grouping.uses }.flatten
+    groups.collect{ | group | group.uses }.flatten
   end
 
   def animal_names; x_names(:animal); end
@@ -77,8 +77,8 @@ class Reservation < Sequel::Model
     if block
       class_eval(&block)
 
-      grouping = Grouping.create(:reservation => reservation)
-      Use.create(:grouping => grouping, 
+      group = Group.create(:reservation => reservation)
+      Use.create(:group => group, 
                  :animal => @animal_created_in_block,
                  :procedure => @procedure_created_in_block)
     end
