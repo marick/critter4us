@@ -21,20 +21,30 @@ class JsonGenerationTests < Test::Unit::TestCase
     assert { ruby_obj == JSON[last_response.body] }
   end
 
-  should "convert to consistent internal format" do
-    input = {
-      "stringkey" => "value",
-      "time" => "morning",
-      "date" => "2009-12-01",
-      "animals" => ["an", "array"],
-    };
-    actual = app.move_to_internal_format(input)
-    expected = {
-      :stringkey => 'value', :morning => true,
-      :date => Date.new(2009,12,1),
-      :animals => ["an", "array"]
-    }
-    assert { actual == expected }
+  context "utilities" do
+    should "turn hash keys into symbols" do
+      input = { 'key' => 'value' } 
+      expected = { :key => 'value' }
+      assert { expected == app.symbol_keys(input) }
+    end
+
+    should "convert to consistent internal format" do
+      input = {
+        "stringkey" => "value",
+        "time" => "morning",
+        "date" => "2009-12-01",
+        "groups" => [ {'animals' => ['josie', 'frank'],
+                        'procedures' => ['venipuncture']}],
+      };
+      actual = app.move_to_internal_format(input)
+      expected = {
+        :stringkey => 'value', :morning => true,
+        :date => Date.new(2009,12,1),
+        :groups => [{:animals => ['josie', 'frank'],
+                      :procedures => ['venipuncture']}]
+      }
+      assert { actual == expected }
+    end
   end
 
   context "delivering a blob of course-session-specific data" do
@@ -121,8 +131,9 @@ class JsonGenerationTests < Test::Unit::TestCase
         'time' => 'morning',
         'instructor' => 'morin',
         'course' => 'vm333',
-        'procedures' => ['lick', 'slop'],
-        'animals' => ['twitter', 'jinx']}
+        'groups' => [ {'procedures' => ['lick', 'slop'],
+                        'animals' => ['twitter', 'jinx']} ]
+      }
     end
 
     should "create the required uses" do
@@ -131,6 +142,7 @@ class JsonGenerationTests < Test::Unit::TestCase
       assert { r.morning }
       assert { r.instructor == @data['instructor'] }
       assert { r.course == @data['course'] }
+      assert { r.groupings.size == 1 }
       assert { r.uses.size == 4 }
       assert do 
         r.uses.find do | u | 

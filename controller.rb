@@ -97,7 +97,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
 
   post '/json/store_reservation' do
     hash = move_to_internal_format(JSON.parse(params['data']))
-    reservation = Reservation.create_with_uses(hash)
+    reservation = Reservation.create_with_groups(hash)
     jsonically do
       typing_as "reservation" do 
         reservation.id.to_s
@@ -121,16 +121,26 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
   end
 
   def move_to_internal_format(hash)
-    result = {}
-    hash.each { | k, v | result[k.to_sym] = v }
-
-
+    result = symbol_keys(hash)
     result[:date] = Date.parse(result[:date]) if result[:date]
+    if result[:groups]
+      result[:groups] = result[:groups].collect { | group | 
+        symbol_keys(group)
+      }
+    end
     if result[:time]
       result[:morning] = (result[:time]=="morning")
       result.delete(:time)
     end
     result
+  end
+
+  def symbol_keys(hash)
+    retval = {}
+    hash.each do | k, v | 
+      retval[k.to_sym] = v
+    end
+    return retval
   end
 
   private

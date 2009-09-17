@@ -11,35 +11,37 @@ class Reservation < Sequel::Model
     end
 
     def initialize(data)
-      reservation_part = partition_reservation_data(data)
+      reservation_part, data_for_each_group =
+        partition_reservation_data(data)
       @reservation = Reservation.create(reservation_part)
-      @grouping = Grouping.create(:reservation => reservation)
-      cross_product_of_procedures_and_animals
+      data_for_each_group.each do | group_data | 
+        grouping = Grouping.create(:reservation => reservation)
+        cross_product_of_procedures_and_animals(grouping, group_data)
+      end
     end
 
     private
 
-    def cross_product_of_procedures_and_animals
-      @procedure_names.each do | procedure_name | 
-        @animal_names.each do | animal_name |
-          build_use(procedure_name, animal_name)
+    def cross_product_of_procedures_and_animals(grouping, group_data)
+      group_data[:procedures].each do | procedure_name | 
+        group_data[:animals].each do | animal_name |
+          build_use(grouping, procedure_name, animal_name)
         end
       end
     end
 
     def partition_reservation_data(data)
       data = data.dup
-      @procedure_names = data.delete(:procedures)
-      @animal_names = data.delete(:animals)
-      data
+      data_for_each_group = data.delete(:groups)
+      [data, data_for_each_group]
     end
 
-    def build_use(procedure_name, animal_name)
+    def build_use(grouping, procedure_name, animal_name)
       procedure = Procedure[:name => procedure_name]
       animal = Animal[:name => animal_name]
       Use.create(:procedure => procedure,
                  :animal => animal,
-                 :grouping => @grouping)
+                 :grouping => grouping)
     end
   end
 
@@ -49,7 +51,7 @@ class Reservation < Sequel::Model
     groupings.each { | grouping | grouping.destroy }
   end
 
-  def self.create_with_uses(data)
+  def self.create_with_groups(data)
     ReservationStructureBuilder.build_from(data)
   end
 
