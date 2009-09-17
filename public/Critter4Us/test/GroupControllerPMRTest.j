@@ -121,6 +121,31 @@
 }
 
 
+-(void) testCanIncludePreviousGroupsInSpilledData
+{
+  var dict = [CPMutableDictionary dictionary];
+  var p1 = [[Procedure alloc] initWithName: 'p1'];
+  var p2 = [[Procedure alloc] initWithName: 'p2'];
+  var a1 = [[Animal alloc] initWithName: 'a1' kind: 'cow'];
+  var a2 = [[Animal alloc] initWithName: 'a2' kind: 'cow'];
+  [scenario
+    previousAction: function() { 
+      [sut.readOnlyProcedureCollectionView setContent: [p1]];
+      [sut.readOnlyAnimalCollectionView setContent: [a1]];
+      [sut newGroup: UnusedArgument];
+      [sut.readOnlyProcedureCollectionView setContent: [p2]];
+      [sut.readOnlyAnimalCollectionView setContent: [a2]];
+    }
+    testAction: function() {
+      [sut spillIt: dict];
+    }
+  andSo: function() {
+      var groups = [dict valueForKey: 'groups'];
+      [self assert: 2 [groups count]];
+    }];
+}
+
+
 
 - (void) testCanBackUpToBeginningOfReservationWorkflow
 {
