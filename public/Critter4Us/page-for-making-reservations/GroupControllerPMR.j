@@ -14,7 +14,7 @@
   [groupCollectionView setContent: []];
 }
 
-- (void) prepareToFinishReservation
+- (void) prepareToEditGroups
 {
   [newGroupButton setHidden: NO];
   [groupCollectionView setHidden: NO];
@@ -27,8 +27,8 @@
   [content addObject: group];
   [groupCollectionView setContent: content];
   [groupCollectionView setNeedsDisplay: YES];
-  [NotificationCenter postNotificationName: NewGroupNews object: nil];
   [newGroupButton setNeedsDisplay:YES];
+  [NotificationCenter postNotificationName: NewGroupNews object: nil];
 }
 
 - (void) spillIt: (CPMutableDictionary) dict

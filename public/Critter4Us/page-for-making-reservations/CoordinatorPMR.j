@@ -54,7 +54,7 @@
 
   [reservationDataController allowNoDataChanges];
   [reservationDataController prepareToFinishReservation];
-  [groupController prepareToFinishReservation];
+  [groupController prepareToEditGroups];
   [procedureController appear];
   [animalController appear];
   [groupController appear];
