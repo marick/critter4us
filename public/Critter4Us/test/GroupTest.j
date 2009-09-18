@@ -61,6 +61,15 @@
         equals: [group name]];
 }
 
+- (void) testNoProceduresMeansEmptyName
+{
+  var group = [[Group alloc] initWithProcedures: []
+                                        animals: [betsy]];
+
+  [self assert: ""
+        equals: [group name]];
+}
+
 - (void) testGroupsAreIndependent // old bug in Capp 0.7.1
 {
   var group1 = [[Group alloc] initWithProcedures: [floating]
