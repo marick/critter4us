@@ -28,6 +28,12 @@
   return animals;
 }
 
+- (void) setProcedures: newProcedures animals: newAnimals
+{
+  procedures = newProcedures;
+  animals = newAnimals
+}
+
 - (CPBoolean) isEmpty
 {
   if (0 == [procedures count]) return YES;
