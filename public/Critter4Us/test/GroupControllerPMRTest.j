@@ -104,6 +104,22 @@
     }];
 }
 
+-(void) testNewGroupIsOnlyAddedIfCurrentlyBuildingIsNonEmpty
+{
+  [scenario
+    previousAction: function() {
+      [self currentGroupWithProcedures: [radiology] animals: []];
+    }
+  testAction: function() {
+      [sut newGroup: UnusedArgument]
+    }
+  andSo: function() {
+      var groups = [sut.groupCollectionView content];
+      [self assert: 0 equals: [groups count]];
+    }];
+}
+
+
 
 -(void) testCanSpillCurrentlyBuildingGroup
 {
@@ -125,13 +141,10 @@
 }
 
 
+
 -(void) testCanIncludePreviousGroupsInSpilledData
 {
   var dict = [CPMutableDictionary dictionary];
-  var p1 = [[Procedure alloc] initWithName: 'p1'];
-  var p2 = [[Procedure alloc] initWithName: 'p2'];
-  var a1 = [[Animal alloc] initWithName: 'a1' kind: 'cow'];
-  var a2 = [[Animal alloc] initWithName: 'a2' kind: 'cow'];
   [scenario
     previousAction: function() {
       [self previousGroupWithProcedures: [radiology] animals: [jake]];
@@ -152,9 +165,22 @@
 
 -(void)testAnEmptyCurrentGroupIsNotIncludedInSpilledData
 {
-  CPLog('============================ TODO');
+  var dict = [CPMutableDictionary dictionary];
+  [scenario
+    previousAction: function() {
+      [self previousGroupWithProcedures: [radiology] animals: [jake]];
+      [self currentGroupWithProcedures: [] animals: []];
+    }
+    testAction: function() {
+      [sut spillIt: dict];
+    }
+  andSo: function() {
+      var groups = [dict valueForKey: 'groups'];
+      [self assert: 1 equals: [groups count]];
+      [self assertGroup: groups[0]
+          hasProcedures: [radiology] animals: [jake]];
+    }];
 }
-
 
 
 - (void) testCanBackUpToBeginningOfReservationWorkflow

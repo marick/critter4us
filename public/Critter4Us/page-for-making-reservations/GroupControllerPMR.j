@@ -22,7 +22,9 @@
 
 - (void) newGroup: sender
 {
-  var group = [self finishEdit];
+  var group = [self currentGroup];
+  if ([group isEmpty]) return;
+
   var content = [[groupCollectionView content] copy];
   [content addObject: group];
   [groupCollectionView setContent: content];
@@ -33,8 +35,12 @@
 
 - (void) spillIt: (CPMutableDictionary) dict
 {
-  var building = [self finishEdit];
-  var allGroups = [[groupCollectionView content] arrayByAddingObject: building];
+  var allGroups = [[groupCollectionView content] copy];
+  var building = [self currentGroup];
+  if (! [building isEmpty])
+  {
+    allGroups = [allGroups arrayByAddingObject: building];
+  }
   [dict setValue: allGroups forKey: 'groups'];
 }
 
@@ -48,7 +54,7 @@
 
 // util
 
--(Group) finishEdit
+-(Group) currentGroup
 {
   return [[Group alloc] initWithProcedures: [readOnlyProcedureCollectionView content]
                                    animals: [readOnlyAnimalCollectionView content]];
