@@ -28,7 +28,7 @@
 
 - (void)setRepresentedObject:(id)aGroup
 {
-  [super setRepresentedObject aGroup];
+  [super setRepresentedObject: aGroup];
   var title = [aGroup name];
   if ([title isEqual: ""])
   {
