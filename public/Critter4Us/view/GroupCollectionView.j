@@ -26,6 +26,17 @@
 {
 }
 
+- (void)setRepresentedObject:(id)aGroup
+{
+  [super setRepresentedObject aGroup];
+  var title = [aGroup name];
+  if ([title isEqual: ""])
+  {
+    title = "* No procedures chosen *";
+  }
+  [[self view] setTitle: title];
+}
+
 @end
 
 
@@ -35,12 +46,5 @@
 
 - (void)setRepresentedObject:(id)aGroup
 {
-  //  alert("set represented object in" + [anObject description]);
-  var title = [aGroup name];
-  if ([title isEqual: ""])
-  {
-    title = "* No procedures chosen *";
-  }
-  [self setTitle: title];
-  //alert("set represented object out");
+  // This is required by the CPCollectionView protocol.
 }
