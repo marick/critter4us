@@ -18,6 +18,20 @@
   var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
 }
 
+- (void) testGroupsCanBeEmpty
+{
+  var group = [[Group alloc] initWithProcedures: [] animals: []];
+  [self assertTrue: [group isEmpty]];
+}
+
+- (void) testAGroupIsEmptyIfEitherProcedureOrAnimalListsAreEmpty
+{
+  [self assertTrue: [[[Group alloc] initWithProcedures: [floating] animals: []] isEmpty]];
+  [self assertTrue: [[[Group alloc] initWithProcedures: [] animals: [betsy]] isEmpty]];
+
+  [self assertFalse: [[[Group alloc] initWithProcedures: [floating] animals: [betsy]] isEmpty]];
+}
+
 - (void) testGroupsCanReturnListofProcedureNames
 {
   var group = [[Group alloc] initWithProcedures: [floating, accupuncture, venipuncture]

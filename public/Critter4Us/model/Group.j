@@ -28,6 +28,13 @@
   return animals;
 }
 
+- (CPBoolean) isEmpty
+{
+  if (0 == [procedures count]) return YES;
+  if (0 == [animals count]) return YES;
+  return NO;
+}
+
 - (CPString) name
 {
   return [self procedureNames].join(', ');
