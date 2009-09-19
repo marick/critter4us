@@ -80,13 +80,29 @@
     }
   andSo: function() {
       [self assert: [floating]
-            equals: [sut.readOnlyProcedureCollectionView content]];
+            equals: [[sut currentGroup] procedures]];
       [self assert: [jake]
-            equals: [sut.readOnlyAnimalCollectionView content]];
+            equals: [[sut currentGroup] animals]];
     }
    ];
 }
 
+- (void) testTheMirroringAlsoUpdatesGroupTitle
+{
+  [scenario
+    previousAction: function() {
+      [sut prepareToEditGroups];
+      [sut.readOnlyProcedureCollectionView setContent: [floating]];
+    }
+  during: function() {
+      [sut updateCurrentGroup];
+    }
+  behold: function() {
+      [sut.groupCollectionView shouldReceive: @selector(refreshTitleForItemAtIndex:)
+                                        with: 0];
+    }
+   ];
+}
 
 
 -(void) testNewGroupAddsAnEntryToTheGroupCollectionView

@@ -53,6 +53,7 @@
 {
   [[self currentGroup] setProcedures: [readOnlyProcedureCollectionView content]
                              animals: [readOnlyAnimalCollectionView content]];
+  [groupCollectionView refreshTitleForItemAtIndex: currentGroupIndex];
 }
 
 // util
