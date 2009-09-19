@@ -70,6 +70,37 @@
         equals: [group name]];
 }
 
+- (void) testEquality
+{
+  var original = [[Group alloc] initWithProcedures: [floating] animals: [betsy]];
+  var same = [[Group alloc] initWithProcedures: [floating] animals: [betsy]];
+  var animals = [[Group alloc] initWithProcedures: [floating] animals: []];
+  var procedures = [[Group alloc] initWithProcedures: [] animals: [betsy]];
+
+  [self assertTrue: [original isEqual: same]];
+  [self assertFalse: [original isEqual: procedures]];
+  [self assertFalse: [original isEqual: animals]];
+}
+    
+
+- (void) testHash
+{
+  var original = [[Group alloc] initWithProcedures: [floating] animals: [betsy]];
+  var same = [[Group alloc] initWithProcedures: [floating] animals: [betsy]];
+
+  [self assert: [original hash] equals: [same hash]];
+}
+    
+
+- (void) testHashForEmpties // because of peculiar hash implementation.
+{
+  var original = [[Group alloc] initWithProcedures: [CPArray array] animals: [CPArray array]];
+  var same = [[Group alloc] initWithProcedures: [CPArray array] animals: [CPArray array]];
+
+  [self assert: [original hash] equals: [same hash]];
+}
+    
+
 - (void) testGroupsAreIndependent // old bug in Capp 0.7.1
 {
   var group1 = [[Group alloc] initWithProcedures: [floating]
@@ -80,5 +111,6 @@
                                          animals: [betsy]];
   [self assert: "floating" equals: [[[group1 procedures] objectAtIndex: 0] name]];
 }
+
 
 @end
