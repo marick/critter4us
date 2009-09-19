@@ -5,14 +5,9 @@
 {
   GroupCollectionView sut;
   
-  Animal betsy;
-  Animal jake;
-  Procedure floating;
-  Procedure radiology;
-
-  Group noProcedureGroup;
-  Group oneProcedureGroup;
-  Group twoProcedureGroup;
+  NamedObject someNamedObject;
+  NamedObject anotherNamedObject;
+  NamedObject unnamedObject;
 }
 
 - (void) setUp
@@ -21,41 +16,71 @@
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   // [scenario sutHasDownwardCollaborators: ['delegate']];
 
-  betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
-  jake = [[Animal alloc] initWithName: 'jake' kind: 'cow'];
-  floating = [[Procedure alloc] initWithName: 'floating'];
-  radiology = [[Procedure alloc] initWithName: 'radiology'];
-
-  twoProcedureGroup = [[Group alloc] initWithProcedures: [radiology, floating]
-                                                animals: [betsy]];
-  oneProcedureGroup = [[Group alloc] initWithProcedures: [radiology]
-                                                animals: [betsy]];
-  noProcedureGroup = [[Group alloc] initWithProcedures: []
-                                                animals: [betsy]];
+  someNamedObject = [[NamedObject alloc] initWithName: 'some named object'];
+  anotherNamedObject = [[NamedObject alloc] initWithName: 'another named object'];
+  unnamedObject = [[NamedObject alloc] initWithName: ''];
 }
 
-- (void) testInitialButtonTitleIsBuiltFromProcedureContents
+- (void) testCollectionIsInitiallyEmpty
 {
-  [sut setContent: [oneProcedureGroup]];
-  [self assert: [oneProcedureGroup name]
+  [self assert: [] equals: [sut content]];
+  [self assertTrue: -1 == [sut.currentIndex]];
+}
+
+- (void) testCollectionCanBecomeEmptyAgain
+{
+  [sut addNamedObjectToContent: someNamedObject];
+  [sut becomeEmpty];
+  [self assert: [] equals: [sut content]];
+  [self assertTrue: -1 == [sut.currentIndex]];
+}
+
+- (void) testCanAddContent
+{
+  [sut addNamedObjectToContent: someNamedObject];
+  [self assert: [someNamedObject] equals: [sut content]];
+  [sut addNamedObjectToContent: anotherNamedObject];
+  [self assert: [someNamedObject, anotherNamedObject] equals: [sut content]];
+}
+
+- (void) testAddingMakesANewArrayDoesNotReuseOldOne
+{
+  // CPCollectionViews don't consider adding an element to existing
+  // content to be a change, so modifying and setting a copy is appropriate.
+  var original = [sut content];
+  [sut addNamedObjectToContent: someNamedObject];
+  [self assertFalse: [sut content] == original];
+}
+
+- (void) testAnAddedElementBecomesTheCurrentOne
+{
+  [sut addNamedObjectToContent: someNamedObject];
+  [self assert: someNamedObject equals: [sut currentRepresentedObject]];
+  [sut addNamedObjectToContent: anotherNamedObject];
+  [self assert: anotherNamedObject equals: [sut currentRepresentedObject]];
+}
+
+- (void) testButtonTitleIsObjectName
+{
+  [sut setContent: [someNamedObject]];
+  [self assert: [someNamedObject name]
         equals: [self titleForItem: 0]];
 }
 
-- (void) test_butAnEmptyTitleIsReplacedWithSomethingDescriptive
+- (void) test_butAnEmptyNameCanBeReplacedWithSomethingDescriptive
 {
-  [sut setContent: [noProcedureGroup]];
-  [self assert: "* No procedures chosen *"
+  [sut setDefaultName: 'default'];
+  [sut setContent: [unnamedObject]];
+  [self assert: "default"
         equals: [self titleForItem: 0]];
 }
 
 - (void) test_theItemCanBeToldToRefreshItsTitle
 {
-  [sut setContent: [oneProcedureGroup]];
-  [self assert: [oneProcedureGroup name]
-        equals: [self titleForItem: 0]];
-  [sut setContent: [twoProcedureGroup]];
-  [sut refreshTitleForItemAtIndex: 0];
-  [self assert: [twoProcedureGroup name]
+  [sut addNamedObjectToContent: unnamedObject];
+  [unnamedObject setName: 'new name'];
+  [sut currentNameHasChanged];
+  [self assert: 'new name'
         equals: [self titleForItem: 0]];
 }
 

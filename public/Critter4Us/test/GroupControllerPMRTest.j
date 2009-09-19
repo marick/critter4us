@@ -10,6 +10,8 @@
   Animal jake;
   Procedure floating;
   Procedure radiology;
+
+  Group empty;
 }
 
 - (void)setUp
@@ -24,15 +26,7 @@
   jake = [[Animal alloc] initWithName: 'jake' kind: 'cow'];
   floating = [[Procedure alloc] initWithName: 'floating'];
   radiology = [[Procedure alloc] initWithName: 'radiology'];
-}
-
-- (void) testGroupCollectionStartsEmpty
-{
-  [scenario 
-    whileAwakening: function() {
-      [sut.groupCollectionView shouldReceive: @selector(setContent:)
-                                        with: []];
-    }];
+  empty = [[Group alloc] initWithProcedures: [] animals: []];
 }
 
 - (void) testCanBeToldToPrepareToEditGroups
@@ -55,14 +49,12 @@
 - (void) testPreparingToEditGroupsPlacesEmptyGroupOnGroupList
 {
   [scenario
-    testAction: function() {
+    during: function() {
       [sut prepareToEditGroups];
     }
-  andSo: function() {
-      [self assert: 1 equals: [[sut.groupCollectionView content] count]];
-      var group = [sut.groupCollectionView content][0];
-      [self assert: [] equals: [group procedures]];
-      [self assert: [] equals: [group animals]];
+  behold: function() { 
+      [sut.groupCollectionView shouldReceive: @selector(addNamedObjectToContent:)
+                                        with: empty];
     }
    ];
 }
@@ -75,14 +67,19 @@
       [sut.readOnlyProcedureCollectionView setContent: [floating]];
       [sut.readOnlyAnimalCollectionView setContent: [jake]];
     }
-  testAction: function() {
+  during: function() {
       [sut updateCurrentGroup];
+    }
+  behold: function() { 
+      [sut.groupCollectionView shouldReceive: @selector(currentRepresentedObject)
+                                   andReturn: empty];
+      [sut.groupCollectionView shouldReceive: @selector(currentNameHasChanged)];
     }
   andSo: function() {
       [self assert: [floating]
-            equals: [[sut currentGroup] procedures]];
+            equals: [empty procedures]];
       [self assert: [jake]
-            equals: [[sut currentGroup] animals]];
+            equals: [empty animals]];
     }
    ];
 }
@@ -98,8 +95,7 @@
       [sut updateCurrentGroup];
     }
   behold: function() {
-      [sut.groupCollectionView shouldReceive: @selector(refreshTitleForItemAtIndex:)
-                                        with: 0];
+      [sut.groupCollectionView shouldReceive: @selector(currentNameHasChanged)];
     }
    ];
 }
@@ -110,68 +106,17 @@
   [scenario
     previousAction: function() {
       [sut prepareToEditGroups];
-      [self currentGroupHasProcedures: [radiology] animals: [jake]];
     }
     during: function() {
         [sut newGroup: UnusedArgument];
     }
   behold: function() {
+      [sut.groupCollectionView shouldReceive: @selector(addNamedObjectToContent:)
+                                        with: empty];
       [sut.groupCollectionView shouldReceive: @selector(setNeedsDisplay:)
                                         with: YES];
-    }
-  andSo: function() {
-      var groups = [sut.groupCollectionView content];
-      [self assert: 2 equals: [groups count]];
-      [self assertGroup: groups[0]
-          hasProcedures: [radiology] animals: [jake]];
-      [self assertGroup: groups[1]
-          hasProcedures: [] animals: []];
     }];
 }
-
--(void) testFurtherChangesGoToTheNewGroup
-{
-  [scenario
-    previousAction: function() {
-      [sut prepareToEditGroups];
-      [self currentGroupHasProcedures: [radiology] animals: [jake]];
-      [sut newGroup: UnusedArgument];
-    }
-    testAction: function() {
-      [self currentGroupHasProcedures: [floating] animals: [betsy]]
-    }
-  andSo: function() {
-      var groups = [sut.groupCollectionView content];
-      [self assert: 2 equals: [groups count]];
-      [self assertGroup: groups[0]
-          hasProcedures: [radiology] animals: [jake]];
-      [self assertGroup: groups[1]
-          hasProcedures: [floating] animals: [betsy]];
-    }];
-}
-
-
--(void) testNewGroupEnsuresCurrentGroupIsUpToDate
-{
-  [scenario
-    previousAction: function() {
-      [sut prepareToEditGroups];
-      [self currentGroupHasProcedures: [radiology] animals: [jake]];
-      [sut.readOnlyAnimalCollectionView setContent: [jake, betsy]];
-      [sut.readOnlyProcedureCollectionView setContent: [radiology, floating]];
-    }
-    testAction: function() {
-        [sut newGroup: UnusedArgument];
-    }
-  andSo: function() {
-      var groups = [sut.groupCollectionView content];
-      [self assertGroup: groups[0]
-          hasProcedures: [radiology, floating] animals: [jake, betsy]];
-    }];
-}
-
-
-
 
 -(void) testNewGroupFlingsOutANotification
 {
@@ -184,21 +129,22 @@
     }];
 }
 
--(void) testNewGroup_Is_AddedIfCurrentlyBuildingIsEmpty
+-(void) testNewGroup_Is_AddedEvenIfCurrentlyBuildingOneIsUnfinished
   // This is specific behavior so that people can create groups 
   // they'll later edit.
 {
   [scenario
     previousAction: function() {
       [sut prepareToEditGroups];
-      [self currentGroupHasProcedures: [radiology] animals: []];
+      [sut.readOnlyProcedureCollectionView setContent: [radiology]];
+      [sut.readOnlyAnimalCollectionView setContent: []];
     }
-  testAction: function() {
+  during: function() {
       [sut newGroup: UnusedArgument]
     }
-  andSo: function() {
-      var groups = [sut.groupCollectionView content];
-      [self assert: 2 equals: [groups count]];
+  behold: function() {
+      [sut.groupCollectionView shouldReceive: @selector(addNamedObjectToContent:)
+                                        with: empty];
     }];
 }
 
@@ -207,15 +153,19 @@
 -(void) testCanSpillGroups
 {
   var dict = [CPMutableDictionary dictionary];
+  var someGroup = [[Group alloc] initWithProcedures: [radiology] animals: [jake]];
+  var another = [[Group alloc] initWithProcedures: [floating] animals: [betsy]];
+
   [scenario
     previousAction: function() {
       [sut prepareToEditGroups];
-      [self currentGroupHasProcedures: [radiology] animals: [jake]];
-      [sut newGroup: UnusedArgument];
-      [self currentGroupHasProcedures: [floating] animals: [betsy]];
     }
-    testAction: function() {
+  during: function() {
       [sut spillIt: dict];
+    }
+  behold: function() { 
+      [sut.groupCollectionView shouldReceive: @selector(content)
+                                   andReturn: [someGroup, another]];
     }
   andSo: function() {
       var groups = [dict valueForKey: 'groups'];
@@ -227,48 +177,6 @@
     }];
 }
 
--(void) testSpilledGroupIncludesMostRecentChanges
-{
-  var dict = [CPMutableDictionary dictionary];
-  [scenario
-    previousAction: function() {
-      [sut prepareToEditGroups];
-      [sut.readOnlyProcedureCollectionView setContent: [radiology]];
-      [sut.readOnlyAnimalCollectionView setContent: [jake]];
-    }
-    testAction: function() {
-      [sut spillIt: dict];
-    }
-  andSo: function() {
-      var groups = [dict valueForKey: 'groups'];
-      [self assert: 1 equals: [groups count]];
-      [self assertGroup: groups[0]
-          hasProcedures: [radiology] animals: [jake]];
-    }];
-}
-
-/* 
-   Not sure what I want the behavior here to be.
-
--(void)xxx_testAnEmptyCurrentGroupIsNotIncludedInSpilledData
-{
-  var dict = [CPMutableDictionary dictionary];
-  [scenario
-    previousAction: function() {
-      [self previousGroupWithProcedures: [radiology] animals: [jake]];
-      [self currentGroupWithProcedures: [] animals: []];
-    }
-    testAction: function() {
-      [sut spillIt: dict];
-    }
-  andSo: function() {
-      var groups = [dict valueForKey: 'groups'];
-      [self assert: 1 equals: [groups count]];
-      [self assertGroup: groups[0]
-          hasProcedures: [radiology] animals: [jake]];
-    }];
-}
-*/
 
 - (void) testCanBackUpToBeginningOfReservationWorkflow
 {
@@ -300,21 +208,12 @@
       [sut beginningOfReservationWorkflow];
     }
   behold: function() {
-      [sut.groupCollectionView shouldReceive: @selector(setContent:)
-                                        with:[]];
+      [sut.groupCollectionView shouldReceive: @selector(becomeEmpty)];
     }];
 }
 
 
 // util
-
--(void) currentGroupHasProcedures: procedures animals: animals
-{
-  [sut.readOnlyProcedureCollectionView setContent: procedures];
-  [sut.readOnlyAnimalCollectionView setContent: animals];
-  [sut updateCurrentGroup];
-}
-
 
 -(void)assertGroup: group hasProcedures: procedures animals: animals
 {
