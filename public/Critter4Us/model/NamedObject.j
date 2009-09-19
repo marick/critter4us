@@ -7,13 +7,19 @@
 
 - (id) initWithName: aName
 {
-  name = aName;
+  self = [super init];
+  [self setName: aName];
   return self;
 }
 
 - (CPString) name
 {
   return name;
+}
+
+- (void) setName: aName
+{
+  name = aName;
 }
 
 - (CPBoolean) isEqual: other
