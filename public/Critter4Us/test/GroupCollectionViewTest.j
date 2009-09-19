@@ -12,6 +12,7 @@
 
   Group noProcedureGroup;
   Group oneProcedureGroup;
+  Group twoProcedureGroup;
 }
 
 - (void) setUp
@@ -25,6 +26,8 @@
   floating = [[Procedure alloc] initWithName: 'floating'];
   radiology = [[Procedure alloc] initWithName: 'radiology'];
 
+  twoProcedureGroup = [[Group alloc] initWithProcedures: [radiology, floating]
+                                                animals: [betsy]];
   oneProcedureGroup = [[Group alloc] initWithProcedures: [radiology]
                                                 animals: [betsy]];
   noProcedureGroup = [[Group alloc] initWithProcedures: []
@@ -45,14 +48,37 @@
         equals: [self titleForItem: 0]];
 }
 
+- (void) test_theItemCanBeToldToRefreshItsTitle
+{
+  [sut setContent: [oneProcedureGroup]];
+  [self assert: [oneProcedureGroup name]
+        equals: [self titleForItem: 0]];
+  [sut setContent: [twoProcedureGroup]];
+  [sut refreshTitleForItemAtIndex: 0];
+  [self assert: [twoProcedureGroup name]
+        equals: [self titleForItem: 0]];
+}
+
 
 // util
 
 - (CPString) titleForItem: index
 {
-  var item = [[sut items] objectAtIndex: 0];
-  var view = [item view];
-  return [view title];
+  return [[self buttonAt: index] title];
 }
+
+- (CPBoolean) isHighlighted: index
+{
+  
+  var button = [self buttonAt: index];
+  return [[button themeState] isEqual: CPThemeStateDefault];
+}
+
+- (CPString) buttonAt: index
+{
+  var item = [[sut items] objectAtIndex: index];
+  return [item view];
+}
+
 
 @end

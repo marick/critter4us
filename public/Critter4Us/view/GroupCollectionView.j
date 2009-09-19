@@ -20,6 +20,11 @@
   return self;
 }
 
+- (void) refreshTitleForItemAtIndex: index
+{
+  [[[self items] objectAtIndex: index] refreshTitle];
+}
+
 @end
 
 @implementation GroupCollectionViewItem : CPCollectionViewItem
@@ -29,7 +34,12 @@
 - (void)setRepresentedObject:(id)aGroup
 {
   [super setRepresentedObject: aGroup];
-  var title = [aGroup name];
+  [self refreshTitle];
+}
+
+- (void) refreshTitle
+{
+  var title = [[self representedObject] name];
   if ([title isEqual: ""])
   {
     title = "* No procedures chosen *";
