@@ -73,6 +73,7 @@
   var procedures = [aNotification object];
   var aggregate = [Procedure compositeFrom: procedures];
   [animalController withholdAnimals: [aggregate animalsThisProcedureExcludes]];
+  [groupController updateCurrentGroup];
 }
 
 -(void) returnToBeginningOfGroupCreation: aNotification

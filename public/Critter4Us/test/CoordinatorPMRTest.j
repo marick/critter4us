@@ -73,7 +73,7 @@
 }
 
 
--(void)testThatUpdatesAnimalControllerWhenReceivingProcedureNotification
+-(void)testThatUpdatesRelevantControllersWhenReceivingProcedureNotification
 {
   var animals = [ [[Animal alloc] initWithName: 'animal0' kind: 'cow'],
                   [[Animal alloc] initWithName: 'animal1' kind: 'horse'],
@@ -91,6 +91,7 @@
    behold: function() {
       [sut.animalController shouldReceive:@selector(withholdAnimals:)
                                      with: [[animals[0], animals[2]]]];
+      [sut.groupController shouldReceive:@selector(updateCurrentGroup)];
     }];
 }
 
