@@ -60,6 +60,26 @@
   [self assert: anotherNamedObject equals: [sut currentRepresentedObject]];
 }
 
+- (void) testAnAddedElementBecomesVisiblyCurrent
+{
+  alert("NOTE: Can't test to see if object becomes visibly current.", "note");
+  return;
+  [sut addNamedObjectToContent: someNamedObject];
+  [self assertTrue: [self isVisiblyCurrent: 0]];
+}
+
+- (void) testAndThePreviouslyElementReverts
+{
+  alert("NOTE: Can't test to see if object stops being visibly current.");
+  return;
+  [sut addNamedObjectToContent: someNamedObject];
+  [sut addNamedObjectToContent: someNamedObject];
+  [self assertFalse: [self isVisiblyCurrent: 0]];
+  [self assertTrue: [self isVisiblyCurrent: 1]];
+}
+
+
+
 - (void) testButtonTitleIsObjectName
 {
   [sut setContent: [someNamedObject]];
@@ -92,9 +112,12 @@
   return [[self buttonAt: index] title];
 }
 
-- (CPBoolean) isHighlighted: index
+
+// TODO: Making the button look like the default button is a lame way to 
+// make it stand out. I can't figure out how to make the theme state change, though. 
+   
+- (CPBoolean) isVisiblyCurrent: index
 {
-  
   var button = [self buttonAt: index];
   return [[button themeState] isEqual: CPThemeStateDefault];
 }
