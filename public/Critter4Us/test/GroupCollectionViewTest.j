@@ -14,7 +14,7 @@
 {
   sut = [[GroupCollectionView alloc] initWithFrame: CGRectMakeZero()];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  // [scenario sutHasDownwardCollaborators: ['delegate']];
+  [scenario sutHasDownwardCollaborators: ['controller']];
 
   someNamedObject = [[NamedObject alloc] initWithName: 'some named object'];
   anotherNamedObject = [[NamedObject alloc] initWithName: 'another named object'];
@@ -62,16 +62,12 @@
 
 - (void) testAnAddedElementBecomesVisiblyCurrent
 {
-  alert("NOTE: Can't test to see if object becomes visibly current.", "note");
-  return;
   [sut addNamedObjectToContent: someNamedObject];
   [self assertTrue: [self isVisiblyCurrent: 0]];
 }
 
 - (void) testAndThePreviouslyElementReverts
 {
-  alert("NOTE: Can't test to see if object stops being visibly current.");
-  return;
   [sut addNamedObjectToContent: someNamedObject];
   [sut addNamedObjectToContent: someNamedObject];
   [self assertFalse: [self isVisiblyCurrent: 0]];
@@ -104,6 +100,25 @@
         equals: [self titleForItem: 0]];
 }
 
+- (void) testClickingAButtonActsToSelectThatCollectionViewIndex
+{
+  [scenario
+    previousAction: function() {
+      [CPApplication sharedApplication]; // Needed for performClick: to work.
+      [sut setTarget: sut.controller];
+      [sut setAction: @selector(newGroupChosen:)];
+      [sut addNamedObjectToContent: someNamedObject];
+      [sut addNamedObjectToContent: anotherNamedObject];
+    }
+  during: function() {
+      [[self buttonAt: 1] performClick: UnusedArgument];
+    }
+  behold: function() {
+      [sut.controller shouldReceive: @selector(newGroupChosen:)
+                               with: sut];
+    }];
+}
+
 
 // util
 
@@ -118,11 +133,13 @@
    
 - (CPBoolean) isVisiblyCurrent: index
 {
-  var button = [self buttonAt: index];
-  return [[button themeState] isEqual: CPThemeStateDefault];
+  // No way to ask the button if it's the default button, so we have its item
+  // keep track of whether it thinks it is.
+  // return [[button themeState] isEqual: CPThemeStateDefault];
+  return [[self buttonAt: index] distinguished];
 }
 
-- (CPString) buttonAt: index
+- (ConformingButton) buttonAt: index
 {
   var item = [[sut items] objectAtIndex: index];
   return [item view];
