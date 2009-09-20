@@ -38,6 +38,12 @@
   [NotificationCenter postNotificationName: NewGroupNews object: nil];
 }
 
+- (void) differentGroupChosen: sender
+{
+  [NotificationCenter postNotificationName: SwitchToGroupNews
+                                    object: [groupCollectionView currentRepresentedObject]];
+}
+
 - (void) spillIt: (CPMutableDictionary) dict
 {
   var allGroups = [[groupCollectionView content] copy];

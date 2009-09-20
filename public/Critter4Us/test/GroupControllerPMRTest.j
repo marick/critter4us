@@ -200,6 +200,25 @@
     }];
 }
 
+- (void) testAnnouncesThatRestOfPageShouldSwitchToGroup
+{
+  var group = [[Group alloc] initWithProcedures: [floating] animals: [jake]];
+  [scenario
+    previousAction: function() {
+      [sut prepareToEditGroups];
+    }
+  during: function() {
+      [sut differentGroupChosen: sut.groupCollectionView];
+    }
+  behold: function() { 
+      [sut.groupCollectionView shouldReceive: @selector(currentRepresentedObject)
+                                   andReturn: group];
+      [self listenersWillReceiveNotification: SwitchToGroupNews
+                            containingObject: group];
+    }
+   ];
+}
+
 
 - (void) testBackingUpToTheBeginningForgetsOldGroups
 {

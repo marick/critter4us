@@ -7,6 +7,7 @@ ProceduresChosenNews = "These procedures have been chosen";
 InitialDataForACourseSessionNews = "course focus data has arrived";
 TimeToReserveNews = "time to reserve";
 NewGroupNews = "new group created";
+SwitchToGroupNews = "switch to this group";
 
 // Route names
 StoreReservationRoute = @"store_reservation";
