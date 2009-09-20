@@ -1,9 +1,9 @@
-@import <Critter4Us/view/GroupCollectionView.j>
+@import <Critter4Us/view/ButtonCollectionView.j>
 @import "ScenarioTestCase.j"
 
-@implementation GroupCollectionViewTest : ScenarioTestCase
+@implementation ButtonCollectionViewTest : ScenarioTestCase
 {
-  GroupCollectionView sut;
+  ButtonCollectionView sut;
   
   NamedObject someNamedObject;
   NamedObject anotherNamedObject;
@@ -12,7 +12,7 @@
 
 - (void) setUp
 {
-  sut = [[GroupCollectionView alloc] initWithFrame: CGRectMakeZero()];
+  sut = [[ButtonCollectionView alloc] initWithFrame: CGRectMakeZero()];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasDownwardCollaborators: ['controller']];
 
@@ -106,7 +106,7 @@
     previousAction: function() {
       [CPApplication sharedApplication]; // Needed for performClick: to work.
       [sut setTarget: sut.controller];
-      [sut setAction: @selector(newGroupChosen:)];
+      [sut setAction: @selector(differentGroupChosen:)];
       [sut addNamedObjectToContent: someNamedObject];
       [sut addNamedObjectToContent: anotherNamedObject];
     }
@@ -114,7 +114,7 @@
       [[self buttonAt: 1] performClick: UnusedArgument];
     }
   behold: function() {
-      [sut.controller shouldReceive: @selector(newGroupChosen:)
+      [sut.controller shouldReceive: @selector(differentGroupChosen:)
                                with: sut];
     }];
 }

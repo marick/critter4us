@@ -1,8 +1,7 @@
 @import <AppKit/CPCollectionView.j>
 @import "DebuggableCollectionView.j"
-@import "../model/Group.j"
 
-@implementation GroupCollectionView : CPCollectionView
+@implementation ButtonCollectionView : CPCollectionView
 {
   CPInteger currentIndex;
   CPString defaultName;
@@ -15,7 +14,7 @@
   self = [super initWithFrame: rect];
   [self setMinItemSize:CGSizeMake(300, TextLineHeight)];
   [self setMaxItemSize:CGSizeMake(300, TextLineHeight)];
-  var itemPrototype = [[XYXCollectionViewItem alloc] init];
+  var itemPrototype = [[ButtonCollectionViewItem alloc] init];
   var button = [[ConformingButton alloc]
                      initWithFrame: CGRectMakeZero()];
   [itemPrototype setView: button];
@@ -104,7 +103,7 @@
 - (CPCollectionViewItem) newItemForRepresentedObject: (id) anObject
 {
   var item = [super newItemForRepresentedObject: anObject];
-  [item setContainingCollectionView: self]; // See note in XYXCollectionViewItem
+  [item setContainingCollectionView: self]; // See note in ButtonCollectionViewItem
   // Following has to be done in this object because the item's 
   // setRepresentedObject is done before the previous line.
   [item refreshButtonTitle];
@@ -114,13 +113,13 @@
 
 @end
 
-@implementation XYXCollectionViewItem : CPCollectionViewItem
+@implementation ButtonCollectionViewItem : CPCollectionViewItem
 {
   // The implementation of CollectionViewItem#collectionView
   // doesn't return the collectionview, though I don't know why.
   // Therefore I'm using a separate way of getting at it.
   // TODO: make a test for this, try it with later versions of Cappuccino.
-  GroupCollectionView containingCollectionView;
+  ButtonCollectionView containingCollectionView;
 }
 
 - (void) setView: aButton
@@ -140,7 +139,7 @@
   containingCollectionView = aCollectionView;
 }
 
--(GroupCollectionView) containingCollectionView
+-(ButtonCollectionView) containingCollectionView
 {
   return containingCollectionView;
 }
@@ -180,7 +179,7 @@
   CPBoolean isDistinguished;
 }
 
-- (void)setRepresentedObject:(id)aGroup
+- (void)setRepresentedObject:(id)anObject
 {
   // This is required by the CPCollectionView protocol.
 }

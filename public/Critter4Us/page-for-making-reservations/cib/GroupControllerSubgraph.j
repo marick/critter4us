@@ -1,7 +1,7 @@
 @import "Subgraph.j"
 @import "../GroupControllerPMR.j"
 @import "../ConstantsPMR.j"
-@import "../../view/GroupCollectionView.j"
+@import "../../view/ButtonCollectionView.j"
 
 @implementation GroupControllerSubgraph : Subgraph
 {
@@ -63,9 +63,11 @@
   [newGroupButton setAction: @selector(newGroup:)];
 
   var rect = CGRectMake(0, 500, 1000, 100);
-  groupCollectionView = [[GroupCollectionView alloc] initWithFrame: rect];
+  groupCollectionView = [[ButtonCollectionView alloc] initWithFrame: rect];
   [groupCollectionView setHidden: YES];
   [groupCollectionView setDefaultName: "* No procedures chosen *"];
+  [groupCollectionView setTarget: controller];
+  [groupCollectionView setAction: @selector(differentGroupChosen:)];
   [pageView addSubview: groupCollectionView];
 }
 
@@ -75,7 +77,6 @@
   controller.readOnlyProcedureCollectionView = readOnlyProcedureCollectionView;
   controller.readOnlyAnimalCollectionView = readOnlyAnimalCollectionView;
   controller.panel = panel;
-  controller.newGroupButton = newGroupButton;
   controller.groupCollectionView = groupCollectionView;
 }
 
