@@ -88,19 +88,13 @@
 
 - (void) gatherAndSendNewReservation: aNotification
 {
-  var dict = [CPMutableDictionary dictionary];
-  [reservationDataController spillIt: dict];
-  [groupController spillIt: dict];
+  var dict = [self gather];
   var reservationID = [persistentStore makeReservation: dict];
-
   [reservationDataController offerReservationView: reservationID];
-
-  [reservationDataController beginningOfReservationWorkflow];
-  [procedureController beginningOfReservationWorkflow];
-  [animalController beginningOfReservationWorkflow];
-  [groupController beginningOfReservationWorkflow];
-
+  [self beginPostReservationWorkflowStep];
 }
+
+// Util
 
 - (void) filterAccordingToProcedures: procedures
 {
@@ -108,5 +102,19 @@
     [animalController withholdAnimals: [aggregate animalsThisProcedureExcludes]];
 }
 
+- (CPDictionary) gather
+{
+  var dict = [CPMutableDictionary dictionary];
+  [reservationDataController spillIt: dict];
+  [groupController spillIt: dict];
+  return dict;
+}
 
+- (CPDictionary) beginPostReservationWorkflowStep
+{
+  [reservationDataController beginningOfReservationWorkflow];
+  [procedureController beginningOfReservationWorkflow];
+  [animalController beginningOfReservationWorkflow];
+  [groupController beginningOfReservationWorkflow];
+}
 @end
