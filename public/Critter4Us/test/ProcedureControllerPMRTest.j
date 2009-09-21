@@ -19,28 +19,13 @@
 }
 
 
-- (void)testChoosingAProcedureAnnouncesWhichProceduresHaveBeenChosen
-{
-  [scenario
-   previousAction: function() {
-      [sut beginUsing: [floating, milking, dancing]];
-    }
-  during: function() {
-      [sut objectsRemoved: [floating] fromList: sut.available];
-    }
-  behold: function() {
-      [sut.used shouldReceive: @selector(content) andReturn: [floating]];
-      [self listenersWillReceiveNotification: ProceduresChosenNews
-                            containingObject: [floating]];
-    }];
-}
-
 - (void) testSpillingData
 {
   var dict = [CPMutableDictionary dictionary];
   [scenario
   previousAction: function() {
-      [sut.used setContent: [floating, milking, dancing]];
+      [sut allPossibleObjects: [floating, milking, dancing]];
+      [sut presetUsed: [floating, milking, dancing]];
     }
   testAction: function() { 
       [sut spillIt: dict];
