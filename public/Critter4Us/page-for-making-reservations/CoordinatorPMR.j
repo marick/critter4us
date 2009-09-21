@@ -30,8 +30,8 @@
 
   [NotificationCenter
    addObserver: self
-      selector: @selector(proceduresInUse:)
-          name: ProceduresChosenNews
+      selector: @selector(usedObjectsHaveChanged:)
+          name: DifferentObjectsUsedNews
         object: nil];
 
   [NotificationCenter
@@ -44,6 +44,12 @@
    addObserver: self
       selector: @selector(returnToBeginningOfGroupCreation:)
           name: NewGroupNews
+        object: nil];
+
+  [NotificationCenter
+   addObserver: self
+      selector: @selector(switchToNewGroup:)
+          name: SwitchToGroupNews
         object: nil];
 }
 
@@ -64,16 +70,19 @@
 {
   var animals = [[aNotification object] valueForKey: 'animals'];
   var procedures = [[aNotification object] valueForKey: 'procedures'];
-  [animalController beginUsing: animals];
-  [procedureController beginUsing: procedures];
+  [animalController allPossibleObjects: animals];
+  [procedureController allPossibleObjects: procedures];
 }
 
-- (void) proceduresInUse: aNotification
+- (void) usedObjectsHaveChanged: aNotification
 {
-  var procedures = [aNotification object];
-  var aggregate = [Procedure compositeFrom: procedures];
-  [animalController withholdAnimals: [aggregate animalsThisProcedureExcludes]];
   [groupController updateCurrentGroup];
+  if ([aNotification object] == procedureController)
+  {
+    var procedures = [[aNotification userInfo] valueForKey: 'used'];
+    var aggregate = [Procedure compositeFrom: procedures];
+    [animalController withholdAnimals: [aggregate animalsThisProcedureExcludes]];
+  }
 }
 
 -(void) returnToBeginningOfGroupCreation: aNotification
@@ -83,7 +92,13 @@
   [procedureController stopUsingAll];
 }
 
-
+-(void) switchToNewGroup: aNotification
+{
+  [animalController withholdAnimals: []];
+  var group = [aNotification object];
+  [animalController presetUsed: [group animals]];
+  [procedureController presetUsed: [group procedures]];
+}
 
 - (void) gatherAndSendNewReservation: aNotification
 {

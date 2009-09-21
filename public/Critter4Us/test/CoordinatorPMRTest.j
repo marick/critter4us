@@ -7,6 +7,12 @@
 
 @implementation CoordinatorPMRTest : ScenarioTestCase
 {
+  Animal betsy;
+  Animal jake;
+  Procedure floating;
+  Procedure radiology;
+
+  Group someGroup;
 }
 
 - (void)setUp
@@ -15,6 +21,14 @@
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasUpwardCollaborators: ['reservationDataController', 'animalController', 'procedureController', 'groupController', 'pageController']];
   [scenario sutHasDownwardCollaborators: ['persistentStore']];
+
+  betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
+  jake = [[Animal alloc] initWithName: 'jake' kind: 'cow'];
+  floating = [[Procedure alloc] initWithName: 'floating'];
+  radiology = [[Procedure alloc] initWithName: 'radiology'];
+  someGroup = [[Group alloc] initWithProcedures: [floating, radiology]
+                                        animals: [jake, betsy]];
+
 }
 
 - (void) testSetsUpControlsAppropriatelyWhenReservationDataIsAvailable
@@ -65,15 +79,15 @@
                   withObject: dict];
     }
    behold: function() {
-      [sut.animalController shouldReceive: @selector(beginUsing:)
+      [sut.animalController shouldReceive: @selector(allPossibleObjects:)
                                      with: [[animal]]];
-      [sut.procedureController shouldReceive: @selector(beginUsing:)
+      [sut.procedureController shouldReceive: @selector(allPossibleObjects:)
                                      with: [[proc]]];
     }];
 }
 
 
--(void)testThatUpdatesRelevantControllersWhenReceivingProcedureNotification
+-(void)testThatTellsAnimalControllerToUpdateWhenProceduresChange
 {
   var animals = [ [[Animal alloc] initWithName: 'animal0' kind: 'cow'],
                   [[Animal alloc] initWithName: 'animal1' kind: 'horse'],
@@ -83,17 +97,33 @@
                                            excluding: [animals[0]]],
                      [[Procedure alloc] initWithName: 'procedure1'
                                            excluding: [animals[2]]]];
+
+  var userInfo = [CPDictionary dictionaryWithJSObject: {'used': procedures}];
   [scenario
    during: function() {
-      [self sendNotification: ProceduresChosenNews
-                  withObject: procedures];
+      [self sendNotification: DifferentObjectsUsedNews
+                  withObject: sut.procedureController
+                    userInfo: userInfo];
     }
    behold: function() {
       [sut.animalController shouldReceive:@selector(withholdAnimals:)
                                      with: [[animals[0], animals[2]]]];
+    }];
+}
+
+
+-(void)testThatUpdatesRelevantControllersWhenReceivingNewsOfAnyChangeInWhatIsUsed
+{
+  [scenario
+   during: function() {
+      [self sendNotification: DifferentObjectsUsedNews];
+    }
+   behold: function() {
       [sut.groupController shouldReceive:@selector(updateCurrentGroup)];
     }];
 }
+
+
 
 -(void)testResettingOfControllersWhenNewGroupIsCreated
 {
@@ -106,6 +136,24 @@
                                      with: [[]]];
       [sut.animalController shouldReceive:@selector(stopUsingAll)];
       [sut.procedureController shouldReceive:@selector(stopUsingAll)];
+    }];
+}
+
+
+-(void)testSwitchingToAGivenGroup
+{
+  [scenario
+   during: function() {
+      [self sendNotification: SwitchToGroupNews
+                  withObject: someGroup];
+    }
+   behold: function() {
+      [sut.animalController shouldReceive:@selector(withholdAnimals:)
+                                     with: [[]]];
+      [sut.animalController shouldReceive:@selector(presetUsed:)
+                                     with: [[someGroup animals]]];
+      [sut.procedureController shouldReceive:@selector(presetUsed:)
+                                        with: [[someGroup procedures]]];
     }];
 }
 
