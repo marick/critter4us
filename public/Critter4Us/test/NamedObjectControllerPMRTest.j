@@ -1,9 +1,13 @@
 @import <Critter4Us/page-for-making-reservations/NamedObjectControllerPMR.j>
-@import <Critter4US/model/NamedObject.j>
+@import <Critter4Us/model/NamedObject.j>
+@import <Critter4Us/model/Group.j>
 @import "ScenarioTestCase.j"
 
 @implementation NamedObjectControllerPMRTest : ScenarioTestCase
 {
+  NamedObject betsy;
+  NamedObject spike;
+  NamedObject fang;
 }
 
 - (void)setUp
@@ -12,16 +16,18 @@
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasUpwardCollaborators: ['available', 'used']];
 
+  betsy = [[NamedObject alloc] initWithName: 'betsy'];
+  spike = [[NamedObject alloc] initWithName: 'spike'];
+  fang = [[NamedObject alloc] initWithName: 'fang'];
 }
 
 - (void) testHandsObjectsThemselvesToCollectionView
 {
-  var objects = [ [[NamedObject alloc] initWithName: 'betsy'],
-                  [[NamedObject alloc] initWithName: 'josie']];
+  var objects = [betsy, spike];
 
   [scenario
     during: function() {
-      [sut beginUsing: objects];
+      [sut allPossibleObjects: objects];
     } 
   behold: function() {
       [sut.available shouldReceive: @selector(setContent:)
@@ -37,18 +43,15 @@
    ];
 }
 
-
 - (void) testSelectionMovesObjectFromAvailableToUsed
 {
-  var out1 = [[NamedObject alloc] initWithName: 'out1'];
-  var out2 = [[NamedObject alloc] initWithName: 'out2'];
   [scenario 
     during: function() { 
-      [sut objectsRemoved: [out1, out2] fromList: sut.available];
+      [sut objectsRemoved: [betsy, spike] fromList: sut.available];
     }
   behold: function() { 
       [sut.used shouldReceive: @selector(addContent:)
-                         with: [[out1, out2]]];
+                         with: [[betsy, spike]]];
       [sut.used shouldReceive: @selector(setNeedsDisplay:)
                          with: YES];
     }];
@@ -56,19 +59,71 @@
 
 - (void) testSelectionMovesObjectFromUsedToAvailable
 {
-  var out1 = [[NamedObject alloc] initWithName: 'out1'];
-  var out2 = [[NamedObject alloc] initWithName: 'out2'];
   [scenario 
     during: function() { 
-      [sut objectsRemoved: [out1, out2] fromList: sut.used];
+      [sut objectsRemoved: [betsy, spike] fromList: sut.used];
     }
   behold: function() { 
       [sut.available shouldReceive: @selector(addContent:)
-                         with: [[out1, out2]]];
+                         with: [[betsy, spike]]];
       [sut.available shouldReceive: @selector(setNeedsDisplay:)
                          with: YES];
     }];
 }
+
+- (void)testMovingAnObjectAnnouncesUsedListIsUpdated
+{
+  [scenario
+   previousAction: function() {
+      [sut allPossibleObjects: [betsy, spike]];
+    }
+  during: function() {
+      [sut objectsRemoved: [betsy] fromList: sut.available];
+    }
+  behold: function() {
+      [sut.used shouldReceive: @selector(content)
+                    andReturn: [betsy]];
+            [self listenersWillReceiveNotification: DifferentObjectsUsedNews
+                                  containingObject: sut
+                                            andKey: 'used'
+                                              with: [betsy]];
+    }];
+}
+
+
+- (void) testCanInitializedUsedArrayFromASource
+{
+  [scenario 
+    previousAction: function() { 
+      [sut allPossibleObjects: [betsy, spike, fang]];
+    }
+    testAction: function() { 
+      [sut presetUsed: [betsy, fang] ];
+    }
+  andSo: function() {
+      [self assert: [spike] equals: [sut.available content]];
+      [self assert: [betsy, fang] equals: [sut.used content]];
+    }];
+}
+
+
+- (void) presetsDoNotCountAsNotifiableMovement
+{
+  [scenario 
+    previousAction: function() { 
+      [sut allPossibleObjects: [betsy, spike, fang]];
+    }
+    during: function() { 
+      [sut presetUsed: [betsy, fang] ];
+    }
+  behold: function() {
+      [self listenersHearNothing];
+    }];
+}
+
+
+
+
 
 - (void) testCanMoveAllUsedObjectsBack
 {
@@ -77,8 +132,8 @@
   var c = [[NamedObject alloc] initWithName: 'c'];
   [scenario
     previousAction: function() { 
-      [sut.available setContent: [a]];
-      [sut.used setContent: [b, c]];
+      [sut allPossibleObjects: [a, b, c]];
+      [sut presetUsed: [b, c]];
     }
     testAction: function() {
       [sut stopUsingAll];
@@ -90,6 +145,7 @@
             equals: [sut.used content]];
     }];
 }
+
 
 - (void) testCanBackUpToBeginningOfReservationWorkflow
 {
@@ -112,7 +168,5 @@
       [self assert: [] equals: [sut.available content]];
     }];
 }
-
-
 
 @end	
