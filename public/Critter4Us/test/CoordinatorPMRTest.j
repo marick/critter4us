@@ -133,15 +133,36 @@
                   withObject: someGroup];
     }
    behold: function() {
-      [sut.animalController shouldReceive:@selector(withholdAnimals:)
-                                     with: [[]]];
       [sut.animalController shouldReceive:@selector(presetUsed:)
                                      with: [[someGroup animals]]];
       [sut.procedureController shouldReceive:@selector(presetUsed:)
                                         with: [[someGroup procedures]]];
+      // ...
     }];
 }
 
+-(void)testThatSwitchingToAGivenGroupMakesAnimalControllerUpdate
+{
+  var animals = [ [[Animal alloc] initWithName: 'animal0' kind: 'cow'],
+                  [[Animal alloc] initWithName: 'animal1' kind: 'horse'],
+                  [[Animal alloc] initWithName: 'animal2' kind: 'horse']];
+
+  var procedures = [ [[Procedure alloc] initWithName: 'procedure0'
+                                           excluding: [animals[0]]],
+                     [[Procedure alloc] initWithName: 'procedure1'
+                                           excluding: []]];
+
+  var group = [[Group alloc] initWithProcedures: procedures animals: animals];
+  [scenario
+   during: function() {
+      [self sendNotification: SwitchToGroupNews
+                  withObject: group];
+    }
+   behold: function() {
+      [sut.animalController shouldReceive:@selector(withholdAnimals:)
+                                     with: [[animals[0]]]];
+    }];
+}
 
 -(void) testCollectsReservationDataAndSendsToPersistentStore
 {

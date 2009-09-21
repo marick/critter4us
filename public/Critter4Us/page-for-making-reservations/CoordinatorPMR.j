@@ -74,17 +74,16 @@
   if ([aNotification object] == procedureController)
   {
     var procedures = [[aNotification userInfo] valueForKey: 'used'];
-    var aggregate = [Procedure compositeFrom: procedures];
-    [animalController withholdAnimals: [aggregate animalsThisProcedureExcludes]];
+    [self filterAccordingToProcedures: procedures];
   }
 }
 
 -(void) switchToNewGroup: aNotification
 {
-  [animalController withholdAnimals: []];
   var group = [aNotification object];
   [animalController presetUsed: [group animals]];
   [procedureController presetUsed: [group procedures]];
+  [self filterAccordingToProcedures: [group procedures]];
 }
 
 - (void) gatherAndSendNewReservation: aNotification
@@ -102,5 +101,12 @@
   [groupController beginningOfReservationWorkflow];
 
 }
+
+- (void) filterAccordingToProcedures: procedures
+{
+    var aggregate = [Procedure compositeFrom: procedures];
+    [animalController withholdAnimals: [aggregate animalsThisProcedureExcludes]];
+}
+
 
 @end
