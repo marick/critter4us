@@ -21,7 +21,7 @@
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasUpwardCollaborators: [
        'readOnlyProcedureCollectionView', 'readOnlyAnimalCollectionView',
-        'groupCollectionView', 'newGroupButton']];
+       'groupCollectionView', 'newGroupButton']];
 
   betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
   jake = [[Animal alloc] initWithName: 'jake' kind: 'cow'];
@@ -82,6 +82,36 @@
             equals: [empty procedures]];
       [self assert: [jake]
             equals: [empty animals]];
+    }
+   ];
+}
+
+- (void) testWillBecomeAlarmedIfMirroredGroupContainsExcludedAnimals
+  // This looks for data inconsistency bugs.
+{
+  var excluder = [[Procedure alloc] initWithName: 'excluder' excluding: [jake]];
+  var mockPopup = [[Mock alloc] initWithName: 'popup'];
+  [scenario
+    previousAction: function() {
+      [sut prepareToEditGroups];
+      [sut.readOnlyProcedureCollectionView setContent: [excluder]];
+      [sut.readOnlyAnimalCollectionView setContent: [jake]];
+    }
+  during: function() {
+      sut.unconditionalPopup = mockPopup; // TODO: there needs to be some idiom for overriding awakeFromCib-set objects. Or have a popup as a global resource?
+      [sut updateCurrentGroup];
+    }
+  behold: function() { 
+      [sut.groupCollectionView shouldReceive: @selector(currentRepresentedObject)
+                                   andReturn: empty];
+      [mockPopup shouldReceive: @selector(setMessage:)
+                          with: function(message) {
+          return message.match(/bug.*jake/)
+        }];
+      [mockPopup shouldReceive: @selector(run)]
+    }
+  andSo: function() {
+      [self assertTrue: [mockPopup wereExpectationsFulfilled]];
     }
    ];
 }

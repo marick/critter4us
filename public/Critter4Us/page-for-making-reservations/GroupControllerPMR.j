@@ -1,3 +1,4 @@
+@import "../view/UnconditionalPopup.j"
 @import "../controller/PanelController.j"
 @import "../model/Group.j"
 @import "ConstantsPMR.j"
@@ -13,8 +14,15 @@
   CPCollectionView readOnlyProcedureCollectionView;
   CPCollectionView readOnlyAnimalCollectionView;
   CPCollectionView groupCollectionView;
+
+  UnconditionalPopup unconditionalPopup;
 }
 
+
+- (void) awakeFromCib
+{
+  unconditionalPopup = [[UnconditionalPopup alloc] init];
+}
 
 - (void) beginningOfReservationWorkflow
 {
@@ -52,9 +60,14 @@
 
 - (void) updateCurrentGroup
 {
-  [[groupCollectionView currentRepresentedObject]
-    setProcedures: [readOnlyProcedureCollectionView content]
-          animals: [readOnlyAnimalCollectionView content]];
+  var group = [groupCollectionView currentRepresentedObject];
+  [group setProcedures: [readOnlyProcedureCollectionView content]
+               animals: [readOnlyAnimalCollectionView content]];
+  if ([group containsExcludedAnimals])
+  {
+    [unconditionalPopup setMessage: [self extraAnimalsMessage: [group animalsIncorrectlyPresent]]];
+    [unconditionalPopup run];
+  }
   [groupCollectionView currentNameHasChanged];
 }
 
@@ -68,6 +81,12 @@
 - (void) addEmptyGroupToCollection
 {
   [groupCollectionView addNamedObjectToContent: [self emptyGroup]];
+}
+
+- (void) extraAnimalsMessage: extras
+{
+  return "You have found a bug. Please report it. These animals should not have been allowed in the group: " + 
+    [extras description]
 }
 
 @end
