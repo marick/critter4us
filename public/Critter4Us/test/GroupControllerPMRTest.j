@@ -12,6 +12,7 @@
   Procedure radiology;
 
   Group empty;
+  Group notEmpty;
 }
 
 - (void)setUp
@@ -27,6 +28,7 @@
   floating = [[Procedure alloc] initWithName: 'floating'];
   radiology = [[Procedure alloc] initWithName: 'radiology'];
   empty = [[Group alloc] initWithProcedures: [] animals: []];
+  notEmpty = [[Group alloc] initWithProcedures: [floating] animals: [betsy]];
 }
 
 - (void) testCanBeToldToPrepareToEditGroups
@@ -121,11 +123,14 @@
 -(void) testNewGroupFlingsOutANotification
 {
   [scenario
-  during: function() {
+    during: function() {
       [sut newGroup: UnusedArgument]
     }
   behold: function() {
-      [self listenersWillReceiveNotification: NewGroupNews];
+      [sut.groupCollectionView shouldReceive: @selector(currentRepresentedObject)
+                                   andReturn: empty];
+      [self listenersWillReceiveNotification: SwitchToGroupNews
+                            containingObject: empty];
     }];
 }
 

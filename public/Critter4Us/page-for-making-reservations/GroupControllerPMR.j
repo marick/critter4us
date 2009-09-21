@@ -35,7 +35,7 @@
 {
   [self addEmptyGroupToCollection];
   [groupCollectionView setNeedsDisplay: YES];
-  [NotificationCenter postNotificationName: NewGroupNews object: nil];
+  [self differentGroupChosen: UnusedArgument];
 }
 
 - (void) differentGroupChosen: sender

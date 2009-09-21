@@ -125,21 +125,6 @@
 
 
 
--(void)testResettingOfControllersWhenNewGroupIsCreated
-{
-  [scenario
-   during: function() {
-      [self sendNotification: NewGroupNews];
-    }
-   behold: function() {
-      [sut.animalController shouldReceive:@selector(withholdAnimals:)
-                                     with: [[]]];
-      [sut.animalController shouldReceive:@selector(stopUsingAll)];
-      [sut.procedureController shouldReceive:@selector(stopUsingAll)];
-    }];
-}
-
-
 -(void)testSwitchingToAGivenGroup
 {
   [scenario

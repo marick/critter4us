@@ -42,12 +42,6 @@
 
   [NotificationCenter
    addObserver: self
-      selector: @selector(returnToBeginningOfGroupCreation:)
-          name: NewGroupNews
-        object: nil];
-
-  [NotificationCenter
-   addObserver: self
       selector: @selector(switchToNewGroup:)
           name: SwitchToGroupNews
         object: nil];
@@ -83,13 +77,6 @@
     var aggregate = [Procedure compositeFrom: procedures];
     [animalController withholdAnimals: [aggregate animalsThisProcedureExcludes]];
   }
-}
-
--(void) returnToBeginningOfGroupCreation: aNotification
-{
-  [animalController withholdAnimals: []];
-  [animalController stopUsingAll];
-  [procedureController stopUsingAll];
 }
 
 -(void) switchToNewGroup: aNotification
