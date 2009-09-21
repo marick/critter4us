@@ -23,7 +23,7 @@
 {
   [scenario 
     during: function() {
-      [sut beginUsing: [betty, dave, fred]];
+      [sut allPossibleObjects: [betty, dave, fred]];
     }
     behold: function() { 
       [sut.available shouldReceive: @selector(setNeedsDisplay:) with: YES];
@@ -41,7 +41,7 @@
 {
   [scenario
    previousAction: function() {
-      [sut beginUsing: [betty, dave, fred]];
+      [sut allPossibleObjects: [betty, dave, fred]];
     }
   during: function() { 
       [sut withholdAnimals: [fred, betty]];
@@ -59,7 +59,7 @@
 {
   [scenario
    previousAction: function() { 
-      [sut beginUsing: [betty, dave, fred]];
+      [sut allPossibleObjects: [betty, dave, fred]];
       [sut withholdAnimals: [fred, betty]];
     }
   testAction: function() { 
@@ -75,7 +75,7 @@
 {
   [scenario
   previousAction: function() {
-      [sut beginUsing: [betty, dave, fred]];
+      [sut allPossibleObjects: [betty, dave, fred]];
       [self simulateChoiceOf: [dave,fred]];
       [self assert: [betty] equals: [sut.available content]];
       [self assert: [dave, fred] equals: [sut.used content]];
@@ -93,7 +93,7 @@
 {
   [scenario
   previousAction: function() {
-      [sut beginUsing: [betty, dave, fred]];
+      [sut allPossibleObjects: [betty, dave, fred]];
       [self simulateChoiceOf: [dave, fred]];
       [sut withholdAnimals: [betty, fred]];
       [self assert: [] equals: [sut.available content]];
@@ -113,7 +113,7 @@
   var dict = [CPMutableDictionary dictionary];
   [scenario
   previousAction: function() {
-      [sut beginUsing: [betty, dave, fred]];
+      [sut allPossibleObjects: [betty, dave, fred]];
       [self simulateChoiceOf: [dave, fred]];
     }
   testAction: function() { 

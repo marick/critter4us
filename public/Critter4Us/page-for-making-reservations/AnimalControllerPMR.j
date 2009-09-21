@@ -2,13 +2,6 @@
 
 @implementation AnimalControllerPMR : NamedObjectControllerPMR.j
 {
-  CPArray originalAnimals;
-}
-
-- (void) beginUsing: someAnimals
-{
-  originalAnimals = [someAnimals copy];
-  [super beginUsing: originalAnimals];
 }
 
 - (void) withholdAnimals: someAnimals
@@ -17,7 +10,7 @@
        [self array: [used content] without: someAnimals]];
 
   [available setContent: 
-       [self array: originalAnimals without: someAnimals]];
+       [self array: originalObjects without: someAnimals]];
   [available setContent: 
        [self array: [available content] without: [used content]]];
 
