@@ -3,7 +3,7 @@
 // Notification Names
 
 ReservationDataAvailable="Reservation data available";
-ProceduresChosenNews = "These procedures have been chosen";
+DifferentObjectsUsedNews = "Some difference in use";
 InitialDataForACourseSessionNews = "course focus data has arrived";
 TimeToReserveNews = "time to reserve";
 NewGroupNews = "new group created";
