@@ -55,6 +55,22 @@
     }];
 }
 
+- (void)testWithholdingDoes_NOT_Accumulate
+{
+  [scenario
+   previousAction: function() {
+      [sut allPossibleObjects: [betty, dave, fred]];
+      [sut withholdAnimals: [betty]];
+    }
+  testAction: function() {
+      [sut withholdAnimals: [dave]];
+    }
+  andSo: function() {
+      [self assert: [betty, fred]
+            equals: [sut.available content]];
+    }];
+}
+
 - (void)testWithholdingAnimalsNeedNotBePermanent
 {
   [scenario
