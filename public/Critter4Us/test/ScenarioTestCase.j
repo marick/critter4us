@@ -118,7 +118,7 @@
 }
       
 -(void) listenersWillReceiveNotification: (CPString) aNotificationName checkingWith: (id)aFunction
-{  
+{
   var selector = CPSelectorFromString([aNotificationName stringByReplacingOccurrencesOfString: " " withString: ""]);
 
   [[CPNotificationCenter defaultCenter]
@@ -129,6 +129,11 @@
 
   [scenario.randomListener shouldReceive: selector
                            with: aFunction];
+}
+
+-(void) listenersHearNothing
+{
+  scenario.randomListener.failOnUnexpectedSelector = YES;
 }
 
 @end
