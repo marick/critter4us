@@ -38,6 +38,13 @@
                                         object: anObject];
 }
 
+- (void) sendNotification: aName withObject: anObject userInfo: info
+{
+  [[CPNotificationCenter defaultCenter] postNotificationName: aName
+                                                      object: anObject
+                                                    userInfo: info];
+}
+
 
 - (void) notifyOfChosenProcedures: (CPArray)anArray
 {
@@ -81,6 +88,24 @@
       //      CPLog([[notification object] description]);
       //      CPLog([anObject description]);
       return [[notification object] isEqual: anObject];
+    }];
+}
+      
+- (void) listenersWillReceiveNotification: (CPString) aNotificationName containingObject: (id) anObject andKey: key with: value
+{
+  [self listenersWillReceiveNotification:aNotificationName
+                            checkingWith:function(notification) {
+      if (! [anObject isEqual: [notification object]]) 
+      {
+        CPLog([anObject description] + " should equal " + [[notification object] description]);
+        return NO;
+      }
+      if (! [value isEqual: [[notification userInfo] valueForKey: key]])
+      {
+        CPLog(value + " should equal " + [[notification userInfo] valueForKey: key]);
+        return NO;
+      }
+      return YES;
     }];
 }
       
