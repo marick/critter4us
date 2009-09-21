@@ -68,7 +68,7 @@
   var content = [[self content] copy];
   [content addObject: anObject];
   [self setContent: content];
-  [self currentItemIsAtIndex: (currentIndex+1)];
+  [self currentItemIsAtIndex: ([[self content] count]-1)];
 }
 
 -(void) currentItemIsAtIndex: index

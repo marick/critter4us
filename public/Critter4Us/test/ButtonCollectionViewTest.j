@@ -69,9 +69,20 @@
 - (void) testAndThePreviouslyElementReverts
 {
   [sut addNamedObjectToContent: someNamedObject];
-  [sut addNamedObjectToContent: someNamedObject];
+  [sut addNamedObjectToContent: anotherNamedObject];
   [self assertFalse: [self isVisiblyCurrent: 0]];
   [self assertTrue: [self isVisiblyCurrent: 1]];
+}
+
+- (void) testAddingAnElementHappensAtTheEndEvenIfCurrentSelectionNotThere
+{
+  [sut addNamedObjectToContent: someNamedObject];
+  [sut addNamedObjectToContent: anotherNamedObject];
+  [sut currentItemIsAtIndex: 0];
+  [sut addNamedObjectToContent: unnamedObject];
+  [self assertFalse: [self isVisiblyCurrent: 0]];
+  [self assertFalse: [self isVisiblyCurrent: 1]];
+  [self assertTrue: [self isVisiblyCurrent: 2]];
 }
 
 
