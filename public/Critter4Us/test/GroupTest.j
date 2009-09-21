@@ -8,14 +8,18 @@
   Procedure accupuncture;
   Procedure venipuncture;
   Animal betsy;
+  Animal jake;
+  Animal hoss;
 }
 
 - (void) setUp
 {
-  var floating = [[Procedure alloc] initWithName: 'floating'];
-  var accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
-  var venipuncture = [[Procedure alloc] initWithName: 'venipuncture'];
-  var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
+  floating = [[Procedure alloc] initWithName: 'floating'];
+  accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
+  venipuncture = [[Procedure alloc] initWithName: 'venipuncture'];
+  betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
+  jake = [[Animal alloc] initWithName: 'jake' kind: 'horse'];
+  hoss = [[Animal alloc] initWithName: 'hoss' kind: 'horse'];
 }
 
 - (void) testGroupsCanBeEmpty
@@ -110,6 +114,19 @@
   var group2 = [[Group alloc] initWithProcedures: [accupuncture]
                                          animals: [betsy]];
   [self assert: "floating" equals: [[[group1 procedures] objectAtIndex: 0] name]];
+}
+
+- (void) testGroupsCanCheckWhetherExcludedAnimalsHaveBeenPutInsideThem
+{
+  var procedureExcludingAnimal = [[Procedure alloc] initWithName: 'excluder' excluding: [betsy, jake]];
+  var brokenGroup = [[Group alloc] initWithProcedures: [procedureExcludingAnimal]
+                                              animals: [betsy, hoss]];
+  var okGroup = [[Group alloc] initWithProcedures: [procedureExcludingAnimal]
+                                          animals: [hoss]];
+
+  [self assertFalse: [okGroup containsExcludedAnimals]];
+  [self assertTrue: [brokenGroup containsExcludedAnimals]];
+  [self assert: [betsy] equals: [brokenGroup animalsIncorrectlyPresent]];
 }
 
 

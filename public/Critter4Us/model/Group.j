@@ -8,6 +8,7 @@
   // Fix it by separating the variables:
   CPArray procedures;
   CPArray animals;
+  CPArray animalsIncorrectlyPresent;
 }
 
 - (Group) initWithProcedures: someProcedures animals: someAnimals
@@ -26,6 +27,11 @@
 - (CPArray) animals
 {
   return animals;
+}
+
+- (CPArray) animalsIncorrectlyPresent
+{
+  return animalsIncorrectlyPresent;
 }
 
 - (void) setProcedures: newProcedures animals: newAnimals
@@ -85,6 +91,19 @@
   return "<Group with" + [procedures description] + " and " + [animals description];
 }
 
+- (CPBoolean) containsExcludedAnimals
+{
+  var composite = [Procedure compositeFrom: procedures];
+  var excludedAnimalSet = [CPSet setWithArray: [composite animalsThisProcedureExcludes]];
+  var actualAnimalSet = [CPSet setWithArray: [self animals]];
+  [actualAnimalSet intersectSet: excludedAnimalSet];
+  animalsIncorrectlyPresent = [actualAnimalSet allObjects];
+  return [animalsIncorrectlyPresent count] > 0;
+    
+}
+
+
+// util
 
 -(CPInteger) hashForArray: array
 {
