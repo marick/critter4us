@@ -158,4 +158,42 @@ class JsonGenerationTests < Test::Unit::TestCase
       assert_jsonification_of({'reservation' => r.id.to_s})
     end
   end
+
+  context "retrieving a reservation" do
+    setup do 
+      Animal.random_with_names('twitter', 'jinx')
+      Procedure.random_with_names('floating', 'vaccinate')
+      test_data = { 
+        :instructor => 'marge',
+        :course => 'vm333',
+        :date => Date.new(2001, 2, 4),
+        :morning => true,
+        :groups => [ {:procedures => ['floating'],
+                       :animals => ['twitter', 'jinx']},
+                     {:procedures => ['vaccinate'],
+                       :animals => ['jinx']}]
+      }
+      @reservation = Reservation.create_with_groups(test_data)
+      get "/json/reservation/#{@reservation.id}"
+      assert_json_response
+      @result = JSON[last_response.body]['reservation']
+    end
+
+    should "retrieve atomic values" do
+      assert { 'marge' == @result['instructor'] }
+      assert { 'vm333' == @result['course'] }
+      assert { '2001-02-04' == @result['date'] }
+      assert { true == @result['morning'] }
+    end
+
+    should "retrieve groups" do
+      expected = [ {'procedures' => ['floating'],
+                     'animals' => ['jinx', 'twitter']},
+                   {'procedures' => ['vaccinate'],
+                     'animals' => ['jinx']}
+                 ];
+      assert { expected = @result['groups'] }
+    end
+  end
+  
 end

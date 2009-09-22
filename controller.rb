@@ -110,6 +110,21 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
     ReservationView.new(:reservation => Reservation[number]).to_s
   end
 
+  get '/json/reservation/:number' do
+    number = params[:number]
+    jsonically do 
+      typing_as "reservation" do 
+        reservation = Reservation[number]
+        {:instructor => reservation.instructor,
+          :course => reservation.course,
+          :date => reservation.date.to_s,
+          :morning => reservation.morning,
+          :groups => reservation.groups.collect { | g | g.in_wire_format }
+        }
+      end
+    end
+  end
+
   delete '/reservation/:number' do
     number = params[:number]
     Reservation[number].destroy

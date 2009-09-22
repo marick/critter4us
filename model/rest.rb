@@ -5,6 +5,7 @@ class Procedure  < Sequel::Model
   one_to_many :uses
 
   def self.names; map(:name); end
+  alias_method :in_wire_format, :name
 
   # following are for testing
 
@@ -28,6 +29,7 @@ class Animal < Sequel::Model
   one_to_many :uses
 
   def self.names; map(:name); end
+  alias_method :in_wire_format, :name
 
   def self.kind_map
     map = {}
@@ -70,6 +72,22 @@ class Group < Sequel::Model
   def before_destroy
     uses.each { | use | use.destroy }
   end
+
+  def in_wire_format
+    collect_each(:procedure)
+    collect_each(:animal)
+    { 
+      'procedures' => collect_each(:procedure),
+      'animals' => collect_each(:animal),
+    }
+  end
+
+  private
+
+  def collect_each(attribute)
+    uses.collect { |use| use.send(attribute).in_wire_format }.uniq.sort
+  end
+      
 end
 
 
