@@ -44,17 +44,7 @@
           if (! [actualProcedures isEqual: expectedProcedures]) return NO;
           return YES;
         }];
-    }
-  andSo: function() {
-      [self assert: ["betsy", "josie"] equals: sut.allAnimalNames]; // TODO delete old accessors
-      [self assert: "cow" equals: sut.kindMap['betsy']];
-      [self assert: "horse" equals: sut.kindMap['josie']];
-      [self assert: ["proc1"] equals: sut.allProcedureNames];
-
-      [self assert: expectedAnimals equals: [sut animals]]; // TODO these can go as well.
-      [self assert: expectedProcedures equals: [sut procedures]];
-      [self assert: ['betsy'] equals: [sut.exclusions valueForKey: 'proc1']];
-    }]
+    }];
 }
 
 
