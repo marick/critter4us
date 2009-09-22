@@ -38,7 +38,6 @@
       [self sendNotification: ReservationDataAvailable withObject: nil];
     }
   behold: function() {
-      [sut.reservationDataController shouldReceive:@selector(allowNoDataChanges)];
       [sut.reservationDataController shouldReceive:@selector(prepareToFinishReservation)];
       [sut.groupController shouldReceive:@selector(prepareToEditGroups)];
       [sut.procedureController shouldReceive:@selector(appear)];

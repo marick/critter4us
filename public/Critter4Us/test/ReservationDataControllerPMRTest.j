@@ -42,30 +42,6 @@
 }
 
 
-- (void)testCanBeToldToAllowNoDataChanges
-{
-  [scenario
-    previousAction: function() {
-      [sut.courseField setEnabled: YES];
-      [sut.instructorField setEnabled: YES];
-      [sut.dateField setEnabled: YES];
-      [sut.morningButton setEnabled: YES];
-      [sut.afternoonButton setEnabled: YES];
-      [sut.beginButton setEnabled: YES];
-    }
-    testAction: function() {
-      [sut allowNoDataChanges];
-    }
-  andSo: function() {
-      [self assert: NO equals: [sut.courseField enabled]];
-      [self assert: NO equals: [sut.instructorField enabled]];
-      [self assert: NO equals: [sut.dateField enabled]];
-      [self assert: NO equals: [sut.morningButton enabled]];
-      [self assert: NO equals: [sut.afternoonButton enabled]];
-      [self assert: NO equals: [sut.beginButton enabled]];
-    }
-   ];
-}
 
 - (void) testCanBeToldToPrepareForCompletionOfReservation
 {
@@ -74,6 +50,9 @@
       [sut.beginButton setHidden: NO];
       [sut.restartButton setHidden: YES];
       [sut.reserveButton setHidden: YES];
+      [sut.dateField setEnabled: YES];
+      [sut.morningButton setEnabled: YES];
+      [sut.afternoonButton setEnabled: YES];
     }
     testAction: function() {
       [sut prepareToFinishReservation];
@@ -82,6 +61,10 @@
       [self assert: YES equals: [sut.beginButton hidden] ];
       [self assert: NO equals: [sut.restartButton hidden] ];
       [self assert: NO equals: [sut.reserveButton hidden] ];
+
+      [self assert: NO equals: [sut.dateField enabled] ];
+      [self assert: NO equals: [sut.morningButton enabled] ];
+      [self assert: NO equals: [sut.afternoonButton enabled] ];
     }
    ];
 }
@@ -156,12 +139,9 @@
 {
   [scenario
     previousAction: function() {
-      [sut.courseField setEnabled: NO];
-      [sut.instructorField setEnabled: NO];
       [sut.dateField setEnabled: NO];
       [sut.morningButton setEnabled: NO];
       [sut.afternoonButton setEnabled: NO];
-      [sut.beginButton setEnabled: NO];
 
       [sut.beginButton setHidden: YES];
       [sut.restartButton setHidden: NO];
@@ -171,12 +151,9 @@
       [sut beginningOfReservationWorkflow];
     }
   andSo: function() {
-      [self assert: YES equals: [sut.courseField enabled]];
-      [self assert: YES equals: [sut.instructorField enabled]];
       [self assert: YES equals: [sut.dateField enabled]];
       [self assert: YES equals: [sut.morningButton enabled]];
       [self assert: YES equals: [sut.afternoonButton enabled]];
-      [self assert: YES equals: [sut.beginButton enabled]];
 
       [self assert: NO equals: [sut.beginButton hidden] ];
       [self assert: YES equals: [sut.restartButton hidden] ];

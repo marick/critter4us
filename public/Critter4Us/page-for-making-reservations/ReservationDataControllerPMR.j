@@ -35,7 +35,8 @@
 
 - (void) prepareToFinishReservation
 {
-  [self setInitialButtonage: NO];
+  [self freezeDateAndTimeFields];
+  [self hideBegin: YES];
   [linkToPreviousResults setHidden: YES];
 }
 
@@ -63,8 +64,8 @@
 
 - (void) beginningOfReservationWorkflow
 {
-  [self allowDataChanges];
-  [self setInitialButtonage: YES];
+  [self enableGeneralReservationFields];
+  [self hideBegin: NO];
 }
 
 - (void) abandonReservation:sender
@@ -76,32 +77,30 @@
 
 // Util
 
-- (void) allowNoDataChanges
+- (void) enableGeneralReservationFields
 {
-  [self setEnabledControls: NO];
+  [courseField setEnabled: YES];
+  [instructorField setEnabled: YES];
+  [dateField setEnabled: YES];
+  [morningButton setEnabled: YES];
+  [afternoonButton setEnabled: YES];
 }
 
-- (void) allowDataChanges
+- (void) hideBegin: value
 {
-  [self setEnabledControls: YES];
+  [beginButton setHidden: value];
+  [restartButton setHidden: !value];
+  [reserveButton setHidden: !value];
 }
 
-- (void) setInitialButtonage: value
+
+- (void) freezeDateAndTimeFields
 {
-  [beginButton setHidden: !value];
-  [restartButton setHidden: value];
-  [reserveButton setHidden: value];
+  [dateField setEnabled: NO];
+  [morningButton setEnabled: NO];
+  [afternoonButton setEnabled: NO];
 }
 
-- (void) setEnabledControls: value
-{
-  [courseField setEnabled: value];
-  [instructorField setEnabled: value];
-  [dateField setEnabled: value];
-  [morningButton setEnabled: value];
-  [afternoonButton setEnabled: value];
-  [beginButton setEnabled: value];
-}
 
 - (id) deduceTime
 {

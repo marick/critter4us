@@ -52,7 +52,6 @@
   [persistentStore loadInfoRelevantToDate: [[aNotification object] valueForKey: 'date']
                                      time: [[aNotification object] valueForKey: 'time']];
 
-  [reservationDataController allowNoDataChanges];
   [reservationDataController prepareToFinishReservation];
   [groupController prepareToEditGroups];
   [procedureController appear];
