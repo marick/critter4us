@@ -5,7 +5,12 @@
 @implementation ReservationDataControllerSubgraph : Subgraph
 {
   ReservationDataControllerPMR controller;
-  // Subviews not listed here because no external nodes will ever connect to them.
+
+  CPTextField instructorField;
+  CPTextField courseField;
+  CPTextField dateField;
+  CPRadio afternoonButton; 
+  // There are others but no need to make them instance vars.
 }
 
 
@@ -42,10 +47,11 @@
   x += width;
 
   width = 100;
-  var courseField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
+  courseField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
   [courseField setEditable:YES];
   [courseField setBezeled:YES];
   [pageView addSubview:courseField];
+  controller.courseField = courseField;
   x+= width;
 
   x += 10;
@@ -56,51 +62,26 @@
   x += width;
 
   width = 100;
-  var instructorField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
+  instructorField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
   [instructorField setEditable:YES];
   [instructorField setBezeled:YES];
   [pageView addSubview:instructorField];
+  controller.instructorField = instructorField;
   x += width;
 
-  x += 10;
-  width = 20;
-  var onLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 75, width, 30)];
-  [onLabel setStringValue: "on: "];
-  [pageView addSubview:onLabel];
-  x += width;
+  var dateGatheringView = [[CPView alloc] initWithFrame:CGRectMake(x, 40, 330, 100)];
+  [self addDateGatheringControlsTo: dateGatheringView];
+  [pageView addSubview:dateGatheringView];
+  [dateGatheringView setHidden: NO];
+  controller.dateGatheringView = dateGatheringView;
 
-  width = 100;
-  var dateField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
-  [dateField setEditable:YES];
-  [dateField setBezeled:YES];
-  [dateField setStringValue: "2009-"];
-  [pageView addSubview:dateField];
-  x += width;
+  var dateDisplayingView = [[CPView alloc] initWithFrame:CGRectMake(x, 40, 330, 100)];
+  [self addDateDisplayingControlsTo: dateDisplayingView];
+  [pageView addSubview:dateDisplayingView];
+  [dateDisplayingView setHidden: YES];
+  controller.dateDisplayingView = dateDisplayingView;
 
-  x += 10;
-  width = 90
-  var morningButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 67, width, 20)];
-  [morningButton setState:CPOnState];
-  [morningButton setTitle:"morning"];
-  
-  var afternoonButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 87, width, 20) radioGroup:[morningButton radioGroup]];
-  [afternoonButton setTitle:"afternoon"];
-
-  [pageView addSubview: morningButton];
-  [pageView addSubview: afternoonButton];
-  x += width;
-    
-  x += 15
-  width = 80;
-  var beginButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
-  [beginButton setTitle: "Begin"];
-  [pageView addSubview:beginButton];
-  [beginButton setTarget: controller];
-  [beginButton setAction: @selector(beginReserving:)];
-  x += width;
-
-
-  x += 15;
+  x += 345;
   var placeForLink = x;
   width = 160;
 
@@ -108,6 +89,7 @@
   [reserveButton setTitle: "Finish this Reservation"];
   [reserveButton setHidden: YES];
   [pageView addSubview:reserveButton];
+  controller.reserveButton = reserveButton;
   [reserveButton setTarget: controller];
   [reserveButton setAction: @selector(makeReservation:)];
 
@@ -117,22 +99,15 @@
   [restartButton setTitle: "Start Over"];
   [restartButton setHidden: YES];
   [pageView addSubview:restartButton];
+  controller.restartButton = restartButton;
   [restartButton setTarget: controller];
   [restartButton setAction: @selector(abandonReservation:)];
 
   var webView = [[CPWebView alloc] initWithFrame: CGRectMake(placeForLink,60,500,100)];
   [webView setHidden: YES];
   [pageView addSubview: webView];
-
   controller.linkToPreviousResults = webView;
-  controller.courseField = courseField;
-  controller.instructorField = instructorField;
-  controller.dateField = dateField;
-  controller.morningButton = morningButton;
-  controller.afternoonButton = afternoonButton;
-  controller.beginButton = beginButton;
-  controller.reserveButton = reserveButton;
-  controller.restartButton = restartButton;
+
 
   // Temporary for testing
   [instructorField setStringValue: "morin"];
@@ -148,5 +123,64 @@
   //  [theWindow enableKeyEquivalentForDefaultButton];
 }
 
+  
+    
+- (void) addDateGatheringControlsTo: aView
+{
+  //  [aView setBackgroundColor: [CPColor redColor]];
+  
+  x = 10;
+  width = 20;
+  var onLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 35, width, 30)];
+  [onLabel setStringValue: "on: "];
+  [aView addSubview:onLabel];
+  x += width;
+
+  width = 100;
+  dateField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 30, width, 30)];
+  [dateField setEditable:YES];
+  [dateField setBezeled:YES];
+  [dateField setStringValue: "2009-"];
+  [aView addSubview:dateField];
+  controller.dateField = dateField;
+
+
+
+  x += width;
+
+  x += 10;
+  width = 90
+  var morningButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 29, width, 20)];
+  [morningButton setState:CPOnState];
+  [morningButton setTitle:"morning"];
+  
+  afternoonButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 49, width, 20) radioGroup:[morningButton radioGroup]];
+  [afternoonButton setTitle:"afternoon"];
+
+  [aView addSubview: morningButton];
+  [aView addSubview: afternoonButton];
+  controller.morningButton = morningButton;
+  controller.afternoonButton = afternoonButton;
+  x += width;
+    
+  x += 15
+  width = 80;
+  var beginButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 35, width, 30)];
+  [beginButton setTitle: "Begin"];
+  [aView addSubview:beginButton];
+  controller.beginButton = beginButton;
+  [beginButton setTarget: controller];
+  [beginButton setAction: @selector(beginReserving:)];
+}
+
+- (void) addDateDisplayingControlsTo: aView
+{
+  //  [aView setBackgroundColor: [CPColor redColor]];
+
+  var aLabel = [[CPTextField alloc] initWithFrame:CGRectMake(10, 35, 200, 30)];
+  [aView addSubview:aLabel];
+  [aLabel setStringValue: "on the morning of 2009-08-10"];
+  controller.dateTimeSummary = aLabel;
+}
 
 @end

@@ -15,11 +15,9 @@
 
   CPWebView linkToPreviousResults;
 
-  CPPanel groups;
-  CPCollectionView collectionView;
-  CPInteger pushes;
-  CPArray lines;
-  CPArray subset;
+  CPView dateGatheringView;
+  CPView dateDisplayingView;
+  CPTextField dateTimeSummary;
 }
 
 - (void) beginReserving: sender
@@ -35,8 +33,9 @@
 
 - (void) prepareToFinishReservation
 {
-  [self freezeDateAndTimeFields];
-  [self hideBegin: YES];
+  [self noteTimeAndDate];
+  [self showDateAndTimeFields: NO];
+  [self showGroupEditButtons: YES];
   [linkToPreviousResults setHidden: YES];
 }
 
@@ -64,8 +63,8 @@
 
 - (void) beginningOfReservationWorkflow
 {
-  [self enableGeneralReservationFields];
-  [self hideBegin: NO];
+  [self showDateAndTimeFields: YES];
+  [self showGroupEditButtons: NO];
 }
 
 - (void) abandonReservation:sender
@@ -77,30 +76,24 @@
 
 // Util
 
-- (void) enableGeneralReservationFields
+- (void) showGroupEditButtons: value
 {
-  [courseField setEnabled: YES];
-  [instructorField setEnabled: YES];
-  [dateField setEnabled: YES];
-  [morningButton setEnabled: YES];
-  [afternoonButton setEnabled: YES];
-}
-
-- (void) hideBegin: value
-{
-  [beginButton setHidden: value];
   [restartButton setHidden: !value];
   [reserveButton setHidden: !value];
 }
 
-
-- (void) freezeDateAndTimeFields
+- (void) showDateAndTimeFields: value
 {
-  [dateField setEnabled: NO];
-  [morningButton setEnabled: NO];
-  [afternoonButton setEnabled: NO];
+  [dateGatheringView setHidden: !value];
+  [dateDisplayingView setHidden: value];
 }
 
+- (void) noteTimeAndDate
+{
+  var note = "on the " + [[self deduceTime] description] + 
+    " of " + [dateField stringValue] + ".";
+  [dateTimeSummary setStringValue: note];
+}
 
 - (id) deduceTime
 {
@@ -109,7 +102,6 @@
   else
     return [Time afternoon];
 }
-
 
 @end
 

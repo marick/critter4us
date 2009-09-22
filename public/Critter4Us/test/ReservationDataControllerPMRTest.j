@@ -14,7 +14,9 @@
                                         'morningButton', 'afternoonButton',
                                         'beginButton', 'restartButton',
                                         'reserveButton',
-                                        'linkToPreviousResults'
+                                        'linkToPreviousResults',
+                                        'dateGatheringView', 'dateDisplayingView',
+                                        'dateTimeSummary'
                                         ]];
 }
 
@@ -43,28 +45,38 @@
 
 
 
-- (void) testCanBeToldToPrepareForCompletionOfReservation
+- (void) testDisplayedDateAndTimeWorksForMorning
 {
   [scenario
     previousAction: function() {
-      [sut.beginButton setHidden: NO];
-      [sut.restartButton setHidden: YES];
-      [sut.reserveButton setHidden: YES];
-      [sut.dateField setEnabled: YES];
-      [sut.morningButton setEnabled: YES];
-      [sut.afternoonButton setEnabled: YES];
+      [sut.dateField setStringValue: '2010-12-02'];
+      [sut.morningButton setState: CPOnState];
+      [sut.afternoonButton setState: CPOffState];
     }
     testAction: function() {
       [sut prepareToFinishReservation];
     }
   andSo: function() {
-      [self assert: YES equals: [sut.beginButton hidden] ];
-      [self assert: NO equals: [sut.restartButton hidden] ];
-      [self assert: NO equals: [sut.reserveButton hidden] ];
+      [self assert: "on the morning of 2010-12-02."
+            equals: [sut.dateTimeSummary stringValue]];
+    }
+   ];
+}
 
-      [self assert: NO equals: [sut.dateField enabled] ];
-      [self assert: NO equals: [sut.morningButton enabled] ];
-      [self assert: NO equals: [sut.afternoonButton enabled] ];
+- (void) testDisplayedDateAndTimeWorksForAfternoon
+{
+  [scenario
+    previousAction: function() {
+      [sut.dateField setStringValue: '2012-01-12'];
+      [sut.morningButton setState: CPOffState];
+      [sut.afternoonButton setState: CPOnState];
+    }
+    testAction: function() {
+      [sut prepareToFinishReservation];
+    }
+  andSo: function() {
+      [self assert: "on the afternoon of 2012-01-12."
+            equals: [sut.dateTimeSummary stringValue]];
     }
    ];
 }
@@ -139,11 +151,9 @@
 {
   [scenario
     previousAction: function() {
-      [sut.dateField setEnabled: NO];
-      [sut.morningButton setEnabled: NO];
-      [sut.afternoonButton setEnabled: NO];
+      [sut.dateGatheringView setHidden: YES];
+      [sut.dateDisplayingView setHidden: NO];
 
-      [sut.beginButton setHidden: YES];
       [sut.restartButton setHidden: NO];
       [sut.reserveButton setHidden: NO];
     }
@@ -151,11 +161,9 @@
       [sut beginningOfReservationWorkflow];
     }
   andSo: function() {
-      [self assert: YES equals: [sut.dateField enabled]];
-      [self assert: YES equals: [sut.morningButton enabled]];
-      [self assert: YES equals: [sut.afternoonButton enabled]];
+      [self assert: NO equals: [sut.dateGatheringView hidden] ];
+      [self assert: YES equals: [sut.dateDisplayingView hidden] ];
 
-      [self assert: NO equals: [sut.beginButton hidden] ];
       [self assert: YES equals: [sut.restartButton hidden] ];
       [self assert: YES equals: [sut.reserveButton hidden] ];
     }
