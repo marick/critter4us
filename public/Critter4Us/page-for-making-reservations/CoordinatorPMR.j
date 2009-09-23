@@ -26,18 +26,15 @@
                     calls: @selector(gatherAndSendNewReservation:)];
   [self notificationNamed: SwitchToGroupNews
                     calls: @selector(switchToNewGroup:)];
+  [self notificationNamed: ModifyReservationNews
+                    calls: @selector(edit:)];
 }
 
 - (void) reservationDataAvailable: aNotification
 {
   [persistentStore loadInfoRelevantToDate: [[aNotification object] valueForKey: 'date']
                                      time: [[aNotification object] valueForKey: 'time']];
-
-  [reservationDataController prepareToFinishReservation];
-  [groupController prepareToEditGroups];
-  [procedureController appear];
-  [animalController appear];
-  [groupController appear];
+  [self beginCollectingGroupData];
 }
 
 - (void) reservationDataRetrieved: aNotification
@@ -74,6 +71,20 @@
   [self beginPostReservationWorkflowStep];
 }
 
+- (void) edit: aNotification
+{
+  [self beginPostReservationWorkflowStep];
+
+  var dict = [persistentStore reservation: [aNotification object]];
+  [reservationDataController edit: dict];
+
+  [self beginCollectingGroupData];
+
+  [animalController allPossibleObjects: [dict valueForKey: 'animals']];
+  [procedureController allPossibleObjects: [dict valueForKey: 'procedures']];
+  [groupController allPossibleObjects: [dict valueForKey: 'groups']];
+}
+
 // Util
 
 - (void) filterAccordingToProcedures: procedures
@@ -90,11 +101,21 @@
   return dict;
 }
 
-- (CPDictionary) beginPostReservationWorkflowStep
+- (void) beginPostReservationWorkflowStep
 {
   [reservationDataController beginningOfReservationWorkflow];
   [procedureController beginningOfReservationWorkflow];
   [animalController beginningOfReservationWorkflow];
   [groupController beginningOfReservationWorkflow];
 }
+
+- (void) beginCollectingGroupData
+{
+  [reservationDataController prepareToFinishReservation];
+  [groupController prepareToEditGroups];
+  [procedureController appear];
+  [animalController appear];
+  [groupController appear];
+}
+
 @end

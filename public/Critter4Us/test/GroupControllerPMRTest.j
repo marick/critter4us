@@ -266,6 +266,29 @@
     }];
 }
 
+- (void) testSettingGroupsExternally
+{
+  var group = [[Group alloc] initWithProcedures: [floating] animals: [jake]];
+
+  [scenario
+    previousAction: function() {
+      [sut prepareToEditGroups];
+    }
+  during: function() {
+      [sut allPossibleObjects: [group]];
+    }
+  behold: function() { 
+      [sut.groupCollectionView shouldReceive: @selector(becomeEmpty)];
+      [sut.groupCollectionView shouldReceive: @selector(addNamedObjectToContent:)
+                                        with: group];
+      [sut.groupCollectionView shouldReceive: @selector(currentRepresentedObject)
+                                   andReturn: group];
+      [self listenersWillReceiveNotification: SwitchToGroupNews
+                            containingObject: group];
+    }
+   ];
+}
+
 
 // util
 

@@ -170,4 +170,38 @@
    ];
 }
 
+
+-(void)testBeToldValuesToEdit
+{
+  var data = {'course' : 'the course',
+              'instructor' : 'the instructor',
+              'date' : 'the date',
+              'time' : [Time morning]};
+  [scenario
+    during: function() {
+      [sut edit: [CPDictionary dictionaryWithJSObject: data]];
+    }
+  behold: function() {
+      [sut.courseField shouldReceive: @selector(setStringValue:) with: 'the course'];
+      [sut.instructorField shouldReceive: @selector(setStringValue:) with: 'the instructor'];
+      [sut.dateField shouldReceive: @selector(setStringValue:) with: 'the date'];
+      [sut.morningButton shouldReceive: @selector(setState:) with: CPOnState];
+    }
+   ];
+}
+
+-(void)testBeToldValuesToEdit__withAfternoon
+{
+  var data = {'time' : [Time afternoon]};
+  [scenario
+    during: function() {
+      [sut edit: [CPDictionary dictionaryWithJSObject: data]];
+    }
+  behold: function() {
+      [sut.morningButton shouldReceive: @selector(setState:) with: CPOffState];
+    }
+   ];
+}
+
+
 @end

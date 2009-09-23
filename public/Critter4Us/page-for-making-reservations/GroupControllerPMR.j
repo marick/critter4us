@@ -71,6 +71,18 @@
   [groupCollectionView currentNameHasChanged];
 }
 
+- (void) allPossibleObjects: groups
+{
+  [groupCollectionView becomeEmpty];
+  var enumerator = [groups objectEnumerator];
+  var item;
+  while(one = [enumerator nextObject])
+  {
+    [groupCollectionView addNamedObjectToContent: one]
+  }
+  [self differentGroupChosen: UnusedArgument];
+}
+
 // util
 
 -(Group) emptyGroup

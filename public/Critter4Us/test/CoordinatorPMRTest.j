@@ -249,6 +249,7 @@
 }
 
 - (void) testRespondToNeedToEdit
+  // This doesn't detail all of the steps, only those that set data.
 {
   [scenario
    during: function() {
@@ -263,13 +264,14 @@
       [sut.persistentStore shouldReceive: @selector(reservation:)
                                     with: 33
                                andReturn: dict];
-      [sut.reservationDataController shouldReceive: @selector(editValues:)
+      [sut.reservationDataController shouldReceive: @selector(edit:)
                                               with: dict];
-      [sut.animalController shouldReceive: @selector(edit:)
+      [sut.animalController shouldReceive: @selector(allPossibleObjects:)
                                      with: [dict valueForKey: 'animals']];
-      [sut.procedureController shouldReceive: @selector(edit:)
+      [sut.procedureController shouldReceive: @selector(allPossibleObjects:)
                                      with: [dict valueForKey: 'procedures']];
-      [sut.groupController shouldReceive: @selector(edit: 'groups')];
+      [sut.groupController shouldReceive: @selector(allPossibleObjects:)
+                                     with: [dict valueForKey: 'groups']];
     }];
 }
 
