@@ -248,6 +248,31 @@
     }];
 }
 
+- (void) testRespondToNeedToEdit
+{
+  [scenario
+   during: function() {
+      [self sendNotification: ModifyReservationNews
+                  withObject: 33];
+    }
+   behold: function() {
+      var dict = [CPDictionary dictionary];
+      [dict setValue: 'animal list' forKey: 'animals'];
+      [dict setValue: 'procedure list' forKey: 'procedures'];
+      [dict setValue: 'group list' forKey: 'groups'];
+      [sut.persistentStore shouldReceive: @selector(reservation:)
+                                    with: 33
+                               andReturn: dict];
+      [sut.reservationDataController shouldReceive: @selector(editValues:)
+                                              with: dict];
+      [sut.animalController shouldReceive: @selector(edit:)
+                                     with: [dict valueForKey: 'animals']];
+      [sut.procedureController shouldReceive: @selector(edit:)
+                                     with: [dict valueForKey: 'procedures']];
+      [sut.groupController shouldReceive: @selector(edit: 'groups')];
+    }];
+}
+
 
 @end
 
