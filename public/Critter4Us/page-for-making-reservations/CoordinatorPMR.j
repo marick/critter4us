@@ -14,37 +14,18 @@
   PersistentStore persistentStore;
 }
 
-- (void) awakeFromCib
+- (void) setUpNotifications
 {
-  [NotificationCenter
-   addObserver: self
-      selector: @selector(reservationDataAvailable:)
-          name: ReservationDataAvailable
-        object: nil];
-
-  [NotificationCenter
-   addObserver: self
-      selector: @selector(reservationDataRetrieved:)
-          name: InitialDataForACourseSessionNews
-        object: nil];
-
-  [NotificationCenter
-   addObserver: self
-      selector: @selector(usedObjectsHaveChanged:)
-          name: DifferentObjectsUsedNews
-        object: nil];
-
-  [NotificationCenter
-   addObserver: self
-      selector: @selector(gatherAndSendNewReservation:)
-          name: TimeToReserveNews
-        object: nil];
-
-  [NotificationCenter
-   addObserver: self
-      selector: @selector(switchToNewGroup:)
-          name: SwitchToGroupNews
-        object: nil];
+  [self notificationNamed: ReservationDataAvailable
+                    calls: @selector(reservationDataAvailable:)];
+  [self notificationNamed: InitialDataForACourseSessionNews
+                    calls: @selector(reservationDataRetrieved:)];
+  [self notificationNamed: DifferentObjectsUsedNews
+                    calls: @selector(usedObjectsHaveChanged:)];
+  [self notificationNamed: TimeToReserveNews
+                    calls: @selector(gatherAndSendNewReservation:)];
+  [self notificationNamed: SwitchToGroupNews
+                    calls: @selector(switchToNewGroup:)];
 }
 
 - (void) reservationDataAvailable: aNotification
