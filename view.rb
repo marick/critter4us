@@ -29,7 +29,7 @@ class ReservationListView < Erector::Widget
         title 'All Reservations'
       end
       body do
-        table(:border=>"1px", :cellpadding => "5px", :cellspacing=>"0px") do 
+        table(:style => "width: 900px", :border=>"1px", :cellpadding => "5px", :cellspacing=>"0px") do 
           sorted_reservations.each do | r | 
             tr do
               td(:style => 'width: 7em;') { text r.date.to_s }
@@ -44,6 +44,12 @@ class ReservationListView < Erector::Widget
                      :action => "reservation/#{r.id}") do 
                   input(:type => 'submit', :value=>'Delete')
                   input(:type => 'hidden', :value=>"DELETE", :name=>"_method")
+                end
+              end
+              td do
+                form do 
+                  input(:type => 'button', :value=>'Edit',
+                        :onclick => "window.parent.AppForwarder.edit(#{r.id})")
                 end
               end
             end

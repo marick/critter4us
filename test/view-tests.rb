@@ -87,6 +87,17 @@ class ViewTests < Test::Unit::TestCase
       end
     end
 
+    should "contain well-formed edit button" do
+      reservation = Reservation.random
+
+      output = ReservationListView.new(:reservations => [reservation]).to_s
+      assert_xhtml(output) do
+        td do
+          input(:type => 'button', :value => "Edit",
+                :onclick => "window.parent.AppForwarder.edit(#{reservation.id})")
+        end
+      end
+    end
   end
 end
 
