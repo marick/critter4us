@@ -3,6 +3,17 @@
 @import "cib/MainMenuCib.j"
 @import "page-for-making-reservations/CibPMR.j"
 
+
+// This pure-javascript object is used to make forwarding from HTML
+// onclick methods simpler than hand-coding the expansion of Objective-J into 
+// objj_msgSend(...) gobbledeegook.
+
+AppForwarder = {}
+AppForwarder.edit = function(reservationId) {
+  [[CPApp delegate] editReservation: reservationId];
+};
+
+
 @implementation App : CPObject
 {
   CPWindow theWindow;
@@ -48,6 +59,14 @@
 {
   [pmrPageController appear];
   [allReservationsPageController disappear];
+}
+
+- (void) editReservation: id
+{
+  [NotificationCenter postNotificationName: ModifyReservationNews
+                                    object: id];
+  [self activateReservationMaker: UnusedArgument];
+
 }
 
 @end

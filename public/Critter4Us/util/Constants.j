@@ -7,6 +7,7 @@ DifferentObjectsUsedNews = "Some difference in use";
 InitialDataForACourseSessionNews = "course focus data has arrived";
 TimeToReserveNews = "time to reserve";
 SwitchToGroupNews = "switch to this group";
+ModifyReservationNews = "time to edit a reservation";
 
 // Route names
 StoreReservationRoute = @"store_reservation";
