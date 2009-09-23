@@ -127,7 +127,7 @@
     }
   behold: function() {
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
-                            with: [jsonURI(GetReservationRoute) + '/1']
+                            with: [jsonURI(GetEditableReservationRoute) + '/1']
                        andReturn: [CPString JSONFromObject: aReservation]];
     }
   andSo: function() {
@@ -152,7 +152,7 @@
     }
   behold: function() {
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
-                            with: [jsonURI(GetReservationRoute) + '/1']
+                            with: [jsonURI(GetEditableReservationRoute) + '/1']
                        andReturn: [CPString JSONFromObject: aReservation]];
     }
   andSo: function() {
@@ -176,7 +176,7 @@
     }
   behold: function() {
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
-                            with: [jsonURI(GetReservationRoute) + '/1']
+                            with: [jsonURI(GetEditableReservationRoute) + '/1']
                        andReturn: [CPString JSONFromObject: aReservation]];
     }
   andSo: function() {

@@ -37,7 +37,7 @@
 
 - (id) reservation: reservationId
 {
-  var url = jsonURI(GetReservationRoute) + '/' + reservationId;
+  var url = jsonURI(GetEditableReservationRoute) + '/' + reservationId;
   return [self dictionaryFromJSON: [network GETJsonFromURL: url]];
 }
 

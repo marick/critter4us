@@ -12,6 +12,7 @@ SwitchToGroupNews = "switch to this group";
 StoreReservationRoute = @"store_reservation";
 CourseSessionDataBlobRoute = @"course_session_data_blob";
 AllReservationsTableRoute = @"reservations";
+GetEditableReservationRoute = @"reservation";
 
 // Other useful constants
 NotificationCenter = [CPNotificationCenter defaultCenter];
