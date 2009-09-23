@@ -7,6 +7,10 @@
 
 @implementation PersistentStoreTest : ScenarioTestCase
 {
+  Animal betsy;
+  Animal josie;
+  Procedure floating;
+  Procedure accupuncture;
 }
 
 - (void)setUp
@@ -14,13 +18,16 @@
   sut = [[PersistentStore alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
  [scenario sutHasDownwardCollaborators: ['network']];
+
+  betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
+  josie = [[Animal alloc] initWithName: 'josie' kind: 'horse'];
+
+  floating = [[Procedure alloc] initWithName: 'floating'];
+  accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
 }
 
 - (void)testPersistentStoreMakesNetworkInfoAvailable
 {
-  var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
-  var josie = [[Animal alloc] initWithName: 'josie' kind: 'horse'];
-
   var expectedAnimals = [betsy, josie];
   var expectedProcedures = [CPArray arrayWithObject:
                                  [[Procedure alloc] initWithName: 'proc1'
@@ -51,9 +58,6 @@
 -(void)testPostingOfReservation
 {
   var time = [Time afternoon];
-  var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
-  var floating = [[Procedure alloc] initWithName: 'floating'];
-  var accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
 
   var group1 = [[Group alloc] initWithProcedures: [floating] animals: [betsy]];
   var group2 = [[Group alloc] initWithProcedures: [accupuncture] animals: [betsy]];
@@ -108,6 +112,87 @@
       [self assert: "<html>stuff</html>" equals: scenario.result];
     }];
 }
+
+-(void) testCanFetchReservationDataFromNetwork
+{
+  var aReservation = { 'instructor':'dr dawn',
+                       'course' : 'vcm3',
+                       'date' : '2009-09-02',
+                       'morning' : true,
+                       'groups' : []
+  };
+  [scenario 
+   during: function() {
+      return [sut reservation: 1];
+    }
+  behold: function() {
+      [sut.network shouldReceive: @selector(GETJsonFromURL:)
+                            with: [jsonURI(GetReservationRoute) + '/1']
+                       andReturn: [CPString JSONFromObject: aReservation]];
+    }
+  andSo: function() {
+      [self assert: aReservation['instructor'] 
+            equals: [scenario.result valueForKey: 'instructor']];
+      [self assert: aReservation['course'] 
+            equals: [scenario.result valueForKey: 'course']];
+      [self assert: aReservation['date'] 
+            equals: [scenario.result valueForKey: 'date']];
+      [self assert: [Time morning]
+            equals: [scenario.result valueForKey: 'time']];
+    }];
+}
+
+-(void) testCanHandleAfternoonAsWellAsMorning
+{
+  var aReservation = { 'morning' : false };
+
+  [scenario 
+   during: function() {
+      return [sut reservation: 1];
+    }
+  behold: function() {
+      [sut.network shouldReceive: @selector(GETJsonFromURL:)
+                            with: [jsonURI(GetReservationRoute) + '/1']
+                       andReturn: [CPString JSONFromObject: aReservation]];
+    }
+  andSo: function() {
+      [self assert: [Time afternoon]
+            equals: [scenario.result valueForKey: 'time']];
+    }];
+}
+
+-(void) testReservationDataIncludesGroupProcedureAndAnimalObjects
+{
+  var aReservation = { 'groups' : [ {'procedures' : ['accupuncture', 'floating'],
+                                     'animals' : ['betsy', 'josie'] },
+                                    {'procedures' : ['accupuncture'],
+                                     'animals' : ['josie']} ],
+                       'kindMap' : { 'betsy' : 'cow', 'josie' : 'horse' }
+                     };
+
+  [scenario 
+   during: function() {
+      return [sut reservation: 1];
+    }
+  behold: function() {
+      [sut.network shouldReceive: @selector(GETJsonFromURL:)
+                            with: [jsonURI(GetReservationRoute) + '/1']
+                       andReturn: [CPString JSONFromObject: aReservation]];
+    }
+  andSo: function() {
+      var groups = [scenario.result valueForKey: 'groups'];
+      [self assert: 2 equals: [groups count]];
+      [self assert: [accupuncture, floating]
+            equals: [[groups objectAtIndex: 0] procedures]];
+      [self assert: [betsy, josie]
+            equals: [[groups objectAtIndex: 0] animals]];
+      [self assert: [accupuncture]
+            equals: [[groups objectAtIndex: 1] procedures]];
+      [self assert: [josie]
+            equals: [[groups objectAtIndex: 1] animals]];
+    }];
+} 
+
 
 // Test utility methods
 
