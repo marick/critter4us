@@ -160,9 +160,10 @@ class JsonGenerationTests < Test::Unit::TestCase
   end
 
   context "retrieving a reservation" do
-    setup do 
-      Animal.random_with_names('twitter', 'jinx')
-      Procedure.random_with_names('floating', 'vaccinate')
+    setup do
+      Animal.create(:name => 'twitter', :kind => 'sugar glider')
+      Animal.create(:name => 'jinx', :kind => 'red-eared slider')
+      Procedure.random_with_names('floating', 'venipuncture')
       test_data = { 
         :instructor => 'marge',
         :course => 'vm333',
@@ -170,13 +171,13 @@ class JsonGenerationTests < Test::Unit::TestCase
         :morning => true,
         :groups => [ {:procedures => ['floating'],
                        :animals => ['twitter', 'jinx']},
-                     {:procedures => ['vaccinate'],
+                     {:procedures => ['venipuncture'],
                        :animals => ['jinx']}]
       }
       @reservation = Reservation.create_with_groups(test_data)
       get "/json/reservation/#{@reservation.id}"
       assert_json_response
-      @result = JSON[last_response.body]['reservation']
+      @result = JSON[last_response.body]
     end
 
     should "retrieve atomic values" do
@@ -189,11 +190,28 @@ class JsonGenerationTests < Test::Unit::TestCase
     should "retrieve groups" do
       expected = [ {'procedures' => ['floating'],
                      'animals' => ['jinx', 'twitter']},
-                   {'procedures' => ['vaccinate'],
+                   {'procedures' => ['venipuncture'],
                      'animals' => ['jinx']}
                  ];
-      assert { expected = @result['groups'] }
+      assert { expected == @result['groups'] }
     end
+
+    should "retrieve exclusion information that does not include animals used in the reservation" do
+      expected = { 'floating' => [], 'venipuncture' => [] }
+      assert { expected == @result['exclusions'] }
+    end
+
+    should "retrieve animal information" do
+      expected_animals = ['twitter', 'jinx']
+      expected_kind_map = {'twitter' => 'sugar glider', 'jinx' => 'red-eared slider'}
+      assert { expected_animals.sort == @result['animals'].sort }
+      assert { expected_kind_map == @result['kindMap'] }
+    end
+    
+    should "retrieve procedure information" do
+      assert { ['floating', 'venipuncture'] == @result['procedures'].sort }
+    end
+
   end
   
 end

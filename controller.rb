@@ -113,15 +113,21 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
   get '/json/reservation/:number' do
     number = params[:number]
     jsonically do 
-      typing_as "reservation" do 
-        reservation = Reservation[number]
-        {:instructor => reservation.instructor,
-          :course => reservation.course,
-          :date => reservation.date.to_s,
-          :morning => reservation.morning,
-          :groups => reservation.groups.collect { | g | g.in_wire_format }
-        }
-      end
+      reservation = Reservation[number]
+      reservation_data = {
+        :instructor => reservation.instructor,
+        :course => reservation.course,
+        :date => reservation.date.to_s,
+        :morning => reservation.morning,
+        :groups => reservation.groups.collect { | g | g.in_wire_format },
+        :procedures => Procedure.names,
+        :animals => Animal.names,
+        :kindMap => kind_map(),
+        :exclusions => ExclusionMap.new(reservation.date,
+                                        reservation.morning).
+                                    allowing(reservation.animal_names).
+                                    to_hash
+      }
     end
   end
 
@@ -177,6 +183,11 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
   def typing_as(type)
     {type.to_s => yield }
   end
-    
 
+  def kind_map
+    map = {}
+    Animal.all.each { | a | map[a.name] = a.kind }
+    map
+  end
+    
 end
