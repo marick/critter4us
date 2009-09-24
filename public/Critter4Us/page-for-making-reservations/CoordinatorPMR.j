@@ -12,6 +12,13 @@
   GroupControllerPMR groupController;
   
   PersistentStore persistentStore;
+  id finishReservationAction;
+}
+
+- (void) awakeFromCib
+{
+  [super awakeFromCib];
+  [self beginReservationWorkflow];
 }
 
 - (void) setUpNotifications
@@ -23,7 +30,7 @@
   [self notificationNamed: DifferentObjectsUsedNews
                     calls: @selector(usedObjectsHaveChanged:)];
   [self notificationNamed: TimeToReserveNews
-                    calls: @selector(gatherAndSendNewReservation:)];
+                    calls: @selector(finishReservation:)];
   [self notificationNamed: SwitchToGroupNews
                     calls: @selector(switchToNewGroup:)];
   [self notificationNamed: ModifyReservationNews
@@ -63,17 +70,17 @@
   [self filterAccordingToProcedures: [group procedures]];
 }
 
-- (void) gatherAndSendNewReservation: aNotification
+- (void) finishReservation: aNotification
 {
   var dict = [self gather];
-  var reservationID = [persistentStore makeReservation: dict];
+  var reservationID = finishReservationAction(dict);
   [reservationDataController offerReservationView: reservationID];
-  [self beginPostReservationWorkflowStep];
+  [self beginReservationWorkflow];
 }
 
 - (void) edit: aNotification
 {
-  [self beginPostReservationWorkflowStep];
+  [self beginReservationWorkflow];
 
   var dict = [persistentStore reservation: [aNotification object]];
   [reservationDataController edit: dict];
@@ -101,12 +108,14 @@
   return dict;
 }
 
-- (void) beginPostReservationWorkflowStep
+- (void) beginReservationWorkflow
 {
   [reservationDataController beginningOfReservationWorkflow];
   [procedureController beginningOfReservationWorkflow];
   [animalController beginningOfReservationWorkflow];
   [groupController beginningOfReservationWorkflow];
+
+  [self finishByCreatingNewReservation];
 }
 
 - (void) beginCollectingGroupData
@@ -116,6 +125,13 @@
   [procedureController appear];
   [animalController appear];
   [groupController appear];
+}
+
+- (void) finishByCreatingNewReservation
+{
+  finishReservationAction = function (dict) {
+    return [persistentStore makeReservation: dict];
+  }
 }
 
 @end
