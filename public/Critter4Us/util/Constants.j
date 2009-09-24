@@ -24,11 +24,6 @@ jsonURI = function(route)
   return url = "/json/" + route
 }
 
-// Drag and drop
-ProcedureDragType = "ProcedureDragType";
-AnimalDragType = "AnimalDragType";
-
-
 // Standard window and view size information
 WindowBottomMargin = 20;
 ScrollbarWidth = 20;
