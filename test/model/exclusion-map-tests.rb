@@ -52,6 +52,22 @@ class ExclusionMapTests < Test::Unit::TestCase
         
   end
 
+  should "be able to allow animals that might have been excluded" do
+
+    Reservation.random(:date => Date.new(2009, 9, 9),
+                       :morning => true) do
+      use Animal.random(:name => "inuse")
+      use Procedure.random(:name => 'lab procedure')
+    end
+
+    map = ExclusionMap.new(Date.new(2009, 9, 9),
+                           morning = true).allowing(['inuse']).to_hash
+
+    assert { map == {'lab procedure' => [] } }
+        
+  end
+
+
 
   BoundaryCases = [
 # Reservation attempt for date after previously-made reservation

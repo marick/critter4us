@@ -35,6 +35,13 @@ class ExclusionMap
     query.all
   end
 
+  def allowing(allowed)
+    @hash.each do | procedure, excluded |
+      @hash[procedure] = excluded - allowed
+    end
+    self
+  end
+
   def to_hash
     @hash
   end
