@@ -205,70 +205,7 @@ var Skip = function() {}
 }
 
 
-// OLD FAVORED NAMES
 
-
-
-
-
-
--(void) sequence: sequence means: consequence
-{
-  given = nothing = function() { }
-  [self given: given during: sequence behold: nothing andTherefore: consequence];
-}
-
--(void) given: given sequence: sequence means: consequence
-{
-  nothing = function() { }
-  [self given: given during: sequence behold: nothing andTherefore: consequence];
-}
-
--(void) given: given after: during behold: behold
-{
-  nothing = function() { }
-  [self given: given during: during behold: behold andTherefore: nothing];
-}
-
-
-
--(void) given: given during: during behold: behold 
-{
-  nothing = function() {}
-  [self given: given during: during behold: behold andTherefore: nothing];
-}
-
--(void) given: given during: during behold: behold andTherefore: consequence
-{
-  given();
-  if (! sut.awakened) [sut awakeFromCib];
-  behold();
-  result = during();
-  [self checkAllExpectations];
-  consequence();
-}
-
-
-
-
--(void) beforeAwakening: setup whileAwakening: (id)mockSettings andTherefore: (id)consequence
-{
-  setup();
-  [self whileAwakening: mockSettings andTherefore: consequence];
-}
-
--(void) whileAwakening: (id)mockSettings andTherefore: (id)consequence
-{
-  mockSettings();
-  [test.sut awakeFromCib];
-  [self checkAllExpectations];
-  consequence();
-}
-
--(void) whileAwakening: (id)mockSettings
-{
-  [self whileAwakening: mockSettings andTherefore:  function(){}];
-}
 
 
 - (void)checkAllExpectations
@@ -292,27 +229,27 @@ var Skip = function() {}
 }
 
 
-- (void)sutHasUpwardCollaborators: anArray
+- (void)sutHasUpwardCollaborators: anArray // TODO: Old name
 {
-  [self sutHasCollaborators: anArray];
+  [self sutHasOutlets: anArray];
 }
 
-- (void)sutHasUpwardCollaborators: anArray
+- (void)sutHasDownwardCollaborators: anArray // TODO: Old name
 {
-  [self sutHasCollaborators: anArray];
+  [self sutHasOutlets: anArray];
 }
 
-- (void)sutHasDownwardCollaborators: anArray
+- (void)sutHasUpwardOutlets: anArray
 {
-  [self sutHasCollaborators: anArray];
+  [self sutHasOutlets: anArray];
 }
 
-- (void)sutHasSidewaysCollaborators: anArray
+- (void)sutHasDownwardOutlets: anArray
 {
-  [self sutHasCollaborators: anArray];
+  [self sutHasOutlets: anArray];
 }
 
-- (void)sutHasCollaborators: anArray
+- (void)sutHasOutlets: anArray
 {
   for(i=0; i<[anArray count]; i++)
     {
@@ -322,6 +259,11 @@ var Skip = function() {}
       mock.failOnUnexpectedSelector = NO;
       sut[name] = mock;
     }
+}
+
+- (void) overrideAllocatedHelpers: anArray
+{
+  [self sutHasOutlets: anArray];
 }
 
 
