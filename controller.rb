@@ -126,7 +126,8 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
         :exclusions => ExclusionMap.new(reservation.date,
                                         reservation.morning).
                                     allowing(reservation.animal_names).
-                                    to_hash
+                                    to_hash,
+        :id => reservation.pk
       }
     end
   end

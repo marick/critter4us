@@ -212,6 +212,10 @@ class JsonGenerationTests < Test::Unit::TestCase
       assert { ['floating', 'venipuncture'] == @result['procedures'].sort }
     end
 
+    should "return the reservation id" do
+      assert { @reservation.pk == @result['id'] }
+    end
+
   end
   
 end
