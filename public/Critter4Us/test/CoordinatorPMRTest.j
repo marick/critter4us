@@ -19,8 +19,8 @@
 {
   sut = [[CoordinatorPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardCollaborators: ['reservationDataController', 'animalController', 'procedureController', 'groupController', 'pageController']];
-  [scenario sutHasDownwardCollaborators: ['persistentStore']];
+  [scenario sutHasUpwardOutlets: ['reservationDataController', 'animalController', 'procedureController', 'groupController', 'pageController']];
+  [scenario sutHasDownwardOutlets: ['persistentStore']];
 
   betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
   jake = [[Animal alloc] initWithName: 'jake' kind: 'cow'];
@@ -165,14 +165,9 @@
 
 -(void) testCollectsReservationDataAndSendsToPersistentStore
 {
-  var betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
-  var floating = [[Procedure alloc] initWithName: 'floating'];
-  var accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
-
-
   var group1 = [[Group alloc] initWithProcedures: [floating]
                                          animals: [betsy]];
-  var group2 = [[Group alloc] initWithProcedures: [accupuncture]
+  var group2 = [[Group alloc] initWithProcedures: [radiology]
                                          animals: [betsy]];
 
 
@@ -205,7 +200,7 @@
         [self assert: [betsy]
               equals: [group1actual valueForKey: 'animals']];
 
-        [self assert: [accupuncture]
+        [self assert: [radiology]
               equals: [group2actual valueForKey: 'procedures']];
         [self assert: [betsy]
               equals: [group2actual valueForKey: 'animals']];
@@ -275,6 +270,24 @@
     }];
 }
 
+- (void) testAModificationRequestMeansThatFinishingEditingSavesReservationInsteadOfCreatingANewOne
+{
+  [scenario overrideAllocatedHelpers: ['reservationData']];
+  [scenario
+    previousAction: function() { 
+      [self sendNotification: ModifyReservationNews
+                  withObject: 33];
+    }
+   during: function() {
+      [self sendNotification: TimeToReserveNews];
+    }
+   behold: function() {
+        [sut.reservationData shouldReceive:@selector(update)];
+        [sut.persistentStore shouldReceive:@selector(updateReservation:with:)
+                                      with: [33, sut.reservationData]
+                                 andReturn: 33];
+    }];
+}
 
 @end
 

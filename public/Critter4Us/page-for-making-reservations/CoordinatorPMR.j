@@ -12,7 +12,9 @@
   GroupControllerPMR groupController;
   
   PersistentStore persistentStore;
-  id finishReservationAction;
+  ReservationData reservationData;
+  id finishReservationClosure;
+  id oldStyle;  // TODO delete
 }
 
 - (void) awakeFromCib
@@ -72,8 +74,15 @@
 
 - (void) finishReservation: aNotification
 {
-  var dict = [self gather];
-  var reservationID = finishReservationAction(dict);
+  if (oldStyle) 
+  {
+    reservationData = [self gather];
+  }
+  else
+  {
+    [reservationData update];
+  }
+  var reservationID = finishReservationClosure();
   [reservationDataController offerReservationView: reservationID];
   [self beginReservationWorkflow];
 }
@@ -82,7 +91,8 @@
 {
   [self beginReservationWorkflow];
 
-  var dict = [persistentStore reservation: [aNotification object]];
+  var reservationID = [aNotification object];
+  var dict = [persistentStore reservation: reservationID];
   [reservationDataController edit: dict];
 
   [self beginCollectingGroupData];
@@ -90,6 +100,12 @@
   [animalController allPossibleObjects: [dict valueForKey: 'animals']];
   [procedureController allPossibleObjects: [dict valueForKey: 'procedures']];
   [groupController allPossibleObjects: [dict valueForKey: 'groups']];
+
+  oldStyle = NO;
+  finishReservationClosure = function () {
+    return [persistentStore updateReservation: reservationID with: reservationData];
+  }
+
 }
 
 // Util
@@ -129,8 +145,9 @@
 
 - (void) finishByCreatingNewReservation
 {
-  finishReservationAction = function (dict) {
-    return [persistentStore makeReservation: dict];
+  oldStyle = YES;
+  finishReservationClosure = function () {
+    return [persistentStore makeReservation: reservationData];
   }
 }
 
