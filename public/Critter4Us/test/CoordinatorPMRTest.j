@@ -186,6 +186,7 @@
       [self sendNotification: TimeToReserveNews];
     }
    behold: function() {
+      // TODO: this level of detail is unnecessary.
       var dictTester = function (h) {
 	[self assert: '2009-03-05' equals: [h valueForKey: 'date'] ];
 	[self assert: [Time afternoon] equals: [h valueForKey: 'time' ]];
@@ -272,20 +273,27 @@
 
 - (void) testAModificationRequestMeansThatFinishingEditingSavesReservationInsteadOfCreatingANewOne
 {
-  [scenario overrideAllocatedHelpers: ['reservationData']];
   [scenario
     previousAction: function() { 
       [self sendNotification: ModifyReservationNews
                   withObject: 33];
+      sut.reservationDataController = 
+        [[Spiller alloc] initWithValue: {'reservation data': 'to be passed along'}];
+      sut.groupController = 
+        [[Spiller alloc] initWithValue: {'group data' : 'to be passed along too'}];
     }
    during: function() {
       [self sendNotification: TimeToReserveNews];
     }
    behold: function() {
-        [sut.reservationData shouldReceive:@selector(update)];
-        [sut.persistentStore shouldReceive:@selector(updateReservation:with:)
-                                      with: [33, sut.reservationData]
-                                 andReturn: 33];
+    [sut.persistentStore shouldReceive:@selector(updateReservation:with:)
+                                  with: [33, function(dict) {
+          [self assert: 'to be passed along'
+                equals: [dict valueForKey: 'reservation data']];
+          [self assert: 'to be passed along too'
+                equals: [dict valueForKey: 'group data']];
+          return YES;
+          }]];
     }];
 }
 
