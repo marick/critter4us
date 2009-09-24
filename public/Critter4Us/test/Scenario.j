@@ -21,9 +21,23 @@ var Skip = function() {}
   return self;
 }
 
-// NEW FAVORED NAMES
-
    // Having to do with awakeFromNib
+
+-(void) whileAwakening: mockSettings
+{
+  [self beforeApp: Skip
+    whileAwakening: mockSettings
+            andSo: Skip];
+        
+}
+
+-(void) afterAwakening: consequence
+{
+  [self beforeApp: Skip
+    whileAwakening: Skip
+            andSo: consequence];
+        
+}
 
 -(void)       beforeApp: beforeApp
          whileAwakening: mockSettings
