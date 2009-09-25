@@ -14,6 +14,7 @@ StoreReservationRoute = @"store_reservation";
 CourseSessionDataBlobRoute = @"course_session_data_blob";
 AllReservationsTableRoute = @"reservations";
 GetEditableReservationRoute = @"reservation";
+ModifyReservationRoute = @"modify_reservation";
 
 // Other useful constants
 NotificationCenter = [CPNotificationCenter defaultCenter];
