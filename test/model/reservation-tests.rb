@@ -137,6 +137,65 @@ class ReservationModelTests < Test::Unit::TestCase
     end
   end
 
+  context "replacing data" do 
+    setup do 
+      @reservation = Reservation.random(:instructor => 'marge',
+                                      :course => 'vm333',
+                                      :date => Date.new(2001, 01, 02),
+                                      :morning => true) do 
+        use Animal.random(:name => 'animal')
+        use Procedure.random(:name => 'procedure')
+      end
+      @betsy = Animal.random(:name => 'betsy')
+      @jake = Animal.random(:name => 'jake')
+      @floating = Procedure.random(:name => 'floating')
+      @venipuncture = Procedure.random(:name => 'venipuncture')
+
+      @old_group_ids = @reservation.groups.collect { | g | g.id }
+      @old_use_ids = @reservation.uses.collect { | u | u.id }
+
+      @new_data = {
+        :instructor => 'not marge',
+        :course => 'not vm333',
+        :date => Date.new(2012, 12, 12),
+        :morning => false,
+        :groups => [ {:procedures => ['venipuncture'],
+                       :animals => ['betsy']},
+                     {:procedures => ['floating'],
+                       :animals => ['jake', 'betsy']}]
+      }
+
+      @reservation.update_with_groups(@new_data)
+    end
+
+    should "delete old groups" do
+      @old_group_ids.each do | id |
+        deny { Group[id] }
+      end
+      @old_use_ids.each do | id | 
+        deny { Use[id] }
+      end
+    end
+
+    should "add new groups" do
+      new_reservation = Reservation[@reservation.pk]
+
+      assert { new_reservation.groups.length == 2 }
+      assert { new_reservation.uses.length == 3 }
+      assert { Use[:procedure_id => @venipuncture.id, :animal_id => @betsy.id] }
+      assert { Use[:procedure_id => @floating.id, :animal_id => @jake.id] }
+      assert { Use[:procedure_id => @floating.id, :animal_id => @betsy.id] }
+    end
+
+    should "replace unstructured data" do
+      new_reservation = Reservation[@reservation.pk]
+      assert { new_reservation.instructor == @new_data[:instructor] }
+      assert { new_reservation.course == @new_data[:course] }
+      assert { new_reservation.date == @new_data[:date]}
+      assert { new_reservation.morning == @new_data[:morning]}
+    end
+
+  end
 
   should "delete both self and associated uses and groups" do
     reservation = Reservation.random(:instructor => 'marge') do 

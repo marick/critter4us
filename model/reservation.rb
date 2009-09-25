@@ -2,19 +2,44 @@ require 'config'
 require 'pp'
 
 class Reservation < Sequel::Model
-  class ReservationStructureBuilder
+  # TODO: this should probably be a first-class object that can mediate between 
+  # "reservation land" and "incoming data land". 
+  class ReservationStructureChanger
 
     attr_reader :reservation
 
     def self.build_from(data)
-      new(data).reservation
+      instance = new(data)
+      instance.create_with_direct_data
+      instance.add_groups
+      instance.reservation
     end
 
     def initialize(data)
-      reservation_part, data_for_each_group =
-        partition_reservation_data(data)
-      @reservation = Reservation.create(reservation_part)
-      data_for_each_group.each do | group_data | 
+      @reservation_part, @data_for_each_group = partition_reservation_data(data)
+    end
+
+    def create_with_direct_data
+      @reservation = Reservation.create(@reservation_part)
+    end
+
+    def update_direct_data
+      @reservation.update(@reservation_part)
+    end
+
+    def use_reservation(reservation)
+      @reservation = reservation
+    end
+
+    def destroy_groups
+      @reservation.groups.each do | g |
+        g.destroy
+      end
+    end
+
+    def add_groups
+      @data_for_each_group.each do | group_data | 
+        
         group = Group.create(:reservation => reservation)
         cross_product_of_procedures_and_animals(group, group_data)
       end
@@ -52,7 +77,7 @@ class Reservation < Sequel::Model
   end
 
   def self.create_with_groups(data)
-    ReservationStructureBuilder.build_from(data)
+    ReservationStructureChanger.build_from(data)
   end
 
   def uses
@@ -91,6 +116,14 @@ class Reservation < Sequel::Model
     else
       @procedure_created_in_block = thing
     end
+  end
+
+  def update_with_groups(data)
+    changer = ReservationStructureChanger.new(data)
+    changer.use_reservation(self);
+    changer.destroy_groups
+    changer.update_direct_data
+    changer.add_groups
   end
 
   private
