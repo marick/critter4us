@@ -165,8 +165,13 @@ class ReservationModelTests < Test::Unit::TestCase
                        :animals => ['jake', 'betsy']}]
       }
 
-      @reservation.update_with_groups(@new_data)
+      @retval = @reservation.with_updated_groups(@new_data)
     end
+
+    should "return self" do 
+      assert @retval.object_id == @reservation.object_id
+    end
+
 
     should "delete old groups" do
       @old_group_ids.each do | id |

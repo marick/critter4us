@@ -118,12 +118,13 @@ class Reservation < Sequel::Model
     end
   end
 
-  def update_with_groups(data)
+  def with_updated_groups(data)
     changer = ReservationStructureChanger.new(data)
     changer.use_reservation(self);
     changer.destroy_groups
     changer.update_direct_data
     changer.add_groups
+    self
   end
 
   private
