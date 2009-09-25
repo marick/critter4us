@@ -151,11 +151,11 @@ class JsonGenerationTests < Test::Unit::TestCase
       end
     end
 
-    should "return the reservation number" do
+    should "return the reservation number as a string" do # {footnote 'string'}
       post '/json/store_reservation', :data => @data.to_json
       assert_json_response
       r = Reservation[:date => Date.new(2009, 02, 03)]
-      assert_jsonification_of({'reservation' => r.id.to_s})
+      assert_jsonification_of({'reservation' => r.pk.to_s})
     end
   end
 
@@ -175,7 +175,7 @@ class JsonGenerationTests < Test::Unit::TestCase
                        :animals => ['jinx']}]
       }
       @reservation = Reservation.create_with_groups(test_data)
-      get "/json/reservation/#{@reservation.id}"
+      get "/json/reservation/#{@reservation.pk}"
       assert_json_response
       @result = JSON[last_response.body]
     end
@@ -212,10 +212,20 @@ class JsonGenerationTests < Test::Unit::TestCase
       assert { ['floating', 'venipuncture'] == @result['procedures'].sort }
     end
 
-    should "return the reservation id" do
-      assert { @reservation.pk == @result['id'] }
+    should "return the reservation id as a string" do # { footnote 'string' }
+      assert { @reservation.pk.to_s == @result['id'] }
     end
 
   end
   
 end
+
+# {footnote 'string'}
+#    The reservation ID (primary key) is an integer and could be returned as 
+#    such. Code on the receiving side could treat it as either, since it's
+#    just a token. It would probably want to treat it as a string, so there 
+#    doesn't have to be logic to say "oh, this key here has an integer value so 
+#    I will parse it". But then there's the possibility of confusion - why an int
+#    on one side and a string on the other, so I'll just make it a string on both
+#    sides.
+

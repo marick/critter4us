@@ -100,7 +100,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
     reservation = Reservation.create_with_groups(hash)
     jsonically do
       typing_as "reservation" do 
-        reservation.id.to_s
+        reservation.pk.to_s
       end
     end
   end
@@ -127,7 +127,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
                                         reservation.morning).
                                     allowing(reservation.animal_names).
                                     to_hash,
-        :id => reservation.pk
+        :id => reservation.pk.to_s
       }
     end
   end
