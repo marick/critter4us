@@ -159,6 +159,54 @@ class JsonGenerationTests < Test::Unit::TestCase
     end
   end
 
+  context "modifying a reservation" do 
+    setup do 
+      Animal.create(:name => 'twitter', :kind => 'sugar glider')
+      Animal.create(:name => 'jinx', :kind => 'red-eared slider')
+      Animal.create(:name => 'inchy', :kind => 'chinchilla')
+      Procedure.random_with_names('floating', 'venipuncture', 'stroke')
+
+
+      old_reservation_data = { 
+        :instructor => 'marge',
+        :course => 'vm333',
+        :date => Date.new(2001, 2, 4),
+        :morning => true,
+        :groups => [ {:procedures => ['floating'],
+                       :animals => ['twitter']}]
+      }
+      old_reservation = Reservation.create_with_groups(old_reservation_data)
+      @id_to_modify = old_reservation.pk.to_s
+
+      incoming_modification_data = {
+        'instructor' => 'morin',
+        'course' => 'cs101',
+        'date' => '2012-12-12',
+        'time' => 'afternoon',
+        'groups' => [ ]
+      }.to_json
+
+      post '/json/modify_reservation', :reservationID => @id_to_modify,
+                                       :data => incoming_modification_data
+
+      @new_reservation = Reservation[@id_to_modify]
+    end
+
+    should "perform the update" do 
+      # Spot check since the reservation does most of the work. 
+      assert { @new_reservation.instructor == 'morin' }
+      assert { [] == @new_reservation.groups }
+    end
+
+    should "return the unchanged id" do 
+      assert_json_response
+      assert_jsonification_of({'reservation' => @new_reservation.pk.to_s})
+      assert { @id_to_modify == @new_reservation.pk.to_s }
+    end
+
+  end
+
+
   context "retrieving a reservation" do
     setup do
       Animal.create(:name => 'twitter', :kind => 'sugar glider')

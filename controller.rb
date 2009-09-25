@@ -96,8 +96,21 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
   end
 
   post '/json/store_reservation' do
+    tweak_reservation do | hash | 
+      Reservation.create_with_groups(hash)
+    end
+  end
+
+  post '/json/modify_reservation' do
+    id = params['reservationID'].to_i;
+    tweak_reservation do | hash | 
+      Reservation[id].with_updated_groups(hash)
+    end
+  end
+
+  def tweak_reservation
     hash = move_to_internal_format(JSON.parse(params['data']))
-    reservation = Reservation.create_with_groups(hash)
+    reservation = yield hash
     jsonically do
       typing_as "reservation" do 
         reservation.pk.to_s
