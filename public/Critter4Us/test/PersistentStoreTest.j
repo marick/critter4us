@@ -4,6 +4,7 @@
 @import <Critter4Us/model/Group.j>
 @import <Critter4Us/persistence/PersistentStore.j>
 @import "ScenarioTestCase.j"
+@import "TestUtil.j"
 
 @implementation PersistentStoreTest : ScenarioTestCase
 {
@@ -59,6 +60,9 @@
 {
   var time = [Time afternoon];
 
+  // This test doesn't really need to use real data. The code under test doesn't
+  // massage the data any more - that works been hived off to ToNetworkConverter. 
+  // It can't hurt, but do something simpler if this test ever breaks.
   var group1 = [[Group alloc] initWithProcedures: [floating] animals: [betsy]];
   var group2 = [[Group alloc] initWithProcedures: [accupuncture] animals: [betsy]];
 
@@ -94,7 +98,32 @@
        andReturn: '{"reservation":"1"}'];
     }
    ];
-  [self assert: '1' equals: scenario.result];
+  [self assert: "1" equals: scenario.result];
+}
+
+- (void) testUpdatingOfReservation
+{
+  [scenario 
+   during: function() {
+      return [sut updateReservation: '33' with: cpdict({'key':'value'})];
+    }
+  behold: function() {
+      var postContentValidator = function(content) {
+        var parsed = [self decode: content];
+        [self assert: '33' 
+              equals: [parsed objectForKey: 'reservationID']];
+        var data = [[parsed objectForKey: 'data'] objectFromJSON];
+        [self assert: 'value' equals: data['key']];
+        return YES;
+      }
+      [sut.network shouldReceive: @selector(POSTFormDataTo:withContent:)
+                            with: [jsonURI(ModifyReservationRoute), postContentValidator]
+                       andReturn: '{"reservation":"33"}'];
+    }
+  andSo: function() {
+      [self assert: "33" equals: scenario.result];
+    }
+   ];
 }
 
 -(void)testCanFetchTableInfoFromNetwork
@@ -195,6 +224,22 @@
 
 
 // Test utility methods
+
+- (CPString) decode: contentString
+{
+  var i;
+  var keys = [];
+  var values = [];
+  
+  var array = contentString.split(/[\?=\&]/);
+  for(i = 0; i < array.length; i += 2)
+  {
+    [keys addObject: array[i]];
+    [values addObject: decodeURIComponent(array[i+1])];
+  }
+  return [CPDictionary dictionaryWithObjects: values forKeys: keys];
+}
+
 
 
 @end

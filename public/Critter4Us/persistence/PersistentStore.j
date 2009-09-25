@@ -7,6 +7,14 @@
 @implementation PersistentStore : AwakeningObject
 {
   id network;
+  ToNetworkConverter toNetworkConverter;
+  FromNetworkConverter fromNetworkConverter;
+}
+
+- (void) awakeFromCib
+{
+  toNetworkConverter = [[ToNetworkConverter alloc] init];
+  fromNetworkConverter = [[FromNetworkConverter alloc] init];
 }
 
 -(void) loadInfoRelevantToDate: date time: time
@@ -21,14 +29,21 @@
 
 - (CPInteger) makeReservation: dict
 {
-  [self checkReservationValidity: dict];
   var dataString = [self dataStringFromDictionary: dict];
   var content = [CPString stringWithFormat:@"data=%s", dataString];
-  var url = jsonURI(StoreReservationRoute);
-  var dict = [self dictionaryFromJSON: [network POSTFormDataTo: url withContent: content]];
-  return [dict valueForKey: 'reservation'];
+  return [self useReservationProducingRoute: StoreReservationRoute
+                               withPOSTData: content];
 }
 
+// TODO: Two much duplication between this function and previous.
+- (CPInteger) updateReservation: reservationID with: dict
+{
+  var dataString = [self dataStringFromDictionary: dict];
+  var content = [CPString stringWithFormat:@"reservationID=%s&data=%s",
+                          reservationID, dataString];
+  return [self useReservationProducingRoute: ModifyReservationRoute
+                               withPOSTData: content];
+}
 
 - (CPString) pendingReservationTableAsHtml
 {
@@ -44,17 +59,6 @@
 // util
 
 
-- (void) checkReservationValidity: (CPDictionary) dict
-{
-  var expected = ['date', 'time', 'groups', 'course', 'instructor'];
-  var actual = [dict allKeys];
-
-  [actual sortUsingSelector: @selector(compare:)];
-  [expected sortUsingSelector: @selector(compare:)];
-
-  if ([expected isEqual: actual]) return;
-  alert("There's a program bug. Some invalid or missing key in " + [expected description]);
-}
 
 - (CPDictionary) dictionaryFromJSON: (CPString) json
 {
@@ -63,14 +67,22 @@
   var jsHash =  [json objectFromJSON];
   if (! jsHash)
     alert("No hash was obtained from JSON string " + json + "\n Please report this.");
-  return [FromNetworkConverter convert: jsHash];
+  return [fromNetworkConverter convert: jsHash];
 }
 
 - (CPString) dataStringFromDictionary: dict
 {
-  var jsData = [ToNetworkConverter convert: dict];
+  var jsData = [toNetworkConverter convert: dict];
   var json = [CPString JSONFromObject: jsData];
   return encodeURIComponent(json);
 }
+
+- (void) useReservationProducingRoute: route withPOSTData: content
+{
+  var url = jsonURI(route);
+  var dict = [self dictionaryFromJSON: [network POSTFormDataTo: url withContent: content]];
+  return [dict valueForKey: 'reservation'];
+}
+
 
 @end
