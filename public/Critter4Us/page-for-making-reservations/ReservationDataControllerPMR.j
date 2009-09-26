@@ -1,7 +1,7 @@
 @import "../util/AwakeningObject.j"
 @import "../util/Time.j"
 
-@implementation ReservationDataControllerPMR : AwakeningObject
+@implementation ReservationDataControllerPMR : PanelController
 {
   CPTextField courseField;
   CPTextField instructorField;

@@ -1,5 +1,6 @@
 @import "Subgraph.j"
 @import "../ReservationDataControllerPMR.j"
+@import "../../view/DateChangingPanel.j"
 
 
 @implementation ReservationDataControllerSubgraph : Subgraph
@@ -19,6 +20,7 @@
   self = [super init];
   
   controller = [self custom: [[ReservationDataControllerPMR alloc] init]];
+  [self dateChangingPanel];
   [self drawControlsOnPage: pageView];
   return self;
 }
@@ -149,7 +151,8 @@
   x += width;
 
   x += 10;
-  width = 90
+  width = 90;
+
   var morningButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 29, width, 20)];
   [morningButton setState:CPOnState];
   [morningButton setTitle:"morning"];
@@ -192,5 +195,17 @@
   [dateTimeButton setTarget: controller];
   [dateTimeButton setAction: @selector(changeDateTime:)];
 }
+
+
+-(CPPanel) dateChangingPanel
+{
+  var rect = CGRectMake(550, 50, 300, 300);
+  var panel = [[DateChangingPanel alloc] initWithContentRect: rect];
+  [controller.panel = panel];
+  return panel;
+}
+
+
+
 
 @end
