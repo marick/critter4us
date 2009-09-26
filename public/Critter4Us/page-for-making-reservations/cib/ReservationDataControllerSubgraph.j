@@ -145,9 +145,6 @@
   [dateField setStringValue: "2009-"];
   [aView addSubview:dateField];
   controller.dateField = dateField;
-
-
-
   x += width;
 
   x += 10;
@@ -199,8 +196,7 @@
 
 -(CPPanel) dateChangingPanel
 {
-  var rect = CGRectMake(550, 50, 300, 300);
-  var panel = [[DateChangingPanel alloc] initWithContentRect: rect];
+  var panel = [[DateChangingPanel alloc] initAtX: 550 y: 50];
   [controller.panel = panel];
   return panel;
 }
