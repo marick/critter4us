@@ -75,7 +75,7 @@
   [dateGatheringView setHidden: NO];
   controller.dateGatheringView = dateGatheringView;
 
-  var dateDisplayingView = [[CPView alloc] initWithFrame:CGRectMake(x, 40, 330, 100)];
+  var dateDisplayingView = [[CPView alloc] initWithFrame:CGRectMake(x, 40, 400, 100)];
   [self addDateDisplayingControlsTo: dateDisplayingView];
   [pageView addSubview:dateDisplayingView];
   [dateDisplayingView setHidden: YES];
@@ -171,6 +171,8 @@
   controller.beginButton = beginButton;
   [beginButton setTarget: controller];
   [beginButton setAction: @selector(beginReserving:)];
+
+
 }
 
 - (void) addDateDisplayingControlsTo: aView
@@ -181,6 +183,14 @@
   [aView addSubview:aLabel];
   [aLabel setStringValue: "on the morning of 2009-08-10"];
   controller.dateTimeSummary = aLabel;
+
+
+  var dateTimeButton = [[CPButton alloc] initWithFrame:CGRectMake(200, 30, 160, 30)];
+  [dateTimeButton setTitle: "Change Date or Time"];
+  [aView addSubview:dateTimeButton];
+  controller.dateTimeButton = dateTimeButton;
+  [dateTimeButton setTarget: controller];
+  [dateTimeButton setAction: @selector(changeDateTime:)];
 }
 
 @end

@@ -18,6 +18,7 @@
   CPView dateGatheringView;
   CPView dateDisplayingView;
   CPTextField dateTimeSummary;
+  CPButton dateTimeButton;
 }
 
 - (void) beginReserving: sender
@@ -82,6 +83,10 @@
   [morningButton setState: state];
 }
 
+- (void) changeDateTime: sender
+{
+  alert("Not implemented");
+}
 
 
 // Util
