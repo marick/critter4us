@@ -1,6 +1,7 @@
 @import "Subgraph.j"
 @import "../ReservationDataControllerPMR.j"
 @import "../../view/DateChangingPanel.j"
+@import "../../view/DateChangingView.j"
 
 
 @implementation ReservationDataControllerSubgraph : Subgraph
@@ -198,6 +199,8 @@
 {
   var panel = [[DateChangingPanel alloc] initAtX: 550 y: 50];
   [controller.panel = panel];
+  var view = [[DateChangingView alloc] init];
+  [panel setContentView: view];
   return panel;
 }
 
