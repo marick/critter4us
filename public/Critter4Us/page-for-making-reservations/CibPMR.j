@@ -94,7 +94,8 @@
   pageControllerSubgraph.controller.panelControllers =
                                     [animalControllerSubgraph.controller,
                                      procedureControllerSubgraph.controller,
-                                     groupControllerSubgraph.controller];
+                                     groupControllerSubgraph.controller,
+                                     reservationDataControllerSubgraph.panelController];
 }
 @end
 
