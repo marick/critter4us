@@ -1,7 +1,8 @@
 @import "Subgraph.j"
 @import "../ReservationDataControllerPMR.j"
-@import "../../view/DateChangingPanel.j"
-@import "../../view/DateChangingView.j"
+@import "../../view/DateTimeEditingPanel.j"
+@import "../../view/DateTimeEditingControl.j"
+@import "../../controller/PanelController.j"
 
 
 @implementation ReservationDataControllerSubgraph : Subgraph
@@ -12,6 +13,9 @@
   CPTextField courseField;
   CPTextField dateField;
   CPRadio afternoonButton; 
+
+  CPButton dateTimeButton;
+  PanelController panelController;
   // There are others but no need to make them instance vars.
 }
 
@@ -21,8 +25,8 @@
   self = [super init];
   
   controller = [self custom: [[ReservationDataControllerPMR alloc] init]];
-  [self dateChangingPanel];
   [self drawControlsOnPage: pageView];
+  [self dateTimeEditingPanel];
   return self;
 }
 
@@ -185,26 +189,24 @@
   [aLabel setStringValue: "on the morning of 2009-08-10"];
   controller.dateTimeSummary = aLabel;
 
-
-  var dateTimeButton = [[CPButton alloc] initWithFrame:CGRectMake(200, 30, 160, 30)];
+  dateTimeButton = [[CPButton alloc] initWithFrame:CGRectMake(200, 30, 160, 30)];
   [dateTimeButton setTitle: "Change Date or Time"];
   [aView addSubview:dateTimeButton];
-  controller.dateTimeButton = dateTimeButton;
   [dateTimeButton setTarget: controller];
-  [dateTimeButton setAction: @selector(changeDateTime:)];
+  [dateTimeButton setAction: @selector(startDestructivelyEditingDateTime:)];
 }
 
 
--(CPPanel) dateChangingPanel
+-(void) dateTimeEditingPanel
 {
-  var panel = [[DateChangingPanel alloc] initAtX: 550 y: 50];
-  [controller.panel = panel];
-  var view = [[DateChangingView alloc] init];
+  var panel = [[DateTimeEditingPanel alloc] initAtX: 550 y: 50];
+  var view = [[DateTimeEditingControl alloc] init];
+  controller.dateTimeEditingControl = view;
   [panel setContentView: view];
-  return panel;
+
+  panelController = [[PanelController alloc] init];
+  panelController.panel = panel;
+  controller.dateTimeEditingPanelController = panelController;
 }
-
-
-
 
 @end
