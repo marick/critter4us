@@ -1,6 +1,11 @@
 @import <AppKit/CPPanel.j>
 
-@implementation DateChangingPanel : CPPanel
+
+// Experimenting with having subclasses manage their own positions as
+// an alternative to having giant Cib-like bundles o' code do that
+// work.
+
+@implementation DateTimeEditingPanel : CPPanel
 {
 }
 
@@ -10,7 +15,7 @@
   self = [self initWithContentRect: rect styleMask: CPTitledWindowMask];
   [self setFloatingPanel:YES];
   [self setTitle:@"Change Date and Time"];
-  [self orderFront: self]; // TODO: delete when page layout done.
+  [self orderOut: self]; 
   return self;
 }
 
