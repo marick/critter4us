@@ -208,17 +208,40 @@
 - (void) testDateAndTimeEditingButtonCausesPanelToBecomeVisible
 {
   [scenario
-    previousAction: function() {
-      [sut.dateTimeEditingPanel disappear];
-    }
   during: function() {
       [sut startDestructivelyEditingDateTime: UnusedArgument];
     }
   behold: function() {
-      [sut.dateTimeEditingPanel appear];
+      [sut.dateTimeEditingPanelController shouldReceive:@selector(appear)];
     }
    ];
 
+}
+
+- (void) testDateAndTimeCancelingCausesPanelToBecomeInvisible
+{
+  [scenario
+  during: function() {
+      [sut forgetEditingDateTime: UnusedArgument];
+    }
+  behold: function() {
+      [sut.dateTimeEditingPanelController shouldReceive:@selector(disappear)];
+    }
+   ];
+
+}
+
+
+- (void) test__andSoDoesAccepting
+{
+  [scenario
+  during: function() {
+      [sut newDateTimeValuesReady: UnusedArgument];
+    }
+  behold: function() {
+      [sut.dateTimeEditingPanelController shouldReceive:@selector(disappear)];
+    }
+   ];
 }
 
 

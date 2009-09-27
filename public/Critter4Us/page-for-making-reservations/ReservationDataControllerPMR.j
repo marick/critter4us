@@ -99,6 +99,17 @@
                      morningState: [morningButton state]];
 }
 
+- (void) forgetEditingDateTime: sender
+{
+  [dateTimeEditingPanelController disappear];
+}
+
+
+- (void) newDateTimeValuesReady: sender
+{
+  [dateTimeEditingPanelController disappear];
+}
+
 
 // Util
 

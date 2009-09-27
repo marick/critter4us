@@ -1,10 +1,14 @@
 @import <AppKit/AppKit.j>
+@import "../util/Constants.j"
 
 @implementation DateTimeEditingControl : CPView
 {
   CPTextField dateField;
   CPButton morningButton;
   CPButton afternoonButton;
+  id target; // This could inherit from CPControl... is that overkill? 
+  CPButton changeButton;
+  CPButton cancelButton;
 }
 
 - (id) init
@@ -13,10 +17,40 @@
 
   [self placeFirstRow];
   [self placeSecondRow];
+  [cancelButton setTarget: self];
+  [cancelButton setAction: @selector(forwardClick:)];
+  [changeButton setTarget: self];
+  [changeButton setAction: @selector(forwardClick:)];
 
   return self;
 }
 
+- (void) setTarget: anObject
+{
+  target = anObject;
+}
+
+- (CPString) date
+{
+  return [dateField stringValue];
+}
+
+- (CPButtonState) morningState
+{
+  return [morningButton state];
+}
+
+- (void) forwardClick: sender
+{
+  if (sender == cancelButton)
+  {
+    [target forgetEditingDateTime: self];
+  }
+  else
+  {
+    [target newDateTimeValuesReady: self];
+  }
+}
 
 - (void) setDate: aString morningState: aState
 {
@@ -72,7 +106,7 @@
 {
   x = 60;
   width = 80;
-  var cancelButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 90, width, 30)];
+  cancelButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 90, width, 30)];
   [cancelButton setTitle: "Cancel"];
   [self addSubview:cancelButton];
   //  controller.cancelButton = cancelButton;
@@ -81,7 +115,7 @@
 
   x += 25;
   width = 80;
-  var changeButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 90, width, 30)];
+  changeButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 90, width, 30)];
   [changeButton setTitle: "Change"];
   [self addSubview:changeButton];
   //  controller.changeButton = changeButton;

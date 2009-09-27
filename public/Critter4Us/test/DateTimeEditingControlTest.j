@@ -3,13 +3,16 @@
 
 @implementation DateTimeEditingControlTest : ScenarioTestCase
 {
+  
 }
 
 - (void)setUp
 {
   sut = [[DateTimeEditingControl alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardOutlets: ['dateField', 'morningButton', 'afternoonButton']];
+  [scenario sutHasDownwardOutlets: ['target']];
+
+  [CPApplication sharedApplication]; // clicks only work in this context.
 }
 
 -(void) testCanBeSetToASpecificDateAndMorningValue
@@ -44,6 +47,43 @@
       [self assert: CPOffState equals: [sut.morningButton state]];
       [self assert: CPOnState equals: [sut.afternoonButton state]];
    }];
+}
+
+
+-(void) testTargetWillBeInformedOfCancel
+{
+  [scenario
+    during: function() {
+      [sut setTarget: sut.target];
+      [sut.cancelButton performClick: UnusedArgument]
+    }
+  behold: function() {
+      sut.target.failOnUnexpectedSelector = YES;
+      [sut.target shouldReceive: @selector(forgetEditingDateTime:)
+                           with: sut];
+   }];
+}
+
+
+-(void) testTargetWillBeInformedOfAcceptedChange
+{
+  [scenario
+    during: function() {
+      [sut setTarget: sut.target];
+      [sut.changeButton performClick: UnusedArgument]
+    }
+  behold: function() {
+      [sut.target shouldReceive: @selector(newDateTimeValuesReady:)
+                           with: sut];
+   }];
+}
+
+
+-(void) testCanRetrieveDateAndMorningState
+{
+  [sut setDate: '2009-01-01' morningState: CPOnState];
+  [self assert: '2009-01-01' equals: [sut date]];
+  [self assert: CPOnState equals: [sut morningState]];
 }
 
 @end	

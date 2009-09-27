@@ -200,9 +200,11 @@
 -(void) dateTimeEditingPanel
 {
   var panel = [[DateTimeEditingPanel alloc] initAtX: 550 y: 50];
-  var view = [[DateTimeEditingControl alloc] init];
-  controller.dateTimeEditingControl = view;
-  [panel setContentView: view];
+  var control = [[DateTimeEditingControl alloc] init];
+  [control setTarget: controller];
+  
+  controller.dateTimeEditingControl = control;
+  [panel setContentView: control];
 
   panelController = [[PanelController alloc] init];
   panelController.panel = panel;
