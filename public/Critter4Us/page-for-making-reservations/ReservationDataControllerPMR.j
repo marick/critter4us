@@ -1,7 +1,9 @@
 @import "../util/AwakeningObject.j"
 @import "../util/Time.j"
 
-@implementation ReservationDataControllerPMR : PanelController
+
+
+@implementation ReservationDataControllerPMR : AwakeningObject
 {
   CPTextField courseField;
   CPTextField instructorField;
@@ -18,7 +20,9 @@
   CPView dateGatheringView;
   CPView dateDisplayingView;
   CPTextField dateTimeSummary;
-  CPButton dateTimeButton;
+
+  PanelController dateTimeEditingPanelController;
+  DateTimeEditingControl dateTimeEditingControl;
 }
 
 - (void) beginReserving: sender
@@ -86,6 +90,13 @@
 - (void) changeDateTime: sender
 {
   alert("Not implemented");
+}
+
+- (void) startDestructivelyEditingDateTime: sender
+{
+  [dateTimeEditingPanelController appear];
+  [dateTimeEditingControl setDate: [dateField stringValue]
+                     morningState: [morningButton state]];
 }
 
 
