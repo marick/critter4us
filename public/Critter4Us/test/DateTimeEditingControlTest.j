@@ -1,22 +1,48 @@
-@import <Critter4Us/view/DateChangingView.j>
+@import <Critter4Us/view/DateTimeEditingControl.j>
 @import "ScenarioTestCase.j"
 
-@implementation DateChangingViewTest : ScenarioTestCase
+@implementation DateTimeEditingControlTest : ScenarioTestCase
 {
 }
 
 - (void)setUp
 {
-  sut = [[DateChangingView alloc] init];
+  sut = [[DateTimeEditingControl alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
+  [scenario sutHasUpwardOutlets: ['dateField', 'morningButton', 'afternoonButton']];
 }
 
--(void) testAppear
+-(void) testCanBeSetToASpecificDateAndMorningValue
 {
   [scenario
-    during: function() {
+    previousAction: function() {
+      [sut.dateField setStringValue: 'BOGUS'];
+      [sut.morningButton setState: CPOffState];
+      [sut.afternoonButton setState: CPOnState];
     }
-  behold: function() {
+    testAction: function() {
+      [sut setDate: '2009-01-01' morningState: CPOnState]
+    }
+  andSo: function() {
+      [self assert: '2009-01-01' equals: [sut.dateField stringValue]];
+      [self assert: CPOnState equals: [sut.morningButton state]];
+      [self assert: CPOffState equals: [sut.afternoonButton state]];
+   }];
+}
+
+-(void) testTimeCanBeSetToAfternoon
+{
+  [scenario
+    previousAction: function() {
+      [sut.morningButton setState: CPOnState];
+      [sut.afternoonButton setState: CPOffState];
+    }
+    testAction: function() {
+      [sut setDate: '2009-01-01' morningState: CPOffState]
+    }
+  andSo: function() {
+      [self assert: CPOffState equals: [sut.morningButton state]];
+      [self assert: CPOnState equals: [sut.afternoonButton state]];
    }];
 }
 

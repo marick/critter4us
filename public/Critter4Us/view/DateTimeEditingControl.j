@@ -1,7 +1,10 @@
 @import <AppKit/AppKit.j>
 
-@implementation DateChangingView : CPView
+@implementation DateTimeEditingControl : CPView
 {
+  CPTextField dateField;
+  CPButton morningButton;
+  CPButton afternoonButton;
 }
 
 - (id) init
@@ -12,6 +15,24 @@
   [self placeSecondRow];
 
   return self;
+}
+
+
+- (void) setDate: aString morningState: aState
+{
+  [dateField setStringValue: aString];
+  if (aState == CPOnState) 
+  {
+    [morningButton setState: CPOnState];
+    // I expect above should turn all other radio buttons off. In Capp 0.7.1, 
+    // it doesn't.
+    [afternoonButton setState: CPOffState];
+  }
+  else
+  {
+    [afternoonButton setState: CPOnState];
+    [morningButton setState: CPOffState];
+  }
 }
 
 
@@ -36,11 +57,11 @@
 
   x += 10;
   width = 90;
-  var morningButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 29, width, 20)];
+  morningButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 29, width, 20)];
   [morningButton setState:CPOnState];
   [morningButton setTitle:"morning"];
   
-  var afternoonButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 49, width, 20) radioGroup:[morningButton radioGroup]];
+  afternoonButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 49, width, 20) radioGroup:[morningButton radioGroup]];
   [afternoonButton setTitle:"afternoon"];
 
   [self addSubview: morningButton];
