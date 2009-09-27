@@ -16,7 +16,9 @@
                                         'reserveButton',
                                         'linkToPreviousResults',
                                         'dateGatheringView', 'dateDisplayingView',
-                                        'dateTimeSummary'
+                                        'dateTimeSummary',
+                                        'dateTimeEditingPanelController',
+                                        'dateTimeEditingControl'
                                         ]];
 }
 
@@ -201,6 +203,41 @@
       [sut.morningButton shouldReceive: @selector(setState:) with: CPOffState];
     }
    ];
+}
+
+- (void) testDateAndTimeEditingButtonCausesPanelToBecomeVisible
+{
+  [scenario
+    previousAction: function() {
+      [sut.dateTimeEditingPanel disappear];
+    }
+  during: function() {
+      [sut startDestructivelyEditingDateTime: UnusedArgument];
+    }
+  behold: function() {
+      [sut.dateTimeEditingPanel appear];
+    }
+   ];
+
+}
+
+
+- (void) testDateAndTimeEditingPanelIsInitializedWithCurrentValues
+{
+  [scenario
+    previousAction: function() {
+      [sut.dateField setStringValue: "a value"];
+      [sut.morningButton setState: "a bogus state"];
+    }
+  during: function() {
+      [sut startDestructivelyEditingDateTime: UnusedArgument];
+    }
+  behold: function() {
+      [sut.dateTimeEditingControl shouldReceive: @selector(setDate:morningState:)
+                                           with: ["a value", "a bogus state"]];
+    }
+   ];
+
 }
 
 
