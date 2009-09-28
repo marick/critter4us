@@ -17,12 +17,12 @@
   fromNetworkConverter = [[FromNetworkConverter alloc] init];
 }
 
--(void) loadInfoRelevantToDate: date time: time
+-(void) loadInfoRelevantToDate: date time: time notificationName: notificationName
 {
   var url = jsonURI(CourseSessionDataBlobRoute+"?date=" + date + "&time=" + [time description]);
   
   var dict = [self dictionaryFromJSON: [network GETJsonFromURL: url]];
-  [NotificationCenter postNotificationName: InitialDataForACourseSessionNews
+  [NotificationCenter postNotificationName: notificationName
                                     object: dict];
 }
 

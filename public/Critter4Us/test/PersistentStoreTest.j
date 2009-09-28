@@ -35,7 +35,8 @@
                                                        excluding: [betsy]]];
   [scenario 
    during: function() { 
-      [sut loadInfoRelevantToDate: '2009-02-02' time: [Time morning]];
+      [sut loadInfoRelevantToDate: '2009-02-02' time: [Time morning]
+                 notificationName: "some notification name"];
     }
   behold: function() {
       uri = jsonURI(CourseSessionDataBlobRoute+"?date=2009-02-02&time=morning");
@@ -43,7 +44,7 @@
                             with: uri
                        andReturn: '{"animals":["betsy","josie"],"kindMap":{"betsy":"cow","josie":"horse"},"procedures":["proc1"],"exclusions":{"proc1":["betsy"]}}'];
 
-      [self listenersWillReceiveNotification: InitialDataForACourseSessionNews
+      [self listenersWillReceiveNotification: "some notification name"
                                 checkingWith: function(notification) {
           var dict = [notification object];
           var actualAnimals = [dict valueForKey: 'animals'];

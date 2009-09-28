@@ -9,6 +9,7 @@ TimeToReserveNews = "time to reserve";
 SwitchToGroupNews = "switch to this group";
 ModifyReservationNews = "time to edit a reservation";
 DateTimeForCurrentReservationChangedNews = 'date and time have changed'
+UpdatedDataForACourseSessionNews = "course data has arrived again";
 
 // Route names
 StoreReservationRoute = @"store_reservation";

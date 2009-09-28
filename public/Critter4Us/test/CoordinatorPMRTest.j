@@ -62,8 +62,8 @@
       [self sendNotification: ReservationDataAvailable withObject: dict];
     }
    behold: function() {
-      [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:)
-                                    with: ['2009-02-02', [Time morning]]];
+      [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:notificationName:)
+                                    with: ['2009-02-02', [Time morning], InitialDataForACourseSessionNews]];
     }];
 }
 -(void) testPassesNewInformationAlongToControllers
@@ -296,6 +296,24 @@
           }]];
     }];
 }
+
+
+- (void) testRespondToChangInDateTime
+{
+  var dict = [CPDictionary dictionary];
+  [dict setValue: '2009-02-02' forKey: 'date'];
+  [dict setValue: [Time morning] forKey: 'time'];
+  [scenario
+   during: function() {
+      [self sendNotification: DateTimeForCurrentReservationChangedNews
+                  withObject: dict];
+    }
+   behold: function() {
+      [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:notificationName:)
+                                    with: ['2009-02-02', [Time morning], UpdatedDataForACourseSessionNews]];
+    }];
+}
+
 
 @end
 

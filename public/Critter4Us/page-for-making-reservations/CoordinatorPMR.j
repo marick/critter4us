@@ -35,12 +35,15 @@
                     calls: @selector(switchToNewGroup:)];
   [self notificationNamed: ModifyReservationNews
                     calls: @selector(edit:)];
+  [self notificationNamed: DateTimeForCurrentReservationChangedNews
+                    calls: @selector(fetchInfoForNewDateTime:)];
 }
 
 - (void) reservationDataAvailable: aNotification
 {
   [persistentStore loadInfoRelevantToDate: [[aNotification object] valueForKey: 'date']
-                                     time: [[aNotification object] valueForKey: 'time']];
+                                     time: [[aNotification object] valueForKey: 'time']
+                         notificationName: InitialDataForACourseSessionNews];
   [self beginCollectingGroupData];
 }
 
@@ -96,6 +99,13 @@
     return [persistentStore updateReservation: reservationID with: reservationData];
   }
 
+}
+
+- (void) fetchInfoForNewDateTime: aNotification
+{
+  [persistentStore loadInfoRelevantToDate: [[aNotification object] valueForKey: 'date']
+                                     time: [[aNotification object] valueForKey: 'time']
+                         notificationName: UpdatedDataForACourseSessionNews];
 }
 
 // Util
