@@ -227,7 +227,8 @@ var Skip = function() {}
   for(var i=0; i<[collaboratorNames count]; i++)
     {
       var name = [collaboratorNames objectAtIndex: i];
-      [test assertTrue: [sut[name] wereExpectationsFulfilled]];
+      if ([sut[name] respondsToSelector: @selector(wereExpectationsFulfilled)])
+        [test assertTrue: [sut[name] wereExpectationsFulfilled]];
     }
   [randomListener wereExpectationsFulfilled];
 }
