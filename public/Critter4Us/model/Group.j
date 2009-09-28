@@ -8,7 +8,9 @@
   // Fix it by separating the variables:
   CPArray procedures;
   CPArray animals;
-  CPArray animalsIncorrectlyPresent;
+  CPArray animalsIncorrectlyPresent;  // Used in final error checking
+
+  CPArray animalsFreshlyExcluded;  // Used as group contents update
 }
 
 - (Group) initWithProcedures: someProcedures animals: someAnimals
@@ -29,9 +31,9 @@
   return animals;
 }
 
-- (CPArray) animalsIncorrectlyPresent
+- (CPArray) animalsFreshlyExcluded
 {
-  return animalsIncorrectlyPresent;
+  return animalsFreshlyExcluded;
 }
 
 - (void) setProcedures: newProcedures animals: newAnimals
@@ -45,6 +47,15 @@
   if (0 == [procedures count]) return YES;
   if (0 == [animals count]) return YES;
   return NO;
+}
+
+- (void) updateProcedures: newProcedures
+{
+  [self replaceProceduresWithSameNamedOnesFrom: newProcedures];
+  var composite = [Procedure compositeFrom: procedures];
+  var separation = [composite filterByExclusion: animals];
+  animals = [separation valueForKey: 'included'];
+  animalsFreshlyExcluded = [separation valueForKey: 'excluded'];
 }
 
 - (CPString) name
@@ -91,17 +102,21 @@
   return "<Group with" + [procedures description] + " and " + [animals description];
 }
 
+// Error checking
+
 - (CPBoolean) containsExcludedAnimals
 {
   var composite = [Procedure compositeFrom: procedures];
-  var excludedAnimalSet = [CPSet setWithArray: [composite animalsThisProcedureExcludes]];
-  var actualAnimalSet = [CPSet setWithArray: [self animals]];
-  [actualAnimalSet intersectSet: excludedAnimalSet];
-  animalsIncorrectlyPresent = [actualAnimalSet allObjects];
+
+  animalsIncorrectlyPresent = [self intersect: [composite animalsThisProcedureExcludes]
+                                         with: [self animals]];
   return [animalsIncorrectlyPresent count] > 0;
-    
 }
 
+- (CPArray) animalsIncorrectlyPresent
+{
+  return animalsIncorrectlyPresent;
+}
 
 // util
 
@@ -115,5 +130,41 @@
   return hash;
 }
 
+
+// TODO: I believe the implementation of CPSet set intersection is incorrect
+// It checks object identity instead of isEquality.
+- (CPArray) intersect: oneArray with: anotherArray
+{
+  var intersection = [];
+  var enumerator = [oneArray objectEnumerator];
+  var oneOne;
+  while (oneOne = [enumerator nextObject])
+  {
+    if ([anotherArray containsObject: oneOne])
+      [intersection addObject: oneOne];
+  }
+  return intersection;
+}
+
+-(void) replaceProceduresWithSameNamedOnesFrom: newProcedures
+{
+  var intersection = [];
+  var newEnumerator, oldEnumerator;
+  var newOne, oldOne;
+
+  newEnumerator = [newProcedures objectEnumerator];
+  while (newOne = [newEnumerator nextObject])
+  {
+    oldEnumerator = [procedures objectEnumerator];
+    while(oldOne = [oldEnumerator nextObject])
+    {
+      if ([[oldOne name] isEqual: [newOne name]])
+      {
+        [intersection addObject: newOne];
+      }
+    }
+  }
+  procedures = intersection;
+}
 
 @end

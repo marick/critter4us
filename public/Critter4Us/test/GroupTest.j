@@ -118,6 +118,8 @@
 
 - (void) testGroupsCanCheckWhetherExcludedAnimalsHaveBeenPutInsideThem
 {
+  hoss = [hoss copy]; // we want exclusion to be by isEqual, not identity. 
+  betsy = [betsy copy];
   var procedureExcludingAnimal = [[Procedure alloc] initWithName: 'excluder' excluding: [betsy, jake]];
   var brokenGroup = [[Group alloc] initWithProcedures: [procedureExcludingAnimal]
                                               animals: [betsy, hoss]];
@@ -127,6 +129,47 @@
   [self assertFalse: [okGroup containsExcludedAnimals]];
   [self assertTrue: [brokenGroup containsExcludedAnimals]];
   [self assert: [betsy] equals: [brokenGroup animalsIncorrectlyPresent]];
+}
+
+-(void) testGroupsCanAcceptUpdatedProcedures
+{
+  var group = [[Group alloc] initWithProcedures: [floating, accupuncture]
+                                        animals: []];
+  var newFloating = [[Procedure alloc] initWithName: 'floating' excluding: [betsy]];
+  var newAccupuncture = [[Procedure alloc] initWithName: 'accupuncture' excluding: [betsy]];
+  var newVenipuncture = [[Procedure alloc] initWithName: 'venipuncture' excluding: [betsy]];
+
+  // Interesting: it appears that == and === are isEqual: rather than 
+  // object identity tests.
+
+  [self assertFalse: [floating UID] === [newFloating UID]];
+  [self assertFalse: [accupuncture UID] === [newAccupuncture UID]];
+  [self assertFalse: [venipuncture UID] === [newVenipuncture UID]];
+
+  [group updateProcedures: [newFloating, newVenipuncture, newAccupuncture]];
+
+  var newProcedures = [group procedures];
+  [self assert: 2 equals: [newProcedures count]];
+    
+  [self assert: [newFloating UID] equals: [newProcedures[0] UID]];
+  [self assert: [newAccupuncture UID] equals:[newProcedures[1] UID]];
+}
+
+
+-(void) testGroupsWillRejectNewlyExcludedAnimals
+{
+  var group = [[Group alloc] initWithProcedures: [floating, accupuncture]
+                                        animals: [betsy, jake, hoss]];
+  var newFloating = [[Procedure alloc] initWithName: 'floating' excluding: [betsy]];
+  var newAccupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
+  var newVenipuncture = [[Procedure alloc] initWithName: 'venipuncture' excluding: [hoss]];
+  // Note that exclusion of Hoss will have no effect. Venipuncture was not one of the
+  // original procedures, so it does not appear in the updated procedures and has 
+  // no effect to exclude Hoss.
+
+  [group updateProcedures: [newFloating, newVenipuncture, newAccupuncture]];
+  [self assert: [jake, hoss] equals: [group animals]];
+  [self assert: [betsy] equals: [group animalsFreshlyExcluded]];
 }
 
 
