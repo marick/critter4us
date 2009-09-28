@@ -205,6 +205,8 @@
    ];
 }
 
+// Popping up a date/time editing panel and handling what it tells us.
+
 - (void) testDateAndTimeEditingButtonCausesPanelToBecomeVisible
 {
   [scenario
@@ -213,6 +215,24 @@
     }
   behold: function() {
       [sut.dateTimeEditingPanelController shouldReceive:@selector(appear)];
+    }
+   ];
+
+}
+
+- (void) testDateAndTimeEditingPanelIsInitializedWithCurrentValues
+{
+  [scenario
+    previousAction: function() {
+      [sut.dateField setStringValue: "a value"];
+      [sut.morningButton setState: "a bogus state"];
+    }
+  during: function() {
+      [sut startDestructivelyEditingDateTime: UnusedArgument];
+    }
+  behold: function() {
+      [sut.dateTimeEditingControl shouldReceive: @selector(setDate:morningState:)
+                                           with: ["a value", "a bogus state"]];
     }
    ];
 
@@ -247,33 +267,49 @@
 - (void) testChoosingANewDateAndTimeFiresANotification
 {
   [scenario
-  during: function() {
+    during: function() {
       [sut newDateTimeValuesReady: UnusedArgument];
     }
   behold: function() {
-      [self listenersWillReceiveNotification: DateTimeForCurrentReservationChangedNews];
+      [sut.dateTimeEditingControl shouldReceive:@selector(date)
+                                      andReturn: '2009-12-10'];
+      [sut.dateTimeEditingControl shouldReceive:@selector(morningState)
+                                      andReturn: CPOffState];
+      
+      [self listenersWillReceiveNotification: DateTimeForCurrentReservationChangedNews
+                                checkingWith: function(notification) {
+          var dict = [notification object];
+          [self assert: '2009-12-10' equals: [dict valueForKey: 'date']];
+          [self assert: [Time afternoon] equals: [dict valueForKey: 'time']];
+          return YES;
+        }];
     }
    ];
 }
 
-
-- (void) testDateAndTimeEditingPanelIsInitializedWithCurrentValues
+- (void) testChoosingANewDateAndTimeUpdatesValuesDisplayedOnReservationView
 {
   [scenario
-    previousAction: function() {
-      [sut.dateField setStringValue: "a value"];
-      [sut.morningButton setState: "a bogus state"];
-    }
-  during: function() {
-      [sut startDestructivelyEditingDateTime: UnusedArgument];
+    during: function() {
+      [sut newDateTimeValuesReady: UnusedArgument];
     }
   behold: function() {
-      [sut.dateTimeEditingControl shouldReceive: @selector(setDate:morningState:)
-                                           with: ["a value", "a bogus state"]];
+      [sut.dateTimeEditingControl shouldReceive:@selector(date)
+                                      andReturn: '2009-12-10'];
+      [sut.dateTimeEditingControl shouldReceive:@selector(morningState)
+                                      andReturn: CPOffState];
+      
+      [sut.dateField shouldReceive: @selector(setStringValue:)
+                              with: '2009-12-10'];
+      [sut.morningButton shouldReceive: @selector(setState:)
+                                  with: CPOffState];
+
+      [sut.dateTimeSummary shouldReceive: @selector(setStringValue:)];
     }
    ];
-
+  
 }
+
 
 
 @end

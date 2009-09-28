@@ -27,13 +27,9 @@
 
 - (void) beginReserving: sender
 {
-  var data = [CPDictionary dictionary];
-  [data setValue: [dateField stringValue] forKey: 'date'];
-  time = ([morningButton state] == CPOnState) ? [Time morning] : [Time afternoon];
-  [data setValue: time forKey: 'time'];
-
-  [NotificationCenter postNotificationName: ReservationDataAvailable
-                                    object: data];
+  [self sendNotification: ReservationDataAvailable
+               aboutDate: [dateField stringValue]
+                 andTime: [self timeFromState: [morningButton state]]];
 }
 
 - (void) prepareToFinishReservation
@@ -87,11 +83,6 @@
   [morningButton setState: state];
 }
 
-- (void) changeDateTime: sender
-{
-  alert("Not implemented");
-}
-
 - (void) startDestructivelyEditingDateTime: sender
 {
   [dateTimeEditingPanelController appear];
@@ -108,8 +99,16 @@
 - (void) newDateTimeValuesReady: sender
 {
   [dateTimeEditingPanelController disappear];
-  [NotificationCenter postNotificationName: DateTimeForCurrentReservationChangedNews
-                                    object: nil];
+  var date = [dateTimeEditingControl date];
+  var state = [dateTimeEditingControl morningState]
+
+  [self sendNotification: DateTimeForCurrentReservationChangedNews
+               aboutDate: date
+                 andTime: [self timeFromState: state]];
+
+  [dateField setStringValue: date];
+  [morningButton setState: state];
+  [self noteTimeAndDate];
 }
 
 
@@ -136,11 +135,23 @@
 
 - (id) deduceTime
 {
-  if ([morningButton state] == CPOnState) 
-    return [Time morning];
-  else
-    return [Time afternoon];
+  return [self timeFromState: [morningButton state]]
 }
+
+-(Time) timeFromState: state
+{
+  return (state == CPOnState) ? [Time morning] : [Time afternoon];
+}
+
+-(void) sendNotification: name aboutDate: date andTime: time
+{
+  var data = [CPDictionary dictionary];
+  [data setValue: date forKey: 'date'];
+  [data setValue: time forKey: 'time'];
+  
+  [NotificationCenter postNotificationName: name object: data];
+}
+
 
 @end
 
