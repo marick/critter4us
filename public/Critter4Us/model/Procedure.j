@@ -43,6 +43,25 @@
   return [[self animalsThisProcedureExcludes] containsObject: anAnimal];
 }
 
+- (CPDictionary) filterByExclusion: animals
+{
+  var included = [];
+  var excluded = [];
+
+  var enumerator = [animals objectEnumerator];
+  var one;
+  while (one = [enumerator nextObject])
+  {
+    if ([self excludes: one])
+      [excluded addObject: one];
+    else
+      [included addObject: one]
+  }
+  return [CPDictionary dictionaryWithObjects: [included, excluded]
+                                     forKeys: ['included', 'excluded']];
+  
+}
+
 -(CPBoolean) isEqual: other
 {
   if (! [super isEqual: other]) return NO;

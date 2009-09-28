@@ -78,5 +78,17 @@
 }
 
 
+- (void) testProceduresCanPartitionAnimalsIntoIncludedAndExcluded
+{
+  var procedure = [[Procedure alloc] initWithName: "name"
+                                        excluding: [oneAnimal, aThird]];
+
+  var dictionary = [procedure filterByExclusion: [oneAnimal, another, aThird]];
+  
+  [self assert: [oneAnimal, aThird] equals: [dictionary valueForKey: 'excluded']];
+  [self assert: [another] equals: [dictionary valueForKey: 'included']];
+}
+
+
 
 @end
