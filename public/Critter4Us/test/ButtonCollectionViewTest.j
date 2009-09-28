@@ -87,18 +87,20 @@
 
 
 
-- (void) testButtonTitleIsObjectName
+- (void) testButtonTitleIsObjectNameWithPositionInArray
 {
-  [sut setContent: [someNamedObject]];
-  [self assert: [someNamedObject name]
+  [sut setContent: [someNamedObject, anotherNamedObject]];
+  [self assert: "1: some named object"
         equals: [self titleForItem: 0]];
+  [self assert: "2: another named object"
+        equals: [self titleForItem: 1]];
 }
 
 - (void) test_butAnEmptyNameCanBeReplacedWithSomethingDescriptive
 {
   [sut setDefaultName: 'default'];
   [sut setContent: [unnamedObject]];
-  [self assert: "default"
+  [self assert: "1: default"
         equals: [self titleForItem: 0]];
 }
 
@@ -107,7 +109,7 @@
   [sut addNamedObjectToContent: unnamedObject];
   [unnamedObject setName: 'new name'];
   [sut currentNameHasChanged];
-  [self assert: 'new name'
+  [self assert: '1: new name'
         equals: [self titleForItem: 0]];
 }
 

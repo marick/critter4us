@@ -106,6 +106,7 @@
   [item setContainingCollectionView: self]; // See note in ButtonCollectionViewItem
   // Following has to be done in this object because the item's 
   // setRepresentedObject is done before the previous line.
+  [item setInvariantId: [[self items] count] + 1];
   [item refreshButtonTitle];
   return item;
 }
@@ -118,8 +119,9 @@
   // The implementation of CollectionViewItem#collectionView
   // doesn't return the collectionview, though I don't know why.
   // Therefore I'm using a separate way of getting at it.
-  // TODO: make a test for this, try it with later versions of Cappuccino.
+  // TODO: make a test for collectionView, try it with later versions of Cappuccino.
   ButtonCollectionView containingCollectionView;
+  CPInteger invariantId; // This number identifies a group to human. 
 }
 
 - (void) setView: aButton
@@ -127,6 +129,11 @@
   [super setView: aButton];
   [aButton setTarget: self];
   [aButton setAction: @selector(click:)];
+}
+
+- (void) setInvariantId: aNumber
+{
+  invariantId = aNumber;
 }
 
 - (void) click: sender
@@ -151,7 +158,7 @@
   {
     title = [[self containingCollectionView] defaultName];
   }
-  [[self view] setTitle: title];
+  [[self view] setTitle: invariantId + ": " + title];
 }
 
 - (void) distinguishYourself
