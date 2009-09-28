@@ -228,7 +228,6 @@
       [sut.dateTimeEditingPanelController shouldReceive:@selector(disappear)];
     }
    ];
-
 }
 
 
@@ -240,6 +239,19 @@
     }
   behold: function() {
       [sut.dateTimeEditingPanelController shouldReceive:@selector(disappear)];
+    }
+   ];
+}
+
+
+- (void) testChoosingANewDateAndTimeFiresANotification
+{
+  [scenario
+  during: function() {
+      [sut newDateTimeValuesReady: UnusedArgument];
+    }
+  behold: function() {
+      [self listenersWillReceiveNotification: DateTimeForCurrentReservationChangedNews];
     }
    ];
 }

@@ -108,6 +108,8 @@
 - (void) newDateTimeValuesReady: sender
 {
   [dateTimeEditingPanelController disappear];
+  [NotificationCenter postNotificationName: DateTimeForCurrentReservationChangedNews
+                                    object: nil];
 }
 
 
