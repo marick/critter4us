@@ -335,6 +335,25 @@
 }
 
 
+
+-(void) testReceivingUpdatesGroups
+{
+  var dict = [CPDictionary dictionary];
+  [dict setValue: "...procedures..." forKey: 'procedures']
+  [scenario
+   during: function() {
+      [self sendNotification: UpdatedDataForACourseSessionNews
+                  withObject: dict];
+    }
+   behold: function() {
+      [sut.groupController shouldReceive: @selector(updateProcedures:)
+                                    with: [dict valueForKey: 'procedures']];
+    }];
+}
+
+
+
+
 @end
 
 @implementation Spiller : Mock

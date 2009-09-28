@@ -110,10 +110,7 @@
 {
   var dict = [aNotification object];
   [self setAllPossibleObjectsInNamedObjectControllers: dict];
-  // fetch groups
-  // update all the animals
-  // warn about excess
-  // push back, setting cursor appropriately
+  [groupController updateProcedures: [dict valueForKey: 'procedures']]
 }
 
 // Util

@@ -83,6 +83,10 @@
   [self differentGroupChosen: UnusedArgument];
 }
 
+- (void) updateProcedures: procedures
+{
+}
+
 // util
 
 -(Group) emptyGroup
