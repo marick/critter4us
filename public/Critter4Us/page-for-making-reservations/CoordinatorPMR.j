@@ -37,6 +37,8 @@
                     calls: @selector(edit:)];
   [self notificationNamed: DateTimeForCurrentReservationChangedNews
                     calls: @selector(fetchInfoForNewDateTime:)];
+  [self notificationNamed: UpdatedDataForACourseSessionNews
+                    calls: @selector(useInfoForNewDateTime:)];
 }
 
 - (void) reservationDataAvailable: aNotification
@@ -49,10 +51,7 @@
 
 - (void) reservationDataRetrieved: aNotification
 {
-  var animals = [[aNotification object] valueForKey: 'animals'];
-  var procedures = [[aNotification object] valueForKey: 'procedures'];
-  [animalController allPossibleObjects: animals];
-  [procedureController allPossibleObjects: procedures];
+  [self setAllPossibleObjectsInNamedObjectControllers: [aNotification object]];
 }
 
 - (void) usedObjectsHaveChanged: aNotification
@@ -91,8 +90,7 @@
 
   [self beginCollectingGroupData];
 
-  [animalController allPossibleObjects: [dict valueForKey: 'animals']];
-  [procedureController allPossibleObjects: [dict valueForKey: 'procedures']];
+  [self setAllPossibleObjectsInNamedObjectControllers: dict];
   [groupController allPossibleObjects: [dict valueForKey: 'groups']];
 
   finishReservationClosure = function (reservationData) {
@@ -106,6 +104,16 @@
   [persistentStore loadInfoRelevantToDate: [[aNotification object] valueForKey: 'date']
                                      time: [[aNotification object] valueForKey: 'time']
                          notificationName: UpdatedDataForACourseSessionNews];
+}
+
+- (void) useInfoForNewDateTime: aNotification
+{
+  var dict = [aNotification object];
+  [self setAllPossibleObjectsInNamedObjectControllers: dict];
+  // fetch groups
+  // update all the animals
+  // warn about excess
+  // push back, setting cursor appropriately
 }
 
 // Util
@@ -149,5 +157,14 @@
     return [persistentStore makeReservation: reservationData];
   }
 }
+
+- (void) setAllPossibleObjectsInNamedObjectControllers: dict
+{
+  var animals = [dict valueForKey: 'animals'];
+  var procedures = [dict valueForKey: 'procedures'];
+  [animalController allPossibleObjects: animals];
+  [procedureController allPossibleObjects: procedures];
+}
+
 
 @end

@@ -298,7 +298,7 @@
 }
 
 
-- (void) testRespondToChangInDateTime
+- (void) testRespondToChangeInDateTime
 {
   var dict = [CPDictionary dictionary];
   [dict setValue: '2009-02-02' forKey: 'date'];
@@ -311,6 +311,26 @@
    behold: function() {
       [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:notificationName:)
                                     with: ['2009-02-02', [Time morning], UpdatedDataForACourseSessionNews]];
+    }];
+}
+
+
+-(void) testReceivingUpdatedInformationUpdatesAnimalAndProcedureControllers
+{
+  var animal = [[Animal alloc] initWithName: "fred" kind: 'cow'];
+  var proc = [[Procedure alloc] initWithName: 'procme'];
+  var jsdict = {'animals':[animal], 'procedures':[proc]};
+  var dict = [CPDictionary dictionaryWithJSObject: jsdict];
+  [scenario
+   during: function() {
+      [self sendNotification: UpdatedDataForACourseSessionNews
+                  withObject: dict];
+    }
+   behold: function() {
+      [sut.animalController shouldReceive: @selector(allPossibleObjects:)
+                                     with: [[animal]]];
+      [sut.procedureController shouldReceive: @selector(allPossibleObjects:)
+                                     with: [[proc]]];
     }];
 }
 
