@@ -224,11 +224,15 @@ var Skip = function() {}
 
 - (void)checkAllExpectations
 {
+  //  CPLog('collaborators ' + [collaboratorNames description]);
   for(var i=0; i<[collaboratorNames count]; i++)
     {
       var name = [collaboratorNames objectAtIndex: i];
-      if ([sut[name] respondsToSelector: @selector(wereExpectationsFulfilled)])
-        [test assertTrue: [sut[name] wereExpectationsFulfilled]];
+      // CPLog("working on collaborator " + name + "/" + sut[name]);
+      var mock = sut[name];
+      if ([mock respondsToSelector: @selector(wereExpectationsFulfilled)])
+        // CPLog("... checking expectations");
+        [test assertTrue: [mock wereExpectationsFulfilled]];
     }
   [randomListener wereExpectationsFulfilled];
 }
@@ -273,15 +277,11 @@ var Skip = function() {}
     }
 }
 
+
+
 - (void) sutCreates: anArray
 {
-  var enumerator = [anArray objectEnumerator];
-  var name;
-  while (name = [enumerator nextObject])
-  {
-    var mock = [self makeOneMock: name];
-    sut[name + 'Maker'] = function() { return mock };
-  }
+  [self sutHasOutlets: anArray];
 }
 
 - (Mock) makeOneMock: name
