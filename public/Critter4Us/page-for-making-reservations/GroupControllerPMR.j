@@ -52,6 +52,13 @@
                                     object: [groupCollectionView currentRepresentedObject]];
 }
 
+-(void) pretendCurrentGroupWasFreshlyChosen // alias for above message
+{
+  [self differentGroupChosen: UnusedArgument];
+}
+
+
+
 - (void) spillIt: (CPMutableDictionary) dict
 {
   var allGroups = [[groupCollectionView content] copy];
@@ -85,6 +92,13 @@
 
 - (void) updateProcedures: procedures
 {
+  var enumerator = [[groupCollectionView content] objectEnumerator];
+  var group;
+  while(group = [enumerator nextObject])
+  {
+    [group updateProcedures: procedures];
+  }
+  [self pretendCurrentGroupWasFreshlyChosen];
 }
 
 // util

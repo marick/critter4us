@@ -290,6 +290,54 @@
 }
 
 
+- (void) testUpdatingGroupsCanRemoveAnimalsFromGroups
+{
+  var group = [[Group alloc] initWithProcedures: [floating] animals: [jake, betsy]];
+  var changedFloating = [[Procedure alloc] initWithName: 'floating' excluding: [jake]];
+  var changedRadiology = [[Procedure alloc] initWithName: 'radiology' excluding: [betsy]];
+
+  // Easier to use the real thing than the mock.
+  sut.groupCollectionView = [[ButtonCollectionView alloc] initWithFrame: CGRectMakeZero()];
+
+  [scenario
+    previousAction: function() {
+      [sut prepareToEditGroups];
+      [sut allPossibleObjects: [group]];
+    }
+  testAction: function() {
+      [sut updateProcedures: [changedFloating, changedRadiology]];
+    }
+  andSo: function() { 
+      var extractedGroup = [sut.groupCollectionView content][0];
+      [self assertTrue: changedFloating === [extractedGroup procedures][0]];
+      [self assert: [betsy] equals: [extractedGroup animals]];
+      [self assert: [jake] equals: [extractedGroup animalsFreshlyExcluded]];
+    }
+   ];
+}
+
+- (void) testUpdatingGroupsTellsOtherControllersToUpdate
+{
+  var group = [[Group alloc] initWithProcedures: [floating] animals: [jake, betsy]];
+
+  // Easier to use the real thing than the mock.
+  sut.groupCollectionView = [[ButtonCollectionView alloc] initWithFrame: CGRectMakeZero()];
+
+  [scenario
+    previousAction: function() {
+      [sut prepareToEditGroups];
+      [sut allPossibleObjects: [group]];
+    }
+  during: function() {
+      [sut updateProcedures: [floating, radiology]];
+    }
+  behold: function() { 
+      [self listenersWillReceiveNotification: SwitchToGroupNews
+                            containingObject: group];
+    }];
+}
+
+
 // util
 
 -(void)assertGroup: group hasProcedures: procedures animals: animals
