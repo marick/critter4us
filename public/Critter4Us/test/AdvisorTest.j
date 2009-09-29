@@ -9,6 +9,7 @@
 - (void) setUp
 {
   sut = [[Advisor alloc] init];
+  sut.skipStandardConfiguration = YES;
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutCreates: ['panel', 'textField', 'controller']];
 }
@@ -17,11 +18,22 @@
 {
   [scenario
     during: function() {
+      [self sendNotification: AdviceAboutAnimalsDroppedNews];
+    }
+  behold: function() { 
+      [sut.panel shouldReceive: @selector(setDelegate:) with: sut.controller];
+    }];
+}
+
+- (void) testReceiptOfAdviceNotificationStuffsTextInTextField
+{
+  [scenario
+    during: function() {
       [self sendNotification: AdviceAboutAnimalsDroppedNews
                         withObject: "some text"];
     }
-  behold: function() { 
-      [sut.panel shouldReceive: @selector(setDelegate) with: sut.controller];
+  behold: function() {
+      [sut.textField shouldReceive: @selector(setStringValue:) with: "some text"];
     }];
 }
 
