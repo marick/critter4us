@@ -136,6 +136,11 @@
   invariantId = aNumber;
 }
 
+- (void) invariantId
+{
+  return invariantId;
+}
+
 - (void) click: sender
 {
   [containingCollectionView clickOn: self];
