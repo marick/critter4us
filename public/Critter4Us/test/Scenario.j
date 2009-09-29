@@ -269,12 +269,30 @@ var Skip = function() {}
   for(i=0; i<[anArray count]; i++)
     {
       var name = [anArray objectAtIndex: i];
-      [collaboratorNames addObject: name];
-      var mock = [[Mock alloc] initWithName: name];
-      mock.failOnUnexpectedSelector = NO;
-      sut[name] = mock;
+      [self makeOneMock: name];
     }
 }
+
+- (void) sutCreates: anArray
+{
+  var enumerator = [anArray objectEnumerator];
+  var name;
+  while (name = [enumerator nextObject])
+  {
+    var mock = [self makeOneMock: name];
+    sut[name + 'Maker'] = function() { return mock };
+  }
+}
+
+- (Mock) makeOneMock: name
+{
+  [collaboratorNames addObject: name];
+  var mock = [[Mock alloc] initWithName: name];
+  mock.failOnUnexpectedSelector = NO;
+  sut[name] = mock;
+  return mock;
+}
+
 
 - (void) overrideAllocatedHelpers: anArray
 {
