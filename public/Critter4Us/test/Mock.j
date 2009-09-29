@@ -38,6 +38,7 @@
   CPString name;
   BOOL failOnUnexpectedSelector;
   id storedValues;
+  BOOL trace;
 }
 
 -(Mock)init
@@ -46,6 +47,7 @@
   printErrors = YES;
   happiness = YES;
   failOnUnexpectedSelector = YES;
+  trace = NO;
   return self;
 }
 
@@ -181,6 +183,10 @@
 
 - (void)forwardInvocation:(CPInvocation)anInvocation
 {
+  if (trace)
+  {
+    CPLog('Mock ' + name + ' called: ' + [anInvocation selector] + [[self argumentsOf: invocation] description]);
+  }
   var selector = [anInvocation selector];
   // CPLog(selector);
   var matchingMethod = [expectationDictionary objectForKey: selector];
@@ -208,6 +214,14 @@
     {
       [super forwardInvocation: anInvocation];
     }
+}
+
+-(CPString) argumentsOf: invocation
+{
+  var args = [invocation._arguments copy]; // Right now, there aren't method signatures in cappuccino, so cheat.
+  [args removeObjectAtIndex: 0]; // target
+  [args removeObjectAtIndex: 0]; // selector
+  return args;
 }
 
 -(CPString) setterToVariable: selector
