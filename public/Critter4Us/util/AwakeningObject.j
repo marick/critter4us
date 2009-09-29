@@ -1,8 +1,7 @@
-@import <Foundation/Foundation.j>
-@import <AppKit/AppKit.j>
 @import "Constants.j"
+@import "CritterObject.j"
 
-@implementation AwakeningObject : CPObject
+@implementation AwakeningObject : CritterObject
 {
 
   // For testing
