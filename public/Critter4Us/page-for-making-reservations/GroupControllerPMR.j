@@ -99,6 +99,7 @@
     [group updateProcedures: procedures];
   }
   [self pretendCurrentGroupWasFreshlyChosen];
+  [self offerAdviceIfAnimalsWereDropped]
 }
 
 // util
@@ -117,6 +118,25 @@
 {
   return "You have found a bug. Please report it. These animals should not have been allowed in the group: " + 
     [extras description]
+}
+
+-(void) offerAdviceIfAnimalsWereDropped
+{
+  var groupMessages = [];
+  var enumerator = [[groupCollectionView items] objectEnumerator];
+  var item;
+  while(item = [enumerator nextObject])
+  {
+    var fresh = [[item representedObject] freshlyExcludedAnimalNames];
+    [fresh sortUsingSelector: @selector(caseInsensitiveCompare:)];
+    var msg = "Group " + [item invariantId] + " is missing " + fresh.join(", ") + ".";
+  }
+
+  var prelude = "Some animals you had already chosen are unavailable on this new date or time. They have been removed from the choices shown below. You'll have to add animals to replace them. (Changing the date back won't add them back - sorry!)";
+
+  var whole = (prelude + "\n\n" + msg)
+  [NotificationCenter postNotificationName: AdviceAboutAnimalsDroppedNews
+                                    object: whole];
 }
 
 @end
