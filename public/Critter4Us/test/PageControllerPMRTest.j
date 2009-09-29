@@ -35,7 +35,7 @@
   var panelController2 = [[Mock alloc] initWithName: 'panelController 2'];
   [scenario
    previousAction: function() { 
-      [sut.panelControllers = [panelController1, panelController2]];
+      [sut addPanelControllersFromArray: [panelController1, panelController2]];
     }
   during: function() {
       [sut disappear];
@@ -69,7 +69,8 @@
   var panelController2 = [[Mock alloc] initWithName: 'panelController 2'];
   [scenario
     previousAction: function() {
-      [sut.panelControllers = [panelController1, panelController2]];
+      [sut addPanelController: panelController1];
+      [sut addPanelController: panelController2];
     }
   during: function() {
       [sut appear];

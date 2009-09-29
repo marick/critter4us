@@ -7,6 +7,15 @@
   CPArray panelControllers;
 }
 
+- (void) addPanelController: aController
+{
+  [[self panelControllers] addObject: aController];
+}
+
+- (void) addPanelControllersFromArray: controllers
+{
+  [[self panelControllers] addObjectsFromArray: controllers];
+}
 
 -(void) appear
 {
@@ -24,6 +33,12 @@
   {
     [panelControllers[i] hideAnyVisiblePanels];
   }
+}
+
+- (CPArray) panelControllers
+{
+  if (!panelControllers) panelControllers = [];
+  return panelControllers;
 }
 
 @end

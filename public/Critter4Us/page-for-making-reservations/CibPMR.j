@@ -16,7 +16,7 @@
 @implementation CibPMR : Subgraph
 {
   CPPanel procedurePanel;
-  CPanel animalPanel;
+  CPPanel animalPanel;
   CPPanel groupPanel;
 
   PageControllerSubgraph pageControllerSubgraph;
@@ -92,15 +92,10 @@
   [coordinator.groupController.readOnlyProcedureCollectionView setDelegate: coordinator.procedureController];
   
 
-  pageControllerSubgraph.controller.panelControllers =
-                                    [animalControllerSubgraph.controller,
+  [pageControllerSubgraph.controller addPanelControllersFromArray: [animalControllerSubgraph.controller,
                                      procedureControllerSubgraph.controller,
                                      groupControllerSubgraph.controller,
-                                     reservationDataControllerSubgraph.panelController];
+                                     reservationDataControllerSubgraph.panelController]];
 
-
-
-  var advisory = [[Advisory alloc] init];
 }
 @end
-
