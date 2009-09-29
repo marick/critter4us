@@ -73,6 +73,12 @@
   return [self nameListFrom: animals];
 }
 
+- (CPArray) freshlyExcludedAnimalNames
+{
+  return [self nameListFrom: animalsFreshlyExcluded];
+}
+
+
 - (void) nameListFrom: namedObjects
 {
   var retval = [];
