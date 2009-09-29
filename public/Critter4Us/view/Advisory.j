@@ -9,27 +9,29 @@
 - (id) init
 {
   var horizontalSpaceForText = 400;
+  var verticalSpaceForText = 120;
+  var advisoryColor = [CPColor colorWithRed: 0.99 green: 0.98 blue: 0.70 alpha: 1.0];
 
   textField = [[CPTextField alloc] initWithFrame:
                                      CGRectMake(0, 0, horizontalSpaceForText, 1200)];
-  [textfield setBackgroundColor: [CPColor greenColor]];
-  [textfield setStringValue: "any good long line will do just fine I think."];
-  [textfield setLineBreakMode: CPLineBreakByWordWrapping];
+  [textField setBackgroundColor: advisoryColor];
+  [textField setStringValue: "any good long line will do just fine I think."];
+  [textField setLineBreakMode: CPLineBreakByWordWrapping];
 
   self = [super initWithFrame:
-                  CGRectMake(0, 0, horizontalSpaceForText + [CPScroller scrollerWidth], 200)];
+                  CGRectMake(0, 0, horizontalSpaceForText + [CPScroller scrollerWidth], verticalSpaceForText)];
   [self setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
   [self setAutohidesScrollers:NO];
-  [[self contentView] setBackgroundColor: [CPColor yellowColor]];
-  [self setDocumentView:textfield];
+  [self setDocumentView:textField];
 
   [self wrapInWindow];
 }
 
 - (void) wrapInWindow
 {
-  var window = [[CPPanel alloc] initWithContentRect: [self bounds]
-                                          styleMask: CPTitledWindowMask];
+  var rect = CGRectMake(600, 60, [self bounds].size.width, [self bounds].size.height);
+  var window = [[CPPanel alloc] initWithContentRect: rect
+                                          styleMask: CPTitledWindowMask|CPClosableWindowMask|CPMiniaturizableWindowMask|CPResizableWindowMask];
   [window setFloatingPanel:YES];
   [window setTitle:@"Advisory"];
   [window orderFront: self]; 

@@ -2,6 +2,7 @@
 @import "../util/Constants.j"
 @import "../view/NameListPanel.j"
 @import "../persistence/PersistentStore.j"
+@import "../view/Advisory.j"
 
 @import "ConstantsPMR.j"
 @import "CoordinatorPMR.j"
@@ -96,6 +97,10 @@
                                      procedureControllerSubgraph.controller,
                                      groupControllerSubgraph.controller,
                                      reservationDataControllerSubgraph.panelController];
+
+
+
+  var advisory = [[Advisory alloc] init];
 }
 @end
 
