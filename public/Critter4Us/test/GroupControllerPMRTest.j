@@ -3,6 +3,7 @@
 @import <Critter4Us/model/Group.j>
 @import <Critter4Us/model/Animal.j>
 @import <Critter4Us/model/Procedure.j>
+@import <Critter4Us/view/ButtonCollectionView.j>
 
 @implementation GroupControllerPMRTest : ScenarioTestCase
 {
@@ -335,6 +336,35 @@
       [self listenersWillReceiveNotification: SwitchToGroupNews
                             containingObject: group];
     }];
+}
+
+
+- (void) testUpdatingGroupsWithAnimalDeletionsRequiresAdvisory
+{
+  var group = [[Group alloc] initWithProcedures: [floating] animals: [jake, betsy]];
+  var changedFloating = [[Procedure alloc] initWithName: 'floating' excluding: [jake, betsy]];
+
+  // Easier to use the real thing than the mock.
+  sut.groupCollectionView = [[ButtonCollectionView alloc] initWithFrame: CGRectMakeZero()];
+
+  [scenario
+    previousAction: function() {
+      [sut prepareToEditGroups];
+      [sut allPossibleObjects: [group]];
+    }
+  during: function() {
+      [sut updateProcedures: [changedFloating, radiology]];
+    }
+  behold: function() { 
+      [self listenersWillReceiveNotification: AdviceAboutAnimalsDroppedNews
+                                checkingWith: function(notification) {
+          var text = [notification object];
+          // Order is important.
+          [self assertTrue: text.match(/[Gg]roup 1.*betsy.*jake/)];
+          return YES;
+        }];
+    }
+   ];
 }
 
 
