@@ -277,6 +277,10 @@ var Skip = function() {}
     }
 }
 
+- (void) sutWillBeGiven: anArray
+{
+  [self sutHasOutlets: anArray];
+}
 
 
 - (void) sutCreates: anArray
