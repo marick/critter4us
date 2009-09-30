@@ -10,7 +10,8 @@
   sut = [[PageControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
 
-  [scenario sutHasUpwardCollaborators: ['pageView']];
+  [scenario sutHasUpwardOutlets: ['pageView']];
+  [scenario sutWillBeGiven: ['panelController1', 'panelController2']];
 }
 
 
@@ -31,23 +32,18 @@
 
 -(void) testDisappearingTellsControllersToHideAnyPanelsTheyAreShowing
 {
-  var panelController1 = [[Mock alloc] initWithName: 'panelController 1'];
-  var panelController2 = [[Mock alloc] initWithName: 'panelController 2'];
   [scenario
    previousAction: function() { 
-      [sut addPanelControllersFromArray: [panelController1, panelController2]];
+      [sut addPanelControllersFromArray: [sut.panelController1, sut.panelController2]];
     }
   during: function() {
       [sut disappear];
     }
   behold: function() {
-      [panelController1 shouldReceive: @selector(hideAnyVisiblePanels)];
-      [panelController2 shouldReceive: @selector(hideAnyVisiblePanels)];
+      [sut.panelController1 shouldReceive: @selector(hideAnyVisiblePanels)];
+      [sut.panelController2 shouldReceive: @selector(hideAnyVisiblePanels)];
    }];
-  [self assertTrue: [panelController1 wereExpectationsFulfilled]];
-  [self assertTrue: [panelController2 wereExpectationsFulfilled]];
 }
-
 
 -(void) testAppearingUnhidesPage
 {
@@ -65,24 +61,35 @@
 
 -(void) testAppearingTellsControllersToDisplayTheirPanelIfAppropriate
 {
-  var panelController1 = [[Mock alloc] initWithName: 'panelController 1'];
-  var panelController2 = [[Mock alloc] initWithName: 'panelController 2'];
   [scenario
     previousAction: function() {
-      [sut addPanelController: panelController1];
-      [sut addPanelController: panelController2];
+      [sut addPanelController: sut.panelController1];
+      [sut addPanelController: sut.panelController2];
     }
   during: function() {
       [sut appear];
     }
   behold: function() {
-      [panelController1 shouldReceive: @selector(showPanelIfAppropriate)];
-      [panelController2 shouldReceive: @selector(showPanelIfAppropriate)];
+      [sut.panelController1 shouldReceive: @selector(showPanelIfAppropriate)];
+      [sut.panelController2 shouldReceive: @selector(showPanelIfAppropriate)];
     }];
-  [self assertTrue: [panelController1 wereExpectationsFulfilled]];
-  [self assertTrue: [panelController2 wereExpectationsFulfilled]];
 }
 
+-(void) testNotificationsCanAddPanelControllers
+{
+  [scenario
+    previousAction: function() { 
+      [scenario sutWillBeGiven: ['newPanelController']];
+      [self sendNotification: NewPanelOnPageNews
+                  withObject: sut.newPanelController];
+    }
+  during: function() {
+      [sut disappear];
+    }
+  behold: function() {
+      [sut.newPanelController shouldReceive: @selector(hideAnyVisiblePanels)];
+   }];
+}
 
 
 @end

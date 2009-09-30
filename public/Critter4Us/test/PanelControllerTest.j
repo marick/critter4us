@@ -7,9 +7,22 @@
 
 - (void)setUp
 {
-  sut = [[PanelController alloc] init];
+  sut = [PanelController alloc];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardCollaborators: ['panel']]
+  [scenario sutWillBeGiven: ['panel']];
+  [sut initWithPanel: sut.panel];
+}
+
+- (void) testWhenHandedPanelIssuesNotification
+{
+  [scenario
+    during: function() {
+      [sut initWithPanel: sut.panel];
+    }
+  behold: function() { 
+      [self listenersWillReceiveNotification: NewPanelOnPageNews
+                            containingObject: sut];
+    }];
 }
 
 -(void) testAppear

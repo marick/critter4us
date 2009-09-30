@@ -7,6 +7,12 @@
   CPArray panelControllers;
 }
 
+- (void) setUpNotifications
+{
+  [self notificationNamed: NewPanelOnPageNews
+                    calls: @selector(addPanelControllerFromNotification:)];
+}
+
 - (void) addPanelController: aController
 {
   [[self panelControllers] addObject: aController];
@@ -15,6 +21,11 @@
 - (void) addPanelControllersFromArray: controllers
 {
   [[self panelControllers] addObjectsFromArray: controllers];
+}
+
+- (void) addPanelControllerFromNotification: aNotification
+{
+  [[self panelControllers] addObject: [aNotification object]];
 }
 
 -(void) appear

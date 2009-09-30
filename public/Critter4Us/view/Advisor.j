@@ -62,6 +62,9 @@
 {
   [textField setStringValue: message];
   [panel setDelegate: controller];
+  [controller appear];
+  [NotificationCenter postNotificationName: NewPanelOnPageNews
+                                    object: controller];
 }
 
 @end

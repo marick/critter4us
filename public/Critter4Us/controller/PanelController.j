@@ -17,6 +17,7 @@
 {
   [self init];
   panel = aPanel;
+  [NotificationCenter postNotificationName: NewPanelOnPageNews object: self];
   return self;
 }
 
