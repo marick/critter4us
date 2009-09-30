@@ -21,6 +21,12 @@
   return self;
 }
 
+-(CPBoolean) windowShouldClose: aNotification
+{
+  [NotificationCenter postNotificationName: ClosedPanelOnPageNews object: self];
+  return YES;
+}
+
 -(void) appear
 {
   visibilityAppropriate = YES;

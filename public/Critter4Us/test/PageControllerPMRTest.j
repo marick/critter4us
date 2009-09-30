@@ -91,5 +91,22 @@
    }];
 }
 
+-(void) testNotificationsCanRemovePanelControllers
+{
+  [scenario
+    previousAction: function() { 
+      [sut addPanelControllersFromArray: [sut.panelController1, sut.panelController2]];
+      [self sendNotification: ClosedPanelOnPageNews
+                  withObject: sut.panelController2];
+    }
+  during: function() {
+      [sut.panelController2.failOnUnexpectedSelector = YES];
+      [sut disappear];
+    }
+  behold: function() {
+      [sut.panelController1 shouldReceive: @selector(hideAnyVisiblePanels)];
+   }];
+}
+
 
 @end

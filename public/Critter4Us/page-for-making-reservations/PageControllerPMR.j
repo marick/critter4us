@@ -11,6 +11,8 @@
 {
   [self notificationNamed: NewPanelOnPageNews
                     calls: @selector(addPanelControllerFromNotification:)];
+  [self notificationNamed: ClosedPanelOnPageNews
+                    calls: @selector(removePanelControllerFromNotification:)];
 }
 
 - (void) addPanelController: aController
@@ -26,6 +28,11 @@
 - (void) addPanelControllerFromNotification: aNotification
 {
   [[self panelControllers] addObject: [aNotification object]];
+}
+
+- (void) removePanelControllerFromNotification: aNotification
+{
+  [[self panelControllers] removeObject: [aNotification object]];
 }
 
 -(void) appear
