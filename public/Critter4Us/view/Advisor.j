@@ -1,5 +1,5 @@
 @import "../util/AwakeningObject.j"
-
+@import "../controller/PanelController.j"
 
 @implementation Advisor : CritterObject
 {
@@ -45,15 +45,17 @@
   [scroller setDocumentView:textField];
 
   var rect = CGRectMake(600, 60, [scroller bounds].size.width, [scroller bounds].size.height);
-  panel = [[panelMaker() alloc] initWithContentRect: rect
-                                          styleMask: CPTitledWindowMask |
-                                                     CPClosableWindowMask |
-                                                     CPMiniaturizableWindowMask |
-                                                     CPResizableWindowMask];
+  panel = [[CPPanel alloc] initWithContentRect: rect
+                                     styleMask: CPTitledWindowMask |
+                                                CPClosableWindowMask |
+                                                CPMiniaturizableWindowMask |
+                                                CPResizableWindowMask];
 
   [panel setFloatingPanel:YES];
   [panel setTitle:@"Advisory"];
   [panel setContentView: scroller];
+
+  controller = [[PanelController alloc] initWithPanel: panel];
 }
 
 - (void) specialize: message
