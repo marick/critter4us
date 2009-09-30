@@ -9,6 +9,7 @@ def create_tables
   DB.create_table! :animals do
     primary_key :id
     String :name
+    String :nickname
     String :kind
   end
 
