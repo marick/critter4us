@@ -13,6 +13,13 @@
   return self;
 }
 
+-(id) initWithPanel: aPanel
+{
+  [self init];
+  panel = aPanel;
+  return self;
+}
+
 -(void) appear
 {
   visibilityAppropriate = YES;

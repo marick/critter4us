@@ -15,11 +15,11 @@
   nameList = [self panelOutlineAtX: [self xPosition]
                          withTitle: [self nameListTitle]];
 
-  controller = [self custom: [self newController]];
+  controller = [self custom: [[self newController] initWithPanel: nameList]];
   
   collectionView = [nameList addCollectionWithBackgroundColor: [self color]];
 
-  [collectionView setDelegate: controller];
+  [collectionView setDelegate: controller]; // TODO: I believe this is unused now.
   return self;
 }
 

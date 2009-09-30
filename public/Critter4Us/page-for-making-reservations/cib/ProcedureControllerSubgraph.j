@@ -22,7 +22,7 @@
 
 - (id) newController
 {
-  return [[ProcedureControllerPMR alloc] init];
+  return [ProcedureControllerPMR alloc];
 }
 
 

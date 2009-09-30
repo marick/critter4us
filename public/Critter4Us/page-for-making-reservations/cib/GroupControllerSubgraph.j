@@ -18,7 +18,7 @@
   self = [super init];
   panel = [self firstGroupPanel];
 
-  controller = [self custom: [[GroupControllerPMR alloc] init]];
+  controller = [self custom: [[GroupControllerPMR alloc] initWithPanel: panel]];
 
   // Procedure half
   readOnlyProcedureCollectionView = [[NamedObjectCollectionView alloc]
@@ -76,7 +76,6 @@
   controller.newGroupButton = newGroupButton;
   controller.readOnlyProcedureCollectionView = readOnlyProcedureCollectionView;
   controller.readOnlyAnimalCollectionView = readOnlyAnimalCollectionView;
-  controller.panel = panel;
   controller.groupCollectionView = groupCollectionView;
 }
 

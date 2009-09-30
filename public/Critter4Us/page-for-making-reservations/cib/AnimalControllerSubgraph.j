@@ -21,7 +21,7 @@
 
 - (id) newController
 {
-  return [[AnimalControllerPMR alloc] init];
+  return [AnimalControllerPMR alloc];
 }
 
 @end
