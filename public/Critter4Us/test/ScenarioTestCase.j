@@ -14,7 +14,9 @@
     [sut stopObserving];
   }
   if (scenario)
+  {
     [[CPNotificationCenter defaultCenter] removeObserver: scenario.randomListener];
+  }
 }
 
 

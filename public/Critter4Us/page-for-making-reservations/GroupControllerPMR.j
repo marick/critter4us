@@ -128,17 +128,33 @@
   while(item = [enumerator nextObject])
   {
     var fresh = [[item representedObject] freshlyExcludedAnimalNames];
-    [fresh sortUsingSelector: @selector(caseInsensitiveCompare:)];
-    var msg = "Group " + [item invariantId] + " is missing " + fresh.join(", ") + ".";
+    if ([fresh count] > 0) 
+    {
+      [groupMessages addObject: [self composeOneGroupMessage: fresh
+                                                  taggedWith: [item invariantId]]];
+    }
   }
 
-    if ([fresh count] == 0) return;
+  if ([groupMessages count] > 0) 
+  {
+    [NotificationCenter postNotificationName: AdviceAboutAnimalsDroppedNews
+                                      object: [self composeWholeMessage: groupMessages]];
+  }
+}
+
+// TODO: Put composition in own class?
+- (CPString) composeOneGroupMessage: animalNames taggedWith: groupId
+{
+  [animalNames sortUsingSelector: @selector(caseInsensitiveCompare:)];
+  return "Group " + groupId + " is missing " + animalNames.join(", ") + ".";
+}
+
+- (CPString) composeWholeMessage: groupMessages
+{
 
   var prelude = "Some animals you had already chosen are unavailable on this new date or time. They have been removed as described below. You'll have to add animals to replace them. (Changing the date back won't add them back - sorry!)";
 
-  var whole = (prelude + "\n\n" + msg)
-  [NotificationCenter postNotificationName: AdviceAboutAnimalsDroppedNews
-                                    object: whole];
+  return (prelude + "\n\n" + groupMessages.join("\n"));
 }
 
 @end
