@@ -13,6 +13,7 @@ UpdatedDataForACourseSessionNews = "course data has arrived again";
 AdviceAboutAnimalsDroppedNews = "animals have been dropped due to time or date change";
 NewPanelOnPageNews = "a new panel has appeared on the current page";
 ClosedPanelOnPageNews = "a panel on the current page has closed";
+AdvisoriesAreIrrelevantNews = "advisory panels should go away";
 
 // Route names
 StoreReservationRoute = @"store_reservation";

@@ -241,6 +241,7 @@
       [sut.animalController shouldReceive: @selector(beginningOfReservationWorkflow)];
       [sut.procedureController shouldReceive: @selector(beginningOfReservationWorkflow)];
       [sut.groupController shouldReceive: @selector(beginningOfReservationWorkflow)];
+      [self listenersShouldReceiveNotification: AdvisoriesAreIrrelevantNews];
     }];
 }
 

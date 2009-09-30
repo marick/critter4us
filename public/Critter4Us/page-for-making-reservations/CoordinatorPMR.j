@@ -135,6 +135,7 @@
   [procedureController beginningOfReservationWorkflow];
   [animalController beginningOfReservationWorkflow];
   [groupController beginningOfReservationWorkflow];
+  [NotificationCenter postNotificationName: AdvisoriesAreIrrelevantNews object: nil];
 
   [self finishByCreatingNewReservation];
 }

@@ -1,5 +1,5 @@
 @import "../util/AwakeningObject.j"
-@import "../controller/PanelController.j"
+@import "../controller/AdvisorPanelController.j"
 
 @implementation Advisor : CritterObject
 {
@@ -55,7 +55,7 @@
   [panel setTitle:@"Advisory"];
   [panel setContentView: scroller];
 
-  controller = [[PanelController alloc] initWithPanel: panel];
+  controller = [[AdvisorPanelController alloc] initWithPanel: panel];
 }
 
 - (void) specialize: message
