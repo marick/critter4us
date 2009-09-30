@@ -107,7 +107,7 @@
 }
 
 
-- (void) presetsDoNotCountAsNotifiableMovement
+- (void) testPresetsDoNotCountAsNotifiableMovement
 {
   [scenario 
     previousAction: function() { 
@@ -117,7 +117,7 @@
       [sut presetUsed: [betsy, fang] ];
     }
   behold: function() {
-      [self listenersHearNothing];
+      [self listenersShouldHearNo: DifferentObjectsUsedNews];
     }];
 }
 

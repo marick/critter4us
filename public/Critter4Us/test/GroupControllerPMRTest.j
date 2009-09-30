@@ -368,6 +368,27 @@
 }
 
 
+- (void) testUpdatingGroupsWith_NO_AnimalDeletionsRequires_NO_Advisory
+{
+  var group = [[Group alloc] initWithProcedures: [floating] animals: [jake]];
+  var changedFloating = [[Procedure alloc] initWithName: 'floating' excluding: [betsy]];
+  sut.groupCollectionView = [[ButtonCollectionView alloc] initWithFrame: CGRectMakeZero()];
+
+  [scenario
+    previousAction: function() {
+      [sut prepareToEditGroups];
+      [sut allPossibleObjects: [group]];
+    }
+  during: function() {
+      [sut updateProcedures: [changedFloating, radiology]];
+    }
+  behold: function() {
+      [self listenersShouldHearNo: AdviceAboutAnimalsDroppedNews];
+    }
+   ];
+}
+
+
 // util
 
 -(void)assertGroup: group hasProcedures: procedures animals: animals

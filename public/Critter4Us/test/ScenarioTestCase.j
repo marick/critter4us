@@ -13,6 +13,8 @@
   {
     [sut stopObserving];
   }
+  if (scenario)
+    [[CPNotificationCenter defaultCenter] removeObserver: scenario.randomListener];
 }
 
 
@@ -152,14 +154,14 @@
 }
 
 
--(void) listenersShouldHearNothing
+-(void) listenersShouldHearNo: notificationName
 {
+  [[CPNotificationCenter defaultCenter]
+   addObserver: scenario.randomListener
+      selector: @selector(ifThisIsCalledItMeansNotificationWasIncorrectlySent:)
+          name: notificationName
+        object: nil];
   scenario.randomListener.failOnUnexpectedSelector = YES;
-}
-
--(void) listenersHearNothing
-{
-  [self listenersShouldHearNothing];
 }
 
 @end

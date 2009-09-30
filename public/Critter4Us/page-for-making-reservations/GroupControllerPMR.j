@@ -132,6 +132,8 @@
     var msg = "Group " + [item invariantId] + " is missing " + fresh.join(", ") + ".";
   }
 
+    if ([fresh count] == 0) return;
+
   var prelude = "Some animals you had already chosen are unavailable on this new date or time. They have been removed as described below. You'll have to add animals to replace them. (Changing the date back won't add them back - sorry!)";
 
   var whole = (prelude + "\n\n" + msg)
