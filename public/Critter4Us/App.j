@@ -2,6 +2,7 @@
 @import "cib/AllReservationsPageCib.j"
 @import "cib/MainMenuCib.j"
 @import "page-for-making-reservations/CibPMR.j"
+@import "view/Advisor.j"
 
 
 // This pure-javascript object is used to make forwarding from HTML
@@ -30,6 +31,7 @@ AppForwarder.edit = function(reservationId) {
   [self createMainMenu];
   [self createCibPMR];
   [self createAllReservationsPage];
+  [[Advisor alloc] init];
 
   [self activateReservationMaker: self];
 }
