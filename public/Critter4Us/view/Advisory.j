@@ -4,6 +4,8 @@
 @implementation Advisory : CPScrollView
 {
   CPTextField textField;
+  CPPanel panel;
+  PageControllerPMR pageController;
 }
 
 - (id) init
@@ -23,19 +25,26 @@
   [self setAutoresizingMask:CPViewWidthSizable | CPViewHeightSizable];
   [self setAutohidesScrollers:NO];
   [self setDocumentView:textField];
-
-  [self wrapInWindow];
 }
 
-- (void) wrapInWindow
+- (CPPanel) panel
 {
+  if (panel) return panel;
+
   var rect = CGRectMake(600, 60, [self bounds].size.width, [self bounds].size.height);
-  var window = [[CPPanel alloc] initWithContentRect: rect
-                                          styleMask: CPTitledWindowMask|CPClosableWindowMask|CPMiniaturizableWindowMask|CPResizableWindowMask];
-  [window setFloatingPanel:YES];
-  [window setTitle:@"Advisory"];
-  [window orderFront: self]; 
-  [window setContentView: self];
+  return [[CPPanel alloc] initWithContentRect: rect
+                                    styleMask: CPTitledWindowMask |
+                                               CPClosableWindowMask |
+                                               CPMiniaturizableWindowMask |
+                                               CPResizableWindowMask];
+}
+
+- (void) wrapInPanel: panel controlledBy: aPanelController
+{
+  [panel setFloatingPanel:YES];
+  [panel setTitle:@"Advisory"];
+  [panel setContentView: self];
+  [panel setDelegate: aPanelController];
 }  
 
 @end
