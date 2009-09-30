@@ -80,7 +80,10 @@
     }
 }
 
-- (void) listenersWillReceiveNotification: (CPString) aNotificationName containingObject: (id) anObject
+
+// TODO: Finish replacing all "will" forms with "should" forms.
+
+- (void) listenersShouldReceiveNotification: (CPString) aNotificationName containingObject: (id) anObject
 {
   [self listenersWillReceiveNotification:aNotificationName
    checkingWith:function(notification) {
@@ -90,8 +93,12 @@
       return [[notification object] isEqual: anObject];
     }];
 }
+- (void) listenersWillReceiveNotification: (CPString) aNotificationName containingObject: (id) anObject
+{
+  [self listenersShouldReceiveNotification: aNotificationName containingObject: anObject];
+}
       
-- (void) listenersWillReceiveNotification: (CPString) aNotificationName containingObject: (id) anObject andKey: key with: value
+- (void) listenersShouldReceiveNotification: (CPString) aNotificationName containingObject: (id) anObject andKey: key with: value
 {
   [self listenersWillReceiveNotification:aNotificationName
                             checkingWith:function(notification) {
@@ -108,16 +115,25 @@
       return YES;
     }];
 }
+- (void) listenersWillReceiveNotification: (CPString) aNotificationName containingObject: (id) anObject andKey: key with: value
+{
+  [self listenersShouldReceiveNotification: aNotificationName containingObject: anObject
+                                    andKey: key with: value];
+}
       
-- (void) listenersWillReceiveNotification: (CPString) aNotificationName
+- (void) listenersShouldReceiveNotification: (CPString) aNotificationName
 {
   [self listenersWillReceiveNotification:aNotificationName
    checkingWith:function(notification) {
       return YES;
     }];
 }
+- (void) listenersWillReceiveNotification: (CPString) aNotificationName
+{
+  [self listenersShouldReceiveNotification: aNotificationName];
+}
       
--(void) listenersWillReceiveNotification: (CPString) aNotificationName checkingWith: (id)aFunction
+-(void) listenersShouldReceiveNotification: (CPString) aNotificationName checkingWith: (id)aFunction
 {
   var selector = CPSelectorFromString([aNotificationName stringByReplacingOccurrencesOfString: " " withString: ""]);
 
@@ -130,10 +146,20 @@
   [scenario.randomListener shouldReceive: selector
                            with: aFunction];
 }
+-(void) listenersWillReceiveNotification: (CPString) aNotificationName checkingWith: (id)aFunction
+{
+  [self listenersShouldReceiveNotification: aNotificationName checkingWith: aFunction];
+}
+
+
+-(void) listenersShouldHearNothing
+{
+  scenario.randomListener.failOnUnexpectedSelector = YES;
+}
 
 -(void) listenersHearNothing
 {
-  scenario.randomListener.failOnUnexpectedSelector = YES;
+  [self listenersShouldHearNothing];
 }
 
 @end
