@@ -121,10 +121,6 @@
     }];
 }
 
-
-
-
-
 - (void) testCanMoveAllUsedObjectsBack
 {
   var a = [[NamedObject alloc] initWithName: 'a'];
@@ -168,5 +164,23 @@
       [self assert: [] equals: [sut.available content]];
     }];
 }
+
+- (void) testCanReturnUsedObjects
+{
+  sut.used = [[NamedObjectCollectionView alloc] initWithFrame: CGRectMakeZero()]
+  sut.available = [[NamedObjectCollectionView alloc] initWithFrame: CGRectMakeZero()]
+  [sut presetUsed: [betsy, spike, fang]];
+  [self assert: [betsy, fang, spike] equals: [sut usedObjects]];
+}
+
+
+- (void) testCanReturnUsedObjectNames
+{
+  sut.used = [[NamedObjectCollectionView alloc] initWithFrame: CGRectMakeZero()]
+  sut.available = [[NamedObjectCollectionView alloc] initWithFrame: CGRectMakeZero()]
+  [sut presetUsed: [betsy, spike, fang]];
+  [self assert: ['betsy', 'fang', 'spike'] equals: [sut usedNames]];
+}
+
 
 @end	

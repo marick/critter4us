@@ -36,6 +36,11 @@
   [used setContent: []];
 }
 
+- (CPArray) usedObjects
+{
+  return [used content];
+}
+
 - (CPArray) usedNames
 {
   var enumerator = [[used content] objectEnumerator];
