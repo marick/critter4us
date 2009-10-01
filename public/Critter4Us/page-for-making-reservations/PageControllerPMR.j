@@ -1,18 +1,20 @@
 @import <AppKit/AppKit.j>
 @import "../util/AwakeningObject.j"
 
-@implementation PageControllerPMR : AwakeningObject
+@implementation PageControllerPMR : CritterObject
 {
   CPView pageView;
   CPArray panelControllers;
 }
 
-- (void) setUpNotifications
+- (void) init
 {
+  self = [super init];
   [self notificationNamed: NewPanelOnPageNews
                     calls: @selector(addPanelControllerFromNotification:)];
   [self notificationNamed: ClosedPanelOnPageNews
                     calls: @selector(removePanelControllerFromNotification:)];
+  return self;
 }
 
 - (void) addPanelController: aController
