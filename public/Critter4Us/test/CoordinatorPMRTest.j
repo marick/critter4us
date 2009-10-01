@@ -337,7 +337,7 @@
 
 
 
--(void) testReceivingUpdatesGroups
+-(void) testReceivingUpdatedInformationUpdatesGroups
 {
   var dict = [CPDictionary dictionary];
   [dict setValue: "...procedures..." forKey: 'procedures']
@@ -347,7 +347,7 @@
                   withObject: dict];
     }
    behold: function() {
-      [sut.groupController shouldReceive: @selector(updateProcedures:)
+      [sut.groupController shouldReceive: @selector(exclusionsHaveChangedForThese:)
                                     with: [dict valueForKey: 'procedures']];
     }];
 }

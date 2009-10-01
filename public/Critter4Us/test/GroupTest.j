@@ -131,7 +131,7 @@
   [self assert: [betsy] equals: [brokenGroup animalsIncorrectlyPresent]];
 }
 
--(void) testGroupsCanAcceptUpdatedProcedures
+-(void) testGroupsCanAcceptSameNamedProceduresThatExcludeDifferentAnimals
 {
   var group = [[Group alloc] initWithProcedures: [floating, accupuncture]
                                         animals: []];
@@ -146,7 +146,7 @@
   [self assertFalse: [accupuncture UID] === [newAccupuncture UID]];
   [self assertFalse: [venipuncture UID] === [newVenipuncture UID]];
 
-  [group updateProcedures: [newFloating, newVenipuncture, newAccupuncture]];
+  [group exclusionsHaveChangedForThese: [newFloating, newVenipuncture, newAccupuncture]];
 
   var newProcedures = [group procedures];
   [self assert: 2 equals: [newProcedures count]];
@@ -167,7 +167,7 @@
   // original procedures, so it does not appear in the updated procedures and has 
   // no effect to exclude Hoss.
 
-  [group updateProcedures: [newFloating, newVenipuncture, newAccupuncture]];
+  [group exclusionsHaveChangedForThese: [newFloating, newVenipuncture, newAccupuncture]];
   [self assert: [jake, hoss] equals: [group animals]];
   [self assert: [betsy] equals: [group animalsFreshlyExcluded]];
 }

@@ -49,9 +49,9 @@
   return NO;
 }
 
-- (void) updateProcedures: newProcedures
+- (void) exclusionsHaveChangedForThese: variantProcedures
 {
-  [self replaceProceduresWithSameNamedOnesFrom: newProcedures];
+  [self replaceProceduresWithSameNamedOnesFrom: variantProcedures];
   var composite = [Procedure compositeFrom: procedures];
   var separation = [composite filterByExclusion: animals];
   animals = [separation valueForKey: 'included'];
@@ -152,13 +152,13 @@
   return intersection;
 }
 
--(void) replaceProceduresWithSameNamedOnesFrom: newProcedures
+-(void) replaceProceduresWithSameNamedOnesFrom: variantProcedures
 {
   var intersection = [];
   var newEnumerator, oldEnumerator;
   var newOne, oldOne;
 
-  newEnumerator = [newProcedures objectEnumerator];
+  newEnumerator = [variantProcedures objectEnumerator];
   while (newOne = [newEnumerator nextObject])
   {
     oldEnumerator = [procedures objectEnumerator];

@@ -112,7 +112,7 @@
 {
   var dict = [aNotification object];
   [self setAllPossibleObjectsInNamedObjectControllers: dict];
-  [groupController updateProcedures: [dict valueForKey: 'procedures']]
+  [groupController exclusionsHaveChangedForThese: [dict valueForKey: 'procedures']]
 }
 
 // Util

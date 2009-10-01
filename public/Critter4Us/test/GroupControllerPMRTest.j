@@ -299,7 +299,7 @@
       [sut allPossibleObjects: [group]];
     }
   testAction: function() {
-      [sut updateProcedures: [changedFloating, changedRadiology]];
+      [sut exclusionsHaveChangedForThese: [changedFloating, changedRadiology]];
     }
   andSo: function() { 
       var extractedGroup = [sut.groupCollectionView content][0];
@@ -326,7 +326,7 @@
       [sut allPossibleObjects: [group, otherGroup]];
     }
   testAction: function() {
-      [sut updateProcedures: [changedFloating, changedRadiology]];
+      [sut exclusionsHaveChangedForThese: [changedFloating, changedRadiology]];
     }
   andSo: function() { 
       var extractedGroup = [sut.groupCollectionView content][0];
@@ -352,7 +352,7 @@
       [sut allPossibleObjects: [group]];
     }
   during: function() {
-      [sut updateProcedures: [floating, radiology]];
+      [sut exclusionsHaveChangedForThese: [floating, radiology]];
     }
   behold: function() { 
       [self listenersWillReceiveNotification: SwitchToGroupNews
@@ -375,7 +375,7 @@
       [sut allPossibleObjects: [group]];
     }
   during: function() {
-      [sut updateProcedures: [changedFloating, radiology]];
+      [sut exclusionsHaveChangedForThese: [changedFloating, radiology]];
     }
   behold: function() { 
       [self listenersWillReceiveNotification: AdviceAboutAnimalsDroppedNews
@@ -402,7 +402,7 @@
       [sut allPossibleObjects: [group]];
     }
   during: function() {
-      [sut updateProcedures: [changedFloating, radiology]];
+      [sut exclusionsHaveChangedForThese: [changedFloating, radiology]];
     }
   behold: function() {
       [self listenersShouldHearNo: AdviceAboutAnimalsDroppedNews];
@@ -426,7 +426,7 @@
       [sut allPossibleObjects: [group, otherGroup]];
     }
   during: function() {
-      [sut updateProcedures: [changedFloating, changedRadiology]];
+      [sut exclusionsHaveChangedForThese: [changedFloating, changedRadiology]];
     }
   behold: function() { 
       [self listenersWillReceiveNotification: AdviceAboutAnimalsDroppedNews

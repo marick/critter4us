@@ -87,13 +87,13 @@
   [self differentGroupChosen: UnusedArgument];
 }
 
-- (void) updateProcedures: procedures
+- (void) exclusionsHaveChangedForThese: procedures
 {
   var enumerator = [[groupCollectionView content] objectEnumerator];
   var group;
   while(group = [enumerator nextObject])
   {
-    [group updateProcedures: procedures];
+    [group exclusionsHaveChangedForThese: procedures];
   }
   [self pretendCurrentGroupWasFreshlyChosen];
   [self offerAdviceIfAnimalsWereDropped]
