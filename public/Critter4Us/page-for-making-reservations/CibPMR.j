@@ -1,6 +1,7 @@
 @import <AppKit/AppKit.j>
 @import "../util/Constants.j"
 @import "../view/NameListPanel.j"
+@import "../view/CurrentGroupPanel.j"
 @import "../persistence/PersistentStore.j"
 
 @import "ConstantsPMR.j"
@@ -24,6 +25,9 @@
   ProcedureControllerSubgraph procedureControllerSubgraph;
   AnimalControllerSubgraph animalControllerSubgraph;
 
+  CurrentGroupPanel currentGroupPanel;
+  PanelController currentGroupPanelController;
+
   CoordinatorPMR coordinator;
   PersistentStore persistentStore;
 }
@@ -32,9 +36,15 @@
 {
   self = [super init];  // TODO: Hack. This should not be an initializer.
 
+
+
   [self drawControlledSubgraphsIn: theWindow];
   coordinator = [self custom: [[CoordinatorPMR alloc] init]];
   persistentStore = [self loadGlobalPersistentStore];
+
+  currentGroupPanel = [[CurrentGroupPanel alloc] init];
+  currentGroupPanelController = [[PanelController alloc] initWithPanel: currentGroupPanel];
+
   [self connectRemainingOutlets];
 
   owner.pmrPageController = pageControllerSubgraph.controller;
@@ -84,12 +94,12 @@
   coordinator.animalController = animalControllerSubgraph.controller;
   coordinator.procedureController = procedureControllerSubgraph.controller;
   coordinator.groupController = groupControllerSubgraph.controller;
+  coordinator.currentGroupPanelController = currentGroupPanelController;
 
-  coordinator.animalController.used = groupControllerSubgraph.controller.readOnlyAnimalCollectionView;
-  coordinator.procedureController.used = groupControllerSubgraph.controller.readOnlyProcedureCollectionView;
-  [coordinator.groupController.readOnlyAnimalCollectionView setDelegate: coordinator.animalController];
-  [coordinator.groupController.readOnlyProcedureCollectionView setDelegate: coordinator.procedureController];
-  
+  coordinator.animalController.used = currentGroupPanel.animalCollectionView;
+  [currentGroupPanel.animalCollectionView setDelegate: coordinator.animalController];
+  coordinator.procedureController.used = currentGroupPanel.procedureCollectionView;
+  [currentGroupPanel.procedureCollectionView setDelegate: coordinator.procedureController];
 
   [pageControllerSubgraph.controller addPanelControllersFromArray: [animalControllerSubgraph.controller,
                                      procedureControllerSubgraph.controller,

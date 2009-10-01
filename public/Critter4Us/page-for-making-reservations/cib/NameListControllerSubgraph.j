@@ -19,7 +19,7 @@
   
   collectionView = [nameList addCollectionWithBackgroundColor: [self color]];
 
-  [collectionView setDelegate: controller]; // TODO: I believe this is unused now.
+  [collectionView setDelegate: controller]; // collection views, oddly, communicate to delegate. I'm following that convention.
   return self;
 }
 

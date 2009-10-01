@@ -6,9 +6,6 @@
 @implementation GroupControllerSubgraph : Subgraph
 {
   id controller;
-  CPCollectionView readOnlyProcedureCollectionView;
-  CPCollectionView readOnlyAnimalCollectionView;
-  CPanel panel;
   CPButton newGroupButton;
   CPCollectionView groupCollectionView;
 }
@@ -16,41 +13,13 @@
 - (id) initAbovePage: (CPView) aPage
 {
   self = [super init];
-  panel = [self firstGroupPanel];
 
   controller = [self custom: [[GroupControllerPMR alloc] initWithPanel: panel]];
-
-  // Procedure half
-  readOnlyProcedureCollectionView = [[NamedObjectCollectionView alloc]
-                              initWithFrame: CGRectMakeZero()];
-  [readOnlyProcedureCollectionView placeWithin: [panel contentView]
-                              withRect: CGRectMake(FirstTargetX, 0, TargetWidth, TargetViewHeight)
-                   withBackgroundColor: ProcedureHintColor];
-  [readOnlyProcedureCollectionView setDelegate: controller];
-        
-  // Animal half
-  readOnlyAnimalCollectionView = [[NamedObjectCollectionView alloc]
-                              initWithFrame: CGRectMakeZero()];
-  [readOnlyAnimalCollectionView placeWithin: [panel contentView]
-                           withRect: CGRectMake(SecondTargetX, 0, TargetWidth, TargetViewHeight)
-                withBackgroundColor: AnimalHintColor];
-  [readOnlyAnimalCollectionView setDelegate: controller];
 
   [self placeControlsOn: aPage];
   return self;
 }
 
--(CPPanel) firstGroupPanel
-{
-  var rect = CGRectMake(FirstGroupingWindowX, WindowTops, GroupingWindowWidth,
-                        TargetWindowHeight);
-  var panel = [[CPPanel alloc] initWithContentRect: rect
-                                          styleMask:CPHUDBackgroundWindowMask | CPResizableWindowMask | CPMiniaturizableWindowMask];
-  [panel setLevel:CPFloatingWindowLevel];
-  [panel setTitle:@"A group of procedures and the animals they will be performed on"];
-  [panel orderFront: self]; // TODO: delete when page layout done.
-  return panel;
-}
 
 
 - (void) placeControlsOn: pageView
@@ -74,8 +43,6 @@
 - (void) connectOutlets
 {
   controller.newGroupButton = newGroupButton;
-  controller.readOnlyProcedureCollectionView = readOnlyProcedureCollectionView;
-  controller.readOnlyAnimalCollectionView = readOnlyAnimalCollectionView;
   controller.groupCollectionView = groupCollectionView;
 }
 
