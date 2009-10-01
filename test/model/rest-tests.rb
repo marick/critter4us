@@ -17,25 +17,6 @@ class ModelTests < Test::Unit::TestCase
       Procedure.random_with_names('c', 'a', 'b')
       assert { Procedure.names.sort == ['a', 'b', 'c'] }
     end
-
-    
-  end
-
-  context "animals" do 
-    should "individually be able to return a wire-format of self" do
-      assert { Animal.random(:name => 'fred').in_wire_format == 'fred' }
-    end
-
-    should "collectively be able to return their names" do
-      Animal.random_with_names('c', 'a', 'b')
-      assert { Animal.names.sort == ['a', 'b', 'c'] }
-    end
-
-    should "be able to return a name=>kind mapping" do
-      Animal.random(:name => 'bossie', :kind => 'cow')
-      Animal.random(:name => 'fred', :kind => 'horse')
-      assert { Animal.kind_map == {'bossie' => 'cow', 'fred' => 'horse'} }
-    end
   end
 
   context "groups" do 

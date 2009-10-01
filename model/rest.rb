@@ -25,35 +25,6 @@ class Procedure  < Sequel::Model
 
 end
 
-class Animal < Sequel::Model
-  one_to_many :uses
-
-  def self.names; map(:name); end
-  alias_method :in_wire_format, :name
-
-  def self.kind_map
-    map = {}
-    Animal.all.each { | a | map[a.name] = a.kind }
-    map
-  end
-
-  # following are for testing
-
-  def self.random(overrides = {})
-    defaults = {
-      :name => 'bossy',
-      :kind => 'bovine'
-    }
-    create(defaults.merge(overrides));
-  end
-
-  def self.random_with_names(*names)
-    names.each do | name | 
-      random(:name => name)
-    end
-  end
-end
-
 
 class Use < Sequel::Model
   many_to_one :procedure
