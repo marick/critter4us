@@ -56,12 +56,12 @@
 
 - (void) usedObjectsHaveChanged: aNotification
 {
-  [groupController updateCurrentGroup];
   if ([aNotification object] == procedureController)
   {
     var procedures = [[aNotification userInfo] valueForKey: 'used'];
     [self filterAccordingToProcedures: procedures];
   }
+  [groupController updateCurrentGroup];
 }
 
 -(void) switchToNewGroup: aNotification
