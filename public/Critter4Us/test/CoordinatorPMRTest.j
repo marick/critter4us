@@ -9,6 +9,7 @@
 {
   Animal betsy;
   Animal jake;
+  Animal fang;
   Procedure floating;
   Procedure radiology;
 
@@ -23,7 +24,8 @@
   [scenario sutHasDownwardOutlets: ['persistentStore']];
 
   betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
-  jake = [[Animal alloc] initWithName: 'jake' kind: 'cow'];
+  jake = [[Animal alloc] initWithName: 'jake' kind: 'horse'];
+  jake = [[Animal alloc] initWithName: 'fang' kind: 'dog'];
   floating = [[Procedure alloc] initWithName: 'floating'];
   radiology = [[Procedure alloc] initWithName: 'radiology'];
   someGroup = [[Group alloc] initWithProcedures: [floating, radiology]
@@ -88,16 +90,9 @@
 
 -(void)testThatTellsAnimalControllerToUpdateWhenProceduresChange
 {
-  var animals = [ [[Animal alloc] initWithName: 'animal0' kind: 'cow'],
-                  [[Animal alloc] initWithName: 'animal1' kind: 'horse'],
-                  [[Animal alloc] initWithName: 'animal2' kind: 'horse']];
-
-  var procedures = [ [[Procedure alloc] initWithName: 'procedure0'
-                                           excluding: [animals[0]]],
-                     [[Procedure alloc] initWithName: 'procedure1'
-                                           excluding: [animals[2]]]];
-
-  var userInfo = [CPDictionary dictionaryWithJSObject: {'used': procedures}];
+  var radiology = [[Procedure alloc] initWithName: 'radiology' excluding: [betsy]];
+  var floating = [[Procedure alloc] initWithName: 'floating'   excluding: [fang]];
+  var userInfo = [CPDictionary dictionaryWithJSObject: {'used': [radiology, floating]}];
   [scenario
    during: function() {
       [self sendNotification: DifferentObjectsUsedNews
@@ -106,7 +101,7 @@
     }
    behold: function() {
       [sut.animalController shouldReceive:@selector(withholdAnimals:)
-                                     with: [[animals[0], animals[2]]]];
+                                     with: [[betsy, fang]]];
     }];
 }
 
@@ -118,7 +113,12 @@
       [self sendNotification: DifferentObjectsUsedNews];
     }
    behold: function() {
-      [sut.groupController shouldReceive:@selector(updateCurrentGroup)];
+      [sut.animalController shouldReceive:@selector(usedObjects)
+                                andReturn: [betsy]];
+      [sut.procedureController shouldReceive: @selector(usedObjects)
+                                   andReturn: [floating]];
+      [sut.groupController shouldReceive:@selector(setCurrentGroupProcedures:animals:)
+                                    with: [[floating], [betsy]]];
     }];
 }
 

@@ -10,6 +10,7 @@
   AnimalControllerPMR animalController;
   ProcedureControllerPMR procedureController;
   GroupControllerPMR groupController;
+  CurrentGroupPanelController currentGroupPanelController;
   
   PersistentStore persistentStore;
   id finishReservationClosure;
@@ -59,9 +60,10 @@
   if ([aNotification object] == procedureController)
   {
     var procedures = [[aNotification userInfo] valueForKey: 'used'];
-    [self filterAccordingToProcedures: procedures];
+    [self filterAnimalsAccordingToProcedures: procedures];
   }
-  [groupController updateCurrentGroup];
+  [groupController setCurrentGroupProcedures: [procedureController usedObjects]
+                                     animals: [animalController usedObjects]];
 }
 
 -(void) switchToNewGroup: aNotification
@@ -69,7 +71,7 @@
   var group = [aNotification object];
   [animalController presetUsed: [group animals]];
   [procedureController presetUsed: [group procedures]];
-  [self filterAccordingToProcedures: [group procedures]];
+  [self filterAnimalsAccordingToProcedures: [group procedures]];
 }
 
 - (void) finishReservation: aNotification
@@ -115,7 +117,7 @@
 
 // Util
 
-- (void) filterAccordingToProcedures: procedures
+- (void) filterAnimalsAccordingToProcedures: procedures
 {
     var aggregate = [Procedure compositeFrom: procedures];
     [animalController withholdAnimals: [aggregate animalsThisProcedureExcludes]];
@@ -135,6 +137,7 @@
   [procedureController beginningOfReservationWorkflow];
   [animalController beginningOfReservationWorkflow];
   [groupController beginningOfReservationWorkflow];
+  [currentGroupPanelController disappear];
   [NotificationCenter postNotificationName: AdvisoriesAreIrrelevantNews object: nil];
 
   [self finishByCreatingNewReservation];
@@ -147,6 +150,7 @@
   [procedureController appear];
   [animalController appear];
   [groupController appear];
+  [currentGroupPanelController appear];
 }
 
 - (void) finishByCreatingNewReservation

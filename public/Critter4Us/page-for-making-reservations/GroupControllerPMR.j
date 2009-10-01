@@ -11,8 +11,6 @@
 @implementation GroupControllerPMR : PanelController
 {
   CPButton newGroupButton;
-  CPCollectionView readOnlyProcedureCollectionView;
-  CPCollectionView readOnlyAnimalCollectionView;
   CPCollectionView groupCollectionView;
 
   UnconditionalPopup unconditionalPopup;
@@ -65,11 +63,10 @@
   [dict setValue: allGroups forKey: 'groups'];
 }
 
-- (void) updateCurrentGroup
+- (void) setCurrentGroupProcedures: procedures animals: animals
 {
   var group = [groupCollectionView currentRepresentedObject];
-  [group setProcedures: [readOnlyProcedureCollectionView content]
-               animals: [readOnlyAnimalCollectionView content]];
+  [group setProcedures: procedures animals: animals];
   if ([group containsExcludedAnimals])
   {
     [unconditionalPopup setMessage: [self extraAnimalsMessage: [group animalsIncorrectlyPresent]]];

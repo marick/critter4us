@@ -21,7 +21,6 @@
   sut = [[GroupControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasUpwardCollaborators: [
-       'readOnlyProcedureCollectionView', 'readOnlyAnimalCollectionView',
        'groupCollectionView', 'newGroupButton']];
 
   betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
@@ -64,25 +63,24 @@
 
 - (void) testCanMirrorNamedObjectListsIntoGroupCollectionView
 {
+
+  var aGroup = [[Group alloc] initWithProcedures: [] animals: []];
+
   [scenario
     previousAction: function() {
       [sut prepareToEditGroups];
-      [sut.readOnlyProcedureCollectionView setContent: [floating]];
-      [sut.readOnlyAnimalCollectionView setContent: [jake]];
     }
   during: function() {
-      [sut updateCurrentGroup];
+      [sut setCurrentGroupProcedures: [floating] animals: [jake]];
     }
   behold: function() { 
       [sut.groupCollectionView shouldReceive: @selector(currentRepresentedObject)
-                                   andReturn: empty];
+                                   andReturn: aGroup];
       [sut.groupCollectionView shouldReceive: @selector(currentNameHasChanged)];
     }
   andSo: function() {
-      [self assert: [floating]
-            equals: [empty procedures]];
-      [self assert: [jake]
-            equals: [empty animals]];
+      [self assert: [floating] equals: [aGroup procedures]];
+      [self assert: [jake]     equals: [aGroup animals]];
     }
    ];
 }
@@ -95,12 +93,10 @@
   [scenario
     previousAction: function() {
       [sut prepareToEditGroups];
-      [sut.readOnlyProcedureCollectionView setContent: [excluder]];
-      [sut.readOnlyAnimalCollectionView setContent: [jake]];
     }
   during: function() {
       sut.unconditionalPopup = mockPopup; // TODO: there needs to be some idiom for overriding awakeFromCib-set objects. Or have a popup as a global resource?
-      [sut updateCurrentGroup];
+      [sut setCurrentGroupProcedures: [excluder] animals: [jake]];
     }
   behold: function() { 
       [sut.groupCollectionView shouldReceive: @selector(currentRepresentedObject)
@@ -122,10 +118,9 @@
   [scenario
     previousAction: function() {
       [sut prepareToEditGroups];
-      [sut.readOnlyProcedureCollectionView setContent: [floating]];
     }
   during: function() {
-      [sut updateCurrentGroup];
+      [sut setCurrentGroupProcedures: [floating] animals: []];
     }
   behold: function() {
       [sut.groupCollectionView shouldReceive: @selector(currentNameHasChanged)];
@@ -172,8 +167,6 @@
   [scenario
     previousAction: function() {
       [sut prepareToEditGroups];
-      [sut.readOnlyProcedureCollectionView setContent: [radiology]];
-      [sut.readOnlyAnimalCollectionView setContent: []];
     }
   during: function() {
       [sut newGroup: UnusedArgument]
