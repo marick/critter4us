@@ -18,13 +18,15 @@ class ReservationView < Erector::Widget
       end
       body do
         p { long_form(@reservation) }
-        p do
-          text "These animals are reserved:"
-          name_list(@reservation.animal_names)
-        end
-        p do 
-          text "These procedures will be done:"
-          name_list(@reservation.procedure_names)
+        @reservation.groups.each do | group | 
+          p do
+            text "These animals are reserved:"
+            name_list(group.animal_names)
+          end
+          p do 
+            text "These procedures will be done:"
+            name_list(group.procedure_names)
+          end
         end
       end
     end

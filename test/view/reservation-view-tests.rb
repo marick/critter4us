@@ -31,5 +31,29 @@ class ReservationViewTests < Test::Unit::TestCase
     assert { 'morning' == morning_view.time_of_day(morning) }
     assert { 'afternoon' == afternoon_view.time_of_day(afternoon) }
   end
+
+  should "be able to display different groups" do 
+    floating = Procedure.random(:name => 'floating')
+    venipuncture = Procedure.random(:name => 'venipuncture')
+    milking = Procedure.random(:name => 'milking')
+    betsy = Animal.random(:name => 'betsy')
+    jake = Animal.random(:name => 'jake')
+    test_data = {
+      :instructor => 'marge',
+      :course => 'vm333',
+      :date => Date.new(2001, 2, 4),
+      :morning => false,
+      :groups => [ {:procedures => ['floating', 'venipuncture'],
+                     :animals => ['betsy']},
+                   {:procedures => ['venipuncture', 'milking'],
+                     :animals => ['jake', 'betsy']}]
+    }
+    reservation = Reservation.create_with_groups(test_data)
+    
+    text = ReservationView.new(:reservation => reservation).to_s
+    assert { text =~ /betsy.*floating.*venipuncture/m }
+    assert { text =~ /betsy.*jake.*milking.*venipuncture/m }
+  end
+
 end
 
