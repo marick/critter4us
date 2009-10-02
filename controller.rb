@@ -2,7 +2,7 @@ require 'rubygems'
 require 'sinatra/base'
 require 'json'
 require 'model/requires'
-require 'view'
+require 'view/requires'
 require 'pp'
 
 require 'erector'
