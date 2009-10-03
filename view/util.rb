@@ -17,6 +17,9 @@ module ReservationHelper
     text " for #{reservation.course}."
   end
 
+  TableStyle = { :style => "width: 900px", :border=>"1px",
+    :cellpadding => "5px", :cellspacing=>"0px" }
+
 end
 
 

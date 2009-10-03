@@ -9,7 +9,7 @@ class ReservationListView < Erector::Widget
         title 'All Reservations'
       end
       body do
-        table(:style => "width: 900px", :border=>"1px", :cellpadding => "5px", :cellspacing=>"0px") do 
+        table(TableStyle) do 
           sorted_reservations.each do | r | 
             tr do
               td(:style => 'width: 7em;') { text r.date.to_s }
