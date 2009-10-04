@@ -39,9 +39,10 @@ task :local_db_create do
   require "admin/create.rb"
 end
 
-desc "reset database" 
+desc "Reset database on this machine"
 task :db_reset do
-  migrate(0)
+  require 'rubygems'
+  require "admin/reset-db.rb"
 end
 
 
