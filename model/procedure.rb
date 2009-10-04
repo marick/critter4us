@@ -5,7 +5,10 @@ class Procedure  < Sequel::Model
   one_to_many :uses
 
   def self.names; map(:name); end
-  alias_method :in_wire_format, :name
+
+  # This doesn't work under 1.8.7 / Snow Leopard - perhaps because name isn't defined yet.
+  # alias_method :in_wire_format, :name
+  def in_wire_format; name; end
 
   # following are for testing
 
