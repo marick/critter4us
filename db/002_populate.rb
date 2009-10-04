@@ -1,4 +1,5 @@
-require 'rubygems' 
+require 'model/animal'
+require 'model/procedure'
 
 TWICE_A_WEEK=3
 TWO_WEEKS=14
@@ -7,8 +8,10 @@ EVERY_TWO_MONTHS=60
 
 class Population < Sequel::Migration
 
-  # For the up we want to create the three tables.
   def up
+    puts '==== adding procedures and animals'
+    puts '==== WARNING: For some reason, migrations 1 and 2 have to be run in separate invocations'
+    puts "==== WARNING: If you see a failure now, that's why."
     Procedure.create(:name => 'restraint and handling', :days_delay => 0)
     Procedure.create(:name => 'physical examination', :days_delay => 0)
     Procedure.create(:name => 'superficial palpation', :days_delay => 0)
@@ -104,6 +107,10 @@ class Population < Sequel::Migration
   end
 
   def down
+    puts "==== emptying procedure and animal tables"
+    DB[:uses].delete
+    DB[:groups].delete
+    DB[:reservations].delete
     DB[:procedures].delete
     DB[:animals].delete
   end

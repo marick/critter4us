@@ -1,20 +1,21 @@
 class Creation < Sequel::Migration
 
   def up
-    DB.create_table! :procedures do
+    puts "==== Creating tables"
+    DB.create_table :procedures do
       primary_key :id
       String :name
       int :days_delay
     end
 
-    DB.create_table! :animals do
+    DB.create_table :animals do
       primary_key :id
       String :name
       String :nickname
       String :kind
     end
 
-    DB.create_table! :reservations do 
+    DB.create_table :reservations do 
       primary_key :id
       Date :date
       boolean :morning
@@ -22,12 +23,12 @@ class Creation < Sequel::Migration
       String :instructor
     end
 
-    DB.create_table! :groups do
+    DB.create_table :groups do
       primary_key :id
       foreign_key :reservation_id, :reservations
     end
 
-    DB.create_table! :uses do
+    DB.create_table :uses do
       primary_key :id
       foreign_key :procedure_id, :procedures
       foreign_key :animal_id, :animals
@@ -49,13 +50,14 @@ class Creation < Sequel::Migration
                           (:reservations__date + :procedures__days_delay).as(:first_available_date)))
     
 
-    DB.create_table! :authorizations do
+    DB.create_table :authorizations do
       primary_key :id
       String :magic_word
     end
   end
 
   def down
+    puts "==== Dropping all tables"
     DB.drop_table :procedures
     DB.drop_table :animals
     DB.drop_table :uses
