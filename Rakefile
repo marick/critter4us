@@ -30,6 +30,7 @@ task :echo do
   puts "HI"
 end
 
+
 desc "Create Database on this machine."
 task :local_db_create do
   require 'rubygems'
@@ -37,6 +38,12 @@ task :local_db_create do
   require 'config'
   require "admin/create.rb"
 end
+
+desc "reset database" 
+task :db_reset do
+  migrate(0)
+end
+
 
 desc "migrate from version 0 to 1 (hack)"
 task :migrate1 do
