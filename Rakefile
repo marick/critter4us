@@ -71,5 +71,5 @@ task :deploy do
 end
 
 def migrate(to, from = nil)
-  Sequel::Migrator.apply(DB, 'db', to, from)
+  Sequel::Migrator.apply(DB, 'migrations', to, from)
 end
