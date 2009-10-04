@@ -1,4 +1,3 @@
-require 'config'
 
 class Group < Sequel::Model
   many_to_one :reservation

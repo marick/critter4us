@@ -1,4 +1,3 @@
-require 'config'
 require 'pp'
 
 class Use < Sequel::Model
