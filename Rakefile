@@ -56,6 +56,11 @@ task :migrate2 do
   migrate(2, 1)
 end
 
+desc "migrate to most recent version"
+task :migrate do
+  migrate
+end
+
 desc "Clear password on this machine"
 task :clear_password do 
   require 'admin/clear-password'
@@ -71,6 +76,6 @@ task :deploy do
   `git push heroku`
 end
 
-def migrate(to, from = nil)
+def migrate(to=nil, from = nil)
   Sequel::Migrator.apply(DB, 'migrations', to, from)
 end
