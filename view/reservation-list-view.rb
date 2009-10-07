@@ -32,6 +32,11 @@ class ReservationListView < Erector::Widget
                         :onclick => "window.parent.AppForwarder.edit(#{r.id})")
                 end
               end
+              td do
+                a('View',
+                  :href => "reservation/#{r.id}",
+                  :target => "_blank")
+              end
             end
           end
         end

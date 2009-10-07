@@ -68,5 +68,17 @@ class ViewTests < Test::Unit::TestCase
       end
     end
   end
+
+  should "contain a link to the reservation view" do
+    reservation = Reservation.random
+
+    output = ReservationListView.new(:reservations => [reservation]).to_s
+    assert_xhtml(output) do
+      td do
+        a(/View/, :href => %r{reservation/#{reservation.pk}})
+      end
+    end
+  end
+
 end
 
