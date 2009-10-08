@@ -18,19 +18,25 @@ class ReservationView < Erector::Widget
       end
       body do
         p { long_form(@reservation) }
-        table(TableStyle) do 
-          @reservation.groups.each do | group |
-            tr do
-              td do 
-                name_list(group.animal_names)
-              end
-              td do 
-                name_list(group.procedure_names)
-              end
-            end
+        group_table(@reservation.groups)
+      end
+    end
+  end
+
+
+  def group_table(groups)
+    table(TableStyle) do 
+      groups.each do | group |
+        tr do
+          td do 
+            name_list(group.animal_names)
+          end
+          td do 
+            name_list(group.procedure_names)
           end
         end
       end
     end
   end
+
 end
