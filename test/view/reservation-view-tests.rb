@@ -5,6 +5,7 @@ require 'view/requires'
 require 'assert2/xhtml'
 
 class ReservationViewTests < Test::Unit::TestCase
+
   should "include session information in output" do
     expected_date = '2009-09-03'
     expected_morning = "morning"
@@ -32,28 +33,48 @@ class ReservationViewTests < Test::Unit::TestCase
     assert { 'afternoon' == afternoon_view.time_of_day(afternoon) }
   end
 
-  should "be able to display different groups" do 
-    floating = Procedure.random(:name => 'floating')
-    venipuncture = Procedure.random(:name => 'venipuncture')
-    milking = Procedure.random(:name => 'milking')
-    betsy = Animal.random(:name => 'betsy')
-    jake = Animal.random(:name => 'jake')
-    test_data = {
-      :instructor => 'marge',
-      :course => 'vm333',
-      :date => Date.new(2001, 2, 4),
-      :morning => false,
-      :groups => [ {:procedures => ['floating', 'venipuncture'],
-                     :animals => ['betsy']},
-                   {:procedures => ['venipuncture', 'milking'],
-                     :animals => ['jake', 'betsy']}]
-    }
-    reservation = Reservation.create_with_groups(test_data)
-    
-    text = ReservationView.new(:reservation => reservation).to_s
-    assert { text =~ /betsy.*floating.*venipuncture/m }
-    assert { text =~ /betsy.*jake.*milking.*venipuncture/m }
-  end
+  context "a real, modestly complicated reservation" do 
 
+    setup do
+      @floating = Procedure.random(:name => 'floating')
+      @venipuncture = Procedure.random(:name => 'venipuncture')
+      @milking = Procedure.random(:name => 'milking')
+      @betsy = Animal.random(:name => 'betsy')
+      @jake = Animal.random(:name => 'jake')
+      @test_data = {
+        :instructor => 'marge',
+        :course => 'vm333',
+        :date => Date.new(2001, 2, 4),
+        :morning => false,
+        :groups => [ {:procedures => ['floating', 'venipuncture'],
+                       :animals => ['betsy']},
+                     {:procedures => ['venipuncture', 'milking'],
+                       :animals => ['jake', 'betsy']}]
+      }
+      @reservation = Reservation.create_with_groups(@test_data)
+      
+      @view = ReservationView.new(:reservation => @reservation)
+      @text = @view.to_s
+    end
+
+    should "be able to display different groups" do 
+      assert { @text =~ /betsy.*floating.*venipuncture/m }
+      assert { @text =~ /betsy.*jake.*milking.*venipuncture/m }
+    end
+
+    should "show a link from a procedure to its explanation" do      
+      assert_xhtml(@text) do
+        a("floating", :href => Procedure[:name => 'floating'].local_href)
+      end
+    end
+
+
+    should "show a link to same place if duplicate procedures" do
+      # assert_xhtml can't count, so a single instance would be matched by two matchers.
+      href = Procedure[:name => 'venipuncture'].local_href
+      assert { @text =~ /#{href}.*#{href}/ }
+    end
+  end
+  
 end
 

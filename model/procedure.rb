@@ -9,6 +9,10 @@ class Procedure  < Sequel::Model
   # alias_method :in_wire_format, :name
   def in_wire_format; name; end
 
+  def local_href
+    '#' + pk.to_s
+  end
+
   # following are for testing
 
   def self.random(overrides = {})
