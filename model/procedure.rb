@@ -13,6 +13,10 @@ class Procedure  < Sequel::Model
     '#' + pk.to_s
   end
 
+  def filename
+    name.gsub(/\W/, '_')
+  end
+
   # following are for testing
 
   def self.random(overrides = {})
