@@ -4,12 +4,7 @@ require 'model/requires'
 require 'view/requires'
 require 'assert2/xhtml'
 
-class ReservationViewTests < Test::Unit::TestCase
-
-  def setup
-    empty_tables
-  end
-
+class ReservationViewTests < FreshDatabaseTestCase
   should "include session information in output" do
     expected_date = '2009-09-03'
     expected_morning = "morning"

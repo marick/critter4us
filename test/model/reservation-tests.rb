@@ -2,11 +2,7 @@ $: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'model/requires'
 
-class ReservationModelTests < Test::Unit::TestCase
-  def setup
-    empty_tables
-  end
-
+class ReservationModelTests < FreshDatabaseTestCase
   should "create a single use of an animal and procedure" do
     Procedure.random(:name => 'procedure')
     Animal.random(:name => 'animal')

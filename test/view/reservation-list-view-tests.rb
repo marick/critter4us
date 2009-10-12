@@ -4,7 +4,7 @@ require 'model/requires'
 require 'view/requires'
 require 'assert2/xhtml'
 
-class ViewTests < Test::Unit::TestCase
+class ViewTests < FreshDatabaseTestCase
   should "sort reservations" do
     earlier = Reservation.random(:date => Date.new(2008, 8, 8))
     afternoon = Reservation.random(:date => Date.new(2009, 9, 9),

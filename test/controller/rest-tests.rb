@@ -3,13 +3,13 @@ require 'test/testutil/requires'
 require 'controller'
 require 'ostruct'
 
-class HtmlControllerTests < Test::Unit::TestCase
+class HtmlControllerTests < FreshDatabaseTestCase
   include Rack::Test::Methods
 
   attr_reader :app
 
   def setup
-    empty_tables
+    super
     @app = Controller.new
     @app.authorizer = AuthorizeEverything.new
     @dummy_view = TestViewClass.new

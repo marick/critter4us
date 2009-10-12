@@ -2,9 +2,9 @@ $: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'model/requires'
 
-class GroupTests < Test::Unit::TestCase
+class GroupTests < FreshDatabaseTestCase
   def setup
-    empty_tables
+    super
 
     @fred = Animal.random(:name => 'fred')
     @betsy = Animal.random(:name => 'betsy')

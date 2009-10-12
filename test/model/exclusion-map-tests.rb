@@ -9,12 +9,7 @@ class Date
 end
     
 
-class ExclusionMapTests < Test::Unit::TestCase
-
-
-  def setup
-    empty_tables
-  end
+class ExclusionMapTests < FreshDatabaseTestCase
 
   should "produce no exclusions if no uses" do
     Procedure.random(:name => 'only', :days_delay => 14)

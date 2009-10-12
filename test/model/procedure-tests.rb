@@ -2,11 +2,7 @@ $: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'model/requires'
 
-class ProcedureTests < Test::Unit::TestCase
-  def setup
-    empty_tables
-  end
-
+class ProcedureTests < FreshDatabaseTestCase
   should "individually be able to return a wire-format of self" do
     assert { Procedure.random(:name => 'fred').in_wire_format == 'fred' }
   end

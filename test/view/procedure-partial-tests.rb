@@ -4,7 +4,7 @@ require 'model/requires'
 require 'view/requires'
 require 'assert2/xhtml'
 
-class ProcedurePartialTests < Test::Unit::TestCase
+class ProcedurePartialTests < FreshDatabaseTestCase
 
   should "show a link from a procedure to its explanation" do
     partial = ProcedurePartial.new(Procedure.random(:name => 'floating'))

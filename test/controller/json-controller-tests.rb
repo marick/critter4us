@@ -2,13 +2,13 @@ $: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'controller'
 
-class JsonGenerationTests < Test::Unit::TestCase
+class JsonGenerationTests < FreshDatabaseTestCase
   include Rack::Test::Methods
 
   attr_reader :app
 
   def setup
-    empty_tables
+    super
     @app = Controller.new
     @app.authorizer = AuthorizeEverything.new
   end
@@ -106,11 +106,9 @@ class JsonGenerationTests < Test::Unit::TestCase
 
     should "hand over the exclusion hash" do
       
-      DB.populate do
-        Reservation.random(:date => '2009-07-03') do
-          use Animal.random
-          use Procedure.random(:days_delay => 14.days)
-        end
+      Reservation.random(:date => '2009-07-03') do
+        use Animal.random
+        use Procedure.random(:days_delay => 14.days)
       end
 
       get '/json/exclusions', {:date => '2009-07-13', :time => "morning"}

@@ -9,8 +9,8 @@ require 'test/testutil/config'
 require 'admin/tables'
 require 'config'
 require 'test/testutil/hacks'
+require 'test/testutil/test-cases'
 require 'test/testutil/mock-talk'
-require 'test/testutil/dbhelpers'
 require 'test/testutil/controller-helpers'
 
 

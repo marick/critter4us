@@ -2,10 +2,7 @@ $: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'model/requires'
 
-class AnimalTests < Test::Unit::TestCase
-  def setup
-    empty_tables
-  end
+class AnimalTests < FreshDatabaseTestCase
 
   context "animals" do 
     should "individually be able to return a wire-format of self" do

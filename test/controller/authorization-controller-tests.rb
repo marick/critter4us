@@ -2,13 +2,13 @@ $: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'controller'
 
-class AuthorizationControllerTests < Test::Unit::TestCase
+class AuthorizationControllerTests < FreshDatabaseTestCase
   include Rack::Test::Methods
 
   attr_reader :app
 
   def setup
-    empty_tables
+    super
     @app = Controller.new
     @dummy_view = TestViewClass.new
     @app.test_view_builder = @dummy_view

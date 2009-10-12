@@ -3,10 +3,10 @@ require 'test/testutil/requires'
 require 'model/authorizer'
 require 'ostruct'
 
-class AuthorizerfTests < Test::Unit::TestCase
+class AuthorizerfTests < FreshDatabaseTestCase
 
   def setup
-    empty_tables
+    super
     @session = {}
     @authorizer = Authorizer.new(@session)
   end
