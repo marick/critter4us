@@ -6,8 +6,8 @@ DB = Sequel.postgres("critter4us-test", :host => 'localhost', :user => 'postgres
 #  DB = Sequel.sqlite
 #  DB = Sequel.mysql("critter4us-test", :host=>'localhost',
 #                    :user=>'root', :password=>'')
-  require 'admin/tables'
-  create_tables
+#  require 'admin/tables'
+#  create_tables
 end
 
 Sinatra::Base.configure :development do 
