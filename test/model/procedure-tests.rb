@@ -15,18 +15,5 @@ class ProcedureTests < Test::Unit::TestCase
     Procedure.random_with_names('c', 'a', 'b')
     assert { Procedure.names.sort == ['a', 'b', 'c'] }
   end
-
-  should "be able to produce a local href name for itself" do
-    procedure = Procedure.random(:name => 'c')
-    assert { procedure.local_href == '#' + procedure.pk.to_s } 
-  end
-
-  should "be able to produce a nice filename without special characters" do
-    procedure = Procedure.random(:name => "a procedure");
-    assert { procedure.filename == "a_procedure" }
-    procedure = Procedure.random(:name => "Caslick's procedure (horses)");
-    assert { procedure.filename == "Caslicks_procedure_horses" }
-  end
-
 end
 
