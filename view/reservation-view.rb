@@ -3,14 +3,6 @@ require 'view/util'
 class ReservationView < Erector::Widget
   include ReservationHelper
 
-  def name_list(names, &content_handler)  
-    ul do
-      names.each do | name | 
-        li { content_handler.call(name) }
-      end
-    end
-  end
-
   def content
     html do 
       head do
@@ -19,10 +11,10 @@ class ReservationView < Erector::Widget
       body do
         p { long_form(@reservation) }
         group_table(@reservation.groups)
+        rawtext protocols
       end
     end
   end
-
 
   def group_table(groups)
     table(TableStyle) do 
@@ -33,7 +25,8 @@ class ReservationView < Erector::Widget
           end
           td do 
             name_list(group.procedure_names) do | name |
-              a(name, :href=> Procedure[:name => name].local_href)
+              procedure = Procedure[:name => name]
+              rawtext(ProcedurePartial.new(procedure).protocol_link)
             end
           end
         end
@@ -41,4 +34,17 @@ class ReservationView < Erector::Widget
     end
   end
 
+
+  def protocols
+    @reservation.procedures.uniq.collect do | procedure |
+    end
+  end
+
+  def name_list(names, &content_handler)  
+    ul do
+      names.each do | name | 
+        li { content_handler.call(name) }
+      end
+    end
+  end
 end
