@@ -8,10 +8,10 @@ class Population < Sequel::Migration
     DB.alter_table :procedures do
       add_column :protocol, String
     end
-    DB[:procedures].filter(:name => "Caslick's operation (horses)").update(:protocol => "<b>Caslick’s Operation (Vulvoplasty): Horses<b>
+    DB[:procedures].filter(:name => "Caslick's operation (horses)").update(:protocol => "<b>Caslick's Operation (Vulvoplasty): Horses</b>
 <ul>
 <li>
-Bandage the horse’s tail and tie it out of the way.
+Bandage the horse's tail and tie it out of the way.
 </li>
 </ul>
 ")
