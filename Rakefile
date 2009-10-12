@@ -5,14 +5,17 @@ $in_rake = true
 require 'rubygems'
 require 'sequel'
 require 'sequel/extensions/migration'
-unless ENV['DATABASE_URL']
+
+if ENV['DATABASE_URL']   # Production/Heroku
+  DB = Sequel.connect(ENV['DATABASE_URL'])
+elsif ENV['RACK_ENV'] == 'test'
+  DB = Sequel.postgres("critter4us-test", :host => 'localhost',
+                       :user => 'postgres')
+else
   DB = Sequel.postgres("critter4us", :host => 'localhost',
                        :user => 'postgres',
                        :password =>  'c0wm4gnet')
-else
-  DB = Sequel.connect(ENV['DATABASE_URL'])
 end
-
 
 task :default => :test
 
