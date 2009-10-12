@@ -31,22 +31,8 @@ task :echo do
 end
 
 
-desc "Create Database on this machine."
-task :local_db_create do
-  require 'rubygems'
-  require 'path-setting'
-  require 'config'
-  require "admin/create.rb"
-end
-
-desc "Reset database on this machine"
-task :db_reset do
-  require 'rubygems'
-  require "admin/reset-db.rb"
-end
-
-
-desc "migrate from version 0 to 1 (hack)"
+# You can't migrate directly from 0 to 2.
+desc "migrate database from version 0 to 1 (hack)"
 task :migrate1 do
   migrate(1, 0)
 end
@@ -56,10 +42,21 @@ task :migrate2 do
   migrate(2, 1)
 end
 
-desc "migrate to most recent version"
+desc "migrate from FROM to TO (both are optional)"
 task :migrate do
-  migrate
+   migrate(i_or_nil('TO'), i_or_nil('FROM'))
 end
+
+desc "show current migration version"
+task :migration_version do 
+  puts Sequel::Migrator.get_current_migration_version(DB)
+end  
+
+desc "make current migration version TO without actually running the migrations"
+task :set_migration_version do 
+     Sequel::Migrator.set_current_migration_version(DB, i('TO'))
+     system('rake migration_version')
+end  
 
 desc "Clear password on this machine"
 task :clear_password do 
@@ -77,5 +74,26 @@ task :deploy do
 end
 
 def migrate(to=nil, from = nil)
+  puts "Migrate from #{from.inspect} to #{to.inspect}."
   Sequel::Migrator.apply(DB, 'migrations', to, from)
 end
+
+def i(name)
+  i_with_nil(name) do 
+    STDERR.puts("#{name} must be given.")
+    exit 1
+ end   
+end
+
+def i_or_nil(name)
+  i_with_nil(name) do 
+    nil
+  end
+end
+
+def i_with_nil(name)
+  value = ENV[name]
+  return yield if value.nil?
+  value.to_i
+end
+
