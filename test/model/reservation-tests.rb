@@ -135,6 +135,11 @@ class ReservationModelTests < Test::Unit::TestCase
     should "be able to list all the procedures involved" do
       assert { @reservation.procedure_names == [ @p1.name, @p2.name, @p3.name] }
     end
+
+
+    should "be able to return the procedure objects involved" do
+      assert { @reservation.procedures == [ @p1, @p2, @p3] }
+    end
   end
 
   context "replacing data" do 
