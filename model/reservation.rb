@@ -85,6 +85,7 @@ class Reservation < Sequel::Model
 
   def animal_names; x_names(:animal); end
   def procedure_names; x_names(:procedure); end
+  def procedures; x_objects(:procedure); end
 
 
   # Self-description and test
@@ -129,8 +130,13 @@ class Reservation < Sequel::Model
   private
 
   def x_names(x)
-    names = uses.collect { | use | 
-      use.send(x).name
-    }.uniq.sort
+    x_objects(x).collect { | thing | thing.name }.sort.uniq
+  end
+
+
+  def x_objects(x)
+    uses.collect { | use | 
+      use.send(x)
+    }
   end
 end
