@@ -35,10 +35,10 @@ class ReservationViewTests < FreshDatabaseTestCase
   context "a real, modestly complicated reservation" do 
 
     setup do
-      @floating = Procedure.random(:name => 'floating')
+      @floating = Procedure.random(:name => 'floating', :protocol => "floating protocol")
+      @venipuncture = Procedure.random(:name => 'venipuncture', :protocol => "venipuncture protocol")
+      @milking = Procedure.random(:name => 'milking', :protocol => "milking protocol")
 
-      @venipuncture = Procedure.random(:name => 'venipuncture')
-      @milking = Procedure.random(:name => 'milking')
       @betsy = Animal.random(:name => 'betsy')
       @jake = Animal.random(:name => 'jake')
       @test_data = {
@@ -66,6 +66,24 @@ class ReservationViewTests < FreshDatabaseTestCase
       expected_link = ProcedurePartial.new(@floating).protocol_link
       assert_match( /#{Regexp.escape(expected_link)}/, text )
     end
+
+    should "wrap text of protocol in an anchor" do 
+      actual_text = ReservationView.new(:reservation => @reservation).to_s
+
+      expected_name = ProcedurePartial.new(@floating).protocol_name_anchor
+      assert_match( /#{Regexp.escape(expected_name)}/, actual_text )
+
+      expected_text = @floating.protocol
+      assert_match( /#{Regexp.escape(expected_text)}/, actual_text )
+    end
+
+    should "only use a procedure's protocol once" do 
+      actual_text = ReservationView.new(:reservation => @reservation).to_s
+      expected_text = @floating.protocol
+      pp expected_text
+      deny { /#{expected_text}.*#{expected_text}/ =~ actual_text }
+    end
+
   end
   
 end

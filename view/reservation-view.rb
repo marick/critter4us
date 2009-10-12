@@ -37,6 +37,11 @@ class ReservationView < Erector::Widget
 
   def protocols
     @reservation.procedures.uniq.collect do | procedure |
+      partial = ProcedurePartial.new(procedure)
+      div do
+        rawtext partial.protocol_name_anchor
+        rawtext procedure.protocol
+      end
     end
   end
 
