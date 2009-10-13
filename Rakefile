@@ -33,6 +33,11 @@ task :echo do
   puts "HI"
 end
 
+desc "Backup critter4us"
+task :backup do
+   system("heroku db:pull postgres://localhost/critter4us-backup --app critter4us")
+end
+
 
 # You can't migrate directly from 0 to 2.
 desc "migrate database from version 0 to 1 (hack)"
@@ -72,7 +77,7 @@ task :stage do
 end
 
 desc "Push new version into production."
-task :deploy do 
+task :deploy => [:backup] do 
   `git push heroku`
 end
 
