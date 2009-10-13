@@ -20,6 +20,12 @@ class AnimalTests < FreshDatabaseTestCase
       assert { Animal.kind_map == {'bossie' => 'cow', 'fred' => 'horse'} }
     end
 
+    should "return its protocol kind in addition to its kind" do
+      animal = Animal.random(:kind => 'cow')
+      assert { animal.protocol_kind == 'bovine' }
+    end
+
+
     # TODO: Right now, the user sees all animals in the animal list, including ones
     # who cannot be used by any of the procedures (because they're already being 
     # used at the exact same time). This test would be the start toward fixing that.

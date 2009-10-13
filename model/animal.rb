@@ -19,6 +19,11 @@ class Animal < Sequel::Model
     date = hash(:date)
     morning = hash(:morning)
   end
+
+
+  def protocol_kind
+    DB[:human_and_protocol_kinds].filter(:kind => self.kind).first[:protocol_kind]
+  end
     
 
   # following are for testing
