@@ -80,7 +80,6 @@ class ReservationViewTests < FreshDatabaseTestCase
     should "only use a procedure's protocol once" do 
       actual_text = ReservationView.new(:reservation => @reservation).to_s
       expected_text = @floating.protocol
-      pp expected_text
       deny { /#{expected_text}.*#{expected_text}/ =~ actual_text }
     end
 
