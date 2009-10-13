@@ -4,7 +4,7 @@ require 'model/requires'
 require 'view/requires'
 require 'assert2/xhtml'
 
-class ProcedurePartialTests < FreshDatabaseTestCase
+class ProtocolPartialTests < FreshDatabaseTestCase
   
   def setup
     @floating = Procedure.random(:name => 'floating')
@@ -18,7 +18,7 @@ class ProcedurePartialTests < FreshDatabaseTestCase
   context "single protocol kind of animal" do 
 
     setup do 
-      @partial = ProcedurePartial.new(@floating, @betsy, @jake)
+      @partial = ProtocolPartial.new(@floating, @betsy, @jake)
     end
 
     should "be able to create a link from a procedure to its protocol" do
@@ -30,8 +30,8 @@ class ProcedurePartialTests < FreshDatabaseTestCase
     end
 
     should "be able to create a link to same place if duplicate procedures" do
-      first_version = ProcedurePartial.new(@floating, @betsy).protocol_link.to_s
-      second_version = ProcedurePartial.new(@floating, @jake).protocol_link.to_s
+      first_version = ProtocolPartial.new(@floating, @betsy).protocol_link.to_s
+      second_version = ProtocolPartial.new(@floating, @jake).protocol_link.to_s
       assert { first_version == second_version }
     end
 
@@ -61,7 +61,7 @@ class ProcedurePartialTests < FreshDatabaseTestCase
 
     setup do
       @procedure_without_protocol = Procedure.random(:name => 'unknown')
-      @missing_protocol = ProcedurePartial.new(@procedure_without_protocol)
+      @missing_protocol = ProtocolPartial.new(@procedure_without_protocol)
     end
 
     should "create a harmless link" do 

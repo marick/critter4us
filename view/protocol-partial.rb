@@ -1,4 +1,4 @@
-class ProcedurePartial
+class ProtocolPartial
   def initialize(procedure, *animals)
     @procedure = procedure
     @animals = animals

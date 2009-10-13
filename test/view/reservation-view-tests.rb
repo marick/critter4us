@@ -65,15 +65,15 @@ class ReservationViewTests < FreshDatabaseTestCase
       assert { text =~ /betsy.*jake.*milking.*venipuncture/m }
     end
 
-    should "use a ProcedurePartial to create a in-page link to protocol" do 
+    should "use a ProtocolPartial to create a in-page link to protocol" do 
       text = ReservationView.new(:reservation => @reservation).to_s
-      expected_link = ProcedurePartial.new(@floating).protocol_link
+      expected_link = ProtocolPartial.new(@floating).protocol_link
       assert_match( /#{Regexp.escape(expected_link)}/, text )
     end
 
     should "wrap text of protocol in an anchor" do 
       actual_text = ReservationView.new(:reservation => @reservation).to_s
-      partial = ProcedurePartial.new(@floating)
+      partial = ProtocolPartial.new(@floating)
 
       expected_name = partial.protocol_name_anchor
       assert_match( /#{Regexp.escape(expected_name)}/, actual_text )
@@ -84,7 +84,7 @@ class ReservationViewTests < FreshDatabaseTestCase
 
     should "only use a procedure's protocol once" do 
       actual_text = ReservationView.new(:reservation => @reservation).to_s
-      partial = ProcedurePartial.new(@floating)
+      partial = ProtocolPartial.new(@floating)
       expected_text = partial.protocol_description
       deny { /#{expected_text}.*#{expected_text}/ =~ actual_text }
     end
