@@ -66,6 +66,7 @@ end
 
 
 def empty_tables
+  DB[:protocols].delete
   DB[:uses].delete
   DB[:animals].delete
   DB[:procedures].delete

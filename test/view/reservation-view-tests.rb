@@ -21,7 +21,7 @@ class ReservationViewTests < FreshDatabaseTestCase
     assert { actual.include?(expected_course) }
   end
 
-  should "know how to display time of day" do
+  should  "know how to display time of day" do
     morning = Reservation.random(:morning => true)
     morning_view = ReservationView.new(:reservation => morning)
     
@@ -35,9 +35,9 @@ class ReservationViewTests < FreshDatabaseTestCase
   context "a real, modestly complicated reservation" do 
 
     setup do
-      @floating = Procedure.random(:name => 'floating', :protocol => "floating protocol")
-      @venipuncture = Procedure.random(:name => 'venipuncture', :protocol => "venipuncture protocol")
-      @milking = Procedure.random(:name => 'milking', :protocol => "milking protocol")
+      @floating = Procedure.random(:name => 'floating')
+      @venipuncture = Procedure.random(:name => 'venipuncture')
+      @milking = Procedure.random(:name => 'milking')
 
       @betsy = Animal.random(:name => 'betsy')
       @jake = Animal.random(:name => 'jake')
@@ -51,6 +51,10 @@ class ReservationViewTests < FreshDatabaseTestCase
                      {:procedures => ['venipuncture', 'milking'],
                        :animals => ['jake', 'betsy']}]
       }
+      Protocol.random(:procedure => @floating, :description => 'floating description')
+      Protocol.random(:procedure => @venipuncture, :description => 'venipuncture description')
+      Protocol.random(:procedure => @milking, :description => 'milking description')
+
       @reservation = Reservation.create_with_groups(@test_data)
       
     end
@@ -69,17 +73,19 @@ class ReservationViewTests < FreshDatabaseTestCase
 
     should "wrap text of protocol in an anchor" do 
       actual_text = ReservationView.new(:reservation => @reservation).to_s
+      partial = ProcedurePartial.new(@floating)
 
-      expected_name = ProcedurePartial.new(@floating).protocol_name_anchor
+      expected_name = partial.protocol_name_anchor
       assert_match( /#{Regexp.escape(expected_name)}/, actual_text )
 
-      expected_text = @floating.protocol
+      expected_text = partial.protocol_description
       assert_match( /#{Regexp.escape(expected_text)}/, actual_text )
     end
 
     should "only use a procedure's protocol once" do 
       actual_text = ReservationView.new(:reservation => @reservation).to_s
-      expected_text = @floating.protocol
+      partial = ProcedurePartial.new(@floating)
+      expected_text = partial.protocol_description
       deny { /#{expected_text}.*#{expected_text}/ =~ actual_text }
     end
 

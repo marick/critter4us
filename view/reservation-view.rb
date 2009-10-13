@@ -27,7 +27,7 @@ class ReservationView < Erector::Widget
           td do 
             name_list(group.procedure_names) do | name |
               procedure = Procedure[:name => name]
-              rawtext(ProcedurePartial.new(procedure).protocol_link)
+              rawtext(ProcedurePartial.new(procedure, *group.animal_names).protocol_link)
             end
           end
         end
@@ -61,8 +61,7 @@ tissue trauma, bleeding, or abnormal posture following a procedure are indicatio
     @reservation.procedures.uniq.collect do | procedure |
       partial = ProcedurePartial.new(procedure)
       div do
-        rawtext partial.protocol_name_anchor
-        rawtext procedure.protocol
+        rawtext partial.protocol_description
       end
     end
   end
