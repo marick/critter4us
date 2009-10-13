@@ -31,16 +31,20 @@ class ReservationView < Erector::Widget
           end
           td do 
             name_list(group.procedure_names) do | name |
-              procedure = Procedure[:name => name]
-              partial = ProtocolPartial.new(procedure)
-              rawtext(partial.protocol_link)
-              unless @protocol_descriptions.include?(partial.protocol_description) 
-                @protocol_descriptions << partial.protocol_description 
-              end
+              link_procedure_name_to_protocol(name)
             end
           end
         end
       end
+    end
+  end
+
+  def link_procedure_name_to_protocol(name)
+    procedure = Procedure[:name => name]
+    partial = ProtocolPartial.new(procedure)
+    rawtext(partial.protocol_link)
+    unless @protocol_descriptions.include?(partial.protocol_description) 
+      @protocol_descriptions << partial.protocol_description 
     end
   end
 
