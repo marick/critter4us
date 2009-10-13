@@ -2,7 +2,7 @@ class ProtocolPartial
   def initialize(procedure, *animals)
     @procedure = procedure
     @animals = animals
-    @protocol = Protocol.for(:procedure => @procedure)
+    @protocol = Protocol.protocols_for(@procedure).values[0]
   end
 
   def protocol_link

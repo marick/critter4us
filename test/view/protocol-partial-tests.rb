@@ -9,21 +9,22 @@ class ProtocolPartialTests < FreshDatabaseTestCase
   def setup
     @floating = Procedure.random(:name => 'floating')
     @betsy = Animal.random(:name => 'betsy', :kind => 'mare')
-    @jake = Animal.random(:name => 'betsy', :kind => 'gelding')
-
-    @floating_protocol = Protocol.create(:procedure => @floating, :animal_kind => 'equine',
-                                         :description => "floating description")
+    @jake = Animal.random(:name => 'jake', :kind => 'gelding')
+    @moo = Animal.random(:name => 'moo', :kind => 'cow')
+    @billy = Animal.random(:name => 'billy', :kind => 'goat')
   end
 
   context "single protocol kind of animal" do 
 
     setup do 
+      @floating_protocol_equine = Protocol.create(:procedure => @floating, :animal_kind => 'equine',
+                                                  :description => "floating description")
       @partial = ProtocolPartial.new(@floating, @betsy, @jake)
     end
 
     should "be able to create a link from a procedure to its protocol" do
       text = @partial.protocol_link
-      protocol_id = @floating_protocol.id
+      protocol_id = @floating_protocol_equine.id
       assert_xhtml(text) do
         a("floating", :href => "##{protocol_id}")
       end
@@ -37,7 +38,7 @@ class ProtocolPartialTests < FreshDatabaseTestCase
 
     should "be able to create the destination for the link" do
       text = @partial.protocol_name_anchor
-      protocol_id = @floating_protocol.id
+      protocol_id = @floating_protocol_equine.id
       assert_xhtml(text) do
         a(:name => protocol_id.to_s)
       end
@@ -87,16 +88,47 @@ class ProtocolPartialTests < FreshDatabaseTestCase
         end
       end
     end
+  end
 
+  context "protocol depends on the animal" do 
+    setup do 
+      @floating_protocol_caprine = Protocol.create(:procedure => @floating,
+                                                :animal_kind => 'caprine',
+                                                :description => "floating description (goat)")
+      @floating_protocol_bovine = Protocol.create(:procedure => @floating,
+                                                :animal_kind => 'bovine',
+                                                :description => "floating description (cow)")
+    end
+
+    should_eventually "be able to create a link from a procedure/animal to its protocol" do
+      text = protocol_link(@floating, @moo)
+      protocol_id = @floating_protocol_bovine.id
+      assert_xhtml(text) do
+        a("floating", :href => "##{protocol_id}")
+      end
+
+      # ... but ...
+      text = protocol_link(@floating, @billy)
+      protocol_id = @floating_protocol_caprine.id
+      assert_xhtml(text) do
+        a("floating", :href => "##{protocol_id}")
+      end
+    end
+  end
+
+
+  def protocol_link(*args)
+    partial = ProtocolPartial.new(*args)
+    partial.protocol_link
   end
 
   def local_destination
-    %r{name=["'](.*)["']} =~ @partial.protocol_name_anchor
+    %r{name=["'](.*)['"]} =~ @partial.protocol_name_anchor
     $1
   end
 
   def local_link
-    %r{href=["']#(.*)["']} =~ @partial.protocol_link
+    %r{href=["']#(.*)['"]} =~ @partial.protocol_link
     $1
   end
 

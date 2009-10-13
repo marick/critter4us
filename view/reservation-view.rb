@@ -3,6 +3,11 @@ require 'view/util'
 class ReservationView < Erector::Widget
   include ReservationHelper
 
+  def initialize(*args)
+    super(*args)
+    @protocol_descriptions = []
+  end
+
   def content
     html do 
       head do
@@ -11,8 +16,8 @@ class ReservationView < Erector::Widget
       body do
         p { long_form(@reservation) }
         group_table(@reservation.groups)
-        rawtext general_instructions
-        rawtext protocols
+        general_instructions
+        protocols
       end
     end
   end
@@ -27,7 +32,11 @@ class ReservationView < Erector::Widget
           td do 
             name_list(group.procedure_names) do | name |
               procedure = Procedure[:name => name]
-              rawtext(ProtocolPartial.new(procedure, *group.animal_names).protocol_link)
+              partial = ProtocolPartial.new(procedure)
+              rawtext(partial.protocol_link)
+              unless @protocol_descriptions.include?(partial.protocol_description) 
+                @protocol_descriptions << partial.protocol_description 
+              end
             end
           end
         end
@@ -58,10 +67,9 @@ tissue trauma, bleeding, or abnormal posture following a procedure are indicatio
 
 
   def protocols
-    @reservation.procedures.uniq.collect do | procedure |
-      partial = ProtocolPartial.new(procedure)
+    @protocol_descriptions.each do | description | 
       div do
-        rawtext partial.protocol_description
+        rawtext description
       end
     end
   end
