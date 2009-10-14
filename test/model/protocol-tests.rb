@@ -43,7 +43,7 @@ class NullProtocolTests < FreshDatabaseTestCase
     end
 
     should "have an id that's distinct yet stable from instance to instance" do
-      assert { @null_protocol.pk == "no_protocol_defined_for_#{@floating.pk}_and_bovine" }
+      assert { @null_protocol.unique_identifier == "no_protocol_defined_for_#{@floating.pk}_and_bovine" }
     end
 
 
@@ -60,8 +60,12 @@ class NullProtocolTests < FreshDatabaseTestCase
       @null_protocol = Protocol::Null.new(@floating, nil)
     end
 
+    should "be suitably vague when asked the animal kind" do 
+      assert { @null_protocol.animal_kind == 'any species' } 
+    end
+
     should "have an id that's distinct yet stable from instance to instance" do
-      assert { @null_protocol.pk == "no_protocol_defined_for_#{@floating.pk}_and_any_species" }
+      assert { @null_protocol.unique_identifier == "no_protocol_defined_for_#{@floating.pk}_and_any_species" }
     end
 
     should "return a description" do

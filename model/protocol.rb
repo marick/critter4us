@@ -1,9 +1,10 @@
 require 'pp'
 
 class Protocol < Sequel::Model
-  CATCHALL_KIND='animalia'
+  CATCHALL_KIND='any species'
 
   many_to_one :procedure
+  alias_method :unique_identifier, :pk
 
   def self.protocols_for(procedure)
     protocols = Protocol.filter(:procedure_id => procedure.id).all
@@ -22,18 +23,20 @@ class Protocol < Sequel::Model
   end
 
   class Null
-    def initialize(procedure, protocol_kind)
+    attr_reader :animal_kind
+
+    def initialize(procedure, animal_kind)
       @procedure = procedure
-      @protocol_kind = protocol_kind
-      @protocol_kind ||= 'any species'
+      @animal_kind = animal_kind
+      @animal_kind ||= Protocol::CATCHALL_KIND
     end
 
-    def pk
-      "no_protocol_defined_for_#{@procedure.pk}_and_#{@protocol_kind.gsub(/ /,'_')}"
+    def unique_identifier
+      "no_protocol_defined_for_#{@procedure.pk}_and_#{@animal_kind.gsub(/ /,'_')}"
     end
     
     def description
-      "<b>#{@procedure.name} (#{@protocol_kind})</b>: No protocol has yet been defined."
+      "<b>#{@procedure.name} (#{@animal_kind})</b>: No protocol has yet been defined."
     end
   end
 
