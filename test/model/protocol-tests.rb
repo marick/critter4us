@@ -28,3 +28,48 @@ class ProtocolTests < FreshDatabaseTestCase
     end
   end
 end
+
+class NullProtocolTests < FreshDatabaseTestCase
+
+
+  def setup
+    @floating = Procedure.random(:name => 'floating')
+    super
+  end
+
+  context "a legitimate animal kind" do 
+    setup do
+      @null_protocol = Protocol::Null.new(@floating, 'bovine')
+    end
+
+    should "have an id that's distinct yet stable from instance to instance" do
+      assert { @null_protocol.pk == "no_protocol_defined_for_#{@floating.pk}_and_bovine" }
+    end
+
+
+    should "return a description" do
+      expected = /floating/
+      assert { /floating/ =~ @null_protocol.description }
+      assert { /bovine/ =~ @null_protocol.description }
+      assert { /[Nn]o protocol.*defined/ =~ @null_protocol.description }
+    end
+  end
+
+  context "no animal kind" do 
+    setup do
+      @null_protocol = Protocol::Null.new(@floating, nil)
+    end
+
+    should "have an id that's distinct yet stable from instance to instance" do
+      assert { @null_protocol.pk == "no_protocol_defined_for_#{@floating.pk}_and_any_species" }
+    end
+
+    should "return a description" do
+      expected = /floating/
+      assert { /floating/ =~ @null_protocol.description }
+      assert { /any species/ =~ @null_protocol.description }
+      assert { /[Nn]o protocol.*defined/ =~ @null_protocol.description }
+    end
+  end
+
+end
