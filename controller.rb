@@ -120,7 +120,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
 
   get '/reservation/:number' do
     number = params[:number]
-    ReservationView.new(:reservation => Reservation[number]).to_s
+    ReservationView.new(:reservation => Reservation[number]).to_pretty
   end
 
   get '/json/reservation/:number' do
