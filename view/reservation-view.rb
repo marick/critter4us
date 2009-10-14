@@ -41,7 +41,7 @@ class ReservationView < Erector::Widget
 
   def link_procedure_name_to_protocol(name)
     procedure = Procedure[:name => name]
-    partial = ProtocolPartial.new(procedure)
+    partial = ProtocolPartial.for(procedure)
     rawtext(partial.protocol_link)
     unless @protocol_descriptions.include?(partial.protocol_description) 
       @protocol_descriptions << partial.protocol_description 

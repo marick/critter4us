@@ -1,29 +1,64 @@
 class ProtocolPartial
-  def initialize(procedure, *animals)
-    @procedure = procedure
-    @animals = animals
-    @protocol = Protocol.protocols_for(@procedure).values[0]
+  private_class_method :new
+
+  def self.for(procedure, *animals)
+    distinct_animal_protocol_kinds_in_use = animals.collect { | animal | 
+      animal.protocol_kind
+    }.uniq.sort
+    if distinct_animal_protocol_kinds_in_use.length > 1
+      NProtocolPartial.new(procedure, distinct_animal_protocol_kinds_in_use)
+    else
+      OneProtocolPartial.new(procedure, distinct_animal_protocol_kinds_in_use.first)
+    end
   end
 
-  def protocol_link
-    "<a href='##{protocol_pk}'>#{@procedure.name}</a>"
+  class OneProtocolPartial < ProtocolPartial
+    public_class_method :new
+
+    attr_reader :protocol  # for test
+
+    def initialize(procedure, protocol_kind)
+      @procedure = procedure
+      protocol_hash = Protocol.protocols_for(@procedure)
+      @protocol = protocol_hash[protocol_kind]
+      @protocol = protocol_hash[Protocol::CATCHALL_KIND] unless @protocol
+      @protocol = Protocol::Null.new(procedure, protocol_kind) unless @protocol
+    end
+
+    def protocol_link
+      "<a href='##{@protocol.pk}'>#{@procedure.name}</a>"
+    end
+
+    def protocol_name_anchor
+      "<a name='#{@protocol.pk}'/>"
+    end
+
+    def protocol_description
+      "<div>#{protocol_name_anchor}#{@protocol.description}</div>"
+    end
   end
 
-  def protocol_name_anchor
-    "<a name='#{protocol_pk}'/>"
+  class NProtocolPartial < ProtocolPartial
+    public_class_method :new
+
+    def initialize(procedure, protocol_kinds)
+      @procedure = procedure
+      protocol_hash = Protocol.protocols_for(@procedure)
+      protocols = protocol_kinds.collect { | kind | protocol_hash[kind] }
+=begin
+      @generator = if protocol_hash.empty?
+                     NoProtocolGenerator.new(procedure)
+                   elsif protocol_hash.length == 1
+                     OneProtocolGenerator.new(protocol_hash.values[0])
+                   else
+                     OneProtocolGenerator.new(protocol_hash[protocol_kind])
+                   end
+=end
+    end
+
   end
 
-  def protocol_pk
-    return @protocol.pk if @protocol
-    "no_protocol_defined"
-  end
 
-  def protocol_description
-    description = if @protocol 
-                    @protocol.description
-                  else
-                    "<b>#{@procedure.name}</b>: No protocol has yet been defined for this procedure."
-                  end
-    "<div>#{protocol_name_anchor}#{description}</div>"
-  end
+
+
 end
