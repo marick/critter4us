@@ -31,12 +31,36 @@ class GroupTests < FreshDatabaseTestCase
     assert { expected == @group.in_wire_format }
   end
 
+  should "know the animals within them" do
+    Use.create(:animal => @fred, :procedure => @vaccination,
+               :group => @group);
+    Use.create(:animal => @betsy, :procedure => @floating,
+               :group => @group);
+    Use.create(:animal => @betsy, :procedure => @vaccination,
+               :group => @group);
+    assert { @group.animals.include?(@betsy) }
+    assert { @group.animals.include?(@fred) }
+  end
+
   should "know the names of the animals within them" do
     Use.create(:animal => @fred, :procedure => @vaccination,
+               :group => @group);
+    Use.create(:animal => @betsy, :procedure => @floating,
                :group => @group);
     Use.create(:animal => @betsy, :procedure => @vaccination,
                :group => @group);
     assert { @group.animal_names == ['betsy', 'fred'] }
+  end
+
+  should "know the procedures within them" do
+    Use.create(:animal => @fred, :procedure => @vaccination,
+               :group => @group);
+    Use.create(:animal => @betsy, :procedure => @floating,
+               :group => @group);
+    Use.create(:animal => @betsy, :procedure => @vaccination,
+               :group => @group);
+    assert { @group.procedures.include?(@vaccination) }
+    assert { @group.procedures.include?(@floating) }
   end
 
   should "know the names of the procedures within them" do

@@ -8,21 +8,16 @@ class Group < Sequel::Model
   end
 
   def in_wire_format
-    collect_each(:procedure)
-    collect_each(:animal)
     { 
-      'procedures' => collect_each(:procedure),
-      'animals' => collect_each(:animal),
+      'procedures' => collect_each_in_wire_format(:procedure),
+      'animals' => collect_each_in_wire_format(:animal),
     }
   end
 
-  def animal_names
-    names(:animal)
-  end
-
-  def procedure_names
-    names(:procedure)
-  end
+  def animals; identities(:animal); end
+  def procedures; identities(:procedure); end
+  def animal_names; names(:animal); end
+  def procedure_names; names(:procedure); end
 
   private
 
@@ -32,7 +27,13 @@ class Group < Sequel::Model
     }.uniq.sort
   end
 
-  def collect_each(attribute)
+  def identities(attribute_name)
+    uses.collect { | use | 
+      use.send(attribute_name)
+    }.uniq
+  end
+
+  def collect_each_in_wire_format(attribute)
     uses.collect { |use| use.send(attribute).in_wire_format }.uniq.sort
   end
       
