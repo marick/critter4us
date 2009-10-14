@@ -31,7 +31,7 @@ class ReservationView < Erector::Widget
           end
           td do 
             name_list(group.procedure_names) do | name |
-              link_procedure_name_to_protocol(name)
+              link_procedure_name_to_protocol(name, group.animals)
             end
           end
         end
@@ -39,13 +39,11 @@ class ReservationView < Erector::Widget
     end
   end
 
-  def link_procedure_name_to_protocol(name)
+  def link_procedure_name_to_protocol(name, animals)
     procedure = Procedure[:name => name]
-    partial = ProtocolPartial.for(procedure)
-    rawtext(partial.protocol_link)
-    unless @protocol_descriptions.include?(partial.protocol_description) 
-      @protocol_descriptions << partial.protocol_description 
-    end
+    partial = ProtocolPartial.for(procedure, *animals)
+    rawtext(partial.linkified_procedure_name)
+    partial.add_name_anchored_descriptions_to(@protocol_descriptions)
   end
 
   def general_instructions

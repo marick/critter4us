@@ -39,8 +39,8 @@ class ReservationViewTests < FreshDatabaseTestCase
       @venipuncture = Procedure.random(:name => 'venipuncture')
       @milking = Procedure.random(:name => 'milking')
 
-      @betsy = Animal.random(:name => 'betsy')
-      @jake = Animal.random(:name => 'jake')
+      @betsy = Animal.random(:name => 'betsy', :kind => 'cow')
+      @jake = Animal.random(:name => 'jake', :kind => 'stallion')
       @test_data = {
         :instructor => 'marge',
         :course => 'vm333',
@@ -66,28 +66,11 @@ class ReservationViewTests < FreshDatabaseTestCase
     end
 
     should "use a ProtocolPartial to create a in-page link to protocol" do 
-      text = ReservationView.new(:reservation => @reservation).to_s
-      expected_link = ProtocolPartial.for(@floating).protocol_link
+      text = ReservationView.new(:reservation => @reservation).to_pretty
+      expected_link = ProtocolPartial.for(@venipuncture, @jake, @betsy).linkified_procedure_name
       assert_match( /#{Regexp.escape(expected_link)}/, text )
     end
 
-    should "wrap text of protocol in an anchor" do 
-      actual_text = ReservationView.new(:reservation => @reservation).to_s
-      partial = ProtocolPartial.for(@floating)
-
-      expected_name = partial.protocol_name_anchor
-      assert_match( /#{Regexp.escape(expected_name)}/, actual_text )
-
-      expected_text = partial.protocol_description
-      assert_match( /#{Regexp.escape(expected_text)}/, actual_text )
-    end
-
-    should "only use a procedure's protocol once" do 
-      actual_text = ReservationView.new(:reservation => @reservation).to_s
-      partial = ProtocolPartial.for(@floating)
-      expected_text = partial.protocol_description
-      deny { /#{expected_text}.*#{expected_text}/ =~ actual_text }
-    end
 
   end
   
