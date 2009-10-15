@@ -121,6 +121,45 @@ class AddProtocols006 < Sequel::Migration
     Protocol.create(:procedure => Procedure[:name => "vaginal examination (speculum)"],
                     :animal_kind => "equine",
                     :description => VAGINAL_SPECULUM_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "opthalmic examination"],
+                    :animal_kind => "equine",
+                    :description => OPTHALMIC_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "synovial fluid collection (horse)"],
+                    :animal_kind => "equine",
+                    :description => SYNOVIAL_HORSES)
+#    Protocol.create(:procedure => Procedure[:name => ''],
+#                   :animal_kind => "equine",
+#                    :description => PERITONEAL_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "urine collection by catheter"],
+                    :animal_kind => "equine",
+                    :description => URINE_COLLECTION_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "urine collection by catheter"],
+                    :animal_kind => "equine",
+                    :description => URINE_COLLECTION_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "blood collection for transfusion"],
+                    :animal_kind => "equine",
+                    :description => BLOOD_COLLECTION_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "MRI (horses)"],
+                    :animal_kind => "equine",
+                    :description => MRI_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "chiropractic demonstration (horses)"],
+                    :animal_kind => "equine",
+                    :description => CHIROPRACTIC_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "acupuncture demonstration (horses)"],
+                    :animal_kind => "equine",
+                    :description => ACUPUNCTURE_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "treadmill exercise (horses)"],
+                    :animal_kind => "equine",
+                    :description => TREADMILL_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "nasolacrimal duct flushing (horses)"],
+                    :animal_kind => "equine",
+                    :description => NOSE_FLUSH_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "floating teeth (horses)"],
+                    :animal_kind => "equine",
+                    :description => FLOATING_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "leg wrapping (horses)"],
+                    :animal_kind => "equine",
+                    :description => LEG_WRAPPING_HORSES)
   end
 
   def down
@@ -1106,6 +1145,261 @@ Visualize the cervix and vagina through the speculum using an external light sou
 </li>
 <li>
 #{NOTE}  If the animal shows more than momentary distress when the speculum is inserted, the procedure must be immediately discontinued and not attempted again the same day.  If blood is observed on the speculum, the procedure must be immediately stopped and not attempted again the same day. Ask the supervising veterinarian to assess the animal’s condition. .
+</li>
+</ul>
+"
+
+
+OPTHALMIC_HORSES="
+<b>Ophthalmic Examination: Horses</b>
+<ul>
+<li>
+Complete ophthalmic examination may be performed on horses
+</li>
+<li>
+An auriculopalpebral block may be performed to induce akinesis of the upper eyelid to facilitate the examination
+<ul>
+<li>
+Identify the auriculopalpebral nerve as it passes over the zygomatic arch
+</li>
+<li>
+Prepare a 5cm square site for injection by alternating betadine scrub followed by isopropyl alcohol repeated 3 times.
+</li>
+<li>
+Introduce a needle (22g) over the auriculopalpebral nerve at the caudal aspect of zygomatic arch; aspirate before injecting (to avoid rostral auricular vein)
+</li>
+<li>
+Inject 2.0 mls of 2% lidocaine in a fan-shaped manner.
+</li>
+</ul>
+</li>
+<li>
+If mydriasis (dilation of the pupil) is required, it may be induced by topical application of Mydriacyl (1% tropicamide; 3 drops). 
+<ul>
+<li>
+Horses must be maintained indoors for at least 12 hours to ensure that the effects of the mydriatic have completely resolved before they are allowed to go outside into the sunlight. 
+</li>
+<li>
+An equine veterinarian listed on the protocol must inspect the pupillary light reflex the day following the procedure to ensure that all effects of the mydriatic have worn off.
+</li>
+</ul>
+
+</li>
+<li>
+Intraocular pressure may be measured using a tonometer on the surface of the cornea.
+</li>
+<li>
+The cornea may be stained using fluorescein dye.
+</li>
+</ul>
+"
+
+SYNOVIAL_HORSES="
+<b>Synovial Fluid Collection: Horses</b>
+<ul>
+<li>
+Horses should be sedated with <b>0.5 mg/kg of xylazine IV</b> or <b>0.02 mg/kg of detomidine IV</b>.
+</li>
+<li>
+Clip the sample site. 
+</li>
+<li>
+Scrub site with surgical soap and rinse with isopropyl alcohol or saline.
+</li>
+<li>
+Inject 1-5 mls of 2% carbocaine subcutaneously at the site using a 22-gauge, 1-1.5 inch needle.
+</li>
+<li>
+Use an 18-20 gauge, 1.5 inch needle to aspirate 1-5 mls of fluid from the joint.
+</li>
+<li>
+#{LIMITS}  Students may be allowed up to <b>3 attempts</b> to obtain a sample provided the animal is tolerating the procedure well.  Only <b>one joint</b> may be tapped per animal per day.  The procedure (including location of joint) must be <b>recorded in the animal’s medical record</b>. Horses must be allowed <b>at least 2 weeks</b> between sample collections and the <b>joints must be rotated</b>.  
+</li>
+<li>
+#{NOTE} Joints must not be tapped if an animal is lame, exhibits pain on palpation of the joint or has skin or subcutaneous tissue abnormalities over the joint (except for diagnostic purposes).
+</li>
+</ul>
+"
+PERITONEAL_HORSES="
+<b>Peritioneal Fluid Collection: Horses</b>
+<ul>
+<li>
+Horses should be sedated with <b>0.5 mg/kg of xylazine IV</b> or <b>0.02 mg/kg of detomidine IV</b>.
+</li>
+<li>
+Clip the sample site. 
+</li>
+<li>
+Scrub site with surgical soap and rinse with isopropyl alcohol or saline.
+</li>
+<li>
+Inject 1-5 mls of 2% carbocaine subcutaneously at the site using a 22-gauge, 1-1.5 inch needle.
+</li>
+<li>
+Use an 18-20 gauge, 1.5 inch needle to aspirate 1-5 mls of peritoneal fluid.
+</li>
+<li>
+#{LIMITS}  Students will be allowed up to <b>3 attempts</b> to obtain a sample provided the animal is tolerating the procedure well. The procedure must be <b>recorded in the animal’s medical record</b>. Horses must be allowed <b>at least 2 weeks</b> between sample collections.  
+</li>
+</ul>
+"
+
+URINE_COLLECTION_HORSES="
+<b>Urine Collection via Urinary Catheter: Horses</b>
+<ul>
+<li>
+• Carefully wash and rinse the vulva or penis using surgical soap and sterile saline.
+</li>
+<li>
+• Use aseptic techniques to pass a sterile urinary catheter through the urethra and into the bladder.
+</li>
+</ul>
+"
+
+BLOOD_COLLECTION_HORSES="
+<b>Blood Collection for Transfusion: Horses</b>
+<ul>
+<li>
+A pre-collection PCV and total plasma protein concentration should be determined to assure the horse is a good candidate for blood donation.
+</li>
+<li>
+Using standard human blood bags, aseptically collect blood from the jugular vein. The quantity collected will depend on the size of the recipient animal. From <b>1-8 liters</b> may be collected from a 450kg horse (<17% of its blood volume).  
+</li>
+<li>
+The amount of blood that is removed must be replaced with an equal quantity of intravenous fluids.  
+</li>
+<li>
+#{LIMITS}  The frequency of sampling should not exceed <b>6 times per year</b> per horse.
+</li>
+<li>
+#{NOTE} Blood collection must ALWAYS be monitored by a senior faculty member who will develop criteria to determine the animal’s tolerance for the volume of blood taken based on clinical response during collection (e.g., heart rate and respiratory rate). <b>Record procedure and amount of blood collected in the animal’s medical record.</b>
+</li>
+</ul>
+"
+
+MRI_HORSES="
+<b>MRI: Horses</b>
+<ul>
+<li>
+Horses must be anesthetized for MRI.
+</li>
+<li>
+Fast horse overnight.
+</li>
+<li>
+Clip the site over the left or right jugular vein.
+</li>
+<li>
+Aseptically prepare the site by scrubbing with surgical soap and rinsing with 70% alcohol.
+</li>
+<li>
+Place a 14 gauge jugular catheter into the vein.  Suture in place.
+</li>
+<li>
+Walk the horse to the anesthesia induction area.  Rinse out the horses mouth with water.
+</li>
+<li>
+Sedate the horse with <b>0.4-0.8 mg/kg xylazine IV</b>.
+</li>
+<li>
+Once sedated, induce the horse with <b>3 mls TKD/500 kg IV</b>. (TKD is 100mg/ml Telazol, 80 mg/ml ketamine, and 4mg/ml detomidine).
+</li>
+<li>
+After induction, intubate the horse and maintain on isoflurane in 100% oxygen using a precision vaporizer on an MRI-compatible anesthesia machine (positive pressure ventilation should be available to maintain PaO2 and PaCO2 within normal limits).
+</li>
+<li>
+Temporarily place a 20 gauge catheter into either the facial or metatarsal artery (depends on area to be imaged) to measure direct arterial blood pressure.
+</li>
+<li>
+Monitor the horse using ECG, direct blood pressure, ETCO2 and SaO2.  Run arterial blood gases as needed.
+</li>
+<li>
+Once the MRI is complete, remove the arterial catheter and move the horse to a padded recovery stall. 
+</li>
+<li>
+ Extubate once swallowing reflexes return.
+</li>
+<li>
+As needed, provide additional sedation (<b>50-100 mg xylazine</b>) in order to ensure a smooth recovery.
+</li>
+<li>
+Once the horse has completely recovered, return it to its stall and remove the jugular catheter.
+</li>
+<li>
+#{LIMITS} MRI may be done up to <b>two times per year</b> on a given horse.
+</li>
+<ul>
+
+"
+
+CHIROPRACTIC_HORSES="
+<b>Chiropractic Demonstration: Horses</b>
+<ul>
+<li>
+Chiropractic demonstrations must be performed by an experienced chiropractor in the exercise and/or treatment area of Ward 4.
+</li>
+<li>
+Chiropractic procedures that may be demonstrated include manual manipulation of the horses’ head, neck, back and extremities.
+</li>
+<li>
+#{LIMITS} A horse may not be used more than <b>2 times per semester</b> or <b>4 times per academic year</b> for chiropractic demonstration.
+</li>
+</ul>
+"
+
+ACUPUNCTURE_HORSES="
+<b>Acupuncture Demonstration: Horses</b>
+<ul>
+<li>
+An experienced acupuncturist may perform acupuncture demonstrations in the exercise and/or treatment area of Ward 4.
+</li>
+<li>
+Sterile acupuncture needles may be strategically placed in areas corresponding to acupuncture points.
+</li>
+<li>
+#{LIMITS} A horse may not be used more than <b>2 times per semester</b> or <b>4 times per academic year</b> for chiropractic demonstration
+</li>
+</ul>
+"
+
+TREADMILL_HORSES="
+<b>Treadmill Exercise: Horses</b>
+<ul>
+<li>
+An EQMS faculty member may demonstrate treadmill exercise with the assistance of equine surgery residents, interns and/or veterinary students.
+</li>
+</ul>
+"
+
+NOSE_FLUSH_HORSES="
+<b>Nasolacrimal Duct Flush: Horses</b>
+<ul>
+<li>
+Place the tip of a sterile catheter into the punctal opening on the floor of the nostril.
+</li>
+<li>
+Using a 12 ml syringe filled with eyewash or saline, flush solution gently through the catheter while the lower punctum is occluded with digital pressure.
+</li>
+<li>
+Continue flushing until the solution exits the upper punctum near the medial canthus.
+</li>
+</ul>
+"
+
+FLOATING_HORSES="
+<b>Floating (Filing) of Teeth: Horses</b>
+<ul>
+<li>
+Follow standard floating methods used for clinical patients.
+</li>
+</ul>
+"
+
+LEG_WRAPPING_HORSES="
+<b>Leg Wrapping and Non-adhesive Distal Limb Bandaging: Horses</b>
+<ul>
+<li>
+Follow standard bandaging methods used for clinical patients.
 </li>
 </ul>
 "
