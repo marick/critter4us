@@ -229,4 +229,27 @@ class ReservationModelTests < FreshDatabaseTestCase
     deny { Reservation[:instructor => 'deleteme'] }
     assert { Reservation[:instructor => 'saveme'] }
   end
+
+  should "produce a sorted, uniquified list of protocol kinds in use" do
+    Procedure.random(:name => 'procedure')
+    flicka = Animal.random(:name => 'flicka', :kind => 'mare')
+    betsy = Animal.random(:name => 'betsy', :kind => 'cow')
+    jake = Animal.random(:name => 'jake', :kind => 'gelding')
+
+    test_data = {
+      :instructor => 'marge',
+      :course => 'vm333',
+      :date => Date.new(2001, 2, 4),
+      :morning => true,
+      :groups => [
+                  {:procedures => ['procedure'],
+                    :animals => ['flicka', 'jake']},
+                  {:procedures => ['procedure'],
+                    :animals => ['betsy', 'flicka']}
+                ]
+    }
+    reservation = Reservation.create_with_groups(test_data)
+
+    assert { ['bovine', 'equine'] == reservation.protocol_kinds }
+  end
 end

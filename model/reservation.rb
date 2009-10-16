@@ -84,9 +84,13 @@ class Reservation < Sequel::Model
   end
 
   def animal_names; x_names(:animal); end
+  def animals; x_objects(:animal); end
   def procedure_names; x_names(:procedure); end
   def procedures; x_objects(:procedure); end
 
+  def protocol_kinds
+    animals.collect { | animal | animal.protocol_kind }.uniq.sort
+  end
 
   # Self-description and test
 
