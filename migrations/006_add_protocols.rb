@@ -4,6 +4,10 @@ class AddProtocols006 < Sequel::Migration
 
   def up
     puts '==== adding protocols'
+    Procedure.create(:name => 'follicular aspiration (IVF)', :days_delay => 12*7)
+    Procedure.create(:name => 'teasing and use as mount mare', :days_delay => 0)
+
+
     Protocol.create(:procedure => Procedure[:name => "Caslick's operation (horses)"],
                     :animal_kind => 'equine',
                     :description => CASLICKS_HORSES)
@@ -61,9 +65,9 @@ class AddProtocols006 < Sequel::Migration
     Protocol.create(:procedure => Procedure[:name => 'artificial insemination'],
                     :animal_kind => "bovine",
                     :description => AI_CATTLE)
-#    Protocol.create(:procedure => Procedure[:name => ''],
-#                   :animal_kind => "bovine",
-#                    :description => PERITONEAL_CATTLE)
+    Protocol.create(:procedure => Procedure[:name => 'abdominocentesis'],
+                   :animal_kind => "bovine",
+                    :description => PERITONEAL_CATTLE)
     Protocol.create(:procedure => Procedure[:name => 'urine collection by catheter'],
                     :animal_kind => "bovine",
                     :description => URINE_COLLECTION_FEMALE_CATTLE)
@@ -127,9 +131,9 @@ class AddProtocols006 < Sequel::Migration
     Protocol.create(:procedure => Procedure[:name => "synovial fluid collection (horse)"],
                     :animal_kind => "equine",
                     :description => SYNOVIAL_HORSES)
-#    Protocol.create(:procedure => Procedure[:name => ''],
-#                   :animal_kind => "equine",
-#                    :description => PERITONEAL_HORSES)
+    Protocol.create(:procedure => Procedure[:name => 'abdominocentesis'],
+                   :animal_kind => "equine",
+                    :description => PERITONEAL_HORSES)
     Protocol.create(:procedure => Procedure[:name => "urine collection by catheter"],
                     :animal_kind => "equine",
                     :description => URINE_COLLECTION_HORSES)
@@ -160,11 +164,25 @@ class AddProtocols006 < Sequel::Migration
     Protocol.create(:procedure => Procedure[:name => "leg wrapping (horses)"],
                     :animal_kind => "equine",
                     :description => LEG_WRAPPING_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "artificial insemination"],
+                    :animal_kind => "equine",
+                    :description => AI_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "semen collection"],
+                    :animal_kind => "equine",
+                    :description => SEMEN_COLLECTION_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "teasing and use as mount mare"],
+                    :animal_kind => "equine",
+                    :description => TEASING_HORSES)
+    Protocol.create(:procedure => Procedure[:name => "radiology"],
+                    :animal_kind => "equine",
+                    :description => RADIOLOGY_HORSES)
   end
 
   def down
     puts "==== emptying Protocol table"
     DB[:protocols].delete
+    DB[:procedures].filter(:name => 'follicular aspiration (IVF)').delete
+    DB[:procedures].filter(:name => 'teasing and use as mount mare').delete
   end
 
 LIMITS="<span style='color:red'><i>Limits:</i></span>"
@@ -427,20 +445,19 @@ REPRO_ULTRASOUND_CATTLE="
 <ul>
 <li>
 Don a lubricated rectal sleeve.
-</li>
-<li>
 <ul>
 <li>
 Infusing lubricant into the rectum is not necessary.
 </li>
 </ul>
+<li>
 Clean rectum of feces by hand.
 </li>
 <li>
 Palpate the tract and/or use an ultrasound probe to visualize the tract.
 </li>
 <li>
-#{NOTE} If blood is observed on the rectal sleeve, the procedure must be immediately stopped. If the animal kicks, vocalizes or shows more than momentary distress when the arm/probe is inserted, the procedure must be immediately stopped and not attempted again the same day. Ask the supervising veterinarian to assess the animal’s condition. 
+#{NOTE} If blood is observed on the rectal sleeve, the procedure must be immediately stopped. If the animal kicks, vocalizes or shows more than momentary distress when the arm/probe is inserted, the procedure must be immediately stopped and not attempted again the same day. Ask the supervising veterinarian to assess the animal's condition. 
 </li>
 </ul>
 "
@@ -470,7 +487,7 @@ Clean the perineal area with surgical solution and rinse.
 Apply lubricant to a gloved arm and insert the arm through the vulva into the vaginal vault to palpate the cervix and vagina.
 </li>
 <li>
-#{NOTE} If the animal shows more than momentary distress when the arm is inserted, the procedure must be immediately discontinued and not attempted again the same day.  If blood is observed on the sleeve, the procedure must be immediately stopped and not attempted again the same day. Ask the supervising veterinarian to assess the animal’s condition. .
+#{NOTE} If the animal shows more than momentary distress when the arm is inserted, the procedure must be immediately discontinued and not attempted again the same day.  If blood is observed on the sleeve, the procedure must be immediately stopped and not attempted again the same day. Ask the supervising veterinarian to assess the animal's condition. .
 </li>
 </ul>
 "
@@ -488,7 +505,7 @@ Don a sterile, lubricated sleeve to guide a sheathed culture swab or biopsy inst
 Place a gloved lubricated hand into the rectum to guide the instrument to the appropriate site for sample collection.
 </li>
 <li>
-#{LIMITS} More than one culture, but only <b><i>one</i> biopsy</b> may be conducted on a given animal on a given day.  The biopsy must not be performed more than <b>twice/month</b> on a given animal and must be <b>recorded in the animal’s medical record</b>.
+#{LIMITS} More than one culture, but only <b><i>one</i> biopsy</b> may be conducted on a given animal on a given day.  The biopsy must not be performed more than <b>twice/month</b> on a given animal and must be <b>recorded in the animal's medical record</b>.
 </li>
 </ul>
 "
@@ -548,7 +565,7 @@ Make a small stab incision through the skin to allow introduction of a sterile b
 Once the procedure is finished and the cannula removed, close the stab incision using tissue glue.
 </li>
 <li>
-#{LIMITS} Participants may be allowed <b>up to 3 attempts</b> to obtain a sample provided the animal is tolerating the procedure well.  Only <b>one peritoneal fluid sample may be collected per animal per day</b>.  This procedure <b>must be recorded in the animal’s medical record</b>. 
+#{LIMITS} Participants may be allowed <b>up to 3 attempts</b> to obtain a sample provided the animal is tolerating the procedure well.  Only <b>one peritoneal fluid sample may be collected per animal per day</b>.  This procedure <b>must be recorded in the animal's medical record</b>. 
 </li>
 </ul>
 "
@@ -605,7 +622,7 @@ If sutured, remove the sutures before removing the catheter.  Apply pressure to 
 Close the skin wound with tissue glue.
 </li>
 <li>
-#{LIMITS} Only <b>one jugular vein</b> may be catheterized in a given cow on a given day.  This procedure <b>must be recorded in the animal’s medical record</b>.  A cow may be catheterized no more frequently than <b>every two weeks</b> and only if there is <b>no evidence of phlebitis</b>.
+#{LIMITS} Only <b>one jugular vein</b> may be catheterized in a given cow on a given day.  This procedure <b>must be recorded in the animal's medical record</b>.  A cow may be catheterized no more frequently than <b>every two weeks</b> and only if there is <b>no evidence of phlebitis</b>.
 </li>
 <ul>
 "
@@ -637,7 +654,7 @@ Monitor the cow for at least one hour post collection for adverse reactions.
 It is generally not necessary to administer IV fluids to the cow.
 </li>
 <li>
-<b>Record procedure and amount of blood collected in the animal’s medical record.</b>
+<b>Record procedure and amount of blood collected in the animal's medical record.</b>
 </li>
 </ul>
 "
@@ -778,8 +795,12 @@ Measure the success of the block by pricking the skin around the vulva with a ne
 "
 
 PARAVERTEBRAL_ANESTHESIA_CATTLE="
-<b>Regional Anesthesia - Proximal Paravertebral Anesthesia: Cattle</b>
+<b>Regional Anesthesia - Paravertebral Anesthesia: Cattle</b>
 <ul>
+<li>
+For proximal paravertebral anesthesia:
+<ul>
+<li>
 Clip hair from the skin over the lumbar transverse processes.
 </li>
 <li>
@@ -789,7 +810,7 @@ Aseptically prepare the site by scrubbing with surgical soap and rinsing with 70
 Using a 20 gauge needle, inject 3 mls of 2% lidocaine subcutaneously 5 cm from the dorsal midline at each of the 3 nerve block sites (1st-3rd lumbar vertebrae).
 </li>
 <li>
-Insert a 14 gauge, _ inch guide needle through the desensitized skin at each of the sites.
+Insert a 14 gauge, 1/2 inch guide needle through the desensitized skin at each of the sites.
 </li>
 <li>
 Pass a 6 inch, 18 gauge needle through the guide needle and advance until the transverse process of the vertebra is felt.
@@ -802,6 +823,32 @@ Inject 15 mls of 2% lidocaine just below the intertransverse ligament at each of
 </li>
 <li>
 Inject an additional 5 mls of 2% lidocaine proximal to the intertransverse ligament at each of the 3 sites to block the dorsal branches. 
+</li>
+<li>
+#{LIMITS}  Paravertebral anesthesia may only be performed on <b>one side of a cow/day</b>. The cow must not be used again for at least <b>2 weeks</b>.
+</li>
+<li>
+<b>Record procedure in animal's medical record.</b>
+</li>
+</ul>
+</li>
+<li>
+For distal paravertebral anesthesia:
+<ul>
+<li>
+ Clip the hair from the skin around the lumbar transverse processes.
+</li>
+<li>
+Aseptically prepare the site by scrubbing with surgical soap and rinsing with 70% alcohol.
+</li>
+<li>
+Using an 18 gauge needle, inject 15-20 mls of 2% lidocaine in a fan-shaped pattern 5 cm deep to the transverse processes of the 1st, 2nd and 4th lumbar vertebrae.
+</li>
+<li>
+Using the same needle, inject 5-10 mls of 2% lidocaine dorsocaudal to each of the 3 vertebrae to block the dorsal branches.
+</li>
+<li>
+Test the success of the block by inserting a 22 gauge needle through the skin and musculature of the flank 2 inches caudal to the last rib.
 </li>
 <li>
 #{LIMITS}  Paravertebral anesthesia may only be performed on <b>one side of a cow/day</b>. The cow must not be used again for at least <b>2 weeks</b>.
@@ -1017,6 +1064,7 @@ RESTRAINT_HORSES = "
 <li>
 The following may be used and/or demonstrated: 
 <ul>
+<li>
 Horses may be restrained in stocks, cross-tied, or manually restrained.
 </li>
 <li>
@@ -1044,6 +1092,9 @@ Shoes may be applied or removed.
 JUGULAR_VENIPUNCTURE_HORSES="
 <b>Venipuncture - Jugular Vein: Horses</b>
 <ul>
+<li>
+Clean skin with alcohol.
+</li>
 <li>
 Use an 18-20 gauge needle.
 </li>
@@ -1112,7 +1163,7 @@ Clean rectum of feces by hand.
 Palpate the tract and/or use an ultrasound probe to visualize the tract.
 </li>
 <li>
-#{NOTE} If blood is observed on the rectal sleeve, the procedure must be immediately stopped. If the animal kicks, vocalizes or shows more than momentary distress when the arm/probe is inserted, the procedure must be immediately stopped and not attempted again the same day. Ask the supervising veterinarian to assess the animal’s condition. 
+#{NOTE} If blood is observed on the rectal sleeve, the procedure must be immediately stopped. If the animal kicks, vocalizes or shows more than momentary distress when the arm/probe is inserted, the procedure must be immediately stopped and not attempted again the same day. Ask the supervising veterinarian to assess the animal's condition. 
 </ul>
 "
 
@@ -1120,10 +1171,10 @@ ORAL_MEDICATION_HORSES="
 <b>Administration of Oral Medication: Horses</b>
 <ul>
 <li>
-• A dose syringe may be used to administer saline or water directly into the mouth.
+A dose syringe may be used to administer saline or water directly into the mouth.
 </li>
 <li>
-• Equipment may simply be placed in the mouth without administering fluid.
+Equipment may simply be placed in the mouth without administering fluid.
 </li>
 </ul>
 "
@@ -1144,7 +1195,7 @@ Apply lubricant to an appropriately sized sterile speculum.
 Visualize the cervix and vagina through the speculum using an external light source.
 </li>
 <li>
-#{NOTE}  If the animal shows more than momentary distress when the speculum is inserted, the procedure must be immediately discontinued and not attempted again the same day.  If blood is observed on the speculum, the procedure must be immediately stopped and not attempted again the same day. Ask the supervising veterinarian to assess the animal’s condition. .
+#{NOTE}  If the animal shows more than momentary distress when the speculum is inserted, the procedure must be immediately discontinued and not attempted again the same day.  If blood is observed on the speculum, the procedure must be immediately stopped and not attempted again the same day. Ask the supervising veterinarian to assess the animal's condition. .
 </li>
 </ul>
 "
@@ -1213,7 +1264,7 @@ Inject 1-5 mls of 2% carbocaine subcutaneously at the site using a 22-gauge, 1-1
 Use an 18-20 gauge, 1.5 inch needle to aspirate 1-5 mls of fluid from the joint.
 </li>
 <li>
-#{LIMITS}  Students may be allowed up to <b>3 attempts</b> to obtain a sample provided the animal is tolerating the procedure well.  Only <b>one joint</b> may be tapped per animal per day.  The procedure (including location of joint) must be <b>recorded in the animal’s medical record</b>. Horses must be allowed <b>at least 2 weeks</b> between sample collections and the <b>joints must be rotated</b>.  
+#{LIMITS}  Students may be allowed up to <b>3 attempts</b> to obtain a sample provided the animal is tolerating the procedure well.  Only <b>one joint</b> may be tapped per animal per day.  The procedure (including location of joint) must be <b>recorded in the animal's medical record</b>. Horses must be allowed <b>at least 2 weeks</b> between sample collections and the <b>joints must be rotated</b>.  
 </li>
 <li>
 #{NOTE} Joints must not be tapped if an animal is lame, exhibits pain on palpation of the joint or has skin or subcutaneous tissue abnormalities over the joint (except for diagnostic purposes).
@@ -1239,7 +1290,7 @@ Inject 1-5 mls of 2% carbocaine subcutaneously at the site using a 22-gauge, 1-1
 Use an 18-20 gauge, 1.5 inch needle to aspirate 1-5 mls of peritoneal fluid.
 </li>
 <li>
-#{LIMITS}  Students will be allowed up to <b>3 attempts</b> to obtain a sample provided the animal is tolerating the procedure well. The procedure must be <b>recorded in the animal’s medical record</b>. Horses must be allowed <b>at least 2 weeks</b> between sample collections.  
+#{LIMITS}  Students will be allowed up to <b>3 attempts</b> to obtain a sample provided the animal is tolerating the procedure well. The procedure must be <b>recorded in the animal's medical record</b>. Horses must be allowed <b>at least 2 weeks</b> between sample collections.  
 </li>
 </ul>
 "
@@ -1248,10 +1299,10 @@ URINE_COLLECTION_HORSES="
 <b>Urine Collection via Urinary Catheter: Horses</b>
 <ul>
 <li>
-• Carefully wash and rinse the vulva or penis using surgical soap and sterile saline.
+Carefully wash and rinse the vulva or penis using surgical soap and sterile saline.
 </li>
 <li>
-• Use aseptic techniques to pass a sterile urinary catheter through the urethra and into the bladder.
+Use aseptic techniques to pass a sterile urinary catheter through the urethra and into the bladder.
 </li>
 </ul>
 "
@@ -1272,7 +1323,7 @@ The amount of blood that is removed must be replaced with an equal quantity of i
 #{LIMITS}  The frequency of sampling should not exceed <b>6 times per year</b> per horse.
 </li>
 <li>
-#{NOTE} Blood collection must ALWAYS be monitored by a senior faculty member who will develop criteria to determine the animal’s tolerance for the volume of blood taken based on clinical response during collection (e.g., heart rate and respiratory rate). <b>Record procedure and amount of blood collected in the animal’s medical record.</b>
+#{NOTE} Blood collection must ALWAYS be monitored by a senior faculty member who will develop criteria to determine the animal’s tolerance for the volume of blood taken based on clinical response during collection (e.g., heart rate and respiratory rate). <b>Record procedure and amount of blood collected in the animal's medical record.</b>
 </li>
 </ul>
 "
@@ -1339,7 +1390,7 @@ CHIROPRACTIC_HORSES="
 Chiropractic demonstrations must be performed by an experienced chiropractor in the exercise and/or treatment area of Ward 4.
 </li>
 <li>
-Chiropractic procedures that may be demonstrated include manual manipulation of the horses’ head, neck, back and extremities.
+Chiropractic procedures that may be demonstrated include manual manipulation of the horse's head, neck, back and extremities.
 </li>
 <li>
 #{LIMITS} A horse may not be used more than <b>2 times per semester</b> or <b>4 times per academic year</b> for chiropractic demonstration.
@@ -1404,4 +1455,84 @@ Follow standard bandaging methods used for clinical patients.
 </ul>
 "
 
+AI_HORSES="
+<b>Artificial Insemination (Nonsurgical AI): Horses</b>
+<ul>
+Clean the perineal area with surgical solution and rinse well.
+</li>
+<li>
+Place a sleeved, lubricated arm directly into the vagina to guide the pipette through the cervix.
+</li>
+<li>
+Saline may be infused. 
+</li>
+<li>
+Stallion semen may be infused for the purpose of creating a pregnancy. 
+<ul>
+<li>
+Should pregnancy occur, the conceptus must be aborted before 35 days of gestation using systemic prostaglandins [dinoprost tromethamine (5mg IM SID for 48 hours) or cloprostenol (250mcg IM)].	
+</li>
+<li>
+A follow up ultrasound examination must be performed within 5 days after prostaglandin treatment to assure pregnancy has been terminated. 
+</li>
+</ul>
+</li>
+<li>
+#{LIMITS} Artificial insemination may be conducted no more than <b>once/month</b> on a given mare. 
+</li>
+<li>
+#{NOTE} If blood is observed on the sleeve or pipette/catheter, the procedure must be immediately stopped and not attempted again the same day. If the animal kicks, vocalizes or shows more than momentary distress when the arm is inserted, the procedure must be immediately discontinued and not attempted again the same day. Ask the supervising veterinarian to assess the animal's condition. 
+</li>
+</ul>
+"
+
+SEMEN_COLLECTION_HORSES="
+<b>Semen Collection: Horses </b>
+<ul>
+<li>
+Semen may be collected using an artificial vagina.
+</li>
+<li>
+#{LIMITS} Semen may be collected no more than <b>once/animal/lab</b> and <b>no more than twice weekly</b>.
+</li>
+</ul>
+"
+
+TEASING_HORSES="
+<b>Teasing and Use as a Mount Mare: Horses</b>
+<ul>
+<li>
+Restrain mare with hobbles, a twitch, or sedation as needed to prevent her from kicking the stallion.
+</li>
+<li>
+#{LIMITS} A mount mare may be used up to <b>twice/day</b> with an <b>interval of one hour</b> between stallion collections <b>or once daily for 3-5 days</b>. 
+</li>
+</ul>
+"
+
+RADIOLOGY_HORSES="
+<b>Radiology: Horses</b>
+<ul>
+<li>
+Horses may be used for student radiology wet labs, continuing education radiology labs for veterinary technicians and miscellaneous radiography procedures to produce films for other teaching purposes.
+</li>
+<li>
+#{LIMITS}
+<ul>
+<li>
+o In veterinary student wet labs, up to <b>two horses</b> may be subjected to up to <b>10 radiographs of the distal limbs once per year</b>.  
+</li>
+<li>
+In veterinary technician labs, <b>one horse</b> may be subjected to radiographs of the <b>limbs, thorax and skull</b>.
+</li>
+<li>
+Radiographs may be taken of the <b>limbs, thorax and skull</b> for other teaching purposes.
+</li>
+</ul>
+</li>
+<li>
+#{NOTE} If sedation is necessary, administer <b>150mg of xylazine IV</b> or up to <b>0.5 ml of Dormosedan</b>. 
+</li>
+</ul>
+"
 end
