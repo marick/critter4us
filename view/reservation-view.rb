@@ -1,4 +1,5 @@
 require 'view/util'
+require 'view/reservation-view-prelude'
 
 class ReservationView < Erector::Widget
   include ReservationHelper
@@ -47,24 +48,7 @@ class ReservationView < Erector::Widget
   end
 
   def general_instructions
-    div do
-      p do
-        text %Q{All persons conducting or assisting with procedures on agricultural animals for teaching purposes must 1) be listed on the IACUC protocol, 2) have completed the online IACUC training module, and 3) be enrolled in the campus Occupational Health and Safety Program. To add an individual to the protocol, contact the Principal Investigator, Dr. Dennis French (}
-        a("ddfrench@illinois.edu", :href => "mailto:ddfrench@illinois.edu")
-        text ") or the Agricultural Animal Care and Use Program Office ("
-        a("cpruitt@illinois.edu", :href => "mailto:cpruitt@illinois.edu")
-        text "; 265-6790)."
-      end
-
-      p do
-text "The methods and limits described for each procedure below were approved by the IACUC. You must adhere to the approved procedures. To request an amendment to the protocol, contact Dr. Dennis French or the Agricultural Animal Care and Use Program Office."
-      end
-
-      p do 
-text "In addition to any specific limits mentioned below, animal responses should be used to determine the number and frequency of procedures to be performed. All procedures must be conducted under supervision of trained personnel who are experienced in recognizing signs of distress. Kicking, butting or other aggressive behaviors, attempts to escape, excessive vocalization, elevations in heart or respiratory rate, signs of 
-tissue trauma, bleeding, or abnormal posture following a procedure are indications to discontinue the procedure."
-      end
-    end
+    rawtext ReservationViewPrelude.new(:protocol_kinds => @reservation.protocol_kinds).to_pretty
   end
 
 

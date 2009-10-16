@@ -71,8 +71,11 @@ class ReservationViewTests < FreshDatabaseTestCase
       assert_match( /#{Regexp.escape(expected_link)}/, text )
     end
 
-
+    should "use a ReservationViewPrelude to create generic text" do 
+      text = ReservationView.new(:reservation => @reservation).to_pretty
+      expected_text = ReservationViewPrelude.new(:protocol_kinds => ['bovine', 'equine']).to_pretty
+      assert_match( /#{Regexp.escape(expected_text)}/, text )
+    end
   end
-  
 end
 
