@@ -25,7 +25,7 @@ class Protocol < Sequel::Model
   class Null
     attr_reader :animal_kind
 
-    def initialize(procedure, animal_kind)
+    def initialize(procedure, animal_kind = nil)
       @procedure = procedure
       @animal_kind = animal_kind
       @animal_kind ||= Protocol::CATCHALL_KIND

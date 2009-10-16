@@ -8,6 +8,7 @@ class ProtocolPartialTests < FreshDatabaseTestCase
   
   def setup
     @floating = Procedure.random(:name => 'floating')
+    @venipuncture = Procedure.random(:name => 'venipuncture')
     @filly = Animal.random(:name => 'filly', :kind => 'mare')
     @jake = Animal.random(:name => 'jake', :kind => 'gelding')
     @moo = Animal.random(:name => 'moo', :kind => 'cow')
@@ -137,6 +138,23 @@ class ProtocolPartialTests < FreshDatabaseTestCase
         end
       end
     end
+
+    should "include cases where there are two species but only a generic protocol" do 
+      @venipuncture_protocol = Protocol.create(:procedure => @venipuncture,
+                                               :animal_kind => Protocol::CATCHALL_KIND,
+                                               :description => "floating description (catchall")
+      partial = ProtocolPartial.for(@venipuncture, @moo, @billy)
+      procedure_name = partial.linkified_procedure_name
+      protocol_id = @venipuncture_protocol.unique_identifier
+      assert_xhtml(procedure_name) do
+        a("venipuncture", :href => "##{protocol_id}")
+      end
+
+      descriptions = []
+      partial.add_name_anchored_description(@venipuncture_protocol, descriptions)
+      assert { 1 == descriptions.length }
+    end
+
   end
 
   context "a procedure that has multiple animal kinds" do 

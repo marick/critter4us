@@ -5,14 +5,20 @@ class ProtocolPartial
     distinct_animal_protocol_kinds_in_use = animals.collect { | animal | 
       animal.protocol_kind
     }.uniq.sort
-    if distinct_animal_protocol_kinds_in_use.length > 1
-      NProtocolPartial.new(procedure, distinct_animal_protocol_kinds_in_use)
-    else
-      OneProtocolPartial.new(procedure, distinct_animal_protocol_kinds_in_use.first)
+    protocols = distinct_animal_protocol_kinds_in_use.collect { | kind | 
+      protocol_for(procedure, kind) 
+    }.uniq
+    case protocols.length
+      when 0
+        OneProtocolPartial.new(procedure, protocol_for(procedure, nil))
+      when 1
+        OneProtocolPartial.new(procedure, protocols.first)
+      else
+        NProtocolPartial.new(procedure, protocols)
     end
   end
 
-  def protocol_for(procedure, protocol_kind)
+  def self.protocol_for(procedure, protocol_kind)
     protocol_hash = Protocol.protocols_for(procedure)
     protocol = protocol_hash[protocol_kind]
     protocol = protocol_hash[Protocol::CATCHALL_KIND] unless protocol
@@ -39,9 +45,9 @@ class ProtocolPartial
 
     attr_reader :protocol  # for test
 
-    def initialize(procedure, protocol_kind)
+    def initialize(procedure, protocol)
       @procedure = procedure
-      @protocol = protocol_for(procedure, protocol_kind)
+      @protocol = protocol
     end
 
     def linkified_procedure_name
@@ -59,9 +65,9 @@ class ProtocolPartial
 
     attr_reader :procedure, :protocols
 
-    def initialize(procedure, protocol_kinds)
+    def initialize(procedure, protocols)
       @procedure = procedure
-      @protocols = protocol_kinds.collect { | kind | protocol_for(procedure, kind) }
+      @protocols = protocols
     end
 
     def linkified_procedure_name
