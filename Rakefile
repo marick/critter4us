@@ -74,11 +74,13 @@ end
 desc "Deploy new version on staging server."
 task :stage do 
   `git push staging master`
+  system("heroku rake migrate --app critter4us-staging")
 end
 
 desc "Push new version into production."
 task :deploy => [:backup] do 
   `git push heroku`
+  system("heroku rake migrate --app critter4us")
 end
 
 def migrate(to=nil, from = nil)
