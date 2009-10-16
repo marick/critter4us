@@ -36,7 +36,7 @@ class Protocol < Sequel::Model
     end
     
     def description
-      "<b>#{@procedure.name} (#{@animal_kind})</b>: No protocol has yet been defined."
+      "<b>#{@procedure.name} (#{@animal_kind})</b>: The description for this procedure has not been written yet."
     end
   end
 

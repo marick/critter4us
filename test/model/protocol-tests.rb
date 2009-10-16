@@ -48,10 +48,9 @@ class NullProtocolTests < FreshDatabaseTestCase
 
 
     should "return a description" do
-      expected = /floating/
       assert { /floating/ =~ @null_protocol.description }
       assert { /bovine/ =~ @null_protocol.description }
-      assert { /[Nn]o protocol.*defined/ =~ @null_protocol.description }
+      assert { /description.*has not/ =~ @null_protocol.description }
     end
   end
 
@@ -72,7 +71,7 @@ class NullProtocolTests < FreshDatabaseTestCase
       expected = /floating/
       assert { /floating/ =~ @null_protocol.description }
       assert { /any species/ =~ @null_protocol.description }
-      assert { /[Nn]o protocol.*defined/ =~ @null_protocol.description }
+      assert { /description.*has not/ =~ @null_protocol.description }
     end
   end
 
