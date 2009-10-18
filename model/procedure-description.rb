@@ -1,6 +1,9 @@
 require 'pp'
 
-class ProcedureDescription < Sequel::Model
+# Explicitly naming the table seems to be required by the version of Sequel
+# currently running on Heroku. At least, without this, ProcedureDescription
+# model objects get no-such-method errors for, e.g., #animal_kind.
+class ProcedureDescription < Sequel::Model(:procedure_descriptions)
   CATCHALL_KIND='any species'
 
   many_to_one :procedure
