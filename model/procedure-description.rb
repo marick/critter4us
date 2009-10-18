@@ -4,7 +4,7 @@ require 'pp'
 # currently running on Heroku. At least, without this, ProcedureDescription
 # model objects get no-such-method errors for, e.g., #animal_kind.
 class ProcedureDescription < Sequel::Model(:procedure_descriptions)
-  CATCHALL_KIND='any species'
+  CATCHALL_KIND='any species' 
 
   many_to_one :procedure
   alias_method :unique_identifier, :pk
