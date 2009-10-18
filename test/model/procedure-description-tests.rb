@@ -43,7 +43,7 @@ class NullProcedureDescriptionTests < FreshDatabaseTestCase
     end
 
     should "have an id that's distinct yet stable from instance to instance" do
-      assert { @null_procedure_description.unique_identifier == "no_procedure_description_defined_for_#{@floating.pk}_and_bovine" }
+      assert { @null_procedure_description.unique_identifier == "no_description_for_#{@floating.pk}_and_bovine" }
     end
 
 
@@ -64,7 +64,7 @@ class NullProcedureDescriptionTests < FreshDatabaseTestCase
     end
 
     should "have an id that's distinct yet stable from instance to instance" do
-      assert { @null_procedure_description.unique_identifier == "no_procedure_description_defined_for_#{@floating.pk}_and_any_species" }
+      assert { @null_procedure_description.unique_identifier == "no_description_for_#{@floating.pk}_and_any_species" }
     end
 
     should "return a description" do

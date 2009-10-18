@@ -1,14 +1,19 @@
 require 'pp'
 
-class ProcedureDescriptions < Sequel::Model
+class ProcedureDescription < Sequel::Model
   CATCHALL_KIND='any species'
 
   many_to_one :procedure
   alias_method :unique_identifier, :pk
 
   def self.procedure_descriptions_for(procedure)
-    descriptions = ProcedureDescriptions.filter(:procedure_id => procedure.id).all
+    descriptions = ProcedureDescription.filter(:procedure_id => procedure.id).all
     Hash[*descriptions.collect { | p | [p.animal_kind, p]}.flatten]
+  end
+  # Probably a better name, but previous name created by global find/replace
+  # (no refactoring).
+  class << self
+    alias_method :descriptions_for, :procedure_descriptions_for
   end
 
   # following are for testing
@@ -28,7 +33,7 @@ class ProcedureDescriptions < Sequel::Model
     def initialize(procedure, animal_kind = nil)
       @procedure = procedure
       @animal_kind = animal_kind
-      @animal_kind ||= ProcedureDescriptions::CATCHALL_KIND
+      @animal_kind ||= ProcedureDescription::CATCHALL_KIND
     end
 
     def unique_identifier
