@@ -30,7 +30,7 @@ tissue trauma, bleeding, or abnormal posture following a procedure are indicatio
   end
 
   def specific_preludes
-    @protocol_kinds.each do | kind | 
+    @procedure_description_kinds.each do | kind | 
       p(b("For all #{kind} procedures:"))
       case kind
       when 'bovine'

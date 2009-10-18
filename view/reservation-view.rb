@@ -6,7 +6,7 @@ class ReservationView < Erector::Widget
 
   def initialize(*args)
     super(*args)
-    @protocol_descriptions = []
+    @procedure_descriptions = []
   end
 
   def content
@@ -18,7 +18,7 @@ class ReservationView < Erector::Widget
         p { long_form(@reservation) }
         group_table(@reservation.groups)
         general_instructions
-        protocols
+        procedure_descriptions
       end
     end
   end
@@ -32,7 +32,7 @@ class ReservationView < Erector::Widget
           end
           td do 
             name_list(group.procedure_names) do | name |
-              link_procedure_name_to_protocol(name, group.animals)
+              link_procedure_name_to_description(name, group.animals)
             end
           end
         end
@@ -40,20 +40,20 @@ class ReservationView < Erector::Widget
     end
   end
 
-  def link_procedure_name_to_protocol(name, animals)
+  def link_procedure_name_to_description(name, animals)
     procedure = Procedure[:name => name]
-    partial = ProtocolPartial.for(procedure, *animals)
+    partial = ProcedurePartial.for(procedure, *animals)
     rawtext(partial.linkified_procedure_name)
-    partial.add_name_anchored_descriptions_to(@protocol_descriptions)
+    partial.add_name_anchored_descriptions_to(@procedure_descriptions)
   end
 
   def general_instructions
-    rawtext ReservationViewPrelude.new(:protocol_kinds => @reservation.protocol_kinds).to_pretty
+    rawtext ReservationViewPrelude.new(:procedure_description_kinds => @reservation.procedure_description_kinds).to_pretty
   end
 
 
-  def protocols
-    @protocol_descriptions.each do | description | 
+  def procedure_descriptions
+    @procedure_descriptions.each do | description | 
       div do
         rawtext description
       end

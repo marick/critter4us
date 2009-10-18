@@ -230,7 +230,7 @@ class ReservationModelTests < FreshDatabaseTestCase
     assert { Reservation[:instructor => 'saveme'] }
   end
 
-  should "produce a sorted, uniquified list of protocol kinds in use" do
+  should "produce a sorted, uniquified list of kinds in use that are relevant to procedure descriptions" do
     Procedure.random(:name => 'procedure')
     flicka = Animal.random(:name => 'flicka', :kind => 'mare')
     betsy = Animal.random(:name => 'betsy', :kind => 'cow')
@@ -250,6 +250,6 @@ class ReservationModelTests < FreshDatabaseTestCase
     }
     reservation = Reservation.create_with_groups(test_data)
 
-    assert { ['bovine', 'equine'] == reservation.protocol_kinds }
+    assert { ['bovine', 'equine'] == reservation.procedure_description_kinds }
   end
 end

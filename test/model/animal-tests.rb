@@ -20,9 +20,9 @@ class AnimalTests < FreshDatabaseTestCase
       assert { Animal.kind_map == {'bossie' => 'cow', 'fred' => 'horse'} }
     end
 
-    should "return its protocol kind in addition to its kind" do
+    should "return the kind used for procedure descriptions in addition to its more detailed kind" do
       animal = Animal.random(:kind => 'cow')
-      assert { animal.protocol_kind == 'bovine' }
+      assert { animal.procedure_description_kind == 'bovine' }
     end
 
 

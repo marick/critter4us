@@ -21,8 +21,8 @@ class Animal < Sequel::Model
   end
 
 
-  def protocol_kind
-    DB[:human_and_protocol_kinds].filter(:kind => self.kind).first[:protocol_kind]
+  def procedure_description_kind
+    DB[:gui_and_procedure_description_kinds].filter(:kind => self.kind).first[:procedure_description_kind]
   end
     
 

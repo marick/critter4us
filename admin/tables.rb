@@ -62,11 +62,12 @@ def drop_tables
   DB.drop_table :reservations
   DB.drop_table :authorizations
   DB.drop_table :groups
+  DB.drop_table :procedure_descriptions
 end
 
 
 def empty_tables
-  DB[:protocols].delete
+  DB[:procedure_descriptions].delete
   DB[:uses].delete
   DB[:animals].delete
   DB[:procedures].delete

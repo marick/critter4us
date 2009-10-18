@@ -51,9 +51,9 @@ class ReservationViewTests < FreshDatabaseTestCase
                      {:procedures => ['venipuncture', 'milking'],
                        :animals => ['jake', 'betsy']}]
       }
-      Protocol.random(:procedure => @floating, :description => 'floating description')
-      Protocol.random(:procedure => @venipuncture, :description => 'venipuncture description')
-      Protocol.random(:procedure => @milking, :description => 'milking description')
+      ProcedureDescription.random(:procedure => @floating, :description => 'floating description')
+      ProcedureDescription.random(:procedure => @venipuncture, :description => 'venipuncture description')
+      ProcedureDescription.random(:procedure => @milking, :description => 'milking description')
 
       @reservation = Reservation.create_with_groups(@test_data)
       
@@ -65,15 +65,15 @@ class ReservationViewTests < FreshDatabaseTestCase
       assert { text =~ /betsy.*jake.*milking.*venipuncture/m }
     end
 
-    should "use a ProtocolPartial to create a in-page link to protocol" do 
+    should "use a ProcedurePartial to create a in-page link to a description" do 
       text = ReservationView.new(:reservation => @reservation).to_pretty
-      expected_link = ProtocolPartial.for(@venipuncture, @jake, @betsy).linkified_procedure_name
+      expected_link = ProcedurePartial.for(@venipuncture, @jake, @betsy).linkified_procedure_name
       assert_match( /#{Regexp.escape(expected_link)}/, text )
     end
 
     should "use a ReservationViewPrelude to create generic text" do 
       text = ReservationView.new(:reservation => @reservation).to_pretty
-      expected_text = ReservationViewPrelude.new(:protocol_kinds => ['bovine', 'equine']).to_pretty
+      expected_text = ReservationViewPrelude.new(:procedure_description_kinds => ['bovine', 'equine']).to_pretty
       assert_match( /#{Regexp.escape(expected_text)}/, text )
     end
   end

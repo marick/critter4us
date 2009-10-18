@@ -1,14 +1,14 @@
 require 'pp'
 
-class Protocol < Sequel::Model
+class ProcedureDescriptions < Sequel::Model
   CATCHALL_KIND='any species'
 
   many_to_one :procedure
   alias_method :unique_identifier, :pk
 
-  def self.protocols_for(procedure)
-    protocols = Protocol.filter(:procedure_id => procedure.id).all
-    Hash[*protocols.collect { | p | [p.animal_kind, p]}.flatten]
+  def self.procedure_descriptions_for(procedure)
+    descriptions = ProcedureDescriptions.filter(:procedure_id => procedure.id).all
+    Hash[*descriptions.collect { | p | [p.animal_kind, p]}.flatten]
   end
 
   # following are for testing
@@ -17,7 +17,7 @@ class Protocol < Sequel::Model
     defaults = {
       :animal_kind => CATCHALL_KIND,
       :procedure => Procedure.random,
-      :description => 'some protocol description'
+      :description => 'some procedure description'
     }
     create(defaults.merge(overrides))
   end
@@ -28,11 +28,11 @@ class Protocol < Sequel::Model
     def initialize(procedure, animal_kind = nil)
       @procedure = procedure
       @animal_kind = animal_kind
-      @animal_kind ||= Protocol::CATCHALL_KIND
+      @animal_kind ||= ProcedureDescriptions::CATCHALL_KIND
     end
 
     def unique_identifier
-      "no_protocol_defined_for_#{@procedure.pk}_and_#{@animal_kind.gsub(/ /,'_')}"
+      "no_description_for_#{@procedure.pk}_and_#{@animal_kind.gsub(/ /,'_')}"
     end
     
     def description
