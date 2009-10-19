@@ -27,7 +27,7 @@ class AuthorizationControllerTests < FreshDatabaseTestCase
 
     should "not try to authorize if already authorized" do 
       during {
-        get '/json/procedures'
+        get '/'
       }.behold! {
         @authorizer.should_receive(:already_authorized?).and_return(true);
       }

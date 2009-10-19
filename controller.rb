@@ -66,35 +66,6 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
     end
   end
 
-  get '/json/procedures' do
-    jsonically do 
-      typing_as 'procedures' do
-        Procedure.names.sort
-      end
-    end
-  end
-
-  get '/json/all_animals' do
-    jsonically do 
-      typing_as 'animals' do
-        animals = Animal.all.sort { | a, b | a.name <=> b.name }
-        names = animals.collect { | a | a.name }
-        map = {}
-        animals.each { | a | map[a.name] = a.kind }
-        [names, map]
-      end
-    end
-  end
-
-  get '/json/exclusions' do
-    jsonically do
-      typing_as 'exclusions' do
-        internal = move_to_internal_format(params)
-        ExclusionMap.new(internal[:date], internal[:morning]).to_hash
-      end
-    end
-  end
-
   post '/json/store_reservation' do
     tweak_reservation do | hash | 
       Reservation.create_with_groups(hash)

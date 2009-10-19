@@ -82,41 +82,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
   end
 
-  context "delivering all animals" do
-    should "return a JSON list of names, together with name-to-kind hash" do
-      Animal.random(:name => 'bossie', :kind => 'bovine');
-      get '/json/all_animals'
-      assert_json_response
-      assert_jsonification_of({'animals' => [ ['bossie'], {'bossie' => 'bovine'}]})
-    end
 
-    should "also sort the list" do
-      Animal.random(:name => 'wilbur', :kind => 'horse')
-      Animal.random(:name => 'bossie', :kind => 'bovine')
-      Animal.random(:name => 'hank', :kind => 'horse')
-      Animal.random(:name => 'betsy', :kind => 'bovine')
-      get '/json/all_animals'
-      assert_jsonification_of({'animals' => [
-              ['betsy', 'bossie', 'hank', 'wilbur'],
-              {'betsy' => 'bovine', 'bossie' => 'bovine','hank' => 'horse', 'wilbur' => 'horse'}]})
-    end
-  end
-
-  context "delivering exclusions" do
-
-    should "hand over the exclusion hash" do
-      
-      Reservation.random(:date => '2009-07-03') do
-        use Animal.random
-        use Procedure.random(:days_delay => 14.days)
-      end
-
-      get '/json/exclusions', {:date => '2009-07-13', :time => "morning"}
-      assert_json_response
-      expected_exclusion = {Procedure.first.name => [Animal.first.name]}
-      assert_jsonification_of({'exclusions' => expected_exclusion})
-    end
-  end
 
   context "adding a reservation" do 
 
