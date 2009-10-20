@@ -18,6 +18,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
   end
 
   def assert_jsonification_of(ruby_obj)
+    # pp JSON[last_response.body]
     assert { ruby_obj == JSON[last_response.body] }
   end
 
@@ -49,6 +50,28 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
   context "delivering a blob of course-session-specific data" do
 
+    should "exclude animals that are currently in use" do 
+      @app.override(mocks(:timeslice, :animal_source, :procedure_source))
+      during { 
+        get '/json/course_session_data_blob', {:date => '2009-01-01', :time => "morning"}
+      }.behold! {
+        @timeslice.should_receive(:move_to).with(Date.new(2009,1, 1), true)
+        @timeslice.should_receive(:available_animals_by_name).and_return('some animals')
+        @timeslice.should_receive(:exclusions).and_return('some exclusions')
+        @procedure_source.should_receive(:sorted_names).and_return('some procedure names')
+        @animal_source.should_receive(:kind_map).and_return('some kind map')
+      }
+      assert_json_response
+      assert_jsonification_of({
+         'animals' => 'some animals',
+         'procedures' => 'some procedure names',
+         'kindMap' => 'some kind map',
+         'exclusions' => 'some exclusions'})
+    end
+
+    # The following test predates mocks. They can continue to be used
+    # but they're probably not worth fixing if they break.
+
     should "return a JSON list of strings" do
       Reservation.random(:date => Date.new(2009, 3, 3), :morning => true) do 
         use Procedure.random(:name => 'date mismatch procedure', :days_delay => 0)
@@ -79,10 +102,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
                           'procedure' => ['animal'] }
          })
     end
-
   end
-
-
 
   context "adding a reservation" do 
 
@@ -229,7 +249,6 @@ class JsonGenerationTests < FreshDatabaseTestCase
     end
 
   end
-  
 end
 
 # {footnote 'string'}

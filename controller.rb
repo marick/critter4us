@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'sinatra/base'
 require 'json'
+require 'util/test-support'
 require 'model/requires'
 require 'view/requires'
 require 'pp'
@@ -10,6 +11,7 @@ include Erector::Mixin
 
 
 class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
+  include TestSupport
 
   set :static, true
   set :root, File.dirname(__FILE__)
@@ -26,6 +28,15 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
 
   attr_accessor :test_view_builder
   attr_writer :authorizer
+
+  def initialize(*args)
+    super
+    collaborators_start_as(:animal_source => Animal, 
+                           :procedure_source => Procedure,
+                           :reservation_source => Reservation,
+                           :timeslice => Timeslice.new)
+  end
+
 
   helpers do
     def protected!
@@ -53,29 +64,26 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
 
   get '/json/course_session_data_blob' do
     internal = move_to_internal_format(params)
+    timeslice.move_to(internal[:date], internal[:morning])
     jsonically do 
-      retval = {
-        'animals' => Animal.names.sort,
-        'procedures' => Procedure.names.sort,
-        'kindMap' => Animal.kind_map,
-        'exclusions' => ExclusionMap.new(internal[:date],
-                                         internal[:morning]).to_hash
-      }
-      # pp retval
-      retval
+      {'animals' => timeslice.available_animals_by_name,
+        'procedures' => procedure_source.sorted_names,
+        'kindMap' => animal_source.kind_map,
+        'exclusions' => timeslice.exclusions }
     end
   end
 
+
   post '/json/store_reservation' do
     tweak_reservation do | hash | 
-      Reservation.create_with_groups(hash)
+      reservation_source.create_with_groups(hash)
     end
   end
 
   post '/json/modify_reservation' do
     id = params['reservationID'].to_i;
     tweak_reservation do | hash | 
-      Reservation[id].with_updated_groups(hash)
+      reservation_source[id].with_updated_groups(hash)
     end
   end
 
@@ -91,21 +99,21 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
 
   get '/reservation/:number' do
     number = params[:number]
-    ReservationView.new(:reservation => Reservation[number]).to_pretty
+    ReservationView.new(:reservation => reservation_source[number]).to_pretty
   end
 
   get '/json/reservation/:number' do
     number = params[:number]
     jsonically do 
-      reservation = Reservation[number]
+      reservation = reservation_source[number]
       reservation_data = {
         :instructor => reservation.instructor,
         :course => reservation.course,
         :date => reservation.date.to_s,
         :morning => reservation.morning,
         :groups => reservation.groups.collect { | g | g.in_wire_format },
-        :procedures => Procedure.names,
-        :animals => Animal.names,
+        :procedures => procedure_source.names,
+        :animals => animal_source.names,
         :kindMap => kind_map(),
         :exclusions => ExclusionMap.new(reservation.date,
                                         reservation.morning).
@@ -118,12 +126,12 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
 
   delete '/reservation/:number' do
     number = params[:number]
-    Reservation[number].destroy
+    reservation_source[number].destroy
     redirect '/reservations'
   end
 
   get '/reservations' do 
-    view(ReservationListView).new(:reservations => Reservation.all).to_s
+    view(ReservationListView).new(:reservations => reservation_source.all).to_s
   end
 
   def move_to_internal_format(hash)
@@ -171,7 +179,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
 
   def kind_map
     map = {}
-    Animal.all.each { | a | map[a.name] = a.kind }
+    animal_source.all.each { | a | map[a.name] = a.kind }
     map
   end
     
