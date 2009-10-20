@@ -11,5 +11,10 @@ class ProcedureTests < FreshDatabaseTestCase
     Procedure.random_with_names('c', 'a', 'b')
     assert { Procedure.names.sort == ['a', 'b', 'c'] }
   end
+
+  should "collectively be able to return names, sorted" do
+    Procedure.random_with_names('c', 'a', 'b')
+    assert { Procedure.sorted_names == ['a', 'b', 'c'] }
+  end
 end
 
