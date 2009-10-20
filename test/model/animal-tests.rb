@@ -29,25 +29,6 @@ class AnimalTests < FreshDatabaseTestCase
       animal = Animal.random(:kind => 'cow')
       assert { animal.procedure_description_kind == 'bovine' }
     end
-
-
-    # TODO: Right now, the user sees all animals in the animal list, including ones
-    # who cannot be used by any of the procedures (because they're already being 
-    # used at the exact same time). This test would be the start toward fixing that.
-    should_eventually "be able to return animals available on a certain date/time" do
-      reservation = Reservation.random(:instructor => 'marge',
-                                       :course => 'vm333',
-                                       :date => Date.new(2001, 01, 02),
-                                       :morning => true) do 
-        use Animal.random(:name => 'bossie')
-        use Procedure.random(:name => 'procedure')
-      end
-      fred = Animal.random(:name => 'fred', :kind => 'horse')
-
-      assert { [fred] == Animal.available_on(:date => Date.new(2001, 01, 02),
-                                             :morning => true) }
-    end
-
   end
 end
 
