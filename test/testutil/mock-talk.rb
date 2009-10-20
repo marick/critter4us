@@ -25,4 +25,30 @@ class Test::Unit::TestCase
   def behold_nothing_happens!
     behold! {}
   end
+
+
+  # Easy mock setup
+
+  # Use like this:
+  # Timeslice.new(mocks(:use_source, :procedure_source, :hash_maker))
+  #
+  # ...
+  #
+  # @use_source.should_expect(...)
+  #
+  # 
+  # See util/test-support.rb for how tested classes should arrange
+  # for easy mocking.
+
+  def mocks(*symbols)
+    hash = {}
+    symbols.each do | symbol | 
+      name = symbol.to_s
+      a_mock = flexmock(name)
+      instance_variable_set("@#{name}", a_mock)
+      hash[symbol] = a_mock
+    end
+    hash
+  end
+
 end
