@@ -4,6 +4,7 @@ class Animal < Sequel::Model
   one_to_many :uses
 
   def self.names; map(:name); end
+  def self.sorted_names; names.sort; end
 
   # This doesn't work under 1.8.7 / Snow Leopard - perhaps because name isn't defined yet.
   # alias_method :in_wire_format, :name    
