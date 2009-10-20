@@ -25,7 +25,7 @@ class UseTests < FreshDatabaseTestCase
       assert { ['helfrig'] == actual }
     end
 
-    should_eventually "not remove animals in use at different times" do
+    should "not remove animals in use at different times" do
       not_inuse = Animal.random(:name => "not inuse")
 
       Reservation.random(:date => Date.new(2009, 9, 1),
