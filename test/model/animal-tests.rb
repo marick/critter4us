@@ -14,6 +14,11 @@ class AnimalTests < FreshDatabaseTestCase
       assert { Animal.names.sort == ['a', 'b', 'c'] }
     end
 
+    should "collectively be able to return sorted versions of names" do
+      Animal.random_with_names('c', 'a', 'b')
+      assert { Animal.sorted_names == ['a', 'b', 'c'] }
+    end
+
     should "be able to return a name=>kind mapping" do
       Animal.random(:name => 'bossie', :kind => 'cow')
       Animal.random(:name => 'fred', :kind => 'horse')
