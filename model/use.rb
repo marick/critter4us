@@ -17,6 +17,18 @@ class Use < Sequel::Model
     result.uniq
   end
 
+  def self.remove_names_for_animals_in_use(names, date, morning)
+    to_remove = conflicting_because_animals_in_use(date, morning).collect { | row |0
+      row[:animal_name]
+    }
+    names - to_remove
+  end
+
+
+
+
+  # Util
+
   def self.pairify(row_array)
     row_array.collect { | row | [row[:procedure_name], row[:animal_name]] }
   end
@@ -46,6 +58,8 @@ class Use < Sequel::Model
     # puts query.all.inspect
     query.all
   end
+
+  
 
 end
 

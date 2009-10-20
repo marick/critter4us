@@ -92,7 +92,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
       assert_json_response
       assert_jsonification_of({
          'procedures' => ['date mismatch procedure', 'procedure', 'time mismatch procedure'],
-         'animals' => ['animal', 'date mismatch animal', 'time mismatch animal'],
+         'animals' => ['date mismatch animal', 'time mismatch animal'],
          'kindMap' => {'time mismatch animal' => 'time mismatch kind',
                        'date mismatch animal' => 'date mismatch kind',
                        'animal' => 'animal kind'},

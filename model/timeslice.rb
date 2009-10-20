@@ -6,6 +6,7 @@ class Timeslice
   def initialize(mocks = {})
     collaborators_start_as(:use_source => Use,
                            :procedure_source => Procedure,
+                           :animal_source => Animal,
                            :hash_maker => HashMaker.new).unless_overridden_by(mocks)
   end
 
@@ -21,7 +22,8 @@ class Timeslice
   end
 
   def available_animals_by_name
-    Animal.names.sort
+    use_source.remove_names_for_animals_in_use(animal_source.sorted_names,
+                                               @date, @morning)
   end
 
 end

@@ -11,6 +11,43 @@ end
 
 class UseTests < FreshDatabaseTestCase
 
+  context "removing animals in use" do
+    should "be able to remove animals in use" do
+      Reservation.random(:date => Date.new(2009, 9, 9),
+                         :morning => true,
+                         :course => 'vm333') do
+        use Animal.random(:name => "inuse")
+        use Procedure.random(:name => 'lab procedure')
+      end
+
+      actual = Use.remove_names_for_animals_in_use(['helfrig', 'inuse'], 
+                                                   Date.new(2009, 9, 9), true)
+      assert { ['helfrig'] == actual }
+    end
+
+    should_eventually "not remove animals in use at different times" do
+      not_inuse = Animal.random(:name => "not inuse")
+
+      Reservation.random(:date => Date.new(2009, 9, 1),
+                         :morning => true,
+                         :course => 'vm333') do
+        use not_inuse
+        use Procedure.random(:name => 'lab procedure')
+      end
+      Reservation.random(:date => Date.new(2009, 9, 9),
+                         :morning => false,
+                         :course => 'vm333') do
+        use not_inuse
+        use Procedure.random(:name => 'lab procedure')
+      end
+
+      actual = Use.remove_names_for_animals_in_use(['helfrig', 'not inuse'], 
+                                                   Date.new(2009, 9, 9), true)
+      assert { ['helfrig', 'not inuse'] == actual }
+    end
+
+  end
+
   context "uses for which animals are unavailable" do 
     should "include the null case" do
       Procedure.random(:name => 'only', :days_delay => 14)
