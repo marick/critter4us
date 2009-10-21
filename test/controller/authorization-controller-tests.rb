@@ -18,7 +18,7 @@ class AuthorizationControllerTests < FreshDatabaseTestCase
   context "authorization" do
     should "try to authorize if not already authorized" do
       during {
-        get '/'
+        get '/index.html'
       }.behold! {
         @authorizer.should_receive(:already_authorized?).and_return(false)
         @authorizer.should_receive(:authorize)
@@ -27,7 +27,7 @@ class AuthorizationControllerTests < FreshDatabaseTestCase
 
     should "not try to authorize if already authorized" do 
       during {
-        get '/'
+        get '/index.html'
       }.behold! {
         @authorizer.should_receive(:already_authorized?).and_return(true);
       }
@@ -36,7 +36,7 @@ class AuthorizationControllerTests < FreshDatabaseTestCase
 
     should "be fine if authorization attempt succeeds" do
       during {
-        get '/'
+        get '/index.html'
       }.behold! {
         @authorizer.should_receive(:already_authorized?).and_return(false)
         @authorizer.should_receive(:authorize).and_return(true)
@@ -46,7 +46,7 @@ class AuthorizationControllerTests < FreshDatabaseTestCase
 
     should "show error if authorization attempt succeeds" do
       during {
-        get '/'
+        get '/index.html'
       }.behold! {
         @authorizer.should_receive(:already_authorized?).and_return(false)
         @authorizer.should_receive(:authorize).and_return(false)
