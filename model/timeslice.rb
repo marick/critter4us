@@ -15,15 +15,24 @@ class Timeslice
     @morning = morning
   end
 
-  def exclusions
+  def exclusions(hash = {})
+    allowed_animals = hash[:allowing_animals] || []
     procedures = procedure_source.names
     pairs = use_source.combos_unavailable_at(@date, @morning)
-    hash_maker.keys_and_pairs(procedures, pairs)
+    hash_maker.keys_and_pairs(procedures, remove_allowed_pairs(pairs, allowed_animals))
   end
 
   def available_animals_by_name
     use_source.remove_names_for_animals_in_use(animal_source.sorted_names,
                                                @date, @morning)
+  end
+
+  private
+
+  def remove_allowed_pairs(pairs, allowed_animals)
+    pairs.find_all do | procedure, animal |
+      not (allowed_animals.include?(animal))
+    end
   end
 
 end

@@ -59,7 +59,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
 
 
   get '/' do
-    File.read(File.join(options.public, 'index.html'))
+    redirect '/index.html'
   end
 
   get '/json/course_session_data_blob' do
@@ -106,6 +106,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
     number = params[:number]
     jsonically do 
       reservation = reservation_source[number]
+      timeslice.move_to(reservation.date, reservation.morning)
       reservation_data = {
         :instructor => reservation.instructor,
         :course => reservation.course,
@@ -114,11 +115,8 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
         :groups => reservation.groups.collect { | g | g.in_wire_format },
         :procedures => procedure_source.names,
         :animals => animal_source.names,
-        :kindMap => kind_map(),
-        :exclusions => ExclusionMap.new(reservation.date,
-                                        reservation.morning).
-                                    allowing(reservation.animal_names).
-                                    to_hash,
+        :kindMap => animal_source.kind_map,
+        :exclusions => timeslice.exclusions(:allowing_animals => reservation.animal_names),
         :id => reservation.pk.to_s
       }
       # pp reservation_data
@@ -178,10 +176,4 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
     {type.to_s => yield }
   end
 
-  def kind_map
-    map = {}
-    animal_source.all.each { | a | map[a.name] = a.kind }
-    map
-  end
-    
 end

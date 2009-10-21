@@ -1,6 +1,5 @@
 require 'model/animal'
 require 'model/authorizer'
-require 'model/exclusion-map'
 require 'model/group'
 require 'model/procedure'
 require 'model/reservation'

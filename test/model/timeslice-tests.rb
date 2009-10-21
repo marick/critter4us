@@ -18,9 +18,23 @@ class TimesliceTests < Test::Unit::TestCase
     }.behold! { 
       @procedure_source.should_receive(:names).
                             and_return(procedure_names = 'a list of procedure names')
-      @use_source.should_receive(:combos_unavailable_at).with(@date, @morning).                            and_return(pairs = 'pairs of procedure and animal names')
+      @use_source.should_receive(:combos_unavailable_at).with(@date, @morning).                            and_return(pairs = [['pairs of', 'procedure'],                                                               ['and', 'animal names']])
       @hash_maker.should_receive(:keys_and_pairs).
                   with(procedure_names, pairs).
+                  and_return('a hash')
+    }
+    assert { @result == 'a hash' }
+  end
+
+  should "allow animals to be included despite being in use (e.g., if editing reservation)" do 
+    during {
+      @timeslice.exclusions(:allowing_animals => ['fred'])
+    }.behold! { 
+      @procedure_source.should_receive(:names).
+                            and_return(procedure_names = 'a list of procedure names')
+      @use_source.should_receive(:combos_unavailable_at).with(@date, @morning).                            and_return([['floating', 'fred'], ['veni', 'betsy']])
+      @hash_maker.should_receive(:keys_and_pairs).
+                  with(procedure_names, [['veni', 'betsy']]).
                   and_return('a hash')
     }
     assert { @result == 'a hash' }
