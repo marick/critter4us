@@ -121,6 +121,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
                                     to_hash,
         :id => reservation.pk.to_s
       }
+      # pp reservation_data
     end
   end
 

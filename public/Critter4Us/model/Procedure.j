@@ -62,12 +62,6 @@
   
 }
 
--(CPBoolean) isEqual: other
-{
-  if (! [super isEqual: other]) return NO;
-  return [[self animalsThisProcedureExcludes] isEqual: [other animalsThisProcedureExcludes]];
-}
-
 -(CPString) longDescription
 {
   return [super description] + " excluding " + [[self animalsThisProcedureExcludes] description];

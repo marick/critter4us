@@ -30,18 +30,6 @@
   [self assert: [toExclude] equals: [proc animalsThisProcedureExcludes]];
 }
 
-- (void) testEqualityAlsoChecksExclusions
-{
-  var oneWithExclusions = [[Procedure alloc] initWithName: 'base'
-                                            excluding: [oneAnimal]];
-  var equalNotIdentical = [[Procedure alloc] initWithName: 'base'
-                                            excluding: [oneAnimal]];
-  var different = [[Procedure alloc] initWithName: 'base' excluding: [another]];
-
-  [self assertFalse: [oneWithExclusions isEqual: different]];
-  [self assertTrue: [oneWithExclusions isEqual: equalNotIdentical]];
-}
-
 - (void) testAggregateProceduresAggregateExcludedAnimalsFromMultipleProcedures
 {
   var oneProc = [[Procedure alloc] initWithName: 'one' 
