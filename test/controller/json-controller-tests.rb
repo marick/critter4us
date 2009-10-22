@@ -57,17 +57,17 @@ class JsonGenerationTests < FreshDatabaseTestCase
       during { 
         get '/json/course_session_data_blob', {:date => '2009-01-01', :time => "morning"}
       }.behold! {
-        @timeslice.should_receive(:move_to).with(Date.new(2009,1, 1), true)
-        @timeslice.should_receive(:available_animals_by_name).and_return('some animals')
-        @procedure_source.should_receive(:sorted_names).and_return('some procedure names')
+        @timeslice.should_receive(:move_to).once.with(Date.new(2009,1, 1), true)
+        @timeslice.should_receive(:available_animals_by_name).once.and_return('some animals')
+        @procedure_source.should_receive(:sorted_names).once.and_return('some procedure names')
 
-        @timeslice.should_receive(:add_excluded_pairs).with(pairs)
-        @procedure_rules.should_receive(:add_excluded_pairs).with(pairs)
-        @hash_maker.should_receive(:keys_and_pairs).
+        @timeslice.should_receive(:add_excluded_pairs).once.with(pairs)
+        @procedure_rules.should_receive(:add_excluded_pairs).once.with(pairs)
+        @hash_maker.should_receive(:keys_and_pairs).once.
                     with('some procedure names', pairs).
                     and_return('some exclusions')
 
-        @animal_source.should_receive(:kind_map).and_return('some kind map')
+        @animal_source.should_receive(:kind_map).once.and_return('some kind map')
       }
       assert_json_response
       assert_jsonification_of({

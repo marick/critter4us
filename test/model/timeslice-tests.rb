@@ -17,10 +17,11 @@ class TimesliceTests < Test::Unit::TestCase
     expected_result = 'needs to be set below'
     during {
       @timeslice.add_excluded_pairs(destination)
-    }.behold! { 
-      @procedure_source.should_receive(:names).
-                            and_return(procedure_names = 'a list of procedure names')
-      @use_source.should_receive(:combos_unavailable_at).with(@date, @morning).                            and_return(expected_result = [['pairs of', 'procedure'],                                                                ['and', 'animal names']])
+    }.behold! {
+      @procedure_source.should_receive(:names).once.
+                        and_return(procedure_names = 'a list of procedure names')
+      @use_source.should_receive(:combos_unavailable_at).with(@date, @morning).once.
+                  and_return(expected_result = [['pairs of', 'procedure'],                                                                ['and', 'animal names']])
     }
     assert { @result == expected_result }
   end
@@ -29,10 +30,11 @@ class TimesliceTests < Test::Unit::TestCase
     during {
       @timeslice.exclusions(:allowing_animals => ['fred'])
     }.behold! { 
-      @procedure_source.should_receive(:names).
-                            and_return(procedure_names = 'a list of procedure names')
-      @use_source.should_receive(:combos_unavailable_at).with(@date, @morning).                            and_return([['floating', 'fred'], ['veni', 'betsy']])
-      @hash_maker.should_receive(:keys_and_pairs).
+      @procedure_source.should_receive(:names).once.
+                        and_return(procedure_names = 'a list of procedure names')
+      @use_source.should_receive(:combos_unavailable_at).with(@date, @morning).once.
+                  and_return([['floating', 'fred'], ['veni', 'betsy']])
+      @hash_maker.should_receive(:keys_and_pairs).once.
                   with(procedure_names, [['veni', 'betsy']]).
                   and_return('a hash')
     }
@@ -43,9 +45,9 @@ class TimesliceTests < Test::Unit::TestCase
     during { 
       @timeslice.available_animals_by_name
     }.behold! {
-      @animal_source.should_receive(:sorted_names).
+      @animal_source.should_receive(:sorted_names).once.
                      and_return(names = 'some animal names')
-      @use_source.should_receive(:remove_names_for_animals_in_use).
+      @use_source.should_receive(:remove_names_for_animals_in_use).once.
                   with(names, @date, @morning).
                   and_return(@winnowed = 'same list with some animals removed')
     }
