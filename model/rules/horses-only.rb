@@ -1,8 +1,9 @@
+require 'model/rules/requires'
+
 module Rule
-  class HorsesOnly
-    def excluded_pairs(procedure, animals)
-      excluded = animals.find_all { | a | a.procedure_description_kind != 'equine' }
-      excluded.collect { | a | [procedure, a] }
+  class HorsesOnly < Base
+    def animal_excluded?(animal)
+      animal.procedure_description_kind != 'equine'
     end
   end
 end
