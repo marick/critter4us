@@ -51,14 +51,22 @@ class JsonGenerationTests < FreshDatabaseTestCase
   context "delivering a blob of course-session-specific data" do
 
     should "exclude animals that are currently in use" do 
-      @app.override(mocks(:timeslice, :animal_source, :procedure_source))
+      @app.override(mocks(:timeslice, :animal_source, :procedure_source,
+                          :procedure_rules, :hash_maker))
+      pairs = []
       during { 
         get '/json/course_session_data_blob', {:date => '2009-01-01', :time => "morning"}
       }.behold! {
         @timeslice.should_receive(:move_to).with(Date.new(2009,1, 1), true)
         @timeslice.should_receive(:available_animals_by_name).and_return('some animals')
-        @timeslice.should_receive(:exclusions).and_return('some exclusions')
         @procedure_source.should_receive(:sorted_names).and_return('some procedure names')
+
+        @timeslice.should_receive(:add_excluded_pairs).with(pairs)
+        @procedure_rules.should_receive(:add_excluded_pairs).with(pairs)
+        @hash_maker.should_receive(:keys_and_pairs).
+                    with('some procedure names', pairs).
+                    and_return('some exclusions')
+
         @animal_source.should_receive(:kind_map).and_return('some kind map')
       }
       assert_json_response
@@ -72,7 +80,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
     # The following test predates mocks. They can continue to be used
     # but they're probably not worth fixing if they break.
 
-    should "return a JSON list of strings" do
+    should_eventually "return a JSON list of strings" do
       Reservation.random(:date => Date.new(2009, 3, 3), :morning => true) do 
         use Procedure.random(:name => 'date mismatch procedure', :days_delay => 0)
         use Animal.random(:name => 'date mismatch animal', :kind => 'date mismatch kind')

@@ -12,18 +12,17 @@ class TimesliceTests < Test::Unit::TestCase
     @timeslice.move_to(@date, @morning)
   end
 
-  should "coordinate procedures and uses to create an exclusion hash" do 
+  should "coordinate procedures and uses to add excluded pairs" do 
+    destination = []
+    expected_result = 'needs to be set below'
     during {
-      @timeslice.exclusions
+      @timeslice.add_excluded_pairs(destination)
     }.behold! { 
       @procedure_source.should_receive(:names).
                             and_return(procedure_names = 'a list of procedure names')
-      @use_source.should_receive(:combos_unavailable_at).with(@date, @morning).                            and_return(pairs = [['pairs of', 'procedure'],                                                               ['and', 'animal names']])
-      @hash_maker.should_receive(:keys_and_pairs).
-                  with(procedure_names, pairs).
-                  and_return('a hash')
+      @use_source.should_receive(:combos_unavailable_at).with(@date, @morning).                            and_return(expected_result = [['pairs of', 'procedure'],                                                                ['and', 'animal names']])
     }
-    assert { @result == 'a hash' }
+    assert { @result == expected_result }
   end
 
   should "allow animals to be included despite being in use (e.g., if editing reservation)" do 

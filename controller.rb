@@ -34,7 +34,9 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
     collaborators_start_as(:animal_source => Animal, 
                            :procedure_source => Procedure,
                            :reservation_source => Reservation,
-                           :timeslice => Timeslice.new)
+                           :timeslice => Timeslice.new,
+                           :procedure_rules => ProcedureRules.new,
+                           :hash_maker => HashMaker.new)
   end
 
 
@@ -65,11 +67,15 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
   get '/json/course_session_data_blob' do
     internal = move_to_internal_format(params)
     timeslice.move_to(internal[:date], internal[:morning])
+    excluded_pairs = []
+    timeslice.add_excluded_pairs(excluded_pairs)
+    procedure_rules.add_excluded_pairs(excluded_pairs)
+    procedure_names = procedure_source.sorted_names
     jsonically do 
       {'animals' => timeslice.available_animals_by_name,
-        'procedures' => procedure_source.sorted_names,
+        'procedures' => procedure_names,
         'kindMap' => animal_source.kind_map,
-        'exclusions' => timeslice.exclusions }
+        'exclusions' => hash_maker.keys_and_pairs(procedure_names, excluded_pairs) }
     end
   end
 
