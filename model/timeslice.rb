@@ -3,44 +3,56 @@ require 'util/requires'
 class Timeslice
   include TestSupport
 
-  def initialize(mocks = {})
-    collaborators_start_as(:use_source => Use,
-                           :procedure_source => Procedure,
-                           :animal_source => Animal,
-                           :hash_maker => HashMaker.new).unless_overridden_by(mocks)
-  end
-
   def move_to(date, morning)
     @date = date
     @morning = morning
   end
 
-  puts "Timeslice#exclusions needs to go away"
-  def exclusions(hash = {})
-    allowed_animals = hash[:allowing_animals] || []
-    procedures = procedure_source.names
-    pairs = use_source.combos_unavailable_at(@date, @morning)
-    hash_maker.keys_and_pairs(procedures, remove_allowed_pairs(pairs, allowed_animals))
-  end
-
 
   def add_excluded_pairs(pairs)
-    procedures = procedure_source.names
-    pairs += use_source.combos_unavailable_at(@date, @morning)
+    # pp pairs_with_exclusion_range_overlapping_now
+    # pp multiply_by_procedures(animals_now_in_use)
+    result = (pairs_with_exclusion_range_overlapping_now +
+              multiply_by_procedures(animals_now_in_use)).uniq
+    pairs.insert(-1, *result)
   end
 
-
   def available_animals_by_name
-    use_source.remove_names_for_animals_in_use(animal_source.sorted_names,
-                                               @date, @morning)
+    (Animal.all - animals_now_in_use).collect { | a | a.name }
   end
 
   private
 
-  def remove_allowed_pairs(pairs, allowed_animals)
-    pairs.find_all do | procedure, animal |
-      not (allowed_animals.include?(animal))
-    end
+  def animals_now_in_use
+    Use.at(@date, @morning).collect { | u | u.animal }
   end
 
+  def multiply_by_procedures(animals)
+    retval = []
+    Procedure.each { | procedure |
+      animals.each { | animal | 
+        retval << [procedure, animal]
+      }
+    }
+    retval.uniq
+  end
+
+
+  def pairs_with_exclusion_range_overlapping_now
+    query = DB[:procedures, :animals, :uses, :groups, :reservations].
+      filter(:procedures__days_delay > 0).
+      filter(:procedures__id => :uses__procedure_id).
+      filter(:animals__id => :uses__animal_id).
+      filter(:groups__id => :uses__group_id).
+      filter(:reservations__id => :groups__reservation_id).
+      filter(:reservations__date - :procedures__days_delay + 1 <= @date).
+      filter(:reservations__date + :procedures__days_delay > @date).
+      select(:procedures__id.as(:procedure_id), 
+             :animals__id.as(:animal_id))
+
+    query.collect { | row |
+      [Procedure[row[:procedure_id]],
+       Animal[row[:animal_id]]]
+    }
+  end
 end
