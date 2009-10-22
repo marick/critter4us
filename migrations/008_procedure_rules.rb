@@ -9,8 +9,10 @@ class AddProtocolTable004 < Sequel::Migration
     end
     rules = DB[:exclusion_rules]
     procedures = DB[:procedures]
-    rules.insert(:procedure_id => procedures[:name => 'nasogastric intubation (horses)'][:id],
-                 :rule => 'HorsesOnly')
+    unless ENV['RACK_ENV'] == "test"
+      rules.insert(:procedure_id => procedures[:name => 'nasogastric intubation (horses)'][:id],
+                   :rule => 'HorsesOnly')
+    end
   end
 
   def down
