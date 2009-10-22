@@ -7,9 +7,10 @@ module Rule
       @owning_procedure = owning_procedure
     end
 
-    def excluded_pairs(animals)
+    def add_excluded_pairs(collector, animals)
       excluded = animals.find_all { | a | animal_excluded?(a) }
-      excluded.collect { | a | [owning_procedure, a] }
+      new_pairs = excluded.collect { | a | [owning_procedure, a] }
+      collector.insert(-1, *new_pairs)
     end
 
     def animal_excluded?(animal); subclass_responsibility; end

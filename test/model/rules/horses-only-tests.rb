@@ -9,8 +9,11 @@ class HorsesOnlyRuleTest < FreshDatabaseTestCase
     rule = Rule::HorsesOnly.new("a procedure")
     in_the_pair = flexmock(:procedure_description_kind => 'bovine')
     out_of_the_pair = flexmock(:procedure_description_kind => 'equine')
-    result = rule.excluded_pairs([out_of_the_pair, in_the_pair])
-    assert { result == [ ["a procedure", in_the_pair] ] }
+
+    collector = ['...']
+    rule.add_excluded_pairs(collector, [out_of_the_pair, in_the_pair])
+    one = '...'
+    assert { collector == [ '...', ["a procedure", in_the_pair] ] }
   end
 
 end
