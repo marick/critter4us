@@ -10,18 +10,17 @@ class ProcedureRulesTests < Test::Unit::TestCase
   end
 
   should "use all rules for all procedures" do
-    procedure = flexmock("procedure")
+    procedure = flexmock("procedure") 
     rule = flexmock("rule")
     during {
       @procedure_rules.add_excluded_pairs("pairs")
     }.behold! { 
-      @procedure_source.should_receive(:all).and_return([procedure])
-      @animal_source.should_receive(:all).and_return("animals")
+      @procedure_source.should_receive(:all).once.and_return([procedure])
+      @animal_source.should_receive(:all).once.and_return("animals")
                                             
-      procedure.should_receive(:rules).and_return([rule])
-      rule.should_receive(:add_excluded_pairs).with("pairs", procedure, "animals")
+      procedure.should_receive(:exclusion_rules).once.and_return([rule])
+      rule.should_receive(:add_excluded_pairs).once.with("pairs", "animals")
     }
   end
-
 end
 

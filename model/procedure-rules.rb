@@ -10,8 +10,8 @@ class ProcedureRules
     all_procedures = procedure_source.all
     all_animals = animal_source.all
     all_procedures.each do | procedure | 
-      procedure.rules do | rule | 
-        rule.add_excluded_pairs(pairs, procedure, all_animals)
+      procedure.exclusion_rules.each do | rule | 
+        rule.add_excluded_pairs(pairs, all_animals)
       end
     end
   end
