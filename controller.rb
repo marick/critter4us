@@ -67,18 +67,21 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
   get '/json/course_session_data_blob' do
     internal = move_to_internal_format(params)
     timeslice.move_to(internal[:date], internal[:morning])
-    excluded_pairs = []
-    timeslice.add_excluded_pairs(excluded_pairs)
-    procedure_rules.add_excluded_pairs(excluded_pairs)
     procedure_names = procedure_source.sorted_names
     jsonically do 
       {'animals' => timeslice.available_animals_by_name,
         'procedures' => procedure_names,
         'kindMap' => animal_source.kind_map,
-        'exclusions' => hash_maker.keys_and_pairs(procedure_names, excluded_pairs) }
+        'exclusions' => self.exclusions(procedure_names) }
     end
   end
 
+  def exclusions(procedure_names)
+    excluded_pairs = []
+    timeslice.add_excluded_pairs(excluded_pairs)
+    procedure_rules.add_excluded_pairs(excluded_pairs)
+    hash_maker.keys_and_pairs(procedure_names, excluded_pairs)
+  end
 
   post '/json/store_reservation' do
     tweak_reservation do | hash | 
