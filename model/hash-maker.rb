@@ -1,9 +1,9 @@
 class HashMaker
   def keys_and_pairs(keys, pairs)
     retval = empty_map(keys)
-    pairs.each do | pair |
-      retval[pair[0]] << pair[1]
-    end
+    pairs.each { | procedure, animal |
+      retval[procedure.name] << animal.name
+    }
     retval.each { | k, v | v.sort!; v.uniq! }
     retval
   end

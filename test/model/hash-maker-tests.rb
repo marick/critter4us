@@ -5,38 +5,46 @@ require 'model/requires'
 class HashMakerTests < Test::Unit::TestCase
   def setup
     @maker = HashMaker.new
+    @a = flexmock('animal a', :name => 'a')
+    @f = flexmock('animal f', :name => 'f')
+    @m = flexmock('animal m', :name => 'm')
+    @z = flexmock('animal z', :name => 'z')
+    @p_ = flexmock('p_', :name => 'p_')
+    @p_p_ = flexmock('p_p_', :name => 'p_p_')
+    @p_p_ = flexmock('p_p_', :name => 'p_p_')
+    @p_p_p_ = flexmock('p_p_p_', :name => 'p_p_p_')
   end
 
   context "keys and pairs conversion" do
-    should "allow empty list for key" do 
-      actual = @maker.keys_and_pairs(['procedure'], [])
-      expected = { 'procedure' => [] }
+    should "produce empty values when no pairs" do 
+      actual = @maker.keys_and_pairs(['p_'], [])
+      expected = { 'p_' => [] }
       assert { actual == expected } 
     end
 
-    should "allow produce sorted list for key" do 
-      actual = @maker.keys_and_pairs(['procedure'], 
-                                     [['procedure', 'z'], ['procedure', 'f'],
-                                      ['procedure', 'm'], ['procedure' ,'a']])
-      expected = { 'procedure' => ['a', 'f', 'm', 'z'] }
+    should "produce sorted list as values" do 
+      actual = @maker.keys_and_pairs(['p_'], 
+                                     [[@p_, @z], [@p_, @f],
+                                      [@p_, @m], [@p_, @a]])
+      expected = { 'p_' => ['a', 'f', 'm', 'z'] }
       assert { actual == expected } 
     end
 
-    should "allow not allow duplicates for a single key" do 
-      actual = @maker.keys_and_pairs(['procedure'], 
-                                     [['procedure', 'z'], ['procedure', 'z'],
-                                      ['procedure', 'm'], ['procedure' ,'z']])
-      expected = { 'procedure' => ['m', 'z'] }
+    should "strip duplicates for a single key" do 
+      actual = @maker.keys_and_pairs(['p_'], 
+                                     [[@p_, @z], [@p_, @z],
+                                      [@p_, @m], [@p_, @z]])
+      expected = { 'p_' => ['m', 'z'] }
       assert { actual == expected } 
     end
 
-    should "allow have multiple keys duplicates for a single key" do 
-      actual = @maker.keys_and_pairs(['1', '2', '3'], 
-                                     [['1', 'z'], ['1', 'z'],
-                                      ['2', 'm'], ['2' ,'z']])
-      expected = { '1' => ['z'],
-                   '2' => ['m', 'z'],
-                   '3' => [] }
+    should "handle multiple keys" do 
+      actual = @maker.keys_and_pairs(['p_', 'p_p_', 'p_p_p_'], 
+                                     [[@p_, @z], [@p_, @z],
+                                      [@p_p_, @m], [@p_p_ , @z]])
+      expected = { 'p_' => ['z'],
+                   'p_p_' => ['m', 'z'],
+                   'p_p_p_' => [] }
       assert { actual == expected } 
     end
 
