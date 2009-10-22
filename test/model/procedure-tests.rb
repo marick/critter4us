@@ -16,5 +16,13 @@ class ProcedureTests < FreshDatabaseTestCase
     Procedure.random_with_names('c', 'a', 'b')
     assert { Procedure.sorted_names == ['a', 'b', 'c'] }
   end
+
+  should "be able to return instances of rules" do
+    proc = Procedure.random(:name => 'floating')
+    DB[:exclusion_rules].insert(:procedure_id => proc.id,
+                                :rule => 'HorsesOnly')
+    assert { proc.exclusion_rules.length == 1 } 
+    assert { proc.exclusion_rules.first.is_a? Rule::HorsesOnly } 
+  end
 end
 
