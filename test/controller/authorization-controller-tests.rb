@@ -20,8 +20,8 @@ class AuthorizationControllerTests < FreshDatabaseTestCase
       during {
         get '/index.html'
       }.behold! {
-        @authorizer.should_receive(:already_authorized?).and_return(false)
-        @authorizer.should_receive(:authorize)
+        @authorizer.should_receive(:already_authorized?).once.and_return(false)
+        @authorizer.should_receive(:authorize).once
       }
     end
 
@@ -29,7 +29,7 @@ class AuthorizationControllerTests < FreshDatabaseTestCase
       during {
         get '/index.html'
       }.behold! {
-        @authorizer.should_receive(:already_authorized?).and_return(true);
+        @authorizer.should_receive(:already_authorized?).once.and_return(true);
       }
       assert { last_response.ok? }
     end
@@ -38,8 +38,8 @@ class AuthorizationControllerTests < FreshDatabaseTestCase
       during {
         get '/index.html'
       }.behold! {
-        @authorizer.should_receive(:already_authorized?).and_return(false)
-        @authorizer.should_receive(:authorize).and_return(true)
+        @authorizer.should_receive(:already_authorized?).once.and_return(false)
+        @authorizer.should_receive(:authorize).once.and_return(true)
       }
       assert { last_response.ok? }
     end
@@ -48,8 +48,8 @@ class AuthorizationControllerTests < FreshDatabaseTestCase
       during {
         get '/index.html'
       }.behold! {
-        @authorizer.should_receive(:already_authorized?).and_return(false)
-        @authorizer.should_receive(:authorize).and_return(false)
+        @authorizer.should_receive(:already_authorized?).once.and_return(false)
+        @authorizer.should_receive(:authorize).once.and_return(false)
       }
       assert { last_response.status == 401 }
     end
