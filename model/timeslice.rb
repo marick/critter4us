@@ -3,28 +3,35 @@ require 'util/requires'
 class Timeslice
   include TestSupport
 
-  def move_to(date, morning)
+  def move_to(date, morning, ignoring_hash={})
     @date = date
     @morning = morning
+    @ignored_reservation = ignoring_hash[:ignoring] || unsaved_empty_reservation
   end
 
 
   def add_excluded_pairs(pairs)
-    # pp pairs_with_exclusion_range_overlapping_now
-    # pp multiply_by_procedures(animals_now_in_use)
-    result = (pairs_with_exclusion_range_overlapping_now +
-              multiply_by_procedures(animals_now_in_use)).uniq
+    overlaps =  pairs_with_exclusion_range_overlapping_now
+    inuse = multiply_by_procedures(animals_to_be_considered_in_use)
+    # pp overlaps
+    # pp inuse
+    result = (overlaps + inuse).uniq
     pairs.insert(-1, *result)
   end
 
   def available_animals_by_name
-    (Animal.all - animals_now_in_use).collect { | a | a.name }
+    animals = (Animal.all - animals_to_be_considered_in_use).uniq
+    animals.collect { | a | a.name }
   end
 
   private
 
   def animals_now_in_use
-    Use.at(@date, @morning).collect { | u | u.animal }
+    Use.at(@date, @morning).collect { | u | u.animal }.uniq
+  end
+
+  def animals_to_be_considered_in_use
+    animals_now_in_use - @ignored_reservation.animals
   end
 
   def multiply_by_procedures(animals)
@@ -40,6 +47,7 @@ class Timeslice
 
   def pairs_with_exclusion_range_overlapping_now
     query = DB[:procedures, :animals, :uses, :groups, :reservations].
+      exclude(:reservations__id => @ignored_reservation.id).
       filter(:procedures__days_delay > 0).
       filter(:procedures__id => :uses__procedure_id).
       filter(:animals__id => :uses__animal_id).
@@ -48,11 +56,21 @@ class Timeslice
       filter(:reservations__date - :procedures__days_delay + 1 <= @date).
       filter(:reservations__date + :procedures__days_delay > @date).
       select(:procedures__id.as(:procedure_id), 
-             :animals__id.as(:animal_id))
+             :animals__id.as(:animal_id),
+             :reservations__id.as(:reservations_id))
 
     query.collect { | row |
-      [Procedure[row[:procedure_id]],
-       Animal[row[:animal_id]]]
+      proc = Procedure[row[:procedure_id]]
+      animal = Animal[row[:animal_id]]
+#      pp [proc.name, animal.name, row[:reservation_id]]
+      [proc, animal]
     }
+  end
+
+  require 'ostruct'
+  def unsaved_empty_reservation
+    o = OpenStruct.new(:animals => [])
+    def o.id; -1; end   # Otherwise, get "Object#id will be deprecated"
+    o
   end
 end

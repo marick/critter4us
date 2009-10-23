@@ -80,7 +80,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
     # The following test predates mocks. They can continue to be used
     # but they're probably not worth fixing if they break.
 
-    should_eventually "return a JSON list of strings" do
+    should "return a JSON list of strings" do
       Reservation.random(:date => Date.new(2009, 3, 3), :morning => true) do 
         use Procedure.random(:name => 'date mismatch procedure', :days_delay => 0)
         use Animal.random(:name => 'date mismatch animal', :kind => 'date mismatch kind')

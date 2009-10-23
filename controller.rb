@@ -115,17 +115,18 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
     number = params[:number]
     jsonically do 
       reservation = reservation_source[number]
-      timeslice.move_to(reservation.date, reservation.morning)
+      timeslice.move_to(reservation.date, reservation.morning, :ignoring => reservation)
+      procedure_names = procedure_source.sorted_names
       reservation_data = {
         :instructor => reservation.instructor,
         :course => reservation.course,
         :date => reservation.date.to_s,
         :morning => reservation.morning,
         :groups => reservation.groups.collect { | g | g.in_wire_format },
-        :procedures => procedure_source.names,
-        :animals => animal_source.names,
+        :procedures => procedure_names,
+        :animals => timeslice.available_animals_by_name,
         :kindMap => animal_source.kind_map,
-        :exclusions => timeslice.exclusions(:allowing_animals => reservation.animal_names),
+        :exclusions => self.exclusions(procedure_names),
         :id => reservation.pk.to_s
       }
       # pp reservation_data
