@@ -13,10 +13,13 @@ class AddProtocolTable004 < Sequel::Migration
       rules.insert(:procedure_id => procedures[:name => 'nasogastric intubation (horses)'][:id],
                    :rule => 'HorsesOnly')
     end
+    puts '==== No longer using expanded uses view'
+    DB.drop_view(:expanded_uses)
   end
 
   def down
     puts "==== Removing exclusion rules table"
     DB.drop_table :exclusion_rules
+    puts "==== Can't put back expanded uses view"
   end
 end
