@@ -101,16 +101,34 @@ class Reservation < Sequel::Model
       :instructor => 'morin',
       :morning => true
     }
+    # TODO: Migrate all uses of Reservation.random to new, non-block form.
+    return old_random(defaults.merge(overrides), &block) if block
+
+    animal = overrides.delete(:animal)
+    procedure = overrides.delete(:procedure)
     reservation = create(defaults.merge(overrides))
 
-    if block
-      class_eval(&block)
-
+    if animal
       group = Group.create(:reservation => reservation)
       Use.create(:group => group, 
-                 :animal => @animal_created_in_block,
-                 :procedure => @procedure_created_in_block)
+                 :animal => animal,
+                 :procedure => procedure)
     end
+    reservation
+    
+  end
+
+
+
+  def self.old_random(values, &block)
+    reservation = create(values)
+
+    class_eval(&block)
+
+    group = Group.create(:reservation => reservation)
+    Use.create(:group => group, 
+               :animal => @animal_created_in_block,
+               :procedure => @procedure_created_in_block)
     reservation
   end
 
