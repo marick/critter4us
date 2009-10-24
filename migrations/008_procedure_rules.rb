@@ -1,4 +1,4 @@
-class AddProtocolTable004 < Sequel::Migration
+class ProcedureRules008 < Sequel::Migration
 
   def up
     puts "==== Adding exclusion rules table"

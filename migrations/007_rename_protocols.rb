@@ -1,4 +1,4 @@
-class AddProtocolTable004 < Sequel::Migration
+class RenameProtocols007 < Sequel::Migration
 
   def up
     puts "==== Renaming protocol table"
