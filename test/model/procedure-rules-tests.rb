@@ -22,5 +22,6 @@ class ProcedureRulesTests < Test::Unit::TestCase
       rule.should_receive(:add_excluded_pairs).once.with("pairs", "animals")
     }
   end
+
 end
 
