@@ -1,3 +1,4 @@
+
 require 'rake'
 require 'rake/testtask'
 $in_rake = true
@@ -24,11 +25,6 @@ Rake::TestTask.new do | t |
   t.test_files = FileList['test/**/*tests.rb']
 end
 
-desc "Create Database on staging server." 
-task :staging_db_create do 
-  system("heroku rake local_db_create --app critter4us-staging")
-end
-
 task :echo do
   puts "HI"
 end
@@ -36,6 +32,12 @@ end
 desc "Backup critter4us"
 task :backup do
    system("heroku db:pull postgres://localhost/critter4us-backup --app critter4us")
+end
+
+desc "Update staging server with data from production"
+task :update_staging do
+   system("heroku db:pull postgres://localhost/critter4us-refresh-staging --app critter4us")
+   system("heroku db:push postgres://localhost/critter4us-refresh-staging --app critter4us-staging")
 end
 
 
