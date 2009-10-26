@@ -69,7 +69,7 @@ class Reservation < Sequel::Model
     end
   end
 
-  one_to_many :groups
+  one_to_many :groups, :eager => [:uses]
 
   def before_destroy
     groups.each { | group | group.destroy }
