@@ -3,19 +3,28 @@
 @import "NetworkConnection.j"
 @import "ToNetworkConverter.j"
 @import "FromNetworkConverter.j"
+@import "TimeInvariantExclusionCache.j"
 
 @implementation PersistentStore : AwakeningObject
 {
   id network;
   ToNetworkConverter toNetworkConverter;
   FromNetworkConverter fromNetworkConverter;
+  CPDictionary timeInvariantExclusions;
 }
 
 - (void) awakeFromCib
 {
   toNetworkConverter = [[ToNetworkConverter alloc] init];
   fromNetworkConverter = [[FromNetworkConverter alloc] init];
+  [self setTimeInvariantExclusions: TimeInvariantExclusionCache];
 }
+
+- (void) setTimeInvariantExclusions: json
+{
+  timeInvariantExclusions = [json objectFromJSON];
+}
+
 
 -(void) loadInfoRelevantToDate: date time: time notificationName: notificationName
 {
@@ -67,7 +76,24 @@
   var jsHash =  [json objectFromJSON];
   if (! jsHash)
     alert("No hash was obtained from JSON string " + json + "\n Please report this.");
-  return [fromNetworkConverter convert: jsHash];
+  [self addInvariantExclusionsTo: jsHash];
+  var dictionary =  [fromNetworkConverter convert: jsHash];
+  return dictionary;
+}
+
+- (void) addInvariantExclusionsTo: jsHash
+{
+  var procedures = jsHash['procedures'];
+  var exclusions = jsHash['exclusions']
+  for (var i=0; i < [procedures count]; i++)
+  {
+    var procedureName = procedures[i];
+    exclusions[procedureName] = exclusions[procedureName] || [];
+    var procedureExclusions = exclusions[procedureName];
+    var timeInvariants = timeInvariantExclusions[procedureName] || [];
+    exclusions[procedureName] = 
+        [procedureExclusions arrayByAddingObjectsFromArray: timeInvariants];
+  }
 }
 
 - (CPString) dataStringFromDictionary: dict

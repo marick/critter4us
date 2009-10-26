@@ -30,10 +30,13 @@
 - (void)testPersistentStoreMakesNetworkInfoAvailable
 {
   var expectedAnimals = [betsy, josie];
-  var expectedProcedures = [CPArray arrayWithObject:
-                                 [[Procedure alloc] initWithName: 'proc1'
-                                                       excluding: [betsy]]];
+  var expectedTimeDependentProcedure = [[Procedure alloc] initWithName: 'proc1'
+                                                             excluding: [betsy]];
+  var expectedTimeIndependentProcedure 
   [scenario 
+    previousAction: function() { 
+      [sut setTimeInvariantExclusions: '{"proc1":["josie"],"proc2":["betsy"]}'];
+    }
    during: function() { 
       [sut loadInfoRelevantToDate: '2009-02-02' time: [Time morning]
                  notificationName: "some notification name"];
@@ -42,22 +45,35 @@
       uri = jsonURI(CourseSessionDataBlobRoute+"?date=2009-02-02&time=morning");
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
                             with: uri
-                       andReturn: '{"animals":["betsy","josie"],"kindMap":{"betsy":"cow","josie":"horse"},"procedures":["proc1"],"exclusions":{"proc1":["betsy"]}}'];
+                       andReturn: '{"animals":["betsy","josie"],"kindMap":{"betsy":"cow","josie":"horse"},"procedures":["proc1", "proc2"],"exclusions":{"proc1":["betsy"]}}'];
 
       [self listenersWillReceiveNotification: "some notification name"
                                 checkingWith: function(notification) {
           var dict = [notification object];
           var actualAnimals = [dict valueForKey: 'animals'];
-          var actualProcedures = [dict valueForKey: 'procedures'];
           if (! [actualAnimals isEqual: expectedAnimals]) return NO;
-          if (! [actualProcedures isEqual: expectedProcedures]) return NO;
+
+          var actualProcedures = [dict valueForKey: 'procedures'];
+          var proc1 = [self findProcedureNamed: 'proc1' in: actualProcedures];
+          if (! [proc1 excludes: betsy]) return [self no: "proc1 allows betsy"];
+          if (! [proc1 excludes: josie]) return [self no: "proc1 allows josie"];
+          var proc2 = [self findProcedureNamed: 'proc2' in: actualProcedures];
+          if (! [proc2 excludes: betsy]) return [self no: "proc2 allows betsy"];
+          if (  [proc2 excludes: josie]) return [self no: "proc2 excludes josie"];
           return YES;
         }];
     }];
 }
 
+- (CPString) no: message
+{
+  CPLog(message);
+  return NO;
+}
 
--(void)testPostingOfReservation
+
+
+-(void)XtestPostingOfReservation
 {
   var time = [Time afternoon];
 
@@ -102,7 +118,7 @@
   [self assert: "1" equals: scenario.result];
 }
 
-- (void) testUpdatingOfReservation
+- (void) XtestUpdatingOfReservation
 {
   [scenario 
    during: function() {
@@ -127,7 +143,7 @@
    ];
 }
 
--(void)testCanFetchTableInfoFromNetwork
+-(void)XtestCanFetchTableInfoFromNetwork
 {
   [scenario
     during: function() { 
@@ -143,7 +159,7 @@
     }];
 }
 
--(void) testCanFetchReservationDataFromNetwork
+-(void) XtestCanFetchReservationDataFromNetwork
 {
   var aReservation = { 'instructor':'dr dawn',
                        'course' : 'vcm3',
@@ -172,7 +188,7 @@
     }];
 }
 
--(void) testCanHandleAfternoonAsWellAsMorning
+-(void) XtestCanHandleAfternoonAsWellAsMorning
 {
   var aReservation = { 'morning' : false };
 
@@ -191,7 +207,7 @@
     }];
 }
 
--(void) testReservationDataIncludesGroupProcedureAndAnimalObjects
+-(void) XtestReservationDataIncludesGroupProcedureAndAnimalObjects
 {
   var aReservation = { 'groups' : [ {'procedures' : ['accupuncture', 'floating'],
                                      'animals' : ['betsy', 'josie'] },
@@ -241,6 +257,18 @@
   return [CPDictionary dictionaryWithObjects: values forKeys: keys];
 }
 
-
+- (Procedure) findProcedureNamed: name in: array
+{
+  for(i = 0; i < [array count]; i++)
+  {
+    var candidate = array[i];
+    if ([[candidate name] isEqual: name]) 
+    {
+      return candidate;
+    }
+  }
+  CPLog("No procedure found for " + name + " in " + [array description]);
+  [self fail];
+}
 
 @end
