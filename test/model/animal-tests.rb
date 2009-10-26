@@ -25,10 +25,6 @@ class AnimalTests < FreshDatabaseTestCase
       assert { Animal.kind_map == {'bossie' => 'cow', 'fred' => 'horse'} }
     end
 
-    should "return the kind used for procedure descriptions in addition to its more detailed kind" do
-      animal = Animal.random(:kind => 'cow')
-      assert { animal.procedure_description_kind == 'bovine' }
-    end
   end
 end
 
