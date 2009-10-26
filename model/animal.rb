@@ -22,11 +22,6 @@ class Animal < Sequel::Model
   end
 
 
-  def procedure_description_kind
-    DB[:gui_and_procedure_description_kinds].filter(:kind => self.kind).first[:procedure_description_kind]
-  end
-    
-
   # following are for testing
 
   def self.random(overrides = {})
