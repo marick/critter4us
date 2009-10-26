@@ -65,6 +65,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
   end
 
   get '/json/course_session_data_blob' do
+    $blob_start = Time.now
     start = Time.now
     internal = move_to_internal_format(params)
     timeslice.move_to(internal[:date], internal[:morning])
@@ -77,9 +78,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
         'exclusions' => self.exclusions(procedure_names)
         
       }
-      log "Start: #{start} "
-      log "   End: #{Time.now}"
-#      log answer.pretty_inspect
+      $blob_end = Time.now
       answer
     end
   end
