@@ -19,8 +19,8 @@ class ProcedureDescriptionsAndRules009 < Sequel::Migration
       puts "==== Overwriting procedure descriptions and rules"
       require 'admin/procedure-descriptions'
       ProcedureDescriptionSetter.new.describe_procedures
-      puts "#{DB[:exclusion_rules].count} rules"
-      puts "#{DB[:procedure_descriptions].count} procedure descriptions"
+      puts "#{DB[:exclusion_rules].size} rules"
+      puts "#{DB[:procedure_descriptions].size} procedure descriptions"
     end
 
     

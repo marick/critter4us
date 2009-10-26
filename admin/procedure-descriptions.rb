@@ -316,7 +316,7 @@ class ProcedureDescriptionSetter
     if procedures.empty? 
       STDERR.puts("No procedure '#{procedure_name}' to describe.")
       return
-    elsif procedures.count > 1
+    elsif procedures.size > 1
       STDERR.puts("More than one procedure '#{procedure_name}' to describe.")
       return
     end

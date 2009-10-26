@@ -12,7 +12,7 @@ class RulesTest < FreshDatabaseTestCase
     rule = rule_class.new(procedure)
     collector = ['...']
     rule.add_excluded_pairs(collector, excluded_animals+just_fine_animals)
-    assert { collector.length == 1 + excluded_animals.count }
+    assert { collector.length == 1 + excluded_animals.size }
     assert { collector[0] == '...' }
     excluded_animals.each do | excluded | 
       assert { collector.include? [procedure, excluded] }

@@ -38,7 +38,7 @@ class TimesliceTests < FreshDatabaseTestCase
       should "include ALL procedures for that animal" do
         @timeslice.move_to(@date, @morning)
         @timeslice.add_excluded_pairs(@destination)
-        assert { @destination.count == 2 }
+        assert { @destination.size == 2 }
         assert { @destination.include?([@other, @inuse]) }
         assert { @destination.include?([@procedure, @inuse]) }
       end
