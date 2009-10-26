@@ -65,7 +65,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
   end
 
   get '/json/course_session_data_blob' do
-    puts "Starting to create session data blob at #{Time.now}"
+    start = Time.now
     internal = move_to_internal_format(params)
     timeslice.move_to(internal[:date], internal[:morning])
     procedure_names = procedure_source.sorted_names
@@ -75,9 +75,18 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
         'procedures' => procedure_names,
         'kindMap' => animal_source.kind_map,
         'exclusions' => self.exclusions(procedure_names)
+        
       }
-      puts "Finished creating session data blob at #{Time.now}"
+      log "Start: #{start} "
+      log "   End: #{Time.now}"
+#      log answer.pretty_inspect
       answer
+    end
+  end
+
+  def log(text)
+    File.open("log/a.txt", 'a') do | io | 
+      io.puts text
     end
   end
 
