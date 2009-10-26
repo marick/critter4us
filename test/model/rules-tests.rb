@@ -5,26 +5,74 @@ require 'model/procedure-rules'
 
 class RulesTest < FreshDatabaseTestCase
 
-  def exclusion_tester(rule_class, in_the_pair, out_of_the_pair)
-    rule = rule_class.new("a procedure")
+  def exclusion_tester(rule_class, hash)
+    excluded_animals = hash[:excluded]
+    just_fine_animals = hash[:just_fine]
+    procedure = flexmock(:name => "some procedure")
+    rule = rule_class.new(procedure)
     collector = ['...']
-    rule.add_excluded_pairs(collector, [out_of_the_pair, in_the_pair])
-    one = '...'
-    assert { collector == [ '...', ["a procedure", in_the_pair] ] }
+    rule.add_excluded_pairs(collector, excluded_animals+just_fine_animals)
+    assert { collector.length == 1 + excluded_animals.count }
+    assert { collector[0] == '...' }
+    excluded_animals.each do | excluded | 
+      assert { collector.include? [procedure, excluded] }
+    end
   end
 
   should "include HorsesOnly" do
     exclusion_tester(Rule::HorsesOnly, 
-                     flexmock(:procedure_description_kind => 'bovine'),
-                     flexmock(:procedure_description_kind => 'equine'))
+                     :excluded => [
+                                   flexmock(:procedure_description_kind => 'bovine'),
+                                   flexmock(:procedure_description_kind => 'caprine'),
+                                  ],
+                     :just_fine => [
+                                    flexmock(:procedure_description_kind => 'equine'),
+                                   ])
   end
 
   should "include BovineOnly" do
     exclusion_tester(Rule::BovineOnly, 
-                     flexmock(:procedure_description_kind => 'equine'),
-                     flexmock(:procedure_description_kind => 'bovine'))
+                     :excluded => [
+                                   flexmock(:procedure_description_kind => 'caprine'),
+                                   flexmock(:procedure_description_kind => 'equine'),
+                                  ],
+                     :just_fine => [
+                                    flexmock(:procedure_description_kind => 'bovine'),
+                                   ])
   end
 
+  should "include NoGoats" do
+    exclusion_tester(Rule::NoGoats, 
+                     :excluded => [
+                                   flexmock(:procedure_description_kind => 'caprine'),
+                                  ],
+                     :just_fine => [
+                                    flexmock(:procedure_description_kind => 'equine'),
+                                    flexmock(:procedure_description_kind => 'bovine'),
+                                   ])
+  end
+
+  should "include GoatsOnly" do
+    exclusion_tester(Rule::GoatsOnly, 
+                     :excluded => [
+                                   flexmock(:procedure_description_kind => 'equine'),
+                                   flexmock(:procedure_description_kind => 'bovine'),
+                                  ],
+                     :just_fine => [
+                                    flexmock(:procedure_description_kind => 'caprine'),
+                                   ])
+  end
+
+  should "include RuminantsOnly" do
+    exclusion_tester(Rule::RuminantsOnly, 
+                     :excluded => [
+                                   flexmock(:procedure_description_kind => 'equine'),
+                                  ],
+                     :just_fine => [
+                                   flexmock(:procedure_description_kind => 'bovine'),
+                                    flexmock(:procedure_description_kind => 'caprine'),
+                                   ])
+  end
 
 end
 

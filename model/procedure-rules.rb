@@ -46,4 +46,7 @@ module Rule
 
   subclass :HorsesOnly, %q{  animal.procedure_description_kind != 'equine' }
   subclass :BovineOnly, %q{  animal.procedure_description_kind != 'bovine' }
+  subclass :GoatsOnly, %q{  animal.procedure_description_kind != 'caprine' }
+  subclass :NoGoats, %q{  animal.procedure_description_kind == 'caprine' }
+  subclass :RuminantsOnly, %q{  animal.procedure_description_kind == 'equine' }
 end

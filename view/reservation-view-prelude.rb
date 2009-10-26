@@ -37,6 +37,8 @@ tissue trauma, bleeding, or abnormal posture following a procedure are indicatio
         bovine_prelude
       when 'equine'
         equine_prelude
+      when 'caprine'
+        caprine_prelude
       else
         p("No description has been written yet.")
       end
@@ -58,6 +60,15 @@ tissue trauma, bleeding, or abnormal posture following a procedure are indicatio
               "Detomidine 0.01-0.06 mg/kg IV or IM",
               "Romifidine 0.04-0.08 mg/kg IV or IM",
               "Butorphanol 0.05-0.1 mg/kg IV or IM")
+    drug_notes
+  end
+
+  def caprine_prelude
+    if_restless('goats')
+    drug_list("Xylazine 0.01-0.05 mg/kg IV, 0.01-0.1 mg/kg IM",
+              "Ketamine 0.5-2 mg/kg IM, 0.1-1 mg/kg IV",
+              "Butorphanol 0.02-0.05 mg/kg IM, 0.01-0.02 mg/kg IV",
+              "Acepromazine 0.02-0.05 mg/kg IM, 0.01-0.02 mg/kg IV")
     drug_notes
   end
 
