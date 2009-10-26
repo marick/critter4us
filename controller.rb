@@ -78,7 +78,9 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
         'exclusions' => self.exclusions(procedure_names)
         
       }
-      $blob_end = Time.now
+      #      puts "Start: #{start} "
+      #      puts "   End: #{Time.now}"
+      #      log answer.pretty_inspect
       answer
     end
   end
