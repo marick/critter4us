@@ -47,13 +47,13 @@ class ReservationListView < Erector::Widget
   def sorted_reservations
     @reservations.sort { |a, b|
       if a.date != b.date
-        a.date <=> b.date
+        -(a.date <=> b.date)
       elsif a.morning == b.morning
         0
       elsif a.morning
-        -1
-      else
         1
+      else
+        -1
       end
     }
   end

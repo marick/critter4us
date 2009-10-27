@@ -13,7 +13,7 @@ class ViewTests < FreshDatabaseTestCase
                                  :morning => true)
 
     view = ReservationListView.new(:reservations => [afternoon, morning, earlier])
-    assert { [earlier, morning, afternoon] == view.sorted_reservations }
+    assert { [afternoon, morning, earlier] == view.sorted_reservations }
   end
 
   should "display contents from each reservation" do

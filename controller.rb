@@ -56,7 +56,9 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
   end
 
   before do
-    protected!
+    unless request.path =~ %r{/reservation/\d+} # generalize?
+      protected! 
+    end
   end
 
 
