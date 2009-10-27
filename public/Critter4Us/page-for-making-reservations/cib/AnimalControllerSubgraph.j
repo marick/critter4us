@@ -1,5 +1,4 @@
 @import "NameListControllerSubgraph.j"
-@import "../AnimalControllerPMR.j"
 
 @implementation AnimalControllerSubgraph : NameListControllerSubgraph
 {
@@ -17,11 +16,6 @@
 - (CPColor) color
 {
   return AnimalHintColor;
-}
-
-- (id) newController
-{
-  return [AnimalControllerPMR alloc];
 }
 
 @end
