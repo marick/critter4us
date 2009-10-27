@@ -94,7 +94,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
   def exclusions(procedure_names)
     excluded_pairs = []
     timeslice.add_excluded_pairs(excluded_pairs)
-    procedure_rules.add_excluded_pairs(excluded_pairs)
+    # procedure_rules.add_excluded_pairs(excluded_pairs)
     hash_maker.keys_and_pairs(procedure_names, excluded_pairs)
   end
 
