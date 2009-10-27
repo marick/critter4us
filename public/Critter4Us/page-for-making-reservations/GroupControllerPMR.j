@@ -93,6 +93,10 @@
   var group;
   while(group = [enumerator nextObject])
   {
+    // TODO: Suppose there are no procedures in a particular group.
+    // Since exclusions are controlled by procedures, no already-chosen
+    // animals will be excluded from the display. They will, however, be
+    // removed when the first procedure is chosen, so is this worth fixing?
     [group exclusionsHaveChangedForThese: procedures];
   }
   [self pretendCurrentGroupWasFreshlyChosen];
