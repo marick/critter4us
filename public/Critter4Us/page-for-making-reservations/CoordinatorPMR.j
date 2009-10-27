@@ -120,7 +120,7 @@
 - (void) filterAnimalsAccordingToProcedures: procedures
 {
     var aggregate = [Procedure compositeFrom: procedures];
-    [animalController withholdAnimals: [aggregate animalsThisProcedureExcludes]];
+    [animalController withholdNamedObjects: [aggregate animalsThisProcedureExcludes]];
 }
 
 - (CPDictionary) gather
