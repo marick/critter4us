@@ -25,6 +25,15 @@ class AnimalTests < FreshDatabaseTestCase
       assert { Animal.kind_map == {'bossie' => 'cow', 'fred' => 'horse'} }
     end
 
+    # Tested because PostGres 8.3 and 8.4 behave differently for
+    # method names with underscores in them (I think). Result is that
+    # on 8.3, Animal.columns does not include :procedure_description_kind.
+    # 
+    should "be able to return a procedure description kind" do
+      a = Animal.random(:name => 'bossie', :kind => 'cow', :procedure_description_kind => 'bovine')
+      assert { 'bovine' ==  a.procedure_description_kind }
+    end
+
   end
 end
 

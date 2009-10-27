@@ -3,6 +3,12 @@ require 'pp'
 class Animal < Sequel::Model
   one_to_many :uses
 
+  # Postgres 8.3.5 doesn't seem to recognize columns names with underscores. 
+  # Try Animal.columns vs. DB[:animals].columns
+  def procedure_description_kind 
+    self.values[:procedure_description_kind]
+  end
+
   def self.names; map(:name); end
   def self.sorted_names; names.sort; end
 
