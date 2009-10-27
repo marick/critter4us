@@ -14,7 +14,7 @@
   [containingView addSubview: pageView];
 	[pageView setHidden:YES];
 
-	var table = [[CPWebView alloc] initWithFrame: CGRectMake(10,30, 1200,500)];
+	var table = [[CPWebView alloc] initWithFrame: CGRectMake(10,30, 970,500)];
   [pageView addSubview: table];
 
 	var pageController = [[AllReservationsPageController alloc] init];
