@@ -7,8 +7,8 @@
 @implementation CoordinatorPMR : AwakeningObject
 {
   ReservationDataControllerPMR reservationDataController;
-  AnimalControllerPMR animalController;
-  ProcedureControllerPMR procedureController;
+  NamedObjectControllerPMR animalController;
+  NamedObjectControllerPMR procedureController;
   GroupControllerPMR groupController;
   CurrentGroupPanelController currentGroupPanelController;
   
@@ -121,6 +121,7 @@
 {
     var aggregate = [Procedure compositeFrom: procedures];
     [animalController withholdNamedObjects: [aggregate animalsThisProcedureExcludes]];
+    [procedureController withholdNamedObjects: [aggregate animalsThisProcedureExcludes]];
 }
 
 - (CPDictionary) gather

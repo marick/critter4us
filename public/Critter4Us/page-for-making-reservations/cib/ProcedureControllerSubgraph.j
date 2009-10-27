@@ -1,4 +1,3 @@
-@import "../ProcedureControllerPMR.j"
 @import "NameListControllerSubgraph.j"
 
 @implementation ProcedureControllerSubgraph : NameListControllerSubgraph
@@ -18,11 +17,6 @@
 - (CPColor) color
 {
   return ProcedureHintColor;
-}
-
-- (id) newController
-{
-  return [ProcedureControllerPMR alloc];
 }
 
 

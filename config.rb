@@ -20,3 +20,6 @@ end
 Sinatra::Base.configure :production do 
   DB = Sequel.connect(ENV['DATABASE_URL'])
 end
+
+require 'model/requires'
+puts Animal.columns

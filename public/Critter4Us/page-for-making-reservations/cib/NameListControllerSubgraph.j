@@ -1,5 +1,6 @@
 @import "Subgraph.j"
 @import "../../view/NameListPanel.j"
+@import "../NamedObjectControllerPMR.j"
 
 @implementation NameListControllerSubgraph : Subgraph
 {
@@ -23,7 +24,10 @@
   return self;
 }
 
-
+- (id) newController
+{
+  return [NamedObjectControllerPMR alloc];
+}
 
 - (void) connectOutlets
 {

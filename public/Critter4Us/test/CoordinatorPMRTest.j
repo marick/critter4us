@@ -100,7 +100,7 @@
                     userInfo: userInfo];
     }
    behold: function() {
-      [sut.animalController shouldReceive:@selector(withholdAnimals:)
+      [sut.animalController shouldReceive:@selector(withholdNamedObjects:)
                                      with: [[betsy, fang]]];
     }];
 }
@@ -158,7 +158,7 @@
                   withObject: group];
     }
    behold: function() {
-      [sut.animalController shouldReceive:@selector(withholdAnimals:)
+      [sut.animalController shouldReceive:@selector(withholdNamedObjects:)
                                      with: [[animals[0]]]];
     }];
 }
