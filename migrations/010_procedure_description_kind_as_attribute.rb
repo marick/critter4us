@@ -47,13 +47,11 @@ class Performance010 < Sequel::Migration
     DB[:animals].filter(:name => "goat  9").update(:procedure_description_kind => "caprine")
     DB[:animals].filter(:name => "goat 10").update(:procedure_description_kind => "caprine")
     DB[:animals].filter(:name => "goat 11").update(:procedure_description_kind => "caprine")
-    puts "==== Exclusion Pairs"
-    DB.create_table :exclusion_pairs do
-      primary_key
+    DB.drop_table :gui_and_procedure_description_kinds
   end
 
   def down
-    puts "==== Dropping table that maps two ways of describing animal kinds"
+    puts "==== Dropping procedure_description_kind column"
     DB.drop_column :animals, :procedure_description_kind
   end
 end
