@@ -87,10 +87,5 @@ class ProcedurePartial
         add_name_anchored_description(procedure_description, so_far)
       end
     end
-
   end
-
-
-
-
 end
