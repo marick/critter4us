@@ -13,7 +13,6 @@
 
 - (void) start
 {
-  CPLog("started!");
   [reservationDataController beginningOfReservationWorkflow];
   [procedureController beginningOfReservationWorkflow];
   [animalController beginningOfReservationWorkflow];

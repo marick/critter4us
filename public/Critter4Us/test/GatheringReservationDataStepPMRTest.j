@@ -1,4 +1,5 @@
 @import <Critter4Us/page-for-making-reservations/state-machine/GatheringReservationDataStepPMR.j>
+@import <Critter4Us/page-for-making-reservations/state-machine/GatheringGroupDataStepPMR.j>
 @import "StateMachineTestCase.j"
 @import <Critter4Us/model/Animal.j>
 @import <Critter4Us/model/Procedure.j>
@@ -15,7 +16,7 @@
   [super setUp];
 }
 
-- (void) testSetsUpControlsAppropriatelyWhenReservationDataIsAvailable
+- (void) test_start_by_initializing_collaborators
 {
   [scenario
     during: function() {
@@ -30,14 +31,8 @@
     }];
 }
 
-- (void) testPutsDataToPersistentStoreWhenItIsFullyAvailable
+- (void) test_when_data_is_available_pass_it_to_persistent_store_and_resign
 {
-  var animals = [  [[Animal alloc] initWithName: 'animal1' kind: 'cow'],
-                   [[Animal alloc] initWithName: 'animal2' kind: 'horse']];
-
-  var procedures = [ [[Procedure alloc] initWithName: 'procedure1'],
-                     [[Procedure alloc] initWithName: 'procedure2']];
-
   [scenario
     during: function() {
       var dict = [CPDictionary dictionary];
@@ -49,8 +44,9 @@
   behold: function() {
       [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:notificationName:)
                                     with: ['2009-02-02', [Time morning], InitialDataForACourseSessionNews]];
+      [sut.master shouldReceive: @selector(nextStep:)
+                           with: GatheringGroupDataStepPMR];
     }];
 }
-
 
 @end
