@@ -4,6 +4,7 @@ unless $in_rake
   require 'config'
 end
 require 'model/requires'
+require 'model/rules'
 
 class ProcedureDescriptionSetter
 

@@ -35,7 +35,6 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
                            :procedure_source => Procedure,
                            :reservation_source => Reservation,
                            :timeslice => Timeslice.new,
-                           :procedure_rules => ProcedureRules.new,
                            :hash_maker => HashMaker.new)
   end
 
@@ -93,10 +92,9 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
     end
   end
 
-  def exclusions(procedure_names)
+  def exclusions(procedure_names)  # TODO: Why bother with hash_maker?
     excluded_pairs = []
     timeslice.add_excluded_pairs(excluded_pairs)
-    # procedure_rules.add_excluded_pairs(excluded_pairs)
     hash_maker.keys_and_pairs(procedure_names, excluded_pairs)
   end
 

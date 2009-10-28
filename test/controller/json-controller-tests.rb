@@ -62,7 +62,6 @@ class JsonGenerationTests < FreshDatabaseTestCase
         @procedure_source.should_receive(:sorted_names).once.and_return('some procedure names')
 
         @timeslice.should_receive(:add_excluded_pairs).once.with(pairs)
-        @procedure_rules.should_receive(:add_excluded_pairs).once.with(pairs)
         @hash_maker.should_receive(:keys_and_pairs).once.
                     with('some procedure names', pairs).
                     and_return('some exclusions')
