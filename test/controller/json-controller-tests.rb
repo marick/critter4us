@@ -53,11 +53,37 @@ class JsonGenerationTests < FreshDatabaseTestCase
     should "exclude animals that are currently in use" do 
       @app.override(mocks(:timeslice, :animal_source, :procedure_source,
                           :procedure_rules, :hash_maker))
-      pairs = []
       during { 
         get '/json/course_session_data_blob', {:date => '2009-01-01', :time => "morning"}
       }.behold! {
-        @timeslice.should_receive(:move_to).once.with(Date.new(2009,1, 1), true)
+        @@stuff_that_always_happens.call
+        @timeslice.should_receive(:move_to).once.with(Date.new(2009,1, 1), true, nil)
+      }
+      assert_json_response
+      assert_jsonification_of(@results_of_what_happens)
+    end
+
+    should "exclude animals that are currently in use (but ignoring a reservation)" do 
+      reservation = Reservation.random(:date => Date.new(2009, 3, 3),
+                                       :morning => true,
+                                       :procedure => Procedure.random,
+                                       :animal => Animal.random)
+      @app.override(mocks(:timeslice, :animal_source, :procedure_source,
+                          :procedure_rules, :hash_maker))
+      during { 
+        get "/json/course_session_data_blob",
+            {:date => '2009-01-01', :time => "morning", :ignoring => reservation.id}
+      }.behold! {
+        @@stuff_that_always_happens.call
+        @timeslice.should_receive(:move_to).once.with(Date.new(2009,1, 1), true, reservation)
+      }
+      assert_json_response
+      assert_jsonification_of(@results_of_what_happens)
+    end
+
+    setup do
+      @@stuff_that_always_happens = lambda() { 
+        pairs = []
         @timeslice.should_receive(:available_animals_by_name).once.and_return('some animals')
         @procedure_source.should_receive(:sorted_names).once.and_return('some procedure names')
 
@@ -68,13 +94,17 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
         @animal_source.should_receive(:kind_map).once.and_return('some kind map')
       }
-      assert_json_response
-      assert_jsonification_of({
+
+      @results_of_what_happens = {
          'animals' => 'some animals',
          'procedures' => 'some procedure names',
          'kindMap' => 'some kind map',
-         'exclusions' => 'some exclusions'})
+         'exclusions' => 'some exclusions'
+      }
+
     end
+
+
 
     # The following test predates mocks. They can continue to be used
     # but they're probably not worth fixing if they break.
@@ -214,47 +244,83 @@ class JsonGenerationTests < FreshDatabaseTestCase
                        :animals => ['jinx']}]
       }
       @reservation = Reservation.create_with_groups(test_data)
-      get "/json/reservation/#{@reservation.pk}"
-      assert_json_response
-      @result = JSON[last_response.body]
     end
 
-    should "retrieve atomic values" do
-      assert { 'marge' == @result['instructor'] }
-      assert { 'vm333' == @result['course'] }
-      assert { '2001-02-04' == @result['date'] }
-      assert { true == @result['morning'] }
+    context "has results that have nothing to do with exclusions" do
+      setup do 
+        get "/json/reservation/#{@reservation.pk}?ignoring=#{@reservation.pk}"
+        assert_json_response
+        @result = JSON[last_response.body]
+      end
+
+      should "retrieve atomic values" do
+        assert { 'marge' == @result['instructor'] }
+        assert { 'vm333' == @result['course'] }
+        assert { '2001-02-04' == @result['date'] }
+        assert { true == @result['morning'] }
+      end
+
+      should "retrieve groups" do
+        expected = [ {'procedures' => ['floating'],
+                       'animals' => ['jinx', 'twitter']},
+                     {'procedures' => ['venipuncture'],
+                       'animals' => ['jinx']}
+                   ];
+        assert { expected == @result['groups'] }
+      end
+
+      should "retrieve procedure information" do
+        assert { ['floating', 'venipuncture'] == @result['procedures'].sort }
+      end
+
+      should "return the reservation id as a string" do # { footnote 'string' }
+        assert { @reservation.pk.to_s == @result['id'] }
+      end
     end
 
-    should "retrieve groups" do
-      expected = [ {'procedures' => ['floating'],
-                     'animals' => ['jinx', 'twitter']},
-                   {'procedures' => ['venipuncture'],
-                     'animals' => ['jinx']}
-                 ];
-      assert { expected == @result['groups'] }
+
+    context "and ignoring exclusions associated with it" do
+
+      setup do 
+        get "/json/reservation/#{@reservation.pk}?ignoring=#{@reservation.pk}"
+        assert_json_response
+        @result = JSON[last_response.body]
+      end
+
+      should "retrieve exclusion information that does not include animals used in the reservation" do
+        expected = { 'floating' => [], 'venipuncture' => [] }
+        assert { expected == @result['exclusions'] }
+      end
+
+      should "retrieve animal information" do
+        expected_animals = ['twitter', 'jinx']
+        expected_kind_map = {'twitter' => 'sugar glider', 'jinx' => 'red-eared slider'}
+        assert { expected_animals.sort == @result['animals'].sort }
+        assert { expected_kind_map == @result['kindMap'] }
+      end
+      
     end
 
-    should "retrieve exclusion information that does not include animals used in the reservation" do
-      expected = { 'floating' => [], 'venipuncture' => [] }
-      assert { expected == @result['exclusions'] }
-    end
+    context "but not using reservation to ignore exclusions" do
 
-    should "retrieve animal information" do
-      expected_animals = ['twitter', 'jinx']
-      expected_kind_map = {'twitter' => 'sugar glider', 'jinx' => 'red-eared slider'}
-      assert { expected_animals.sort == @result['animals'].sort }
-      assert { expected_kind_map == @result['kindMap'] }
-    end
-    
-    should "retrieve procedure information" do
-      assert { ['floating', 'venipuncture'] == @result['procedures'].sort }
-    end
+      setup do 
+        get "/json/reservation/#{@reservation.pk}?ignoring="
+        assert_json_response
+        @result = JSON[last_response.body]
+      end
 
-    should "return the reservation id as a string" do # { footnote 'string' }
-      assert { @reservation.pk.to_s == @result['id'] }
-    end
+      should "retrieve exclusion information that does include animals used in the reservation" do
+        expected = {
+          'floating' => ['jinx', 'twitter'],
+          'venipuncture' => ['jinx', 'twitter'] # twitter excluded because it's same day.
+        }
+        assert { expected == @result['exclusions'] }
+      end
 
+      should "retrieve no animals because all are in use" do
+        assert { [] == @result['animals'] } 
+      end
+    end
   end
 end
 

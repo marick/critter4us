@@ -66,10 +66,8 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
   end
 
   get '/json/course_session_data_blob' do
-    $blob_start = Time.now
-    start = Time.now
     internal = move_to_internal_format(params)
-    timeslice.move_to(internal[:date], internal[:morning])
+    timeslice.move_to(internal[:date], internal[:morning], ignored_reservation)
     procedure_names = procedure_source.sorted_names
     jsonically do 
       answer = {
@@ -79,17 +77,14 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
         'exclusions' => self.exclusions(procedure_names)
         
       }
-      #      puts "Start: #{start} "
-      #      puts "   End: #{Time.now}"
-      #      log answer.pretty_inspect
       answer
     end
   end
 
-  def log(text)
-    File.open("log/a.txt", 'a') do | io | 
-      io.puts text
-    end
+  def ignored_reservation
+    ignoring = params[:ignoring]
+    return nil unless ignoring
+    Reservation[ignoring.to_i]
   end
 
   def exclusions(procedure_names)  # TODO: Why bother with hash_maker?
@@ -130,7 +125,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
     number = params[:number]
     jsonically do 
       reservation = reservation_source[number]
-      timeslice.move_to(reservation.date, reservation.morning, :ignoring => reservation)
+      timeslice.move_to(reservation.date, reservation.morning, ignored_reservation)
       procedure_names = procedure_source.sorted_names
       reservation_data = {
         :instructor => reservation.instructor,

@@ -3,10 +3,10 @@ require 'util/requires'
 class Timeslice
   include TestSupport
 
-  def move_to(date, morning, ignoring_hash={})
+  def move_to(date, morning, ignoring = nil)
     @date = date
     @morning = morning
-    @ignored_reservation = ignoring_hash[:ignoring] || unsaved_empty_reservation
+    @ignored_reservation = ignoring || unsaved_empty_reservation
   end
 
 

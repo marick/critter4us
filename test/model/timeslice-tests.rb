@@ -45,7 +45,7 @@ class TimesliceTests < FreshDatabaseTestCase
 
 
       should "not count the animal if its reservation is ignored" do
-        @timeslice.move_to(@date, @morning, :ignoring => @reservation)
+        @timeslice.move_to(@date, @morning, @reservation)
         @timeslice.add_excluded_pairs(@destination)
         assert { @destination == [] }
       end
@@ -95,7 +95,7 @@ class TimesliceTests < FreshDatabaseTestCase
       # This could happen if a reservation is being edited and the date/time
       # is being changed. 
       should "not exclude if reservation to be ignored" do
-        @timeslice.move_to(@date, @morning, :ignoring => @reservation)
+        @timeslice.move_to(@date, @morning, @reservation)
         @timeslice.add_excluded_pairs(@destination)
         assert { @destination == [] }
       end
@@ -121,7 +121,7 @@ class TimesliceTests < FreshDatabaseTestCase
       # This could happen if a reservation is being edited and the date/time
       # is being changed. 
       should "not exclude if the reservation is to be ignored" do
-        @timeslice.move_to(@date, @morning, :ignoring => @reservation)
+        @timeslice.move_to(@date, @morning, @reservation)
         @timeslice.add_excluded_pairs(@destination)
         assert { @destination == [] }
       end
@@ -170,7 +170,7 @@ end
     end
 
     should "handle moving last week's reservation to today" do
-      @timeslice.move_to(Date.new(2009, 9, 7), true, :ignoring => @nine1)
+      @timeslice.move_to(Date.new(2009, 9, 7), true, @nine1)
       @timeslice.add_excluded_pairs(@destination)
       deny { @destination.include?([@venipuncture, @staggers]) } # part of @nine1
       assert { @destination.include?([@venipuncture, @veinie]) }
@@ -181,7 +181,7 @@ end
     end
 
     should "handle moving earliest reservation up two days" do
-      @timeslice.move_to(Date.new(2009, 9, 2), true, :ignoring => @eight31)
+      @timeslice.move_to(Date.new(2009, 9, 2), true, @eight31)
       @timeslice.add_excluded_pairs(@destination)
       assert { @destination.include?([@venipuncture, @staggers]) }
       assert { @destination.include?([@venipuncture, @veinie]) }
@@ -192,7 +192,7 @@ end
     end
 
     should "handle moving today's reservation to tomorrow" do
-      @timeslice.move_to(Date.new(2009, 8, 7), true, :ignoring => @nine7)
+      @timeslice.move_to(Date.new(2009, 8, 7), true,  @nine7)
       @timeslice.add_excluded_pairs(@destination)
       deny { @destination.include?([@venipuncture, @staggers]) }
       deny { @destination.include?([@venipuncture, @veinie]) }
@@ -265,7 +265,7 @@ end
 
 
     should "override exclusion for a specific reservation's animals" do
-      @timeslice.move_to(@date, @morning, :ignoring => @cannot_be_used_reservation)
+      @timeslice.move_to(@date, @morning,  @cannot_be_used_reservation)
       result = @timeslice.available_animals_by_name
       assert { result.sort == ['can be used', 'cannot be used'].sort }
     end
