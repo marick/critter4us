@@ -232,9 +232,9 @@ class ReservationModelTests < FreshDatabaseTestCase
 
   should "produce a sorted, uniquified list of kinds in use that are relevant to procedure descriptions" do
     Procedure.random(:name => 'procedure')
-    flicka = Animal.random(:name => 'flicka', :kind => 'mare')
-    betsy = Animal.random(:name => 'betsy', :kind => 'cow')
-    jake = Animal.random(:name => 'jake', :kind => 'gelding')
+    flicka = Animal.random(:name => 'flicka', :kind => 'mare', :procedure_description_kind => 'equine')
+    betsy = Animal.random(:name => 'betsy', :kind => 'cow', :procedure_description_kind => 'bovine')
+    jake = Animal.random(:name => 'jake', :kind => 'gelding', :procedure_description_kind => 'equine')
 
     test_data = {
       :instructor => 'marge',
