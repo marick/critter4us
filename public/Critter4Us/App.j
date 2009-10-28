@@ -13,6 +13,9 @@ AppForwarder = {}
 AppForwarder.edit = function(reservationId) {
   [[CPApp delegate] editReservation: reservationId];
 };
+AppForwarder.copy = function(reservationId) {
+  [[CPApp delegate] copyReservation: reservationId];
+};
 
 
 @implementation App : CPObject
@@ -66,6 +69,14 @@ AppForwarder.edit = function(reservationId) {
 - (void) editReservation: id
 {
   [NotificationCenter postNotificationName: ModifyReservationNews
+                                    object: id];
+  [self activateReservationMaker: UnusedArgument];
+
+}
+
+- (void) copyReservation: id
+{
+  [NotificationCenter postNotificationName: CopyReservationNews
                                     object: id];
   [self activateReservationMaker: UnusedArgument];
 

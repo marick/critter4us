@@ -73,7 +73,7 @@
 
 
 
--(void)XtestPostingOfReservation
+-(void)testPostingOfReservation
 {
   var time = [Time afternoon];
 
@@ -118,7 +118,7 @@
   [self assert: "1" equals: scenario.result];
 }
 
-- (void) XtestUpdatingOfReservation
+- (void) testUpdatingOfReservation
 {
   [scenario 
    during: function() {
@@ -143,7 +143,7 @@
    ];
 }
 
--(void)XtestCanFetchTableInfoFromNetwork
+-(void)testCanFetchTableInfoFromNetwork
 {
   [scenario
     during: function() { 
@@ -159,7 +159,7 @@
     }];
 }
 
--(void) XtestCanFetchReservationDataFromNetwork
+-(void) testCanFetchReservationDataFromNetworkForEditing
 {
   var aReservation = { 'instructor':'dr dawn',
                        'course' : 'vcm3',
@@ -188,7 +188,8 @@
     }];
 }
 
--(void) XtestCanHandleAfternoonAsWellAsMorning
+
+-(void) testCanHandleAfternoonAsWellAsMorning
 {
   var aReservation = { 'morning' : false };
 
@@ -207,7 +208,7 @@
     }];
 }
 
--(void) XtestReservationDataIncludesGroupProcedureAndAnimalObjects
+-(void) testReservationDataIncludesGroupProcedureAndAnimalObjects
 {
   var aReservation = { 'groups' : [ {'procedures' : ['accupuncture', 'floating'],
                                      'animals' : ['betsy', 'josie'] },

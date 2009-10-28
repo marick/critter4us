@@ -8,6 +8,7 @@ InitialDataForACourseSessionNews = "course focus data has arrived";
 TimeToReserveNews = "time to reserve";
 SwitchToGroupNews = "switch to this group";
 ModifyReservationNews = "time to edit a reservation";
+CopyReservationNews = "time to copy a reservation";
 DateTimeForCurrentReservationChangedNews = 'date and time have changed'
 UpdatedDataForACourseSessionNews = "course data has arrived again";
 AdviceAboutAnimalsDroppedNews = "animals have been dropped due to time or date change";

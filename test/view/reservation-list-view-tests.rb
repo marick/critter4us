@@ -69,6 +69,18 @@ class ViewTests < FreshDatabaseTestCase
     end
   end
 
+  should "contain well-formed copy button" do
+    reservation = Reservation.random
+
+    output = ReservationListView.new(:reservations => [reservation]).to_s
+    assert_xhtml(output) do
+      td do
+        input(:type => 'button', :value => "Edit",
+              :onclick => "window.parent.AppForwarder.copy(#{reservation.id})")
+      end
+    end
+  end
+
   should "contain a link to the reservation view" do
     reservation = Reservation.random
 

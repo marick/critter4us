@@ -29,4 +29,18 @@
     }];
 }
 
+-(void) testThatClickingAnHtmlEditButtonStartsCopinging
+{
+  [scenario 
+   during: function() { 
+      AppForwarder.copy(33);
+    }
+  behold: function() {
+      [self listenersWillReceiveNotification: CopyReservationNews
+                                  containingObject: 33];
+      [sut.allReservationPageController shouldReceive: @selector(disappear)];
+      [sut.pmrPageController shouldReceive: @selector(appear)];
+    }];
+}
+
 @end

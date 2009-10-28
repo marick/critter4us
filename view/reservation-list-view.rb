@@ -33,6 +33,12 @@ class ReservationListView < Erector::Widget
                 end
               end
               td do
+                form do 
+                  input(:type => 'button', :value=>'Copy',
+                        :onclick => "window.parent.AppForwarder.copy(#{r.id})")
+                end
+              end
+              td do
                 a('View',
                   :href => "reservation/#{r.id}",
                   :target => "_blank")
