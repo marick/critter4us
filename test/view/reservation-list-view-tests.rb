@@ -75,7 +75,7 @@ class ViewTests < FreshDatabaseTestCase
     output = ReservationListView.new(:reservations => [reservation]).to_s
     assert_xhtml(output) do
       td do
-        input(:type => 'button', :value => "Edit",
+        input(:type => 'button', :value => "Copy",
               :onclick => "window.parent.AppForwarder.copy(#{reservation.id})")
       end
     end

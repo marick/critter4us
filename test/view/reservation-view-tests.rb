@@ -39,8 +39,8 @@ class ReservationViewTests < FreshDatabaseTestCase
       @venipuncture = Procedure.random(:name => 'venipuncture')
       @milking = Procedure.random(:name => 'milking')
 
-      @betsy = Animal.random(:name => 'betsy', :kind => 'cow')
-      @jake = Animal.random(:name => 'jake', :kind => 'stallion')
+      @betsy = Animal.random(:name => 'betsy', :kind => 'cow', :procedure_description_kind => 'bovine')
+      @jake = Animal.random(:name => 'jake', :kind => 'stallion', :procedure_description_kind => 'equine')
       @test_data = {
         :instructor => 'marge',
         :course => 'vm333',
@@ -74,7 +74,7 @@ class ReservationViewTests < FreshDatabaseTestCase
     should "use a ReservationViewPrelude to create generic text" do 
       text = ReservationView.new(:reservation => @reservation).to_pretty
       expected_text = ReservationViewPrelude.new(:procedure_description_kinds => ['bovine', 'equine']).to_pretty
-      assert_match( /#{Regexp.escape(expected_text)}/, text )
+      assert { text.include? expected_text } 
     end
   end
 end

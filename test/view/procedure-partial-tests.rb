@@ -9,10 +9,10 @@ class ProcedurePartialTests < FreshDatabaseTestCase
   def setup
     @floating = Procedure.random(:name => 'floating')
     @venipuncture = Procedure.random(:name => 'venipuncture')
-    @filly = Animal.random(:name => 'filly', :kind => 'mare')
-    @jake = Animal.random(:name => 'jake', :kind => 'gelding')
-    @moo = Animal.random(:name => 'moo', :kind => 'cow')
-    @billy = Animal.random(:name => 'billy', :kind => 'goat')
+    @filly = Animal.random(:name => 'filly', :kind => 'mare', :procedure_description_kind => 'equine')
+    @jake = Animal.random(:name => 'jake', :kind => 'gelding', :procedure_description_kind => 'equine')
+    @moo = Animal.random(:name => 'moo', :kind => 'cow', :procedure_description_kind => 'bovine')
+    @billy = Animal.random(:name => 'billy', :kind => 'goat', :procedure_description_kind => 'caprine')
   end
 
   context "procedure description used"  do
@@ -162,6 +162,7 @@ class ProcedurePartialTests < FreshDatabaseTestCase
       @floating_procedure_description_caprine = ProcedureDescription.create(:procedure => @floating,
                                                 :animal_kind => 'caprine',
                                                 :description => "floating description (goat)")
+
       @floating_procedure_description_bovine = ProcedureDescription.create(:procedure => @floating,
                                                 :animal_kind => 'bovine',
                                                 :description => "floating description (cow)")
