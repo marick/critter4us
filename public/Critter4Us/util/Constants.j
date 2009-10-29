@@ -4,13 +4,12 @@
 
 ReservationDataAvailable="Reservation data available";
 DifferentObjectsUsedNews = "Some difference in use";
-InitialDataForACourseSessionNews = "course focus data has arrived";
+AnimalAndProcedureNews = "animals, objects, and exclusions";
 TimeToReserveNews = "time to reserve";
 SwitchToGroupNews = "switch to this group";
 ModifyReservationNews = "time to edit a reservation";
 CopyReservationNews = "time to copy a reservation";
 DateTimeForCurrentReservationChangedNews = 'date and time have changed'
-UpdatedDataForACourseSessionNews = "course data has arrived again";
 AdviceAboutAnimalsDroppedNews = "animals have been dropped due to time or date change";
 NewPanelOnPageNews = "a new panel has appeared on the current page";
 ClosedPanelOnPageNews = "a panel on the current page has closed";

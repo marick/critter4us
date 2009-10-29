@@ -26,12 +26,12 @@
 }
 
 
--(void) loadInfoRelevantToDate: date time: time notificationName: notificationName
+-(void) loadInfoRelevantToDate: date time: time 
 {
   var url = jsonURI(CourseSessionDataBlobRoute+"?date=" + date + "&time=" + [time description]);
   
   var dict = [self dictionaryFromJSON: [network GETJsonFromURL: url]];
-  [NotificationCenter postNotificationName: notificationName
+  [NotificationCenter postNotificationName: AnimalAndProcedureNews
                                     object: dict];
 }
 

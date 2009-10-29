@@ -28,36 +28,12 @@
 
 - (void) setUpNotifications
 {
-  [self notificationNamed: DifferentObjectsUsedNews
-                    calls: @selector(usedObjectsHaveChanged:)];
-  [self notificationNamed: SwitchToGroupNews
-                    calls: @selector(switchToNewGroup:)];
   [self notificationNamed: ModifyReservationNews
                     calls: @selector(edit:)];
-  [self notificationNamed: DateTimeForCurrentReservationChangedNews
-                    calls: @selector(fetchInfoForNewDateTime:)];
-  [self notificationNamed: UpdatedDataForACourseSessionNews
-                    calls: @selector(useInfoForNewDateTime:)];
+  //  [self notificationNamed: UpdatedDataForACourseSessionNews
+  //                    calls: @selector(useInfoForNewDateTime:)];
 }
 
-- (void) usedObjectsHaveChanged: aNotification
-{
-  if ([aNotification object] == procedureController)
-  {
-    var procedures = [[aNotification userInfo] valueForKey: 'used'];
-    [self filterAnimalsAccordingToProcedures: procedures];
-  }
-  [groupController setCurrentGroupProcedures: [procedureController usedObjects]
-                                     animals: [animalController usedObjects]];
-}
-
--(void) switchToNewGroup: aNotification
-{
-  var group = [aNotification object];
-  [animalController presetUsed: [group animals]];
-  [procedureController presetUsed: [group procedures]];
-  [self filterAnimalsAccordingToProcedures: [group procedures]];
-}
 
 - (void) finishReservation: aNotification // TO DELETE
 {
@@ -93,7 +69,7 @@
                          notificationName: UpdatedDataForACourseSessionNews];
 }
 
-- (void) useInfoForNewDateTime: aNotification
+- (void) useInfoForNewDateTime: aNotification // DELETE
 {
   var dict = [aNotification object];
   [self setAllPossibleObjectsInNamedObjectControllers: dict];
@@ -102,11 +78,8 @@
 
 // Util
 
-- (void) filterAnimalsAccordingToProcedures: procedures
+- (void) filterAnimalsAccordingToProcedures: procedures // DELETE
 {
-    var aggregate = [Procedure compositeFrom: procedures];
-    [animalController withholdNamedObjects: [aggregate animalsThisProcedureExcludes]];
-    [procedureController withholdNamedObjects: [aggregate animalsThisProcedureExcludes]];
 }
 
 - (CPDictionary) gather   // TO DELETE

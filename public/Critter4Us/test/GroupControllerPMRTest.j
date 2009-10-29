@@ -298,7 +298,7 @@
       [sut allPossibleObjects: [group]];
     }
   testAction: function() {
-      [sut exclusionsHaveChangedForThese: [changedFloating, changedRadiology]];
+      [sut redisplayInLightOf: [changedFloating, changedRadiology]];
     }
   andSo: function() { 
       var extractedGroup = [sut.groupCollectionView content][0];
@@ -325,7 +325,7 @@
       [sut allPossibleObjects: [group, otherGroup]];
     }
   testAction: function() {
-      [sut exclusionsHaveChangedForThese: [changedFloating, changedRadiology]];
+      [sut redisplayInLightOf: [changedFloating, changedRadiology]];
     }
   andSo: function() { 
       var extractedGroup = [sut.groupCollectionView content][0];
@@ -351,7 +351,7 @@
       [sut allPossibleObjects: [group]];
     }
   during: function() {
-      [sut exclusionsHaveChangedForThese: [floating, radiology]];
+      [sut redisplayInLightOf: [floating, radiology]];
     }
   behold: function() { 
       [self listenersWillReceiveNotification: SwitchToGroupNews
@@ -374,7 +374,7 @@
       [sut allPossibleObjects: [group]];
     }
   during: function() {
-      [sut exclusionsHaveChangedForThese: [changedFloating, radiology]];
+      [sut redisplayInLightOf: [changedFloating, radiology]];
     }
   behold: function() { 
       [self listenersWillReceiveNotification: AdviceAboutAnimalsDroppedNews
@@ -384,6 +384,29 @@
           [self assertTrue: text.match(/[Gg]roup 1.*betsy.*jake/)];
           return YES;
         }];
+    }
+   ];
+}
+
+- (void) testUpdatingAnEmptyGroupIsHarmless
+  // This happens when a reservation-edit is first created
+{
+  var group = [[Group alloc] initWithProcedures: [] animals: []];
+  var changedFloating = [[Procedure alloc] initWithName: 'floating' excluding: [jake, betsy]];
+
+  // Easier to use the real thing than the mock.
+  sut.groupCollectionView = [[ButtonCollectionView alloc] initWithFrame: CGRectMakeZero()];
+
+  [scenario
+    previousAction: function() {
+      [sut prepareToEditGroups];
+      [sut allPossibleObjects: [group]];
+    }
+  during: function() {
+      [sut redisplayInLightOf: [changedFloating, radiology]];
+    }
+  behold: function() { 
+      [self listenersShouldHearNo: AdviceAboutAnimalsDroppedNews];
     }
    ];
 }
@@ -401,13 +424,14 @@
       [sut allPossibleObjects: [group]];
     }
   during: function() {
-      [sut exclusionsHaveChangedForThese: [changedFloating, radiology]];
+      [sut redisplayInLightOf: [changedFloating, radiology]];
     }
   behold: function() {
       [self listenersShouldHearNo: AdviceAboutAnimalsDroppedNews];
     }
    ];
 }
+
 
 - (void) testAdvisoryMentionsMultipleDeletions
 {
@@ -425,7 +449,7 @@
       [sut allPossibleObjects: [group, otherGroup]];
     }
   during: function() {
-      [sut exclusionsHaveChangedForThese: [changedFloating, changedRadiology]];
+      [sut redisplayInLightOf: [changedFloating, changedRadiology]];
     }
   behold: function() { 
       [self listenersWillReceiveNotification: AdviceAboutAnimalsDroppedNews

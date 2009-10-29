@@ -38,8 +38,7 @@
       [sut setTimeInvariantExclusions: '{"proc1":["josie"],"proc2":["betsy"]}'];
     }
    during: function() { 
-      [sut loadInfoRelevantToDate: '2009-02-02' time: [Time morning]
-                 notificationName: "some notification name"];
+      [sut loadInfoRelevantToDate: '2009-02-02' time: [Time morning]];
     }
   behold: function() {
       uri = jsonURI(CourseSessionDataBlobRoute+"?date=2009-02-02&time=morning");
@@ -47,7 +46,7 @@
                             with: uri
                        andReturn: '{"animals":["betsy","josie"],"kindMap":{"betsy":"cow","josie":"horse"},"procedures":["proc1", "proc2"],"exclusions":{"proc1":["betsy"]}}'];
 
-      [self listenersWillReceiveNotification: "some notification name"
+      [self listenersWillReceiveNotification: AnimalAndProcedureNews
                                 checkingWith: function(notification) {
           var dict = [notification object];
           var actualAnimals = [dict valueForKey: 'animals'];

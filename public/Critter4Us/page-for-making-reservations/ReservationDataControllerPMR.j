@@ -94,13 +94,13 @@
   [dateTimeEditingPanelController disappear];
   var date = [dateTimeEditingControl date];
   var state = [dateTimeEditingControl morningState]
+  [dateField setStringValue: date];
+  [morningButton setState: state];
 
   [self sendNotification: DateTimeForCurrentReservationChangedNews
                aboutDate: date
                  andTime: [self timeFromState: state]];
 
-  [dateField setStringValue: date];
-  [morningButton setState: state];
   [self noteTimeAndDate];
 }
 

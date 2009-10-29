@@ -14,6 +14,9 @@
   [super setUp];
 }
 
+// At the beginning: Ready to gather data for a new reservation. 
+
+
 - (void) test_start_by_initializing_collaborators
 {
   [scenario
@@ -29,6 +32,8 @@
     }];
 }
 
+// EVENT: The user has selected date, time, ... all but animals and procedures
+
 - (void) test_when_data_is_available_pass_it_to_persistent_store_and_resign
 {
   [scenario
@@ -40,8 +45,8 @@
       [self sendNotification: ReservationDataAvailable withObject: dict];
     }
   behold: function() {
-      [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:notificationName:)
-                                    with: ['2009-02-02', [Time morning], InitialDataForACourseSessionNews]];
+      [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:)
+                                    with: ['2009-02-02', [Time morning]]];
       [sut.master shouldReceive: @selector(nextStep:)
                            with: GatheringGroupDataStepPMR];
     }];

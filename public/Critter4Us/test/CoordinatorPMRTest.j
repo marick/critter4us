@@ -34,14 +34,6 @@
 }
 
 
--(void) XtestPassesNewInformationAlongToControllers
-{
-  [scenario
-   during: function() {
-    }
-   behold: function() {
-    }];
-}
 
 
 
@@ -49,96 +41,11 @@
 
 
 
--(void)testThatTellsAnimalControllerToUpdateWhenProceduresChange
-{
-  var radiology = [[Procedure alloc] initWithName: 'radiology' excluding: [betsy]];
-  var floating = [[Procedure alloc] initWithName: 'floating'   excluding: [fang]];
-  var userInfo = [CPDictionary dictionaryWithJSObject: {'used': [radiology, floating]}];
-  [scenario
-   during: function() {
-      [self sendNotification: DifferentObjectsUsedNews
-                  withObject: sut.procedureController
-                    userInfo: userInfo];
-    }
-   behold: function() {
-      [sut.animalController shouldReceive:@selector(withholdNamedObjects:)
-                                     with: [[betsy, fang]]];
-    }];
-}
-
-
--(void)testThatUpdatesRelevantControllersWhenReceivingNewsOfAnyChangeInWhatIsUsed
-{
-  [scenario
-   during: function() {
-      [self sendNotification: DifferentObjectsUsedNews];
-    }
-   behold: function() {
-      [sut.animalController shouldReceive:@selector(usedObjects)
-                                andReturn: [betsy]];
-      [sut.procedureController shouldReceive: @selector(usedObjects)
-                                   andReturn: [floating]];
-      [sut.groupController shouldReceive:@selector(setCurrentGroupProcedures:animals:)
-                                    with: [[floating], [betsy]]];
-    }];
-}
 
 
 
--(void)testSwitchingToAGivenGroup
-{
-  [scenario
-   during: function() {
-      [self sendNotification: SwitchToGroupNews
-                  withObject: someGroup];
-    }
-   behold: function() {
-      [sut.animalController shouldReceive:@selector(presetUsed:)
-                                     with: [[someGroup animals]]];
-      [sut.procedureController shouldReceive:@selector(presetUsed:)
-                                        with: [[someGroup procedures]]];
-      // ...
-    }];
-}
-
--(void)testThatSwitchingToAGivenGroupMakesAnimalControllerUpdate
-{
-  var animals = [ [[Animal alloc] initWithName: 'animal0' kind: 'cow'],
-                  [[Animal alloc] initWithName: 'animal1' kind: 'horse'],
-                  [[Animal alloc] initWithName: 'animal2' kind: 'horse']];
-
-  var procedures = [ [[Procedure alloc] initWithName: 'procedure0'
-                                           excluding: [animals[0]]],
-                     [[Procedure alloc] initWithName: 'procedure1'
-                                           excluding: []]];
-
-  var group = [[Group alloc] initWithProcedures: procedures animals: animals];
-  [scenario
-   during: function() {
-      [self sendNotification: SwitchToGroupNews
-                  withObject: group];
-    }
-   behold: function() {
-      [sut.animalController shouldReceive:@selector(withholdNamedObjects:)
-                                     with: [[animals[0]]]];
-    }];
-}
 
 
--(void) XtestTellsReservationDataControllerToOfferLinkToNewReservation
-{
-  [scenario
-   during: function() {
-      [self sendNotification: TimeToReserveNews];
-    }
-   behold: function() {
-      // ...
-      [sut.persistentStore shouldReceive: @selector(makeReservation:)
-                               andReturn: "reservation-identifier"];
-      [sut.reservationDataController shouldReceive: @selector(offerReservationView:)
-       with: "reservation-identifier"];
-    }];
-}
 
 
 

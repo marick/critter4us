@@ -86,7 +86,7 @@
   [self differentGroupChosen: UnusedArgument];
 }
 
-- (void) exclusionsHaveChangedForThese: procedures
+- (void) redisplayInLightOf: procedures
 {
   var enumerator = [[groupCollectionView content] objectEnumerator];
   var group;

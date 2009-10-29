@@ -27,8 +27,7 @@
   [self afterResigningInFavorOf: GatheringGroupDataStepPMR
              causeNextEventWith: function() { 
     [persistentStore loadInfoRelevantToDate: [[aNotification object] valueForKey: 'date']
-                                       time: [[aNotification object] valueForKey: 'time']
-                           notificationName: InitialDataForACourseSessionNews];
+                                       time: [[aNotification object] valueForKey: 'time']];
     }];
 }
 
