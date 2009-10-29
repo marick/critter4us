@@ -1,3 +1,4 @@
+@import "Constants.j"
 
 @implementation CritterObject : CPObject
 {
