@@ -110,9 +110,8 @@
     }];
 }
 
--(void)testCanSpillSessionData
+-(void)testCanReturn
 {
-  var dict = [CPMutableDictionary dictionary];
   [scenario
    previousAction: function() { 
       [sut.courseField setStringValue: "some course"];
@@ -121,9 +120,10 @@
       [sut.morningButton setState:CPOnState];
     }
    testAction: function() {
-      [sut spillIt: dict];
+      return [sut data];
     }
   andSo: function() {
+      var dict = scenario.result;
       [self assert: "some course" equals: [dict valueForKey: 'course']];
       [self assert: "some instructor" equals: [dict valueForKey: 'instructor']];
       [self assert: "some date" equals: [dict valueForKey:'date']];

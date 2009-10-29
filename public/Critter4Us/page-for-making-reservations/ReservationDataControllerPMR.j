@@ -45,13 +45,6 @@
   [NotificationCenter postNotificationName: TimeToReserveNews object: nil];
 }
 
-- (id) spillIt: (CPMutableDictionary) dict
-{
-  [dict setValue: [courseField stringValue] forKey: 'course'];
-  [dict setValue: [instructorField stringValue] forKey: 'instructor'];
-  [dict setValue: [dateField stringValue] forKey: 'date'];
-  [dict setValue: [self deduceTime] forKey: 'time'];
-}
 
 - (id) offerReservationView: reservationID
 {
@@ -152,6 +145,15 @@
   [NotificationCenter postNotificationName: name object: data];
 }
 
+- (CPDictionary) data
+{
+  var dict = [CPDictionary dictionary];
+  [dict setValue: [courseField stringValue] forKey: 'course'];
+  [dict setValue: [instructorField stringValue] forKey: 'instructor'];
+  [dict setValue: [dateField stringValue] forKey: 'date'];
+  [dict setValue: [self deduceTime] forKey: 'time'];
+  return dict;
+}
 
 @end
 

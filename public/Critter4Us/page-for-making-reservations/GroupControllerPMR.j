@@ -57,10 +57,9 @@
 
 
 
-- (void) spillIt: (CPMutableDictionary) dict
+- (CPArray) groups
 {
-  var allGroups = [[groupCollectionView content] copy];
-  [dict setValue: allGroups forKey: 'groups'];
+  return [[groupCollectionView content] copy];
 }
 
 - (void) setCurrentGroupProcedures: procedures animals: animals

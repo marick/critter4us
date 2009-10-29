@@ -179,9 +179,8 @@
 
 
 
--(void) testCanSpillGroups
+-(void) test_can_answer_all_the_groups
 {
-  var dict = [CPMutableDictionary dictionary];
   var someGroup = [[Group alloc] initWithProcedures: [radiology] animals: [jake]];
   var another = [[Group alloc] initWithProcedures: [floating] animals: [betsy]];
 
@@ -190,14 +189,14 @@
       [sut prepareToEditGroups];
     }
   during: function() {
-      [sut spillIt: dict];
+      return [sut groups];
     }
   behold: function() { 
       [sut.groupCollectionView shouldReceive: @selector(content)
                                    andReturn: [someGroup, another]];
     }
   andSo: function() {
-      var groups = [dict valueForKey: 'groups'];
+      var groups = scenario.result;
       [self assert: 2 equals: [groups count]];
       [self assertGroup: groups[0]
           hasProcedures: [radiology] animals: [jake]];
