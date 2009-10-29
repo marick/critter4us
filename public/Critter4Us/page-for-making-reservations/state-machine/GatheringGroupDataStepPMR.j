@@ -38,8 +38,11 @@
   var dict = [CPMutableDictionary dictionary];
   [dict addEntriesFromDictionary: [reservationDataController data]];
   [dict setValue: [groupController groups] forKey: 'groups'];
-  [persistentStore makeReservation: dict];
-  [self resignInFavorOf: StoringReservationStepPMR];
+
+  [self afterResigningInFavorOf: StoringReservationStepPMR
+             causeNextEventWith: function() { 
+      [persistentStore makeReservation: dict];
+    }];
 }
 
 @end

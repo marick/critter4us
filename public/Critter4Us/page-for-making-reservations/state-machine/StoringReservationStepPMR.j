@@ -15,6 +15,7 @@
 {
   var reservationID = [aNotification object];
   [reservationDataController offerReservationView: reservationID];
+  // No need for afterResigningInFavorOf because next event comes from user.
   [self resignInFavorOf: GatheringReservationDataStepPMR];
 }
 
