@@ -40,8 +40,11 @@
 {
   var dataString = [self dataStringFromDictionary: dict];
   var content = [CPString stringWithFormat:@"data=%s", dataString];
-  return [self useReservationProducingRoute: StoreReservationRoute
-                               withPOSTData: content];
+  var id =  [self useReservationProducingRoute: StoreReservationRoute
+                                  withPOSTData: content];
+  [NotificationCenter postNotificationName: ReservationStoredNews
+                                    object: id];
+  
 }
 
 // TODO: Two much duplication between this function and previous.

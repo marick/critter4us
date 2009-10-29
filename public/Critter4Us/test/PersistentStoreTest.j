@@ -92,30 +92,31 @@
     }
   behold: function() {
       [sut.network shouldReceive: @selector(POSTFormDataTo:withContent:)
-       with: [jsonURI(StoreReservationRoute), 
-	      function(content) {
-                var array = content.split(/=/);
-                var jsonString = decodeURIComponent(array[1]);
-                var parsed = [jsonString objectFromJSON];
-                [self assert: '2009-03-23' equals: parsed['date']];
-                [self assert: 'afternoon' equals: parsed['time']];
-                [self assert: 'morin' equals: parsed['instructor']];
-                [self assert: 'vm333' equals: parsed['course']];
-                [self assert: 2 equals: [parsed['groups'] count]];
-                var groupsactual = parsed['groups'];
-                var group1actual = groupsactual[0];
-                var group2actual = groupsactual[1];
-                [self assert: ['betsy'] equals: group1actual['animals']];
-                [self assert: ['floating'] equals: group1actual['procedures']];
-                [self assert: ['betsy'] equals: group2actual['animals']];
-                [self assert: ['accupuncture'] equals: group2actual['procedures']];
-
-                return YES;
-	      }]
-       andReturn: '{"reservation":"1"}'];
+                            with: [jsonURI(StoreReservationRoute), 
+                                          function(content) {
+                                            var array = content.split(/=/);
+                                            var jsonString = decodeURIComponent(array[1]);
+                                            var parsed = [jsonString objectFromJSON];
+                                            [self assert: '2009-03-23' equals: parsed['date']];
+                                            [self assert: 'afternoon' equals: parsed['time']];
+                                            [self assert: 'morin' equals: parsed['instructor']];
+                                            [self assert: 'vm333' equals: parsed['course']];
+                                            [self assert: 2 equals: [parsed['groups'] count]];
+                                            var groupsactual = parsed['groups'];
+                                            var group1actual = groupsactual[0];
+                                            var group2actual = groupsactual[1];
+                                            [self assert: ['betsy'] equals: group1actual['animals']];
+                                            [self assert: ['floating'] equals: group1actual['procedures']];
+                                            [self assert: ['betsy'] equals: group2actual['animals']];
+                                            [self assert: ['accupuncture'] equals: group2actual['procedures']];
+                                            
+                                            return YES;
+                                          }]
+                       andReturn: '{"reservation":1}'];
+      [self listenersWillReceiveNotification: ReservationStoredNews
+                            containingObject: 1];
     }
    ];
-  [self assert: "1" equals: scenario.result];
 }
 
 - (void) testUpdatingOfReservation
