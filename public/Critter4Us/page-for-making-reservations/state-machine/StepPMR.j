@@ -35,10 +35,18 @@
 {
 }
 
-- (void) resignInFavorOf: step
+- (void) resignInFavorOf: (StepPMR) step
 {
-  [master nextStep: step];
   [self stopObserving];
+  [master nextStep: step];
 }
+
+- (void) afterResigningInFavorOf: (StepPMR) step
+              causeNextEventWith: func
+{
+  [self resignInFavorOf: step];
+  func();
+}
+
 
 @end
