@@ -2,6 +2,7 @@
 @import "PageControllerPMR.j"
 @import "GroupControllerPMR.j"
 @import "ReservationDataControllerPMR.j"
+@import "state-machine/GatheringReservationDataStepPMR.j"
 
 
 @implementation CoordinatorPMR : AwakeningObject
@@ -14,24 +15,21 @@
   
   PersistentStore persistentStore;
   id finishReservationClosure;
+
+  id currentStep;
 }
 
 - (void) awakeFromCib
 {
   [super awakeFromCib];
   [self beginReservationWorkflow];
+  [self nextStep: GatheringReservationDataStepPMR];
 }
 
 - (void) setUpNotifications
 {
-  [self notificationNamed: ReservationDataAvailable
-                    calls: @selector(reservationDataAvailable:)];
-  [self notificationNamed: InitialDataForACourseSessionNews
-                    calls: @selector(reservationDataRetrieved:)];
   [self notificationNamed: DifferentObjectsUsedNews
                     calls: @selector(usedObjectsHaveChanged:)];
-  [self notificationNamed: TimeToReserveNews
-                    calls: @selector(finishReservation:)];
   [self notificationNamed: SwitchToGroupNews
                     calls: @selector(switchToNewGroup:)];
   [self notificationNamed: ModifyReservationNews
@@ -40,19 +38,6 @@
                     calls: @selector(fetchInfoForNewDateTime:)];
   [self notificationNamed: UpdatedDataForACourseSessionNews
                     calls: @selector(useInfoForNewDateTime:)];
-}
-
-- (void) reservationDataAvailable: aNotification
-{
-  [persistentStore loadInfoRelevantToDate: [[aNotification object] valueForKey: 'date']
-                                     time: [[aNotification object] valueForKey: 'time']
-                         notificationName: InitialDataForACourseSessionNews];
-  [self beginCollectingGroupData];
-}
-
-- (void) reservationDataRetrieved: aNotification
-{
-  [self setAllPossibleObjectsInNamedObjectControllers: [aNotification object]];
 }
 
 - (void) usedObjectsHaveChanged: aNotification
@@ -74,7 +59,7 @@
   [self filterAnimalsAccordingToProcedures: [group procedures]];
 }
 
-- (void) finishReservation: aNotification
+- (void) finishReservation: aNotification // TO DELETE
 {
   var reservationData = [self gather];
   var reservationID = finishReservationClosure(reservationData);
@@ -124,7 +109,7 @@
     [procedureController withholdNamedObjects: [aggregate animalsThisProcedureExcludes]];
 }
 
-- (CPDictionary) gather
+- (CPDictionary) gather   // TO DELETE
 {
   var dict = [CPMutableDictionary dictionary];
   [reservationDataController spillIt: dict];
@@ -132,19 +117,14 @@
   return dict;
 }
 
-- (void) beginReservationWorkflow
+- (void) beginReservationWorkflow // TO DELETE
 {
-  [reservationDataController beginningOfReservationWorkflow];
-  [procedureController beginningOfReservationWorkflow];
-  [animalController beginningOfReservationWorkflow];
-  [groupController beginningOfReservationWorkflow];
-  [currentGroupPanelController disappear];
-  [NotificationCenter postNotificationName: AdvisoriesAreIrrelevantNews object: nil];
-
+  [currentStep start];
   [self finishByCreatingNewReservation];
 }
 
-- (void) beginCollectingGroupData
+
+- (void) beginCollectingGroupData  // TO DELETE
 {
   [reservationDataController prepareToFinishReservation];
   [groupController prepareToEditGroups];
@@ -154,19 +134,32 @@
   [currentGroupPanelController appear];
 }
 
-- (void) finishByCreatingNewReservation
+- (void) finishByCreatingNewReservation // TO DELETE
 {
   finishReservationClosure = function (reservationData) {
     return [persistentStore makeReservation: reservationData];
   }
 }
 
-- (void) setAllPossibleObjectsInNamedObjectControllers: dict
+- (void) setAllPossibleObjectsInNamedObjectControllers: dict // TO DELETE
 {
   var animals = [dict valueForKey: 'animals'];
   var procedures = [dict valueForKey: 'procedures'];
   [animalController allPossibleObjects: animals];
   [procedureController allPossibleObjects: procedures];
+}
+
+-(void) nextStep: step
+{
+  currentStep = [[step alloc]
+      initWithReservationDataController: reservationDataController
+                       animalController: animalController
+                    procedureController: procedureController
+                        groupController: groupController
+            currentGroupPanelController: currentGroupPanelController
+                        persistentStore: persistentStore
+                                 master: self];
+  [currentStep start];
 }
 
 

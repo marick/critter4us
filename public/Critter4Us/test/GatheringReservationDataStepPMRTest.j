@@ -1,8 +1,6 @@
 @import <Critter4Us/page-for-making-reservations/state-machine/GatheringReservationDataStepPMR.j>
 @import <Critter4Us/page-for-making-reservations/state-machine/GatheringGroupDataStepPMR.j>
 @import "StateMachineTestCase.j"
-@import <Critter4Us/model/Animal.j>
-@import <Critter4Us/model/Procedure.j>
 @import <Critter4Us/util/Time.j>
 
 
