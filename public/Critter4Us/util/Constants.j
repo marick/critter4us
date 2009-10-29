@@ -15,6 +15,7 @@ AdviceAboutAnimalsDroppedNews = "animals have been dropped due to time or date c
 NewPanelOnPageNews = "a new panel has appeared on the current page";
 ClosedPanelOnPageNews = "a panel on the current page has closed";
 AdvisoriesAreIrrelevantNews = "advisory panels should go away";
+ReservationStoredNews = "reservation has been stored"
 
 // Route names
 StoreReservationRoute = @"store_reservation";
