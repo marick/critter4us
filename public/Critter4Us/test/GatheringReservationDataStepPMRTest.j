@@ -52,4 +52,21 @@
     }];
 }
 
+// EVENT: User has chosen to work with an existing reservation.
+
+- (void) test_when_user_wishes_to_edit_pass_to_persistent_store_and_resign
+{
+  [scenario
+   during: function() {
+      [self sendNotification: ModifyReservationNews
+                  withObject: 33];
+    }
+   behold: function() {
+      [sut.persistentStore shouldReceive: @selector(editReservation:)
+                                    with: 33];
+      [sut.master shouldReceive: @selector(nextStep:)
+                           with: GatheringGroupDataStepPMR];
+    }];
+}
+
 @end

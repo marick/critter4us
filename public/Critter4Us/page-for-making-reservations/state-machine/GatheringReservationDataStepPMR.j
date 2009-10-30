@@ -9,6 +9,8 @@
 {
   [self notificationNamed: ReservationDataAvailable
                     calls: @selector(reservationDataAvailable:)];
+  [self notificationNamed: ModifyReservationNews
+                    calls: @selector(editReservation:)];
 }
 
 - (void) start
@@ -28,6 +30,14 @@
              causeNextEventWith: function() { 
     [persistentStore loadInfoRelevantToDate: [[aNotification object] valueForKey: 'date']
                                        time: [[aNotification object] valueForKey: 'time']];
+    }];
+}
+
+- (void) editReservation: aNotification
+{
+  [self afterResigningInFavorOf: GatheringGroupDataStepPMR
+             causeNextEventWith: function() { 
+      [persistentStore editReservation: [aNotification object]];
     }];
 }
 
