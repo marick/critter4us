@@ -91,10 +91,15 @@
 {
   [self listenersWillReceiveNotification:aNotificationName
    checkingWith:function(notification) {
-      //CPLog([notification name]);
-      //      CPLog([[notification object] description]);
-      //      CPLog([anObject description]);
-      return [[notification object] isEqual: anObject];
+      if ([[notification object] isEqual: anObject])
+      {
+        return YES;
+      }
+      //      CPLog("Expectation failure for listeners:")
+      //CPLog("notification name: " + [notification name]);
+      //CPLog("notification object: " + [[notification object] description]);
+      //CPLog("expected object: "+ [anObject description]);
+      return NO;
     }];
 }
 - (void) listenersWillReceiveNotification: (CPString) aNotificationName containingObject: (id) anObject
