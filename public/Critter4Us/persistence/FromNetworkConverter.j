@@ -63,6 +63,13 @@
   return retval;
 }
 
+// TODO: Note that this changes the argument. Make (painfully!) a copy?
+- (CPDictionary) convert: jsHash withAddedExclusions: exclusions
+{
+  [self addInvariantExclusions: exclusions to: jsHash];
+  return [self convert: jsHash];
+}
+
 - (Animal) animal: name kindMap: kindMap
 {
   return [[Animal alloc] initWithName: name kind: kindMap[name]];
@@ -127,5 +134,24 @@
   }
   return retval;
 }
+
+// 
+
+- (void) addInvariantExclusions: newExclusions to: jsHash // TODO: move this
+{
+  var procedures = jsHash['procedures'];
+  var exclusions = jsHash['exclusions']
+  for (var i=0; i < [procedures count]; i++)
+  {
+    var procedureName = procedures[i];
+    exclusions[procedureName] = exclusions[procedureName] || [];
+    var procedureExclusions = exclusions[procedureName];
+    var newProcedureExclusions = newExclusions[procedureName] || [];
+    exclusions[procedureName] = 
+        [procedureExclusions arrayByAddingObjectsFromArray: newProcedureExclusions];
+  }
+}
+
+
 
 @end
