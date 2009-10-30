@@ -72,7 +72,7 @@ var Skip = function() {}
 // synonym
 -(void)    beforeApp: beforeApp        // most specific version
       previousAction: previousAction
-          during: testAction
+              during: testAction
               behold: behold 
                andSo: consequence
 {
@@ -224,7 +224,7 @@ var Skip = function() {}
 
 - (void)checkAllExpectations
 {
-  //  CPLog('collaborators ' + [collaboratorNames description]);
+  // CPLog('collaborators ' + [collaboratorNames description]);
   for(var i=0; i<[collaboratorNames count]; i++)
     {
       var name = [collaboratorNames objectAtIndex: i];
