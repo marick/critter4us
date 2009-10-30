@@ -8,6 +8,8 @@
 {
 }
 
+
+
 -(void) testTurnsNamedObjectsIntoNames
 {
   var capp = [[NamedObject alloc] initWithName: 'proc'];
@@ -62,5 +64,24 @@
   
   [self assert: 'morning' equals: actual['time']];
 }
+
+
+// These two routines are really a hack because I haven't made the mock framework
+// match invocations with same names but different arguments.
+
+- (void) test_independent_date_conversion_routine_is_a_no_op
+{
+  var converter = [[ToNetworkConverter alloc] init];
+  [self assert: '2009-12-01' equals: [converter convertDate: '2009-12-01']];
+}
+
+- (void) test_independent_date_conversion_routine_converts_times_into_names
+{
+  var converter = [[ToNetworkConverter alloc] init];
+  [self assert: "morning" equals: [converter convertTime: [Time morning]]];
+  [self assert: "afternoon" equals: [converter convertTime: [Time afternoon]]];
+}
+
+
 
 @end
