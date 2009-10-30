@@ -17,8 +17,6 @@ AdvisoriesAreIrrelevantNews = "advisory panels should go away";
 ReservationStoredNews = "reservation has been stored"
 
 // Route names
-StoreReservationRoute = @"store_reservation";
-CourseSessionDataBlobRoute = @"course_session_data_blob";
 AllReservationsTableRoute = @"reservations";
 GetEditableReservationRoute = @"reservation";
 ModifyReservationRoute = @"modify_reservation";
