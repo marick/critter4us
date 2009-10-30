@@ -8,6 +8,7 @@
 {
   Animal betsy;
   Animal jake;
+  Animal fred;
   Procedure floating;
   Procedure venipuncture;
 }
@@ -16,6 +17,7 @@
 {
   betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
   jake =  [[Animal alloc] initWithName: 'jake' kind: 'horse'];
+  fred =  [[Animal alloc] initWithName: 'fred' kind: 'goat'];
   floating = [[Procedure alloc] initWithName: 'floating'];
   venipuncture = [[Procedure alloc] initWithName: 'venipuncture']}
 
@@ -89,6 +91,7 @@
 }
 
 
+
 - (void) testAProcedureListCanBeCreatedAsWell
 {
   var input = {
@@ -116,6 +119,32 @@
   [self assert: procedures
         equals: [converted valueForKey: 'procedures']];
 }
+
+- (void) testAProcedureListCanBeGivenAdditionalExclusions
+{
+  var input = {
+    'procedures' : ['floating', 'venipuncture'],
+    'exclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
+    'kindMap' : { 'betsy':'cow', 'jake':'horse', 'fred':'goat'}
+  };
+  var extras = {'floating':['fred', 'jake'], 'venipuncture':['jake']};
+
+  // TODO: move away from class methods
+  var converter = [[FromNetworkConverter alloc] init];
+  var converted = [converter convert: input withAddedExclusions: extras];
+  var procedures = [converted valueForKey: 'procedures'];
+  [self assert: 2 equals: [procedures count]];
+
+  [self assert: 'floating' equals: [procedures[0] name]];
+  // Note: for the moment, the duplicate exclusions are not a problem. 
+  [self assert: [betsy, jake, fred, jake]
+        equals: [procedures[0] animalsThisProcedureExcludes]];
+
+  [self assert: 'venipuncture' equals: [procedures[1] name]];
+  [self assert: [jake]
+        equals: [procedures[1] animalsThisProcedureExcludes]];
+}
+
 
 - (void) testCanCreateAGroup
 {
