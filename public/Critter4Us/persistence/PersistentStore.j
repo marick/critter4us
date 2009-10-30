@@ -4,6 +4,7 @@
 @import "ToNetworkConverter.j"
 @import "FromNetworkConverter.j"
 @import "TimeInvariantExclusionCache.j"
+@import "URIMaker.j"
 
 @implementation PersistentStore : AwakeningObject
 {
@@ -11,43 +12,48 @@
   ToNetworkConverter toNetworkConverter;
   FromNetworkConverter fromNetworkConverter;
   CPDictionary timeInvariantExclusions;
+  URIMaker uriMaker;
 }
 
 - (void) awakeFromCib
 {
+  if (awakened) return;
+  [super awakeFromCib]
   toNetworkConverter = [[ToNetworkConverter alloc] init];
   fromNetworkConverter = [[FromNetworkConverter alloc] init];
+  uriMaker = [[URIMaker alloc] init];
   [self setTimeInvariantExclusions: TimeInvariantExclusionCache];
 }
 
-- (void) setTimeInvariantExclusions: json
+- (void) setTimeInvariantExclusions: jsonString
 {
-  timeInvariantExclusions = [json objectFromJSON];
+  timeInvariantExclusions = [jsonString objectFromJSON];
 }
 
 
 -(void) loadInfoRelevantToDate: date time: time 
 {
-  var url = jsonURI(CourseSessionDataBlobRoute+"?date=" + date + "&time=" + [time description]);
-  
+  var url = [uriMaker reservationURIWithDate: [toNetworkConverter convertDate: date]
+                                        time: [toNetworkConverter convertTime: time]];
   var dict = [self dictionaryFromJSON: [network GETJsonFromURL: url]];
   [NotificationCenter postNotificationName: AnimalAndProcedureNews
                                     object: dict];
 }
 
 
-- (CPInteger) makeReservation: dict
+- (void) makeReservation: dict
 {
-  var dataString = [self dataStringFromDictionary: dict];
-  var content = [CPString stringWithFormat:@"data=%s", dataString];
-  var id =  [self useReservationProducingRoute: StoreReservationRoute
-                                  withPOSTData: content];
+  var jsData = [toNetworkConverter convert: dict];
+  var postContent = [uriMaker POSTReservationContentFrom: jsData];
+  var url = [uriMaker POSTReservationURI];
+  var json = [network POSTFormDataTo: url withContent: postContent];
+  var jsHash = [json objectFromJSON];
+  var id = jsHash['reservation'];
   [NotificationCenter postNotificationName: ReservationStoredNews
                                     object: id];
-  
 }
 
-// TODO: Two much duplication between this function and previous.
+;// TODO: Two much duplication between this function and previous.
 - (CPInteger) updateReservation: reservationID with: dict
 {
   var dataString = [self dataStringFromDictionary: dict];
@@ -62,7 +68,7 @@
   return [network GETHtmlfromURL: AllReservationsTableRoute];
 }
 
-- (id) reservation: reservationId
+- (id) editReservation: reservationId
 {
   var url = jsonURI(GetEditableReservationRoute) + '/' + reservationId;
   return [self dictionaryFromJSON: [network GETJsonFromURL: url]];
@@ -79,25 +85,13 @@
   var jsHash =  [json objectFromJSON];
   if (! jsHash)
     alert("No hash was obtained from JSON string " + json + "\n Please report this.");
-  [self addInvariantExclusionsTo: jsHash];
-  var dictionary =  [fromNetworkConverter convert: jsHash];
+  //  [self addInvariantExclusionsTo: jsHash];
+  // CPLog([[CPDictionary dictionaryWithJSObject: jsHash] description]);
+  var dictionary =  [fromNetworkConverter convert: jsHash
+                              withAddedExclusions: timeInvariantExclusions];
   return dictionary;
 }
 
-- (void) addInvariantExclusionsTo: jsHash
-{
-  var procedures = jsHash['procedures'];
-  var exclusions = jsHash['exclusions']
-  for (var i=0; i < [procedures count]; i++)
-  {
-    var procedureName = procedures[i];
-    exclusions[procedureName] = exclusions[procedureName] || [];
-    var procedureExclusions = exclusions[procedureName];
-    var timeInvariants = timeInvariantExclusions[procedureName] || [];
-    exclusions[procedureName] = 
-        [procedureExclusions arrayByAddingObjectsFromArray: timeInvariants];
-  }
-}
 
 - (CPString) dataStringFromDictionary: dict
 {

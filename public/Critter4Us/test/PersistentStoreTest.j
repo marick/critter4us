@@ -6,19 +6,27 @@
 @import "ScenarioTestCase.j"
 @import "TestUtil.j"
 
+
 @implementation PersistentStoreTest : ScenarioTestCase
 {
   Animal betsy;
   Animal josie;
   Procedure floating;
   Procedure accupuncture;
+  
+  id timeInvariants;
 }
+
+
 
 - (void)setUp
 {
   sut = [[PersistentStore alloc] init];
+  [sut awakeFromCib];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
- [scenario sutHasDownwardCollaborators: ['network']];
+  [scenario sutHasDownwardCollaborators: ['network', 'toNetworkConverter', 'fromNetworkConverter', 'uriMaker']];
+  timeInvariants = '{"floating":["never this animal"]}';
+  [sut setTimeInvariantExclusions: timeInvariants];
 
   betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
   josie = [[Animal alloc] initWithName: 'josie' kind: 'horse'];
@@ -27,98 +35,69 @@
   accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
 }
 
-- (void)testPersistentStoreMakesNetworkInfoAvailable
+- (void)test_how_persistent_store_coordinates_when_retrieving_data
 {
-  var expectedAnimals = [betsy, josie];
-  var expectedTimeDependentProcedure = [[Procedure alloc] initWithName: 'proc1'
-                                                             excluding: [betsy]];
-  var expectedTimeIndependentProcedure 
+  // TODO: replace complicated convert:withAddedExclusions: functions
+  // with a simple checker function.
   [scenario 
-    previousAction: function() { 
-      [sut setTimeInvariantExclusions: '{"proc1":["josie"],"proc2":["betsy"]}'];
-    }
    during: function() { 
-      [sut loadInfoRelevantToDate: '2009-02-02' time: [Time morning]];
+      [sut loadInfoRelevantToDate: 'a date' time: 'a time'];
     }
   behold: function() {
-      uri = jsonURI(CourseSessionDataBlobRoute+"?date=2009-02-02&time=morning");
+      [sut.toNetworkConverter shouldReceive: @selector(convertDate:)
+                                       with: 'a date'
+                                  andReturn: 'a network date'];
+      [sut.toNetworkConverter shouldReceive: @selector(convertTime:)
+                                       with: 'a time'
+                                  andReturn: 'a network time'];
+      [sut.uriMaker shouldReceive: @selector(reservationURIWithDate:time:)
+                             with: ['a network date', 'a network time']
+                        andReturn: 'uri'];
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
-                            with: uri
-                       andReturn: '{"animals":["betsy","josie"],"kindMap":{"betsy":"cow","josie":"horse"},"procedures":["proc1", "proc2"],"exclusions":{"proc1":["betsy"]}}'];
+                            with: 'uri'
+                       andReturn: '{"a json":"string"}'];
+      
 
-      [self listenersWillReceiveNotification: AnimalAndProcedureNews
-                                checkingWith: function(notification) {
-          var dict = [notification object];
-          var actualAnimals = [dict valueForKey: 'animals'];
-          if (! [actualAnimals isEqual: expectedAnimals]) return NO;
-
-          var actualProcedures = [dict valueForKey: 'procedures'];
-          var proc1 = [self findProcedureNamed: 'proc1' in: actualProcedures];
-          if (! [proc1 excludes: betsy]) return [self no: "proc1 allows betsy"];
-          if (! [proc1 excludes: josie]) return [self no: "proc1 allows josie"];
-          var proc2 = [self findProcedureNamed: 'proc2' in: actualProcedures];
-          if (! [proc2 excludes: betsy]) return [self no: "proc2 allows betsy"];
-          if (  [proc2 excludes: josie]) return [self no: "proc2 excludes josie"];
-          return YES;
-        }];
+      var hasCorrectData = function(data) { 
+        return data['a json'] == "string" }
+      var hasExtraExclusions = function(exclusions) {
+        return exclusions['floating'] == 'never this animal' }
+      [sut.fromNetworkConverter shouldReceive: @selector(convert:withAddedExclusions:)
+                                         with: [hasCorrectData, hasExtraExclusions]
+                                    andReturn: 'a big dictionary'];
+      [self listenersShouldReceiveNotification: AnimalAndProcedureNews
+                              containingObject: 'a big dictionary'];
     }];
 }
 
-- (CPString) no: message
+
+
+-(void)test_how_persistent_store_coordinates_when_posting_a_reservation
 {
-  CPLog(message);
-  return NO;
-}
-
-
-
--(void)testPostingOfReservation
-{
-  var time = [Time afternoon];
-
-  // This test doesn't really need to use real data. The code under test doesn't
-  // massage the data any more - that works been hived off to ToNetworkConverter. 
-  // It can't hurt, but do something simpler if this test ever breaks.
-  var group1 = [[Group alloc] initWithProcedures: [floating] animals: [betsy]];
-  var group2 = [[Group alloc] initWithProcedures: [accupuncture] animals: [betsy]];
-
-  var data = [CPDictionary
-                 dictionaryWithObjects: ['2009-03-23', time, "morin", "vm333", [group1, group2]]
-                               forKeys: ['date', 'time', 'instructor', 'course', 'groups']];
   [scenario 
    during: function() {
-      return [sut makeReservation: data];
+      [sut makeReservation: 'reservation data'];
     }
   behold: function() {
+      
+      [sut.toNetworkConverter shouldReceive: @selector(convert:)
+                                       with: 'reservation data'
+                                  andReturn: {'a':'jshash'}];
+      [sut.uriMaker shouldReceive: @selector(POSTReservationURI)
+                        andReturn: 'uri'];
+      [sut.uriMaker shouldReceive: @selector(POSTReservationContentFrom:)
+                             with: function(arg) { return arg['a'] == 'jshash'}
+                        andReturn: 'content'];
       [sut.network shouldReceive: @selector(POSTFormDataTo:withContent:)
-                            with: [jsonURI(StoreReservationRoute), 
-                                          function(content) {
-                                            var array = content.split(/=/);
-                                            var jsonString = decodeURIComponent(array[1]);
-                                            var parsed = [jsonString objectFromJSON];
-                                            [self assert: '2009-03-23' equals: parsed['date']];
-                                            [self assert: 'afternoon' equals: parsed['time']];
-                                            [self assert: 'morin' equals: parsed['instructor']];
-                                            [self assert: 'vm333' equals: parsed['course']];
-                                            [self assert: 2 equals: [parsed['groups'] count]];
-                                            var groupsactual = parsed['groups'];
-                                            var group1actual = groupsactual[0];
-                                            var group2actual = groupsactual[1];
-                                            [self assert: ['betsy'] equals: group1actual['animals']];
-                                            [self assert: ['floating'] equals: group1actual['procedures']];
-                                            [self assert: ['betsy'] equals: group2actual['animals']];
-                                            [self assert: ['accupuncture'] equals: group2actual['procedures']];
-                                            
-                                            return YES;
-                                          }]
-                       andReturn: '{"reservation":1}'];
-      [self listenersWillReceiveNotification: ReservationStoredNews
-                            containingObject: 1];
+                            with: ['uri', 'content']
+                       andReturn: '{"reservation":"1"}'];
+      [self listenersShouldReceiveNotification: ReservationStoredNews
+                              containingObject: '1'];
     }
    ];
 }
 
-- (void) testUpdatingOfReservation
+- (void) xtestUpdatingOfReservation
 {
   [scenario 
    during: function() {
@@ -143,7 +122,7 @@
    ];
 }
 
--(void)testCanFetchTableInfoFromNetwork
+-(void)xtestCanFetchTableInfoFromNetwork
 {
   [scenario
     during: function() { 
@@ -159,7 +138,7 @@
     }];
 }
 
--(void) testCanFetchReservationDataFromNetworkForEditing
+-(void) xtestCanFetchReservationDataFromNetworkForEditing
 {
   var aReservation = { 'instructor':'dr dawn',
                        'course' : 'vcm3',
@@ -169,7 +148,7 @@
   };
   [scenario 
    during: function() {
-      return [sut reservation: 1];
+      return [sut editReservation: 1];
     }
   behold: function() {
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
@@ -189,13 +168,13 @@
 }
 
 
--(void) testCanHandleAfternoonAsWellAsMorning
+-(void) xtestCanHandleAfternoonAsWellAsMorning
 {
   var aReservation = { 'morning' : false };
 
   [scenario 
    during: function() {
-      return [sut reservation: 1];
+      return [sut editReservation: 1];
     }
   behold: function() {
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
@@ -208,7 +187,7 @@
     }];
 }
 
--(void) testReservationDataIncludesGroupProcedureAndAnimalObjects
+-(void) xtestReservationDataIncludesGroupProcedureAndAnimalObjects
 {
   var aReservation = { 'groups' : [ {'procedures' : ['accupuncture', 'floating'],
                                      'animals' : ['betsy', 'josie'] },
@@ -219,7 +198,7 @@
 
   [scenario 
    during: function() {
-      return [sut reservation: 1];
+      return [sut editReservation: 1];
     }
   behold: function() {
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
@@ -268,7 +247,6 @@
       return candidate;
     }
   }
-  CPLog("No procedure found for " + name + " in " + [array description]);
   [self fail];
 }
 

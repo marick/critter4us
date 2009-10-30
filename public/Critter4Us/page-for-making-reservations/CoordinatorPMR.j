@@ -22,14 +22,11 @@
 - (void) awakeFromCib
 {
   [super awakeFromCib];
-  [self beginReservationWorkflow];
   [self nextStep: GatheringReservationDataStepPMR];
 }
 
 - (void) setUpNotifications
 {
-  [self notificationNamed: ModifyReservationNews
-                    calls: @selector(edit:)];
   //  [self notificationNamed: UpdatedDataForACourseSessionNews
   //                    calls: @selector(useInfoForNewDateTime:)];
 }
@@ -44,6 +41,11 @@
 }
 
 - (void) edit: aNotification
+{
+  [self nextStep: EditingStoredReservationDataStepPMR];
+}
+
+- (void) OLD_edit: aNotification
 {
   [self beginReservationWorkflow];
 
