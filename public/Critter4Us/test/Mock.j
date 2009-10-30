@@ -88,13 +88,18 @@
 - (Mock)with: (id)args
 {
   if (typeof(args) == "function")
-    {
-      args = [args];
-    }
-  if (! [args isKindOfClass: CPArray])
-    {
-      args = [args];
-    }
+  {
+    args = [args];
+  }
+  else if (args.isa == undefined)
+  {
+    args = [args];
+  }
+  else if (! [args isKindOfClass: CPArray])
+  {
+    args = [args];
+  }
+
   buildingExpectation.args = args;
   return self;	
 }
@@ -107,6 +112,7 @@
 
 - (BOOL)wereExpectationsFulfilled
 {
+  // CPLog([actualities description]);
   if ([expectationDictionary count] !== [actualities count])
     {
       [self noteFailure: [CPString stringWithFormat: "%d expected invocations, got %d", [expectationDictionary count], [actualities count]]];
@@ -116,7 +122,9 @@
     {
       var actuality = actualities[i];
       var selector = [actuality selector];
+      // CPLog(selector)
       var expectation = [expectationDictionary objectForKey: selector];
+      // CPLog([expectation description]);
       if (expectation == null)
 	{
 	  [self noteFailure: [CPString stringWithFormat: "No expectation for %@", selector]];
