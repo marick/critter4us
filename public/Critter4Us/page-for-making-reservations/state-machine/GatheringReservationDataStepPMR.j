@@ -10,7 +10,7 @@
   [self notificationNamed: ReservationDataAvailable
                     calls: @selector(reservationDataAvailable:)];
   [self notificationNamed: ModifyReservationNews
-                    calls: @selector(editReservation:)];
+                    calls: @selector(fetchReservation:)];
 }
 
 - (void) start
@@ -28,16 +28,19 @@
 {
   [self afterResigningInFavorOf: GatheringGroupDataStepPMR
              causeNextEventWith: function() { 
+    [persistentStore makeURIsWith: [[URIMaker alloc] init]];
     [persistentStore loadInfoRelevantToDate: [[aNotification object] valueForKey: 'date']
                                        time: [[aNotification object] valueForKey: 'time']];
     }];
 }
 
-- (void) editReservation: aNotification
+- (void) fetchReservation: aNotification
 {
   [self afterResigningInFavorOf: GatheringGroupDataStepPMR
              causeNextEventWith: function() { 
-      [persistentStore editReservation: [aNotification object]];
+      var id = [aNotification object];
+      [persistentStore makeURIsWith: [[EditingURIMaker alloc] initEditing: id]];
+      [persistentStore fetchReservation: id];
     }];
 }
 

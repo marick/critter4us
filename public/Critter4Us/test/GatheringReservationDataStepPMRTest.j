@@ -45,6 +45,11 @@
       [self sendNotification: ReservationDataAvailable withObject: dict];
     }
   behold: function() {
+      [sut.persistentStore shouldReceive: @selector(makeURIsWith:)
+                                    with: function(arg) {
+          [self assert: "URIMaker" equals: [arg className]];
+          return YES;
+        }];
       [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:)
                                     with: ['2009-02-02', [Time morning]]];
       [sut.master shouldReceive: @selector(nextStep:)
@@ -62,7 +67,13 @@
                   withObject: 33];
     }
    behold: function() {
-      [sut.persistentStore shouldReceive: @selector(editReservation:)
+      [sut.persistentStore shouldReceive: @selector(makeURIsWith:)
+                                    with: function(arg) {
+          [self assert: "EditingURIMaker" equals: [arg className]];
+          [self assert: 33 equals: [arg reservationID]];
+          return YES;
+        }];
+      [sut.persistentStore shouldReceive: @selector(fetchReservation:)
                                     with: 33];
       [sut.master shouldReceive: @selector(nextStep:)
                            with: GatheringGroupDataStepPMR];
