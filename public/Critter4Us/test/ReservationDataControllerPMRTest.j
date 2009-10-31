@@ -188,6 +188,7 @@
       [sut.instructorField shouldReceive: @selector(setStringValue:) with: 'the instructor'];
       [sut.dateField shouldReceive: @selector(setStringValue:) with: 'the date'];
       [sut.morningButton shouldReceive: @selector(setState:) with: CPOnState];
+      [sut.dateTimeSummary shouldReceive: @selector(setStringValue:)];
     }
    ];
 }
@@ -309,7 +310,4 @@
    ];
   
 }
-
-
-
 @end

@@ -74,6 +74,7 @@
   var isMorning = [[dictionary valueForKey: 'time'] isEqual: [Time morning]];
   var state =  isMorning ? CPOnState : CPOffState;
   [morningButton setState: state];
+  [self noteTimeAndDate];
 }
 
 - (void) startDestructivelyEditingDateTime: sender
@@ -96,12 +97,11 @@
   var state = [dateTimeEditingControl morningState]
   [dateField setStringValue: date];
   [morningButton setState: state];
+  [self noteTimeAndDate];
 
   [self sendNotification: DateTimeForCurrentReservationChangedNews
                aboutDate: date
                  andTime: [self timeFromState: state]];
-
-  [self noteTimeAndDate];
 }
 
 
