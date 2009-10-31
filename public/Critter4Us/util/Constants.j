@@ -14,12 +14,11 @@ AdviceAboutAnimalsDroppedNews = "animals have been dropped due to time or date c
 NewPanelOnPageNews = "a new panel has appeared on the current page";
 ClosedPanelOnPageNews = "a panel on the current page has closed";
 AdvisoriesAreIrrelevantNews = "advisory panels should go away";
-ReservationStoredNews = "reservation has been stored"
+ReservationStoredNews = "reservation has been stored";
+ReservationRetrievedNews = "reservation has been retrieved";
 
 // Route names
-AllReservationsTableRoute = @"reservations";
-GetEditableReservationRoute = @"reservation";
-ModifyReservationRoute = @"modify_reservation";
+AllReservationsTableRoute = @"reservations";  // TODO: this should be moved
 
 // Other useful constants
 NotificationCenter = [CPNotificationCenter defaultCenter];

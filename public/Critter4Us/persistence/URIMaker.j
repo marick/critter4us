@@ -3,6 +3,7 @@
 CourseSessionDataBlobRoute = @"course_session_data_blob";
 StoreReservationRoute = @"store_reservation";
 FetchReservationRoute = @"reservation";
+ModifyReservationRoute = @"modify_reservation";
 
 @implementation URIMaker : CPObject
 
@@ -29,24 +30,34 @@ FetchReservationRoute = @"reservation";
 
 @implementation EditingURIMaker : URIMaker
 {
-  id reservationID;
+  id reservationBeingEdited;
 }
 
 - (id) initEditing: aReservationID
 {
   self = [super init];
-  reservationID = aReservationID;
+  reservationBeingEdited = aReservationID;
   return self;
 }
 
-- (id) reservationID
+- (id) reservationBeingEdited
 {
-  return reservationID;
+  return reservationBeingEdited;
 }
 
 - (CPString) fetchReservationURI: id
 {
-  return jsonURI(FetchReservationRoute) + '/' + id + '?ignoring=' + id ;
+  return jsonURI(FetchReservationRoute) + '/' + id + '?ignoring=' + reservationBeingEdited ;
+}
+
+- (CPString) POSTReservationURI
+{
+  return jsonURI(ModifyReservationRoute);
+}
+
+- (CPString) POSTReservationContentFrom: (id) jsData
+{
+  return [super POSTReservationContentFrom: jsData] + '&reservationID=' + reservationBeingEdited;
 }
 
 

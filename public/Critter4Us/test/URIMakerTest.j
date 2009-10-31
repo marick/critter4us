@@ -18,11 +18,18 @@
         equals: [maker reservationURIWithDate: '2009-12-30' time: 'morning']];
 }
 
+-(void) test_chooses_to_create_a_new_reservation_when_storing
+{
+  [self assert: '/json/store_reservation'
+        equals: [maker POSTReservationURI]];
+}
+
 -(void) test_can_create_content_for_posting_a_reservation
 {
   var data = {'aaa':'bbb'};
   [self assert: "data=%7B%22aaa%22%3A%22bbb%22%7D"
         equals: [maker POSTReservationContentFrom: data]];
 }
+
 
 @end

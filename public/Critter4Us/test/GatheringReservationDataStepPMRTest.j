@@ -70,7 +70,7 @@
       [sut.persistentStore shouldReceive: @selector(makeURIsWith:)
                                     with: function(arg) {
           [self assert: "EditingURIMaker" equals: [arg className]];
-          [self assert: 33 equals: [arg reservationID]];
+          [self assert: 33 equals: [arg reservationBeingEdited]];
           return YES;
         }];
       [sut.persistentStore shouldReceive: @selector(fetchReservation:)

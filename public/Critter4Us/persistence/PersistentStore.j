@@ -50,7 +50,9 @@
 {
   var jsData = [toNetworkConverter convert: dict];
   var postContent = [uriMaker POSTReservationContentFrom: jsData];
+  alert(postContent);
   var url = [uriMaker POSTReservationURI];
+  alert(url)
   var json = [network POSTFormDataTo: url withContent: postContent];
   var jsHash = [json objectFromJSON];
   var id = jsHash['reservation'];
@@ -80,8 +82,8 @@
 
 
 
-;// TODO: Two much duplication between this function and previous.
-- (CPInteger) updateReservation: reservationID with: dict
+// TODO: Two much duplication between this function and previous.
+- (CPInteger) XupdateReservation: reservationID with: dict // TODO: DELETE
 {
   var dataString = [self dataStringFromDictionary: dict];
   var content = [CPString stringWithFormat:@"reservationID=%s&data=%s",

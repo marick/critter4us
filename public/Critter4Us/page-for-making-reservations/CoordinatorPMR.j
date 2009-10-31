@@ -40,10 +40,6 @@
   [self beginReservationWorkflow];
 }
 
-- (void) edit: aNotification
-{
-  [self nextStep: EditingStoredReservationDataStepPMR];
-}
 
 - (void) OLD_edit: aNotification
 {
