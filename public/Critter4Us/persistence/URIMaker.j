@@ -18,11 +18,17 @@ ModifyReservationRoute = @"modify_reservation";
   return 'data=' + encodeURIComponent(json);
 }
 
-
 - (CPString) POSTReservationURI
 {
   return jsonURI(StoreReservationRoute);
 }
+
+- (CPString) fetchReservationURI: id
+{
+  return jsonURI(FetchReservationRoute) + '/' + id
+}
+
+
 
 @end
 
@@ -47,7 +53,7 @@ ModifyReservationRoute = @"modify_reservation";
 
 - (CPString) fetchReservationURI: id
 {
-  return jsonURI(FetchReservationRoute) + '/' + id + '?ignoring=' + reservationBeingEdited ;
+  return [super fetchReservationURI: id] + '?ignoring=' + reservationBeingEdited ;
 }
 
 - (CPString) POSTReservationURI
