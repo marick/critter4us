@@ -15,6 +15,11 @@
   URIMaker uriMaker;
 }
 
+- (void) makeURIsWith: aURIMaker
+{
+  uriMaker = aURIMaker;
+}
+
 - (void) awakeFromCib
 {
   if (awakened) return;
@@ -53,6 +58,28 @@
                                     object: id];
 }
 
+
+- (void) fetchReservation: reservationId
+{
+  var url = [uriMaker fetchReservationURI: reservationId];
+  var dict = [self dictionaryFromJSON: [network GETJsonFromURL: url]];
+  [NotificationCenter postNotificationName: ReservationRetrievedNews
+                                    object: dict];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ;// TODO: Two much duplication between this function and previous.
 - (CPInteger) updateReservation: reservationID with: dict
 {
@@ -66,12 +93,6 @@
 - (CPString) pendingReservationTableAsHtml
 {
   return [network GETHtmlfromURL: AllReservationsTableRoute];
-}
-
-- (id) editReservation: reservationId
-{
-  var url = jsonURI(GetEditableReservationRoute) + '/' + reservationId;
-  return [self dictionaryFromJSON: [network GETJsonFromURL: url]];
 }
 
 // util

@@ -6,6 +6,15 @@
 @import "ScenarioTestCase.j"
 @import "TestUtil.j"
 
+HasCorrectData = function(data) { 
+  return data['a json'] == "string" 
+}
+HasExtraExclusions = function(exclusions) {
+  return exclusions['floating'] == 'never this animal' 
+}
+GetEditableReservationRoute = @"reservation"; // DELETEME
+
+
 
 @implementation PersistentStoreTest : ScenarioTestCase
 {
@@ -58,12 +67,8 @@
                        andReturn: '{"a json":"string"}'];
       
 
-      var hasCorrectData = function(data) { 
-        return data['a json'] == "string" }
-      var hasExtraExclusions = function(exclusions) {
-        return exclusions['floating'] == 'never this animal' }
       [sut.fromNetworkConverter shouldReceive: @selector(convert:withAddedExclusions:)
-                                         with: [hasCorrectData, hasExtraExclusions]
+                                         with: [HasCorrectData, HasExtraExclusions]
                                     andReturn: 'a big dictionary'];
       [self listenersShouldReceiveNotification: AnimalAndProcedureNews
                               containingObject: 'a big dictionary'];
@@ -79,7 +84,6 @@
       [sut makeReservation: 'reservation data'];
     }
   behold: function() {
-      
       [sut.toNetworkConverter shouldReceive: @selector(convert:)
                                        with: 'reservation data'
                                   andReturn: {'a':'jshash'}];
@@ -96,6 +100,32 @@
     }
    ];
 }
+
+- (void) test_how_persistentStore_coordinates_fetching_a_reservation
+{
+  [scenario 
+   during: function() { 
+      [sut fetchReservation: 'id'];
+    }
+  behold: function() {
+      [sut.uriMaker shouldReceive: @selector(fetchReservationURI:)
+                             with: ['id']
+                        andReturn: 'uri'];
+      [sut.network shouldReceive: @selector(GETJsonFromURL:)
+                            with: 'uri'
+                       andReturn: '{"a json":"string"}'];
+      [sut.fromNetworkConverter shouldReceive: @selector(convert:withAddedExclusions:)
+                                         with: [HasCorrectData, HasExtraExclusions]
+                                    andReturn: 'a big dictionary'];
+      [self listenersShouldReceiveNotification: ReservationRetrievedNews
+                              containingObject: 'a big dictionary'];
+    }];
+}
+
+
+
+
+
 
 - (void) xtestUpdatingOfReservation
 {
