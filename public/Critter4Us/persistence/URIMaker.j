@@ -2,6 +2,7 @@
 
 CourseSessionDataBlobRoute = @"course_session_data_blob";
 StoreReservationRoute = @"store_reservation";
+FetchReservationRoute = @"reservation";
 
 @implementation URIMaker : CPObject
 
@@ -27,6 +28,26 @@ StoreReservationRoute = @"store_reservation";
 
 
 @implementation EditingURIMaker : URIMaker
+{
+  id reservationID;
+}
+
+- (id) initEditing: aReservationID
+{
+  self = [super init];
+  reservationID = aReservationID;
+  return self;
+}
+
+- (id) reservationID
+{
+  return reservationID;
+}
+
+- (CPString) fetchReservationURI: id
+{
+  return jsonURI(FetchReservationRoute) + '/' + id + '?ignoring=' + id ;
+}
 
 
 @end

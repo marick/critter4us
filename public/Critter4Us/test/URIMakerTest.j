@@ -12,7 +12,7 @@
   maker = [[URIMaker alloc] init];
 }
 
--(void) test_can_make_uri_to_fetch_reservation
+-(void) test_can_make_uri_to_fetch_reservation_by_date
 {
   [self assert: '/json/course_session_data_blob?date=2009-12-30&time=morning'
         equals: [maker reservationURIWithDate: '2009-12-30' time: 'morning']];
