@@ -8,7 +8,6 @@
 
 @implementation GatheringGroupDataStepPMRTest : StateMachineTestCase
 {
-{
   Animal betsy;
   Animal jake;
   Animal fang;
@@ -16,7 +15,6 @@
   Procedure radiology;
 
   Group someGroup;
-}
 }
 
 - (void) setUp
