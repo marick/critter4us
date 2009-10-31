@@ -2,6 +2,7 @@
 @import "StateMachineTestCase.j"
 @import <Critter4Us/model/Animal.j>
 @import <Critter4Us/model/Procedure.j>
+@import <Critter4Us/model/Group.j>
 @import <Critter4Us/util/Time.j>
 
 
@@ -43,7 +44,6 @@
     }
   behold: function() {
       [sut.reservationDataController shouldReceive:@selector(prepareToFinishReservation)];
-      [sut.groupController shouldReceive:@selector(prepareToEditGroups)];
       [sut.procedureController shouldReceive:@selector(appear)];
       [sut.animalController shouldReceive:@selector(appear)];
       [sut.groupController shouldReceive:@selector(appear)];
@@ -54,9 +54,7 @@
 
 - (void) test_when_animal_and_procedure_data_appears_pass_it_on_to_controllers
 {
-  var animal = [[Animal alloc] initWithName: "fred" kind: 'cow'];
-  var proc = [[Procedure alloc] initWithName: 'procme'];
-  var jsdict = {'animals':[animal], 'procedures':[proc]};
+  var jsdict = {'animals':['animals...'], 'procedures':['procedures...']};
   var dict = [CPDictionary dictionaryWithJSObject: jsdict];
   [scenario
     during: function() {
@@ -65,11 +63,36 @@
     }
   behold: function() {
       [sut.animalController shouldReceive: @selector(allPossibleObjects:)
-                                     with: [[animal]]];
+                                     with: [['animals...']]];
       [sut.procedureController shouldReceive: @selector(allPossibleObjects:)
-                                     with: [[proc]]];
+                                     with: [['procedures...']]];
+      [sut.groupController shouldReceive: @selector(addEmptyGroupToCollection)];
+    }];
+}
+
+// EVENT: The server tells us about a reservation (+ animal, procedure, reservation data)
+
+- (void) test_when_new_reservation_appears_pass_it_on_to_controllers
+{
+  var jsdict = {'animals':['animals...'], 'procedures':['procedures...'],
+                'groups':['groups...'], 'reservation data...':['...']};
+  var dict = [CPDictionary dictionaryWithJSObject: jsdict];
+  [scenario
+    during: function() {
+      [self sendNotification: ReservationRetrievedNews
+                  withObject: dict];
+    }
+  behold: function() {
+      [sut.reservationDataController shouldReceive: @selector(setNewValuesFrom:)
+                                              with: dict];
+      [sut.animalController shouldReceive: @selector(allPossibleObjects:)
+                                     with: [['animals...']]];
+      [sut.procedureController shouldReceive: @selector(allPossibleObjects:)
+                                        with: [['procedures...']]];
+      [sut.groupController shouldReceive: @selector(allPossibleObjects:)
+                                    with: [['groups...']]];
       [sut.groupController shouldReceive: @selector(redisplayInLightOf:)
-                                    with: [[proc]]];
+                                    with: [['procedures...']]];
     }];
 }
 

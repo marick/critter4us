@@ -8,7 +8,9 @@
 - (void) setUpNotifications
 {
   [self notificationNamed: AnimalAndProcedureNews
-                    calls: @selector(reservationDataRetrieved:)];
+                    calls: @selector(updateControllersWithAnimalAndProcedureInfo:)];
+  [self notificationNamed: ReservationRetrievedNews
+                    calls: @selector(updateControllersWithEntirelyNewInfo:)];
   [self notificationNamed: TimeToReserveNews
                     calls: @selector(finishReservation:)];
   [self notificationNamed: DifferentObjectsUsedNews
@@ -22,27 +24,44 @@
 -(void) start
 {
   [reservationDataController prepareToFinishReservation];
-  [groupController prepareToEditGroups];
   [procedureController appear];
   [animalController appear];
   [groupController appear];
+  [groupController showGroupButtons];
   [currentGroupPanelController appear];
 }
 
-                       // Messing around within this state
+                       // Getting Data For This State
 
-- (void) reservationDataRetrieved: aNotification
+- (void) updateControllersWithAnimalAndProcedureInfo: aNotification
 {
   var dict = [aNotification object];
   var animals = [dict valueForKey: 'animals'];
   var procedures = [dict valueForKey: 'procedures'];
+  [reservationDataController noChange];
   [animalController allPossibleObjects: animals];
   [procedureController allPossibleObjects: procedures];
+  [groupController addEmptyGroupToCollection];
+}
+
+- (void) updateControllersWithEntirelyNewInfo: aNotification
+{
+  var dict = [aNotification object];
+  var animals = [dict valueForKey: 'animals'];
+  var procedures = [dict valueForKey: 'procedures'];
+  var groups = [dict valueForKey: 'groups'];
+  [reservationDataController setNewValuesFrom: dict];
+  [animalController allPossibleObjects: animals];
+  [procedureController allPossibleObjects: procedures];
+  [groupController allPossibleObjects: groups];
   [groupController redisplayInLightOf: procedures];
 }
 
+                        // Messing Around Within the State
+
 - (void) usedObjectsHaveChanged: aNotification
 {
+  [reservationDataController noChange];
   if ([aNotification object] == procedureController)
   {
     var procedures = [[aNotification userInfo] valueForKey: 'used'];
@@ -59,10 +78,12 @@
   var group = [aNotification object];
   var aggregate = [Procedure compositeFrom: [group procedures]];
 
+  [reservationDataController noChange];
   [animalController presetUsed: [group animals]];
   [animalController withholdNamedObjects: [aggregate animalsThisProcedureExcludes]];
 
   [procedureController presetUsed: [group procedures]];
+  [groupController noChange]; // it generated the notification
 }
 
 
