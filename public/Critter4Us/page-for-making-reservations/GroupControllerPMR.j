@@ -37,6 +37,12 @@
   [groupCollectionView addNamedObjectToContent: [self emptyGroup]];
 }
 
+- (void) showGroupButtons
+{
+  [newGroupButton setHidden: NO];
+  [groupCollectionView setHidden: NO];
+}
+
 - (void) newGroup: sender
 {
   [self addEmptyGroupToCollection];
