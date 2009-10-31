@@ -32,5 +32,11 @@
   [[CPNotificationCenter defaultCenter] removeObserver: self];
 }
 
+- (void) noChange
+{
+  // Used to answer the question "Did programmer forget to consider effect
+  // on this objecdt?" in the negative.
+}
+
 
 @end
