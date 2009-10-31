@@ -14,6 +14,7 @@
                                         'morningButton', 'afternoonButton',
                                         'beginButton', 'restartButton',
                                         'reserveButton',
+                                        'previousResultsView', 'linkToPreviousResults',
                                         'linkToPreviousResults',
                                         'dateGatheringView', 'dateDisplayingView',
                                         'dateTimeSummary',
@@ -88,13 +89,13 @@
 {
   [scenario
     previousAction: function() {
-      [sut.linkToPreviousResults setHidden: NO];
+      [sut.previousResultsView setHidden: NO];
     }
     testAction: function() {
       [sut prepareToFinishReservation];
     }
   andSo: function() {
-      [self assert: YES equals: [sut.linkToPreviousResults hidden] ];
+      [self assert: YES equals: [sut.previousResultsView hidden] ];
     }
    ];
 }
@@ -143,7 +144,7 @@
 	    return arg.match(/\/reservation\/33/)
 	  }, function(x) { return YES }] // TODO: Make this any "any".
        ]; 
-      [sut.linkToPreviousResults shouldReceive: @selector(setHidden:)
+      [sut.previousResultsView shouldReceive: @selector(setHidden:)
                                           with: NO];
     }  
    ];

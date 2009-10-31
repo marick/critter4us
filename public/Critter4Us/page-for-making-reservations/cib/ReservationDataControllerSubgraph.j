@@ -110,11 +110,21 @@
   [restartButton setTarget: controller];
   [restartButton setAction: @selector(abandonReservation:)];
 
-  var webView = [[CPWebView alloc] initWithFrame: CGRectMake(placeForLink,60,500,100)];
-  [webView setHidden: YES];
-  [pageView addSubview: webView];
+  var resultsView = [[CPView alloc] initWithFrame: CGRectMake(placeForLink,60,500,200)];
+  [resultsView setHidden: YES];
+  [pageView addSubview: resultsView];
+  controller.previousResultsView = resultsView;
+
+  var webView = [[CPWebView alloc] initWithFrame: CGRectMake(0,0,500,300)];
+  [resultsView addSubview: webView];
   controller.linkToPreviousResults = webView;
 
+  var copyButton = [[CPButton alloc] initWithFrame: CGRectMake(50, 40, 200, 30)];
+  [copyButton setTitle: "Copy this Reservation"];
+  [copyButton setTarget: controller];
+  [copyButton setAction: @selector(copyPreviousReservation:)];
+  [resultsView addSubview: copyButton];
+  controller.copyButton = copyButton;
 
   // Temporary for testing
   [instructorField setStringValue: "morin"];

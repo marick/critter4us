@@ -15,7 +15,9 @@
   CPButton reserveButton;
   CPButton restartButton;
 
+  CPView previousResultsView;
   CPWebView linkToPreviousResults;
+  CPButton copyButton;
 
   CPView dateGatheringView;
   CPView dateDisplayingView;
@@ -37,7 +39,7 @@
   [self noteTimeAndDate];
   [self showDateAndTimeFields: NO];
   [self showGroupEditButtons: YES];
-  [linkToPreviousResults setHidden: YES];
+  [previousResultsView setHidden: YES];
 }
 
 - (void) makeReservation: sender
@@ -52,13 +54,18 @@
   var message = "Click to view the reservation in a new window.";
   [linkToPreviousResults loadHTMLString:@"<a href='" + href + "' target=\"_blank\">" + message + "</a>"
                baseURL: nil];
-  [linkToPreviousResults setHidden: NO];
+  [previousResultsView setHidden: NO];
 }
 
 - (void) beginningOfReservationWorkflow
 {
   [self showDateAndTimeFields: YES];
   [self showGroupEditButtons: NO];
+}
+
+- (id) copyPreviousReservation: sender
+{
+  alert([sender tag]);
 }
 
 - (void) abandonReservation:sender
