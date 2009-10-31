@@ -181,7 +181,7 @@
               'time' : [Time morning]};
   [scenario
     during: function() {
-      [sut edit: [CPDictionary dictionaryWithJSObject: data]];
+      [sut setNewValuesFrom: [CPDictionary dictionaryWithJSObject: data]];
     }
   behold: function() {
       [sut.courseField shouldReceive: @selector(setStringValue:) with: 'the course'];
@@ -197,7 +197,7 @@
   var data = {'time' : [Time afternoon]};
   [scenario
     during: function() {
-      [sut edit: [CPDictionary dictionaryWithJSObject: data]];
+      [sut setNewValuesFrom: [CPDictionary dictionaryWithJSObject: data]];
     }
   behold: function() {
       [sut.morningButton shouldReceive: @selector(setState:) with: CPOffState];

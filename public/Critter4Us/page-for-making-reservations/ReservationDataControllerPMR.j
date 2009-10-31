@@ -66,7 +66,7 @@
   alert("This isn't implemented yet. You can achieve the same effect by reloading this page in your browser.");
 }
 
-- (void) edit: dictionary
+- (void) setNewValuesFrom: dictionary
 {
   [courseField setStringValue: [dictionary valueForKey: 'course']];
   [instructorField setStringValue: [dictionary valueForKey: 'instructor']];
