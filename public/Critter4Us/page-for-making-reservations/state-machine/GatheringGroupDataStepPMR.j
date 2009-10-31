@@ -58,6 +58,33 @@
   [groupController redisplayInLightOf: procedures];
 }
 
+
+- (void) initializeControllersWithEntirelyNewInfo: aNotification
+{
+  var dict = [aNotification object];
+  [self allButRecalculatingGroups: dict];
+  [self recalculatingGroups: dict];
+}
+
+- (void) allButRecalculatingGroups: dict
+{
+  var animals = [dict valueForKey: 'animals'];
+  var procedures = [dict valueForKey: 'procedures'];
+  var groups = [dict valueForKey: 'groups'];
+  [reservationDataController setNewValuesFrom: dict];
+  [animalController allPossibleObjects: animals];
+  [procedureController allPossibleObjects: procedures];
+  [groupController allPossibleObjects: groups];
+}
+
+- (void) recalculatingGroups: dict
+{
+  var procedures = [dict valueForKey: 'procedures'];
+  var groups = [dict valueForKey: 'groups'];
+  [groupController redisplayInLightOf: procedures];
+}
+
+
                         // Messing Around Within the State
 
 - (void) usedObjectsHaveChanged: aNotification

@@ -1,5 +1,6 @@
 @import "StepPMR.j"
 @import "GatheringGroupDataStepPMR.j"
+@import "DateChangingGroupDataStepPMR.j"
 
 @implementation GatheringReservationDataStepPMR : StepPMR
 {
@@ -10,7 +11,9 @@
   [self notificationNamed: ReservationDataAvailable
                     calls: @selector(reservationDataAvailable:)];
   [self notificationNamed: ModifyReservationNews
-                    calls: @selector(fetchReservation:)];
+                    calls: @selector(fetchReservationToEdit:)];
+  [self notificationNamed: CopyReservationNews
+                    calls: @selector(fetchReservationToCopy:)];
 }
 
 - (void) start
@@ -34,14 +37,26 @@
     }];
 }
 
-- (void) fetchReservation: aNotification
+- (void) fetchReservationToEdit: aNotification
 {
+  var id = [aNotification object];
   [self afterResigningInFavorOf: GatheringGroupDataStepPMR
              causeNextEventWith: function() { 
-      var id = [aNotification object];
       [persistentStore makeURIsWith: [[EditingURIMaker alloc] initEditing: id]];
       [persistentStore fetchReservation: id];
     }];
 }
+
+- (void) fetchReservationToCopy: aNotification
+{
+  var id = [aNotification object];
+  [self afterResigningInFavorOf: DateChangingGroupDataStepPMR
+             causeNextEventWith: function() { 
+      [persistentStore makeURIsWith: [[URIMaker alloc] init]];
+      [persistentStore fetchReservation: id];
+    }];
+}
+
+// Util
 
 @end

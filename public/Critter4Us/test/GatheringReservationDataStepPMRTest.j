@@ -57,7 +57,7 @@
     }];
 }
 
-// EVENT: User has chosen to work with an existing reservation.
+// EVENT: User has chosen to edit an existing reservation.
 
 - (void) test_when_user_wishes_to_edit_pass_to_persistent_store_and_resign
 {
@@ -77,6 +77,28 @@
                                     with: 33];
       [sut.master shouldReceive: @selector(nextStep:)
                            with: GatheringGroupDataStepPMR];
+    }];
+}
+
+// EVENT: User has chosen to copy an existing reservation.
+
+- (void) test_when_user_wishes_to_copy_pass_to_persistent_store_and_resign
+{
+  [scenario
+   during: function() {
+      [self sendNotification: CopyReservationNews
+                  withObject: 33];
+    }
+   behold: function() {
+      [sut.persistentStore shouldReceive: @selector(makeURIsWith:)
+                                    with: function(arg) {
+          [self assert: "URIMaker" equals: [arg className]];
+          return YES;
+        }];
+      [sut.persistentStore shouldReceive: @selector(fetchReservation:)
+                                    with: 33];
+      [sut.master shouldReceive: @selector(nextStep:)
+                           with: DateChangingGroupDataStepPMR];
     }];
 }
 
