@@ -15,11 +15,6 @@
   URIMaker uriMaker;
 }
 
-- (void) makeURIsWith: aURIMaker
-{
-  uriMaker = aURIMaker;
-}
-
 - (void) awakeFromCib
 {
   if (awakened) return;
@@ -35,6 +30,10 @@
   timeInvariantExclusions = [jsonString objectFromJSON];
 }
 
+- (void) makeURIsWith: aURIMaker
+{
+  uriMaker = aURIMaker;
+}
 
 -(void) loadInfoRelevantToDate: date time: time 
 {
@@ -44,7 +43,6 @@
   [NotificationCenter postNotificationName: AnimalAndProcedureNews
                                     object: dict];
 }
-
 
 - (void) makeReservation: dict
 {
@@ -58,36 +56,12 @@
                                     object: id];
 }
 
-
 - (void) fetchReservation: reservationId
 {
   var url = [uriMaker fetchReservationURI: reservationId];
   var dict = [self dictionaryFromJSON: [network GETJsonFromURL: url]];
   [NotificationCenter postNotificationName: ReservationRetrievedNews
                                     object: dict];
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// TODO: Two much duplication between this function and previous.
-- (CPInteger) XupdateReservation: reservationID with: dict // TODO: DELETE
-{
-  var dataString = [self dataStringFromDictionary: dict];
-  var content = [CPString stringWithFormat:@"reservationID=%s&data=%s",
-                          reservationID, dataString];
-  return [self useReservationProducingRoute: ModifyReservationRoute
-                               withPOSTData: content];
 }
 
 - (CPString) pendingReservationTableAsHtml
@@ -98,7 +72,6 @@
 // util
 
 
-
 - (CPDictionary) dictionaryFromJSON: (CPString) json
 {
   if (! json)
@@ -106,27 +79,10 @@
   var jsHash =  [json objectFromJSON];
   if (! jsHash)
     alert("No hash was obtained from JSON string " + json + "\n Please report this.");
-  //  [self addInvariantExclusionsTo: jsHash];
   // CPLog([[CPDictionary dictionaryWithJSObject: jsHash] description]);
   var dictionary =  [fromNetworkConverter convert: jsHash
                               withAddedExclusions: timeInvariantExclusions];
   return dictionary;
 }
-
-
-- (CPString) dataStringFromDictionary: dict
-{
-  var jsData = [toNetworkConverter convert: dict];
-  var json = [CPString JSONFromObject: jsData];
-  return encodeURIComponent(json);
-}
-
-- (void) useReservationProducingRoute: route withPOSTData: content
-{
-  var url = jsonURI(route);
-  var dict = [self dictionaryFromJSON: [network POSTFormDataTo: url withContent: content]];
-  return [dict valueForKey: 'reservation'];
-}
-
 
 @end
