@@ -19,6 +19,10 @@
                     calls: @selector(switchToNewGroup:)];
   [self notificationNamed: DateTimeForCurrentReservationChangedNews
                     calls: @selector(fetchInfoForNewDateTime:)];
+  [self notificationNamed: ModifyReservationNews
+                    calls: @selector(finishFirst:)];
+  [self notificationNamed: CopyReservationNews
+                    calls: @selector(finishFirst:)];
 }
 
 -(void) start
@@ -133,6 +137,11 @@
 {
   [persistentStore loadInfoRelevantToDate: [[aNotification object] valueForKey: 'date']
                                      time: [[aNotification object] valueForKey: 'time']]
+}
+
+- (void) finishFirst: aNotification
+{
+  alert("You're working on a reservation right now. You should finish it or discard it before working on another one.");
 }
 
 @end
