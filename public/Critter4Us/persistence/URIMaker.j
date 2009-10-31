@@ -60,5 +60,10 @@ ModifyReservationRoute = @"modify_reservation";
   return [super POSTReservationContentFrom: jsData] + '&reservationID=' + reservationBeingEdited;
 }
 
+- (CPString) reservationURIWithDate: date time: time
+{
+  return [super reservationURIWithDate: date time: time] + '&ignoring=' + reservationBeingEdited;
+}
+
 
 @end

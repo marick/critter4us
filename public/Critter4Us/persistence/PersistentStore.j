@@ -50,9 +50,7 @@
 {
   var jsData = [toNetworkConverter convert: dict];
   var postContent = [uriMaker POSTReservationContentFrom: jsData];
-  alert(postContent);
   var url = [uriMaker POSTReservationURI];
-  alert(url)
   var json = [network POSTFormDataTo: url withContent: postContent];
   var jsHash = [json objectFromJSON];
   var id = jsHash['reservation'];

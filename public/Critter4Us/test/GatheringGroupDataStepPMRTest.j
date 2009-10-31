@@ -47,11 +47,14 @@
       [sut.procedureController shouldReceive:@selector(appear)];
       [sut.animalController shouldReceive:@selector(appear)];
       [sut.groupController shouldReceive:@selector(appear)];
+      [sut.groupController shouldReceive: @selector(showGroupButtons)];
+      [sut.groupController shouldReceive: @selector(addEmptyGroupToCollection)];
     }];
 }
 
 // EVENT: The server tells us about animals and procedures for a given date
 
+// Note: this may be called multiple times per reservation (if time/date changed).
 - (void) test_when_animal_and_procedure_data_appears_pass_it_on_to_controllers
 {
   var jsdict = {'animals':['animals...'], 'procedures':['procedures...']};
@@ -66,7 +69,6 @@
                                      with: [['animals...']]];
       [sut.procedureController shouldReceive: @selector(allPossibleObjects:)
                                      with: [['procedures...']]];
-      [sut.groupController shouldReceive: @selector(addEmptyGroupToCollection)];
     }];
 }
 

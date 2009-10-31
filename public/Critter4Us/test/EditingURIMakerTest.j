@@ -20,6 +20,12 @@
         equals: [maker fetchReservationURI: 333]];
 }
 
+-(void) test_when_building__fetch_by_date_time__uri_exclude_reservation_being_edited
+{
+  [self assert: '/json/course_session_data_blob?date=2009-12-30&time=morning&ignoring=19'
+        equals: [maker reservationURIWithDate: '2009-12-30' time: 'morning']];
+}
+
 -(void) test_chooses_to_modify_a_reservation_when_storing
 {
   [self assert: '/json/modify_reservation'

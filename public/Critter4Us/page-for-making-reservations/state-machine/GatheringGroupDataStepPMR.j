@@ -10,7 +10,7 @@
   [self notificationNamed: AnimalAndProcedureNews
                     calls: @selector(updateControllersWithAnimalAndProcedureInfo:)];
   [self notificationNamed: ReservationRetrievedNews
-                    calls: @selector(updateControllersWithEntirelyNewInfo:)];
+                    calls: @selector(initializeControllersWithEntirelyNewInfo:)];
   [self notificationNamed: TimeToReserveNews
                     calls: @selector(finishReservation:)];
   [self notificationNamed: DifferentObjectsUsedNews
@@ -28,6 +28,7 @@
   [animalController appear];
   [groupController appear];
   [groupController showGroupButtons];
+  [groupController addEmptyGroupToCollection];
   [currentGroupPanelController appear];
 }
 
@@ -41,10 +42,10 @@
   [reservationDataController noChange];
   [animalController allPossibleObjects: animals];
   [procedureController allPossibleObjects: procedures];
-  [groupController addEmptyGroupToCollection];
+  [groupController redisplayInLightOf: procedures];
 }
 
-- (void) updateControllersWithEntirelyNewInfo: aNotification
+- (void) initializeControllersWithEntirelyNewInfo: aNotification
 {
   var dict = [aNotification object];
   var animals = [dict valueForKey: 'animals'];
