@@ -24,7 +24,7 @@
       [self sendNotification: ReservationStoredNews withObject: 5];
     }
   behold: function() {
-      [sut.reservationDataController shouldReceive: @selector(offerReservationView:)
+      [sut.reservationDataController shouldReceive: @selector(offerOperationsOnJustFinishedReservation:)
                                               with: 5];
       [sut.master shouldReceive: @selector(nextStep:)
                            with: GatheringReservationDataStepPMR];

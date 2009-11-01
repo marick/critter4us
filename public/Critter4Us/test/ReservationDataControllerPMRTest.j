@@ -14,7 +14,7 @@
                                         'morningButton', 'afternoonButton',
                                         'beginButton', 'restartButton',
                                         'reserveButton',
-                                        'previousResultsView', 'linkToPreviousResults',
+                                        'previousResultsView', 'copyButton',
                                         'linkToPreviousResults',
                                         'dateGatheringView', 'dateDisplayingView',
                                         'dateTimeSummary',
@@ -132,11 +132,11 @@
     }];
 }
 
--(void)testCanBeToldToOfferALinkToPreviousReservation
+-(void)test_can_be_told_to_offer_a_link_to_previous_reservation
 {
   [scenario
    during: function() {
-      [sut offerReservationView: '33'];
+      [sut offerOperationsOnJustFinishedReservation: '33'];
     }
     behold: function() {
       [sut.linkToPreviousResults shouldReceive: @selector(loadHTMLString:baseURL:)
@@ -149,6 +149,34 @@
     }  
    ];
 }
+
+-(void)test_offering_a_link_to_previous_reservation_also_stashes_ID_in_copy_button
+{
+  [scenario
+   testAction: function() {
+      [sut offerOperationsOnJustFinishedReservation: '33'];
+    }
+    andSo: function() {
+      [self assert: '33' equals: [sut.copyButton tag]];
+    }  
+   ];
+}
+
+- (void) test_clicking_copy_button_sends_a_notification
+{
+  [scenario 
+    during: function() {
+      [sut copyPreviousReservation: sut.copyButton];
+    }
+  behold: function() {
+      [sut.copyButton shouldReceive: @selector(tag)
+                          andReturn: '33'];
+      [self listenersShouldReceiveNotification: CopyReservationNews
+                              containingObject: '33'];
+    }];
+}
+
+
 
 -(void)testCanReturnToBeginningOfReservationWorkflow
 {

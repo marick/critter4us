@@ -48,12 +48,13 @@
 }
 
 
-- (id) offerReservationView: reservationID
+- (id) offerOperationsOnJustFinishedReservation: reservationID
 {
   var href = "/reservation/" + reservationID;
   var message = "Click to view the reservation in a new window.";
   [linkToPreviousResults loadHTMLString:@"<a href='" + href + "' target=\"_blank\">" + message + "</a>"
                baseURL: nil];
+  [copyButton setTag: reservationID];
   [previousResultsView setHidden: NO];
 }
 
@@ -109,6 +110,12 @@
   [self sendNotification: DateTimeForCurrentReservationChangedNews
                aboutDate: date
                  andTime: [self timeFromState: state]];
+}
+
+- (void) copyPreviousReservation: sender
+{
+  var id = [copyButton tag];
+  [NotificationCenter postNotificationName: CopyReservationNews object: id];
 }
 
 
