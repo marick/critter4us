@@ -4,7 +4,7 @@ require 'model/procedure'
 class Guicho_011 < Sequel::Migration
   def up
     puts "==== Adding Guicho"
-    Animal.create(:name => 'Guicho', :kind => 'gelding')
+    Animal.create(:name => 'Guicho', :kind => 'gelding', :procedure_description_kind => 'equine')
   end
 
   def down
