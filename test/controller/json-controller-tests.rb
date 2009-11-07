@@ -32,14 +32,14 @@ class JsonGenerationTests < FreshDatabaseTestCase
     should "convert to consistent internal format" do
       input = {
         "stringkey" => "value",
-        "time" => "morning",
+        "day_segment" => MORNING,
         "date" => "2009-12-01",
         "groups" => [ {'animals' => ['josie', 'frank'],
                         'procedures' => ['venipuncture']}],
       };
       actual = app.move_to_internal_format(input)
       expected = {
-        :stringkey => 'value', :morning => true,
+        :stringkey => 'value', :day_segment => MORNING,
         :date => Date.new(2009,12,1),
         :groups => [{:animals => ['josie', 'frank'],
                       :procedures => ['venipuncture']}]
@@ -54,10 +54,10 @@ class JsonGenerationTests < FreshDatabaseTestCase
       @app.override(mocks(:timeslice, :animal_source, :procedure_source,
                           :procedure_rules, :hash_maker))
       during { 
-        get '/json/course_session_data_blob', {:date => '2009-01-01', :time => "morning"}
+        get '/json/course_session_data_blob', {:date => '2009-01-01', :day_segment => MORNING}
       }.behold! {
         @@stuff_that_always_happens.call
-        @timeslice.should_receive(:move_to).once.with(Date.new(2009,1, 1), true, nil)
+        @timeslice.should_receive(:move_to).once.with(Date.new(2009,1, 1), MORNING, nil)
       }
       assert_json_response
       assert_jsonification_of(@results_of_what_happens)
@@ -65,17 +65,17 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
     should "exclude animals that are currently in use (but ignoring a reservation)" do 
       reservation = Reservation.random(:date => Date.new(2009, 3, 3),
-                                       :morning => true,
+                                       :day_segment => MORNING,
                                        :procedure => Procedure.random,
                                        :animal => Animal.random)
       @app.override(mocks(:timeslice, :animal_source, :procedure_source,
                           :procedure_rules, :hash_maker))
       during { 
         get "/json/course_session_data_blob",
-            {:date => '2009-01-01', :time => "morning", :ignoring => reservation.id}
+            {:date => '2009-01-01', :day_segment => MORNING, :ignoring => reservation.id}
       }.behold! {
         @@stuff_that_always_happens.call
-        @timeslice.should_receive(:move_to).once.with(Date.new(2009,1, 1), true, reservation)
+        @timeslice.should_receive(:move_to).once.with(Date.new(2009,1, 1), MORNING, reservation)
       }
       assert_json_response
       assert_jsonification_of(@results_of_what_happens)
@@ -110,22 +110,22 @@ class JsonGenerationTests < FreshDatabaseTestCase
     # but they're probably not worth fixing if they break.
 
     should "return a JSON list of strings" do
-      Reservation.random(:date => Date.new(2009, 3, 3), :morning => true) do 
+      Reservation.random(:date => Date.new(2009, 3, 3), :day_segment => MORNING) do 
         use Procedure.random(:name => 'date mismatch procedure', :days_delay => 0)
         use Animal.random(:name => 'date mismatch animal', :kind => 'date mismatch kind')
       end
       
-      Reservation.random(:date => Date.new(2009, 1, 1), :morning => false) do 
+      Reservation.random(:date => Date.new(2009, 1, 1), :day_segment => AFTERNOON) do 
         use Procedure.random(:name => 'time mismatch procedure', :days_delay => 1)
         use Animal.random(:name => 'time mismatch animal', :kind => 'time mismatch kind')
       end
 
-      Reservation.random(:date => Date.new(2009, 1, 1), :morning => true) do
+      Reservation.random(:date => Date.new(2009, 1, 1), :day_segment => MORNING) do
         use Procedure.random(:name => 'procedure', :days_delay => 3)
         use Animal.random(:name => 'animal', :kind => 'animal kind')
       end
 
-      get '/json/course_session_data_blob', {:date => '2009-01-01', :time => "morning"}
+      get '/json/course_session_data_blob', {:date => '2009-01-01', :day_segment => MORNING}
       assert_json_response
       assert_jsonification_of({
          'procedures' => ['date mismatch procedure', 'procedure', 'time mismatch procedure'],
@@ -149,7 +149,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
       @data = {
         'date' => '2009-02-03',
-        'time' => 'morning',
+        'day_segment' => MORNING,
         'instructor' => 'morin',
         'course' => 'vm333',
         'groups' => [ {'procedures' => ['lick', 'slop'],
@@ -160,7 +160,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
     should "create the required uses" do
       post '/json/store_reservation', :data => @data.to_json
       r = Reservation[:date => Date.new(2009, 02, 03)]
-      assert { r.morning }
+      assert { r.day_segment == MORNING }
       assert { r.instructor == @data['instructor'] }
       assert { r.course == @data['course'] }
       assert { r.groups.size == 1 }
@@ -192,7 +192,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
         :instructor => 'marge',
         :course => 'vm333',
         :date => Date.new(2001, 2, 4),
-        :morning => true,
+        :day_segment => MORNING,
         :groups => [ {:procedures => ['floating'],
                        :animals => ['twitter']}]
       }
@@ -203,7 +203,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
         'instructor' => 'morin',
         'course' => 'cs101',
         'date' => '2012-12-12',
-        'time' => 'afternoon',
+        'day_segment' => 'afternoon',
         'groups' => [ ]
       }.to_json
 
@@ -237,7 +237,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
         :instructor => 'marge',
         :course => 'vm333',
         :date => Date.new(2001, 2, 4),
-        :morning => true,
+        :day_segment => MORNING,
         :groups => [ {:procedures => ['floating'],
                        :animals => ['twitter', 'jinx']},
                      {:procedures => ['venipuncture'],
@@ -257,7 +257,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
         assert { 'marge' == @result['instructor'] }
         assert { 'vm333' == @result['course'] }
         assert { '2001-02-04' == @result['date'] }
-        assert { true == @result['morning'] }
+        assert { MORNING == @result['day_segment'] }
       end
 
       should "retrieve groups" do

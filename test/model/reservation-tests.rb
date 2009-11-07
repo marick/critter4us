@@ -11,7 +11,7 @@ class ReservationModelTests < FreshDatabaseTestCase
       :instructor => 'marge',
       :course => 'vm333',
       :date => Date.new(2001, 2, 4),
-      :morning => true,
+      :day_segment => MORNING,
       :groups => [
                   {:procedures => ['procedure'],
                     :animals => ['animal']}
@@ -51,7 +51,7 @@ class ReservationModelTests < FreshDatabaseTestCase
         :instructor => 'marge',
         :course => 'vm333',
         :date => Date.new(2001, 2, 4),
-        :morning => false,
+        :day_segment => AFTERNOON,
         :groups => [ {:procedures => ['p1', 'p2'],
                        :animals => ['a1', 'a2']} ]
       }
@@ -59,7 +59,7 @@ class ReservationModelTests < FreshDatabaseTestCase
     end
 
     should "create the cross-product of procedures and animals" do
-      deny { @reservation.morning}
+      assert { @reservation.day_segment == AFTERNOON }
       assert { Use.all.size == 4 }
       assert { Use[:procedure_id => @p1.id, :animal_id => @a1.id] } 
       assert { Use[:procedure_id => @p1.id, :animal_id => @a2.id] } 
@@ -97,7 +97,7 @@ class ReservationModelTests < FreshDatabaseTestCase
         :instructor => 'marge',
         :course => 'vm333',
         :date => Date.new(2001, 2, 4),
-        :morning => false,
+        :day_segment => EVENING,
         :groups => [ {:procedures => ['p1', 'p2'],
                        :animals => ['a1']},
                      {:procedures => ['p3'],
@@ -143,7 +143,7 @@ class ReservationModelTests < FreshDatabaseTestCase
       @reservation = Reservation.random(:instructor => 'marge',
                                       :course => 'vm333',
                                       :date => Date.new(2001, 01, 02),
-                                      :morning => true) do 
+                                      :day_segment => MORNING) do 
         use Animal.random(:name => 'animal')
         use Procedure.random(:name => 'procedure')
       end
@@ -159,7 +159,7 @@ class ReservationModelTests < FreshDatabaseTestCase
         :instructor => 'not marge',
         :course => 'not vm333',
         :date => Date.new(2012, 12, 12),
-        :morning => false,
+        :day_segment => EVENING,
         :groups => [ {:procedures => ['venipuncture'],
                        :animals => ['betsy']},
                      {:procedures => ['floating'],
@@ -198,7 +198,7 @@ class ReservationModelTests < FreshDatabaseTestCase
       assert { new_reservation.instructor == @new_data[:instructor] }
       assert { new_reservation.course == @new_data[:course] }
       assert { new_reservation.date == @new_data[:date]}
-      assert { new_reservation.morning == @new_data[:morning]}
+      assert { new_reservation.day_segment == @new_data[:day_segment]}
     end
 
   end
@@ -240,7 +240,7 @@ class ReservationModelTests < FreshDatabaseTestCase
       :instructor => 'marge',
       :course => 'vm333',
       :date => Date.new(2001, 2, 4),
-      :morning => true,
+      :day_segment => MORNING,
       :groups => [
                   {:procedures => ['procedure'],
                     :animals => ['flicka', 'jake']},

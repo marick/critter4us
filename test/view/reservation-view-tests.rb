@@ -11,7 +11,7 @@ class ReservationViewTests < FreshDatabaseTestCase
     expected_instructor = "d-morin"
     expected_course = "vm333"
     reservation = Reservation.random(:date => expected_date,
-                                     :morning => true,
+                                     :day_segment => MORNING,
                                      :instructor => expected_instructor,
                                      :course => expected_course)
     actual = ReservationView.new(:reservation => reservation).to_s
@@ -22,14 +22,18 @@ class ReservationViewTests < FreshDatabaseTestCase
   end
 
   should  "know how to display time of day" do
-    morning = Reservation.random(:morning => true)
+    morning = Reservation.random(:day_segment => MORNING)
     morning_view = ReservationView.new(:reservation => morning)
     
-    afternoon = Reservation.random(:morning => false)
+    afternoon = Reservation.random(:day_segment => AFTERNOON)
     afternoon_view = ReservationView.new(:reservation => afternoon)
+
+    evening = Reservation.random(:day_segment => EVENING)
+    evening_view = ReservationView.new(:reservation => evening)
 
     assert { 'morning' == morning_view.time_of_day(morning) }
     assert { 'afternoon' == afternoon_view.time_of_day(afternoon) }
+    assert { 'evening' == evening_view.time_of_day(evening) }
   end
 
   context "a real, modestly complicated reservation" do 
@@ -45,7 +49,7 @@ class ReservationViewTests < FreshDatabaseTestCase
         :instructor => 'marge',
         :course => 'vm333',
         :date => Date.new(2001, 2, 4),
-        :morning => false,
+        :day_segment => AFTERNOON,
         :groups => [ {:procedures => ['floating', 'venipuncture'],
                        :animals => ['betsy']},
                      {:procedures => ['venipuncture', 'milking'],

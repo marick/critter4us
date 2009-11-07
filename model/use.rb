@@ -9,8 +9,8 @@ class Use < Sequel::Model
     group.reservation
   end
 
-  def self.at(date, morning)
-    Reservation.filter(:date => date, :morning => morning).collect { | r |
+  def self.at(date, day_segment)
+    Reservation.filter(:date => date, :day_segment => day_segment).collect { | r |
       r.uses
     }.flatten
   end

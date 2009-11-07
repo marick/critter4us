@@ -1,4 +1,5 @@
 require 'pp'
+require 'util/constants'
 
 class Reservation < Sequel::Model
   # TODO: this should probably be a first-class object that can mediate between 
@@ -99,7 +100,7 @@ class Reservation < Sequel::Model
       :date => Date.new(2009, 7, 23),
       :course => 'vm333',
       :instructor => 'morin',
-      :morning => true
+      :day_segment => MORNING
     }
     # TODO: Migrate all uses of Reservation.random to new, non-block form.
     return old_random(defaults.merge(overrides), &block) if block

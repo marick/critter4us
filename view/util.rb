@@ -2,11 +2,7 @@ require 'erector'
 
 module ReservationHelper
   def time_of_day(reservation)
-    if reservation.morning
-      "morning"
-    else
-      "afternoon"
-    end
+    reservation.day_segment
   end
 
   def long_form(reservation)

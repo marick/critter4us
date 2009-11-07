@@ -7,22 +7,22 @@ class UseTests < FreshDatabaseTestCase
     matching_animal =  Animal.random(:name => "inuse")
     matching_procedure = Procedure.random(:name => 'inuse')
     Reservation.random(:date => Date.new(2009, 9, 9),
-                       :morning => true) do
+                       :day_segment => MORNING) do
       use matching_animal
       use matching_procedure
     end
     Reservation.random(:date => Date.new(2009, 9, 9),
-                       :morning => false) do
+                       :day_segment => AFTERNOON) do
       use Animal.random(:name => "afternoon")
       use Procedure.random(:name => 'afternoon')
     end
     Reservation.random(:date => Date.new(2009, 9, 10),
-                       :morning => true) do
+                       :day_segment => MORNING) do
       use Animal.random(:name => "wrong date")
       use Procedure.random(:name => 'wrong date')
     end
 
-    result = Use.at(Date.new(2009, 9, 9), morning=true) 
+    result = Use.at(Date.new(2009, 9, 9), MORNING) 
     assert { result.length == 1 }
     assert { result[0].animal == matching_animal }
     assert { result[0].procedure == matching_procedure }

@@ -22,12 +22,6 @@ class Animal < Sequel::Model
     map
   end
 
-  def self.available_on(hash)
-    date = hash(:date)
-    morning = hash(:morning)
-  end
-
-
   # following are for testing
 
   def self.random(overrides = {})
