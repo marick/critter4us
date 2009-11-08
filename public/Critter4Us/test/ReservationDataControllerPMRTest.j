@@ -12,6 +12,7 @@
   [scenario sutHasUpwardCollaborators: ['courseField', 'instructorField',
                                         'dateField',
                                         'morningButton', 'afternoonButton',
+                                                     'eveningButton',
                                         'beginButton', 'restartButton',
                                         'reserveButton',
                                         'previousResultsView', 'copyButton',
@@ -28,7 +29,7 @@
   [scenario
     previousAction: function() {
       [sut.dateField setStringValue: '2009-12-10'];
-      [sut.morningButton setState: CPOffState];
+      [sut setTime: [Time afternoon]];
     }
     during: function() {
       [sut beginReserving: UnusedArgument];
@@ -55,6 +56,7 @@
       [sut.dateField setStringValue: '2010-12-02'];
       [sut.morningButton setState: CPOnState];
       [sut.afternoonButton setState: CPOffState];
+      [sut.eveningButton setState: CPOffState];
     }
     testAction: function() {
       [sut prepareToFinishReservation];
@@ -73,12 +75,30 @@
       [sut.dateField setStringValue: '2012-01-12'];
       [sut.morningButton setState: CPOffState];
       [sut.afternoonButton setState: CPOnState];
+      [sut.eveningButton setState: CPOffState];
     }
     testAction: function() {
       [sut prepareToFinishReservation];
     }
   andSo: function() {
       [self assert: "on the afternoon of 2012-01-12."
+            equals: [sut.dateTimeSummary stringValue]];
+    }
+   ];
+}
+
+- (void) testDisplayedDateAndTimeWorksForEvening
+{
+  [scenario
+    previousAction: function() {
+      [sut.dateField setStringValue: '2012-01-12'];
+      [sut setTime: [Time evening]];
+    }
+    testAction: function() {
+      [sut prepareToFinishReservation];
+    }
+  andSo: function() {
+      [self assert: "on the evening of 2012-01-12."
             equals: [sut.dateTimeSummary stringValue]];
     }
    ];
@@ -118,7 +138,7 @@
       [sut.courseField setStringValue: "some course"];
       [sut.instructorField setStringValue: "some instructor"];
       [sut.dateField setStringValue: "some date"];
-      [sut.morningButton setState:CPOnState];
+      [sut setTime: [Time evening]];
     }
    testAction: function() {
       return [sut data];
@@ -128,7 +148,7 @@
       [self assert: "some course" equals: [dict valueForKey: 'course']];
       [self assert: "some instructor" equals: [dict valueForKey: 'instructor']];
       [self assert: "some date" equals: [dict valueForKey:'date']];
-      [self assert: [Time morning] equals: [dict valueForKey:'time']];
+      [self assert: [Time evening] equals: [dict valueForKey:'time']];
     }];
 }
 
@@ -216,8 +236,12 @@
       [sut.courseField shouldReceive: @selector(setStringValue:) with: 'the course'];
       [sut.instructorField shouldReceive: @selector(setStringValue:) with: 'the instructor'];
       [sut.dateField shouldReceive: @selector(setStringValue:) with: 'the date'];
-      [sut.morningButton shouldReceive: @selector(setState:) with: CPOnState];
       [sut.dateTimeSummary shouldReceive: @selector(setStringValue:)];
+    }
+  andSo: function() {
+      [self assert: CPOnState equals: [sut.morningButton state]];
+      [self assert: CPOffState equals: [sut.afternoonButton state]];
+      [self assert: CPOffState equals: [sut.eveningButton state]];
     }
    ];
 }
@@ -226,11 +250,13 @@
 {
   var data = {'time' : [Time afternoon]};
   [scenario
-    during: function() {
+    testAction: function() {
       [sut setNewValuesFrom: [CPDictionary dictionaryWithJSObject: data]];
     }
-  behold: function() {
-      [sut.morningButton shouldReceive: @selector(setState:) with: CPOffState];
+  andSo: function() {
+      [self assert: CPOffState equals: [sut.morningButton state]];
+      [self assert: CPOnState equals: [sut.afternoonButton state]];
+      [self assert: CPOffState equals: [sut.eveningButton state]];
     }
    ];
 }
@@ -255,14 +281,14 @@
   [scenario
     previousAction: function() {
       [sut.dateField setStringValue: "a value"];
-      [sut.morningButton setState: "a bogus state"];
+      [sut setTime: [Time afternoon]];
     }
   during: function() {
       [sut startDestructivelyEditingDateTime: UnusedArgument];
     }
   behold: function() {
-      [sut.dateTimeEditingControl shouldReceive: @selector(setDate:morningState:)
-                                           with: ["a value", "a bogus state"]];
+      [sut.dateTimeEditingControl shouldReceive: @selector(setDate:time:)
+                                           with: ["a value", [Time afternoon]]];
     }
    ];
 
@@ -303,8 +329,8 @@
   behold: function() {
       [sut.dateTimeEditingControl shouldReceive:@selector(date)
                                       andReturn: '2009-12-10'];
-      [sut.dateTimeEditingControl shouldReceive:@selector(morningState)
-                                      andReturn: CPOffState];
+      [sut.dateTimeEditingControl shouldReceive:@selector(time)
+                                      andReturn: [Time afternoon]];
       
       [self listenersWillReceiveNotification: DateTimeForCurrentReservationChangedNews
                                 checkingWith: function(notification) {
@@ -326,15 +352,12 @@
   behold: function() {
       [sut.dateTimeEditingControl shouldReceive:@selector(date)
                                       andReturn: '2009-12-10'];
-      [sut.dateTimeEditingControl shouldReceive:@selector(morningState)
-                                      andReturn: CPOffState];
-      
-      [sut.dateField shouldReceive: @selector(setStringValue:)
-                              with: '2009-12-10'];
-      [sut.morningButton shouldReceive: @selector(setState:)
-                                  with: CPOffState];
-
-      [sut.dateTimeSummary shouldReceive: @selector(setStringValue:)];
+      [sut.dateTimeEditingControl shouldReceive:@selector(time)
+                                      andReturn: [Time evening]];
+    }
+  andSo: function() {
+      [self assert: "on the evening of 2009-12-10."
+            equals: [sut.dateTimeSummary stringValue]];
     }
    ];
   

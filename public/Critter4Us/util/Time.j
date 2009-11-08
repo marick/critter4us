@@ -1,4 +1,5 @@
 @import <Foundation/Foundation.j>
+@import "Constants.j"
 
 @implementation Time : CPObject
 {
@@ -7,12 +8,17 @@
 
 + (id) morning
 {
-  return [[self alloc] initWithString: "morning"];
+  return [[self alloc] initWithString: Morning];
 }
 
 + (id) afternoon
 {
-  return [[self alloc] initWithString: "afternoon"];
+  return [[self alloc] initWithString: Afternoon];
+}
+
++ (id) evening
+{
+  return [[self alloc] initWithString: Evening];
 }
 
 - (id) initWithString: aString

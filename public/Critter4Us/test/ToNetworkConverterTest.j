@@ -24,10 +24,12 @@
 
 -(void) testTurnsTimesIntoStrings
 {
-  var afternoon = [Time afternoon];
-  var morning = [Time morning];
-  [self assert: "morning" equals: [ToNetworkConverter convert: morning]];
-  [self assert: "afternoon" equals: [ToNetworkConverter convert: afternoon]];
+  [self assert: "morning"
+        equals: [ToNetworkConverter convert: [Time morning]]];
+  [self assert: "afternoon"
+        equals: [ToNetworkConverter convert: [Time afternoon]]];
+  [self assert: "evening"
+        equals: [ToNetworkConverter convert: [Time evening]]];
 }
 
 -(void) testConvertsEmptyArrayIntoEmptyArray

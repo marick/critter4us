@@ -3,6 +3,7 @@
 @import "../../view/DateTimeEditingPanel.j"
 @import "../../view/DateTimeEditingControl.j"
 @import "../../controller/PanelController.j"
+@import "../../util/Constants.j"
 
 
 @implementation ReservationDataControllerSubgraph : Subgraph
@@ -167,15 +168,23 @@
 
   var morningButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 29, width, 20)];
   [morningButton setState:CPOnState];
-  [morningButton setTitle:"morning"];
+  [morningButton setTitle:Morning];
+  [morningButton setTag:Morning];
   
   afternoonButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 49, width, 20) radioGroup:[morningButton radioGroup]];
-  [afternoonButton setTitle:"afternoon"];
+  [afternoonButton setTitle:Afternoon];
+  [afternoonButton setTag:Afternoon];
+
+  eveningButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 69, width, 20) radioGroup:[morningButton radioGroup]];
+  [eveningButton setTitle:Evening];
+  [eveningButton setTag:Evening];
 
   [aView addSubview: morningButton];
   [aView addSubview: afternoonButton];
+  [aView addSubview: eveningButton];
   controller.morningButton = morningButton;
   controller.afternoonButton = afternoonButton;
+  controller.eveningButton = eveningButton;
   x += width;
     
   x += 15

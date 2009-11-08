@@ -22,9 +22,13 @@
     {
       switch(key)
       {
-      case 'morning': 
-        var timeOfDay = jsHash['morning'] ? [Time morning] : [Time afternoon];
-        [retval setValue: timeOfDay forKey: 'time'];
+      case 'time': 
+        if (jsHash['time'] == Morning)
+          [retval setValue: [Time morning] forKey: 'time'];
+        if (jsHash['time'] == Afternoon)
+          [retval setValue: [Time afternoon] forKey: 'time'];
+        if (jsHash['time'] == Evening)
+          [retval setValue: [Time evening] forKey: 'time'];
         break;
       case 'animal':
         var obj = [self animal: jsHash[key] kindMap: jsHash['kindMap']];

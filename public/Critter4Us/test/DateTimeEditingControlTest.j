@@ -15,37 +15,41 @@
   [CPApplication sharedApplication]; // clicks only work in this context.
 }
 
--(void) testCanBeSetToASpecificDateAndMorningValue
+-(void) testCanBeSetToASpecificDateAndTime
 {
   [scenario
     previousAction: function() {
       [sut.dateField setStringValue: 'BOGUS'];
       [sut.morningButton setState: CPOffState];
       [sut.afternoonButton setState: CPOnState];
+      [sut.eveningButton setState: CPOffState];
     }
     testAction: function() {
-      [sut setDate: '2009-01-01' morningState: CPOnState]
+      [sut setDate: '2009-01-01' time: [Time morning]]
     }
   andSo: function() {
       [self assert: '2009-01-01' equals: [sut.dateField stringValue]];
       [self assert: CPOnState equals: [sut.morningButton state]];
       [self assert: CPOffState equals: [sut.afternoonButton state]];
+      [self assert: CPOffState equals: [sut.eveningButton state]];
    }];
 }
 
--(void) testTimeCanBeSetToAfternoon
+-(void) testTimeCanBeSetToEvening
 {
   [scenario
     previousAction: function() {
       [sut.morningButton setState: CPOnState];
       [sut.afternoonButton setState: CPOffState];
+      [sut.eveningButton setState: CPOffState];
     }
     testAction: function() {
-      [sut setDate: '2009-01-01' morningState: CPOffState]
+      [sut setDate: '2009-01-01' time: [Time evening]]
     }
   andSo: function() {
       [self assert: CPOffState equals: [sut.morningButton state]];
-      [self assert: CPOnState equals: [sut.afternoonButton state]];
+      [self assert: CPOffState equals: [sut.afternoonButton state]];
+      [self assert: CPOnState equals: [sut.eveningButton state]];
    }];
 }
 
@@ -79,11 +83,19 @@
 }
 
 
--(void) testCanRetrieveDateAndMorningState
+-(void) testCanRetrieveDateAndTime
 {
-  [sut setDate: '2009-01-01' morningState: CPOnState];
+  [sut setDate: '2009-01-01' time: [Time morning]];
   [self assert: '2009-01-01' equals: [sut date]];
-  [self assert: CPOnState equals: [sut morningState]];
+  [self assert: [Time morning] equals: [sut time]];
+
+  [sut setDate: '2009-02-02' time: [Time afternoon]];
+  [self assert: '2009-02-02' equals: [sut date]];
+  [self assert: [Time afternoon] equals: [sut time]];
+
+  [sut setDate: '2009-01-01' time: [Time evening]];
+  [self assert: '2009-01-01' equals: [sut date]];
+  [self assert: [Time evening] equals: [sut time]];
 }
 
 @end	

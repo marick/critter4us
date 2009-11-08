@@ -30,19 +30,25 @@
   [self assert: "output" equals: [converted valueForKey: 'miscellaneous']];
 }
 
-
--(void) testConvertsFalseMorningsToTimeObjects
+-(void) testConvertsMorningsToTimeObjects
 {
-  var input = { 'morning' : false };
+  var input = { 'time' : 'morning' };
+  var converted = [FromNetworkConverter convert: input];
+  [self assert: [Time morning] equals: [converted valueForKey: 'time']];
+}
+
+-(void) testConvertsAfternoonsToTimeObjects
+{
+  var input = { 'time' : 'afternoon' };
   var converted = [FromNetworkConverter convert: input];
   [self assert: [Time afternoon] equals: [converted valueForKey: 'time']];
 }
 
--(void) testConvertsTrueMorningsToTimeObjects
+-(void) testConvertsEveningsToTimeObjects
 {
-  var input = { 'morning' : true };
+  var input = { 'time' : 'evening' };
   var converted = [FromNetworkConverter convert: input];
-  [self assert: [Time morning] equals: [converted valueForKey: 'time']];
+  [self assert: [Time evening] equals: [converted valueForKey: 'time']];
 }
 
 -(void) testConvertsAnimalNamesToAnimalObjects_RequiringKindMap
