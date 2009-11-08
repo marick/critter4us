@@ -1,0 +1,8 @@
+MORNING='morning'
+AFTERNOON='afternoon'
+EVENING='evening'
+
+COMPARABLE_TIMES = [MORNING, AFTERNOON, EVENING];
+
+def COMPARABLE_TIME(time); COMPARABLE_TIMES.index(time); end
+
