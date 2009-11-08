@@ -14,11 +14,11 @@ class TimesliceTests < FreshDatabaseTestCase
 
     setup do 
       @date=Date.new(2009, 12, 12)
-      @day_segment = MORNING
+      @time = MORNING
     end
     
     should "include the null case" do 
-      @timeslice.move_to(@date, @day_segment)
+      @timeslice.move_to(@date, @time)
       @destination = ['...'] # starts with some contents.
       Procedure.random(:name => 'only', :days_delay => 14)
       @timeslice.add_excluded_pairs(@destination)
@@ -30,13 +30,13 @@ class TimesliceTests < FreshDatabaseTestCase
         @inuse = Animal.random(:name => "inuse")
         @procedure = Procedure.random(:name => 'lab procedure')
         @reservation = Reservation.random(:date => @date,
-                                          :day_segment => @day_segment,
+                                          :time => @time,
                                           :animal => @inuse,
                                           :procedure => @procedure)
         @other = Procedure.random(:name => 'other')
       end
       should "include ALL procedures for that animal" do
-        @timeslice.move_to(@date, @day_segment)
+        @timeslice.move_to(@date, @time)
         @timeslice.add_excluded_pairs(@destination)
         assert { @destination.size == 2 }
         assert { @destination.include?([@other, @inuse]) }
@@ -45,7 +45,7 @@ class TimesliceTests < FreshDatabaseTestCase
 
 
       should "not count the animal if its reservation is ignored" do
-        @timeslice.move_to(@date, @day_segment, @reservation)
+        @timeslice.move_to(@date, @time, @reservation)
         @timeslice.add_excluded_pairs(@destination)
         assert { @destination == [] }
       end
@@ -55,22 +55,22 @@ class TimesliceTests < FreshDatabaseTestCase
 
     should "not exclude an animal that's used for a 0-delay procedure on a different day" do
       Reservation.random(:date => @date+1,
-                         :day_segment => @day_segment) do
+                         :time => @time) do
         use Animal.random
         use Procedure.random(:name => 'proc', :days_delay => 0)
       end
-      @timeslice.move_to(@date, @day_segment)
+      @timeslice.move_to(@date, @time)
       @timeslice.add_excluded_pairs(@destination)
       assert { @destination == [] }
     end
 
     should "not exclude an animal that's used for a 0-delay procedure earlier today" do
       Reservation.random(:date => @date,
-                         :day_segment => MORNING) do
+                         :time => MORNING) do
         use Animal.random
         use Procedure.random(:name => 'proc', :days_delay => 0)
       end
-      @timeslice.move_to(@date, day_segment = AFTERNOON)
+      @timeslice.move_to(@date, time = AFTERNOON)
       @timeslice.add_excluded_pairs(@destination)
       assert { @destination == [] }
     end
@@ -81,13 +81,13 @@ class TimesliceTests < FreshDatabaseTestCase
         @recent =  Animal.random(:name => 'recent')
         @proc = Procedure.random(:name => 'proc', :days_delay => 15)
         @reservation = Reservation.random(:date => @date-1,
-                                          :day_segment => MORNING,
+                                          :time => MORNING,
                                           :animal => @recent,
                                           :procedure => @proc)
       end
 
       should "normally exclude" do
-        @timeslice.move_to(@date, @day_segment)
+        @timeslice.move_to(@date, @time)
         @timeslice.add_excluded_pairs(@destination)
         assert { @destination == [[@proc, @recent]] }
       end
@@ -95,7 +95,7 @@ class TimesliceTests < FreshDatabaseTestCase
       # This could happen if a reservation is being edited and the date/time
       # is being changed. 
       should "not exclude if reservation to be ignored" do
-        @timeslice.move_to(@date, @day_segment, @reservation)
+        @timeslice.move_to(@date, @time, @reservation)
         @timeslice.add_excluded_pairs(@destination)
         assert { @destination == [] }
       end
@@ -107,13 +107,13 @@ class TimesliceTests < FreshDatabaseTestCase
         @near_future =  Animal.random(:name => 'near future')
         @proc = Procedure.random(:name => 'proc', :days_delay => 15)
         @reservation = Reservation.random(:date => @date+3,
-                                          :day_segment => MORNING,
+                                          :time => MORNING,
                                           :animal => @near_future,
                                           :procedure => @proc)
       end
 
       should "normally exclude a pair" do
-        @timeslice.move_to(@date, @day_segment)
+        @timeslice.move_to(@date, @time)
         @timeslice.add_excluded_pairs(@destination)
         assert { @destination == [[@proc, @near_future]] }
       end
@@ -121,7 +121,7 @@ class TimesliceTests < FreshDatabaseTestCase
       # This could happen if a reservation is being edited and the date/time
       # is being changed. 
       should "not exclude if the reservation is to be ignored" do
-        @timeslice.move_to(@date, @day_segment, @reservation)
+        @timeslice.move_to(@date, @time, @reservation)
         @timeslice.add_excluded_pairs(@destination)
         assert { @destination == [] }
       end
@@ -241,31 +241,31 @@ end
   context "delivering animal names" do 
     setup do
       @date = Date.new(2010, 10, 10)
-      @day_segment = MORNING
+      @time = MORNING
       cannot_be_used = Animal.random(:name => "cannot be used")
       can_be_used = Animal.random(:name => "can be used")
       procedure = Procedure.random(:name => 'lab procedure')
       @cannot_be_used_reservation = Reservation.random(:date => @date,
-                                                       :day_segment => MORNING) do
+                                                       :time => MORNING) do
         use cannot_be_used
         use procedure
       end
       Reservation.random(:date => @date,
-                         :day_segment => EVENING) do
+                         :time => EVENING) do
         use can_be_used
         use procedure
       end
     end
 
     should "answer names of animals not in use during the timeslice" do
-      @timeslice.move_to(@date, @day_segment)
+      @timeslice.move_to(@date, @time)
       result = @timeslice.available_animals_by_name
       assert { result == ['can be used'] }
     end
 
 
     should "override exclusion for a specific reservation's animals" do
-      @timeslice.move_to(@date, @day_segment,  @cannot_be_used_reservation)
+      @timeslice.move_to(@date, @time,  @cannot_be_used_reservation)
       result = @timeslice.available_animals_by_name
       assert { result.sort == ['can be used', 'cannot be used'].sort }
     end
@@ -335,21 +335,21 @@ class DetailsAboutTimingTests < FreshDatabaseTestCase
     is_ok == :NO
   end
 
-  def prior_reservation(delay, date, day_segment)
+  def prior_reservation(delay, date, time)
     @animal = Animal.random(:name => "bossie")
     @procedure = Procedure.random(:name => 'only', :days_delay => delay)
     @reservation = Reservation.random(:date => Date.new(2009, 12, date),
-                                      :day_segment => day_segment)
+                                      :time => time)
     group = Group.create(:reservation => @reservation)
     @use = Use.create(:animal => @animal, :procedure => @procedure, :group => group)
   end
 
 
-  def run_attempt(attempt_date, attempt_day_segment)
-    # puts "attempt at #{[attempt_date, attempt_day_segment].inspect}"
+  def run_attempt(attempt_date, attempt_time)
+    # puts "attempt at #{[attempt_date, attempt_time].inspect}"
     @pairs = []
     timeslice = Timeslice.new
-    timeslice.move_to(Date.new(2009, 12, attempt_date), attempt_day_segment)
+    timeslice.move_to(Date.new(2009, 12, attempt_date), attempt_time)
     timeslice.add_excluded_pairs(@pairs)
   end
 

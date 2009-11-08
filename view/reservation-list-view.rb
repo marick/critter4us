@@ -55,7 +55,7 @@ class ReservationListView < Erector::Widget
       if a.date != b.date
         -(a.date <=> b.date) 
       else
-        -(COMPARABLE(a.day_segment) <=> COMPARABLE(b.day_segment))
+        -(COMPARABLE_TIME(a.time) <=> COMPARABLE_TIME(b.time))
       end
     }
   end

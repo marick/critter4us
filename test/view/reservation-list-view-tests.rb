@@ -8,11 +8,11 @@ class ViewTests < FreshDatabaseTestCase
   should "sort reservations" do
     earlier = Reservation.random(:date => Date.new(2008, 8, 8))
     afternoon = Reservation.random(:date => Date.new(2009, 9, 9),
-                                   :day_segment => AFTERNOON)
+                                   :time => AFTERNOON)
     morning = Reservation.random(:date => Date.new(2009, 9, 9),
-                                 :day_segment => MORNING)
+                                 :time => MORNING)
     evening = Reservation.random(:date => Date.new(2009, 9, 9),
-                                 :day_segment => EVENING)
+                                 :time => EVENING)
 
     view = ReservationListView.new(:reservations => [afternoon, earlier, evening, morning])
     assert { [evening, afternoon, morning, earlier] == view.sorted_reservations }
@@ -28,7 +28,7 @@ class ViewTests < FreshDatabaseTestCase
   end
 
   should "display entirety of reservation" do
-    reservation = Reservation.random(:day_segment => AFTERNOON) do
+    reservation = Reservation.random(:time => AFTERNOON) do
       use Animal.random
       use Procedure.random
     end

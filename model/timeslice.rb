@@ -3,9 +3,9 @@ require 'util/requires'
 class Timeslice
   include TestSupport
 
-  def move_to(date, day_segment, ignoring = nil)
+  def move_to(date, time, ignoring = nil)
     @date = date
-    @day_segment = day_segment
+    @time = time
     @ignored_reservation = ignoring || unsaved_empty_reservation
   end
 
@@ -27,7 +27,7 @@ class Timeslice
   private
 
   def animals_now_in_use
-    Use.at(@date, @day_segment).collect { | u | u.animal }.uniq
+    Use.at(@date, @time).collect { | u | u.animal }.uniq
   end
 
   def animals_to_be_considered_in_use

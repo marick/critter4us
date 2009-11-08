@@ -2,7 +2,7 @@ require 'erector'
 
 module ReservationHelper
   def time_of_day(reservation)
-    reservation.day_segment
+    reservation.time
   end
 
   def long_form(reservation)

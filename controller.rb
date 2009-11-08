@@ -67,7 +67,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
 
   get '/json/course_session_data_blob' do
     internal = move_to_internal_format(params)
-    timeslice.move_to(internal[:date], internal[:day_segment], ignored_reservation)
+    timeslice.move_to(internal[:date], internal[:time], ignored_reservation)
     procedure_names = procedure_source.sorted_names
     jsonically do 
       answer = {
@@ -125,13 +125,13 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
     number = params[:number]
     jsonically do 
       reservation = reservation_source[number]
-      timeslice.move_to(reservation.date, reservation.day_segment, ignored_reservation)
+      timeslice.move_to(reservation.date, reservation.time, ignored_reservation)
       procedure_names = procedure_source.sorted_names
       reservation_data = {
         :instructor => reservation.instructor,
         :course => reservation.course,
         :date => reservation.date.to_s,
-        :day_segment => reservation.day_segment,
+        :time => reservation.time,
         :groups => reservation.groups.collect { | g | g.in_wire_format },
         :procedures => procedure_names,
         :animals => timeslice.available_animals_by_name,

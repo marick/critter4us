@@ -100,7 +100,7 @@ class Reservation < Sequel::Model
       :date => Date.new(2009, 7, 23),
       :course => 'vm333',
       :instructor => 'morin',
-      :day_segment => MORNING
+      :time => MORNING
     }
     # TODO: Migrate all uses of Reservation.random to new, non-block form.
     return old_random(defaults.merge(overrides), &block) if block
