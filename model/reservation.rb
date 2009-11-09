@@ -80,6 +80,11 @@ class Reservation < Sequel::Model
     ReservationStructureChanger.build_from(data)
   end
 
+  # Don't know why this method isn't auto-created at Heroku.
+  def time
+    self.values[:time]
+  end
+
   def uses
     groups.collect{ | group | group.uses }.flatten
   end
