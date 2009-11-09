@@ -1,5 +1,8 @@
 @import <Foundation/Foundation.j>
-@import "Constants.j"
+
+Morning='morning';
+Afternoon='afternoon';
+Evening='evening';
 
 @implementation Time : CPObject
 {

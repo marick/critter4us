@@ -40,9 +40,3 @@ TruncatedTextLineWidth = 200;
 // Misc
 UnusedArgument = nil;
 
-// Times
-
-Morning='morning';
-Afternoon='afternoon';
-Evening='evening';
-

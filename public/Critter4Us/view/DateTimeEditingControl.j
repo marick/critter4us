@@ -1,13 +1,12 @@
 @import <AppKit/AppKit.j>
 @import "../util/Time.j"
 @import "../util/Constants.j"
+@import "TimeControl.j"
 
 @implementation DateTimeEditingControl : CPView
 {
   CPTextField dateField;
-  CPButton morningButton;
-  CPButton afternoonButton;
-  CPButton eveningButton;
+  TimeControl timeControl;
   id target; // This could inherit from CPControl... is that overkill? 
   CPButton changeButton;
   CPButton cancelButton;
@@ -37,14 +36,9 @@
   return [dateField stringValue];
 }
 
-- (Time) time  // TODO: Same as ReservationDataControllerPMR#timeFromRadio
+- (Time) time
 {
-  if ([morningButton state] == CPOnState)
-    return [Time morning];
-  if ([afternoonButton state] == CPOnState)
-    return [Time afternoon];
-  if ([eveningButton state] == CPOnState)
-    return [Time evening];
+  return [timeControl time];
 }
 
 - (void) forwardClick: sender
@@ -60,25 +54,10 @@
 }
 
 
-// TODO: Same as ReservationDataController#setRadiosTo.
 - (void) setDate: aString time: time
 {
   [dateField setStringValue: aString];
-
-  // TODO: Is this necessary to turn all other radio buttons off? 
-  // Seems to be in Capp 0.7.1
-  [morningButton setState: CPOffState];  
-  [afternoonButton setState: CPOffState];
-  [eveningButton setState: CPOffState];
-
-  if ([time isEqual: [Time morning]])
-    [morningButton setState: CPOnState];
-  if ([time isEqual: [Time afternoon]])
-    [afternoonButton setState: CPOnState];
-  if ([time isEqual: [Time evening]])
-    [eveningButton setState: CPOnState];
-
-  //  CPLog("morning: " + [morningButton state] + " afternoon: " + [afternoonButton state] + " evening: " + [eveningButton state]);
+  [timeControl setTime: time];
 }
 
 
@@ -99,23 +78,9 @@
   [dateField setStringValue: "2009-"];
   [self addSubview:dateField];
   x += width;
-  
 
-  x += 10;
-  width = 90;
-  morningButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 29, width, 20)];
-  [morningButton setState:CPOnState];
-  [morningButton setTitle:"morning"];
-  
-  afternoonButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 49, width, 20) radioGroup:[morningButton radioGroup]];
-  [afternoonButton setTitle:"afternoon"];
-
-  eveningButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 69, width, 20) radioGroup:[morningButton radioGroup]];
-  [eveningButton setTitle:"evening"];
-
-  [self addSubview: morningButton];
-  [self addSubview: afternoonButton];
-  [self addSubview: eveningButton];
+  timeControl = [[TimeControl alloc] initAtX: x y: 10];
+  [self addSubview: timeControl];
 }
 
 -(void) placeSecondRow
