@@ -20,39 +20,16 @@
   [scenario
     previousAction: function() {
       [sut.dateField setStringValue: 'BOGUS'];
-      [sut.morningButton setState: CPOffState];
-      [sut.afternoonButton setState: CPOnState];
-      [sut.eveningButton setState: CPOffState];
+      [sut.timeControl setTime: [Time afternoon]];
     }
     testAction: function() {
       [sut setDate: '2009-01-01' time: [Time morning]]
     }
   andSo: function() {
       [self assert: '2009-01-01' equals: [sut.dateField stringValue]];
-      [self assert: CPOnState equals: [sut.morningButton state]];
-      [self assert: CPOffState equals: [sut.afternoonButton state]];
-      [self assert: CPOffState equals: [sut.eveningButton state]];
+      [self assert: [Time morning] equals: [sut.timeControl time]];
    }];
 }
-
--(void) testTimeCanBeSetToEvening
-{
-  [scenario
-    previousAction: function() {
-      [sut.morningButton setState: CPOnState];
-      [sut.afternoonButton setState: CPOffState];
-      [sut.eveningButton setState: CPOffState];
-    }
-    testAction: function() {
-      [sut setDate: '2009-01-01' time: [Time evening]]
-    }
-  andSo: function() {
-      [self assert: CPOffState equals: [sut.morningButton state]];
-      [self assert: CPOffState equals: [sut.afternoonButton state]];
-      [self assert: CPOnState equals: [sut.eveningButton state]];
-   }];
-}
-
 
 -(void) testTargetWillBeInformedOfCancel
 {

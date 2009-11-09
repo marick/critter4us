@@ -10,9 +10,7 @@
   sut = [[ReservationDataControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasUpwardCollaborators: ['courseField', 'instructorField',
-                                        'dateField',
-                                        'morningButton', 'afternoonButton',
-                                                     'eveningButton',
+                                        'dateField', 'timeControl',
                                         'beginButton', 'restartButton',
                                         'reserveButton',
                                         'previousResultsView', 'copyButton',
@@ -29,7 +27,7 @@
   [scenario
     previousAction: function() {
       [sut.dateField setStringValue: '2009-12-10'];
-      [sut setTime: [Time afternoon]];
+      [sut.timeControl setTime: [Time afternoon]];
     }
     during: function() {
       [sut beginReserving: UnusedArgument];
@@ -54,9 +52,7 @@
   [scenario
     previousAction: function() {
       [sut.dateField setStringValue: '2010-12-02'];
-      [sut.morningButton setState: CPOnState];
-      [sut.afternoonButton setState: CPOffState];
-      [sut.eveningButton setState: CPOffState];
+      [sut.timeControl setTime: [Time morning]];
     }
     testAction: function() {
       [sut prepareToFinishReservation];
@@ -73,9 +69,7 @@
   [scenario
     previousAction: function() {
       [sut.dateField setStringValue: '2012-01-12'];
-      [sut.morningButton setState: CPOffState];
-      [sut.afternoonButton setState: CPOnState];
-      [sut.eveningButton setState: CPOffState];
+      [sut.timeControl setTime: [Time afternoon]];
     }
     testAction: function() {
       [sut prepareToFinishReservation];
@@ -92,7 +86,7 @@
   [scenario
     previousAction: function() {
       [sut.dateField setStringValue: '2012-01-12'];
-      [sut setTime: [Time evening]];
+      [sut.timeControl setTime: [Time evening]];
     }
     testAction: function() {
       [sut prepareToFinishReservation];
@@ -138,7 +132,7 @@
       [sut.courseField setStringValue: "some course"];
       [sut.instructorField setStringValue: "some instructor"];
       [sut.dateField setStringValue: "some date"];
-      [sut setTime: [Time evening]];
+      [sut.timeControl setTime: [Time evening]];
     }
    testAction: function() {
       return [sut data];
@@ -237,11 +231,7 @@
       [sut.instructorField shouldReceive: @selector(setStringValue:) with: 'the instructor'];
       [sut.dateField shouldReceive: @selector(setStringValue:) with: 'the date'];
       [sut.dateTimeSummary shouldReceive: @selector(setStringValue:)];
-    }
-  andSo: function() {
-      [self assert: CPOnState equals: [sut.morningButton state]];
-      [self assert: CPOffState equals: [sut.afternoonButton state]];
-      [self assert: CPOffState equals: [sut.eveningButton state]];
+      [sut.timeControl shouldReceive: @selector(setTime:) with: [Time morning]];
     }
    ];
 }
@@ -254,9 +244,7 @@
       [sut setNewValuesFrom: [CPDictionary dictionaryWithJSObject: data]];
     }
   andSo: function() {
-      [self assert: CPOffState equals: [sut.morningButton state]];
-      [self assert: CPOnState equals: [sut.afternoonButton state]];
-      [self assert: CPOffState equals: [sut.eveningButton state]];
+      [self assert: [Time afternoon] equals: [sut.timeControl time]];
     }
    ];
 }
@@ -281,7 +269,7 @@
   [scenario
     previousAction: function() {
       [sut.dateField setStringValue: "a value"];
-      [sut setTime: [Time afternoon]];
+      [sut.timeControl setTime: [Time afternoon]];
     }
   during: function() {
       [sut startDestructivelyEditingDateTime: UnusedArgument];

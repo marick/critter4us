@@ -1,16 +1,12 @@
 @import "../util/AwakeningObject.j"
 @import "../util/Time.j"
 
-
-
 @implementation ReservationDataControllerPMR : AwakeningObject
 {
   CPTextField courseField;
   CPTextField instructorField;
   CPTextField dateField;
-  CPRadio morningButton;
-  CPRadio afternoonButton;
-  CPRadio eveningButton;
+  TimeControl timeControl;
 
   CPButton beginButton;
   CPButton reserveButton;
@@ -32,7 +28,7 @@
 {
   [self sendNotification: ReservationDataAvailable
                aboutDate: [dateField stringValue]
-                 andTime: [self timeFromRadio]];
+                 andTime: [timeControl time]];
 };
 
 - (void) prepareToFinishReservation
@@ -80,32 +76,15 @@
   [courseField setStringValue: [dictionary valueForKey: 'course']];
   [instructorField setStringValue: [dictionary valueForKey: 'instructor']];
   [dateField setStringValue: [dictionary valueForKey: 'date']];
-
-  [self setTime: [dictionary valueForKey: 'time']];
+  [timeControl setTime: [dictionary valueForKey: 'time']];
   [self noteTimeAndDate];
-}
-
-- (void) setTime: time
-{
-  // TODO: Is this necessary to turn all other radio buttons off? 
-  // Seems to be in Capp 0.7.1
-  [morningButton setState: CPOffState];  
-  [afternoonButton setState: CPOffState];
-  [eveningButton setState: CPOffState];
-
-  if ([time isEqual: [Time morning]])
-    [morningButton setState: CPOnState];
-  if ([time isEqual: [Time afternoon]])
-    [afternoonButton setState: CPOnState];
-  if ([time isEqual: [Time evening]])
-    [eveningButton setState: CPOnState];
 }
 
 - (void) startDestructivelyEditingDateTime: sender
 {
   [dateTimeEditingPanelController appear];
   [dateTimeEditingControl setDate: [dateField stringValue]
-                       time: [self timeFromRadio]];
+                             time: [timeControl time]];
 }
 
 - (void) forgetEditingDateTime: sender
@@ -120,7 +99,7 @@
   var date = [dateTimeEditingControl date];
   var time = [dateTimeEditingControl time];
   [dateField setStringValue: date];
-  [self setTime: time];
+  [timeControl setTime: time];
   [self noteTimeAndDate];
 
   [self sendNotification: DateTimeForCurrentReservationChangedNews
@@ -151,19 +130,9 @@
 
 - (void) noteTimeAndDate
 {
-  var note = "on the " + [[self timeFromRadio] description] + 
+  var note = "on the " + [[timeControl time] description] + 
     " of " + [dateField stringValue] + ".";
   [dateTimeSummary setStringValue: note];
-}
-
--(Time) timeFromRadio
-{
-  if ([morningButton state] == CPOnState)
-    return [Time morning];
-  if ([afternoonButton state] == CPOnState)
-    return [Time afternoon];
-  if ([eveningButton state] == CPOnState)
-    return [Time evening];
 }
 
 -(void) sendNotification: name aboutDate: date andTime: time
@@ -181,7 +150,7 @@
   [dict setValue: [courseField stringValue] forKey: 'course'];
   [dict setValue: [instructorField stringValue] forKey: 'instructor'];
   [dict setValue: [dateField stringValue] forKey: 'date'];
-  [dict setValue: [self timeFromRadio] forKey: 'time'];
+  [dict setValue: [timeControl time] forKey: 'time'];
   return dict;
 }
 

@@ -1,5 +1,6 @@
 @import "Subgraph.j"
 @import "../ReservationDataControllerPMR.j"
+@import "../../view/TimeControl.j"
 @import "../../view/DateTimeEditingPanel.j"
 @import "../../view/DateTimeEditingControl.j"
 @import "../../controller/PanelController.j"
@@ -163,29 +164,11 @@
   controller.dateField = dateField;
   x += width;
 
-  x += 10;
-  width = 90;
-
-  var morningButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 29, width, 20)];
-  [morningButton setState:CPOnState];
-  [morningButton setTitle:Morning];
-  [morningButton setTag:Morning];
   
-  afternoonButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 49, width, 20) radioGroup:[morningButton radioGroup]];
-  [afternoonButton setTitle:Afternoon];
-  [afternoonButton setTag:Afternoon];
-
-  eveningButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 69, width, 20) radioGroup:[morningButton radioGroup]];
-  [eveningButton setTitle:Evening];
-  [eveningButton setTag:Evening];
-
-  [aView addSubview: morningButton];
-  [aView addSubview: afternoonButton];
-  [aView addSubview: eveningButton];
-  controller.morningButton = morningButton;
-  controller.afternoonButton = afternoonButton;
-  controller.eveningButton = eveningButton;
-  x += width;
+  timeControl = [[TimeControl alloc] initAtX: x y: 10];
+  [aView addSubview: timeControl];
+  controller.timeControl = timeControl;
+  x += [timeControl frame].size.width;
     
   x += 15
   width = 80;
