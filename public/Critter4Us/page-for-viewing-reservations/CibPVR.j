@@ -1,7 +1,7 @@
 @import "../util/Constants.j"
-@import "../controller/AllReservationsPageController.j"
+@import "PageControllerPVR.j"
 
-@implementation AllReservationsPageCib : CPObject
+@implementation CibPVR : CPObject
 {
   
 }
@@ -17,7 +17,7 @@
 	var table = [[CPWebView alloc] initWithFrame: CGRectMake(10,30, 970,500)];
   [pageView addSubview: table];
 
-	var pageController = [[AllReservationsPageController alloc] init];
+	var pageController = [[PageControllerPVR alloc] init];
 	pageController.pageView = pageView;
 	pageController.table = table;
 	owner.allReservationsPageController = pageController;	

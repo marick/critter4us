@@ -1,7 +1,7 @@
 @import <AppKit/AppKit.j>
 @import "../util/AwakeningObject.j"
 
-@implementation AllReservationsPageController : AwakeningObject
+@implementation PageControllerPVR : AwakeningObject
 {
 	CPView pageView;
 	CPView table;

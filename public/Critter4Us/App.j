@@ -1,8 +1,10 @@
 @import <AppKit/AppKit.j>
-@import "cib/AllReservationsPageCib.j"
-@import "cib/MainMenuCib.j"
-@import "page-for-making-reservations/CibPMR.j"
+@import "MainMenuCib.j"
 @import "view/Advisor.j"
+@import "page-for-making-reservations/CibPMR.j"
+alert(1)
+@import "page-for-viewing-reservations/CibPVR.j"
+alert(2)
 
 
 // This pure-javascript object is used to make forwarding from HTML
@@ -41,7 +43,7 @@ AppForwarder.copy = function(reservationId) {
 
 -(void)createAllReservationsPage
 {
-  [[AllReservationsPageCib alloc] instantiatePageInWindow: theWindow withOwner: self];
+  [[CibPVR alloc] instantiatePageInWindow: theWindow withOwner: self];
 }
 
 -(void)createCibPMR

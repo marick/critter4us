@@ -1,13 +1,13 @@
-@import <Critter4Us/controller/AllReservationsPageController.j>
+@import <Critter4Us/page-for-viewing-reservations/PageControllerPVR.j>
 @import "ScenarioTestCase.j"
 
-@implementation AllReservationsPageControllerTest : ScenarioTestCase
+@implementation PageControllerPVRTest : ScenarioTestCase
 {
 }
 
 - (void)setUp
 {
-  sut = [[AllReservationsPageController alloc] init];
+  sut = [[PageControllerPVR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
 
   [scenario sutHasUpwardCollaborators: ['pageView', 'table']];
