@@ -1,6 +1,7 @@
 @import <AppKit/AppKit.j>
 @import "MainMenuCib.j"
 @import "view/Advisor.j"
+@import "view/Spinner.j"
 @import "page-for-making-reservations/CibPMR.j"
 @import "page-for-viewing-reservations/CibPVR.j"
 @import "page-for-viewing-animals/CibPVA.j"
@@ -37,6 +38,7 @@ AppForwarder.copy = function(reservationId) {
 
   [self createMainMenu];
   [[Advisor alloc] init];
+  [[Spinner alloc] initWithin: theWindow];
   [self createPage: CibPMR];
   [self createPage: CibPVR];
   [self createPage: CibPVA];

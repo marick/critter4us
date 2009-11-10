@@ -16,6 +16,8 @@ ClosedPanelOnPageNews = "a panel on the current page has closed";
 AdvisoriesAreIrrelevantNews = "advisory panels should go away";
 ReservationStoredNews = "reservation has been stored";
 ReservationRetrievedNews = "reservation has been retrieved";
+BusyNews = "hold on user";
+AvailableNews = "your turn";
 
 // Route names
 AllReservationsTableRoute = @"reservations";  // TODO: this should be moved
