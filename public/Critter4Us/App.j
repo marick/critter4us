@@ -3,7 +3,7 @@
 @import "view/Advisor.j"
 @import "page-for-making-reservations/CibPMR.j"
 @import "page-for-viewing-reservations/CibPVR.j"
-// @import "page-for-viewing-animals/CibPVA.j"
+@import "page-for-viewing-animals/CibPVA.j"
 
 
 // This pure-javascript object is used to make forwarding from HTML
@@ -39,6 +39,7 @@ AppForwarder.copy = function(reservationId) {
   [[Advisor alloc] init];
   [self createPage: CibPMR];
   [self createPage: CibPVR];
+  [self createPage: CibPVA];
   [self initializationIndependentOfUI]
 
   [self activateReservationMaker: self];
@@ -73,6 +74,11 @@ AppForwarder.copy = function(reservationId) {
 - (void) activateReservationViewer: (CPMenuItem) sender
 {
   [self foreground: pvrPageController];
+}
+
+- (void) activateAnimalViewer: (CPMenuItem) sender
+{
+  [self foreground: pvaPageController];
 }
 
 - (void) activateReservationMaker: (CPMenuItem) sender

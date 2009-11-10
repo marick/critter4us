@@ -1,32 +1,17 @@
 @import "../util/Constants.j"
+@import "../cib/TableViewingCib.j"
 @import "PageControllerPVR.j"
 
-@implementation CibPVR : CPObject
+@implementation CibPVR : TableViewingCib
 {
   
 }
 
-- (void)instantiatePageInWindow: (CPWindow) window withOwner: (CPObject) owner
+- (id) makePageControllerUnder: owner
 {
-	var containingView = [window contentView];
-	
-	var pageView = [[CPView alloc] initWithFrame: [containingView frame]];
-  [containingView addSubview: pageView];
-	[pageView setHidden:YES];
-
-	var table = [[CPWebView alloc] initWithFrame: CGRectMake(10,30, 970,500)];
-  [pageView addSubview: table];
-
-	var pageController = [[PageControllerPVR alloc] init];
-	pageController.pageView = pageView;
-	pageController.table = table;
-	owner.pvrPageController = pageController;	
-	
-        var persistentStore = [[PersistentStore alloc] init];
-        persistentStore.network = [[NetworkConnection alloc] init];
-        pageController.persistentStore = persistentStore;
-
-	[pageController awakeFromCib];
+  var pageController = [[PageControllerPVR alloc] init];
+  owner.pvrPageController = pageController;	
+  return pageController;
 }
 
 @end

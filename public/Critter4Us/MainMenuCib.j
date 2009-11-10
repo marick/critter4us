@@ -7,6 +7,7 @@
   CPMenu windowMenu;
   CPMenuItem newReservationMakerMenuItem;
   CPMenuItem reservationViewerMenuItem;
+  CPMenuItem animalViewerMenuItem;
 }
 
 -(void) initializeWithOwner: anOwner
@@ -17,6 +18,7 @@
   [self addWindowMenuToMainMenu];
   [self addWindowMenuItemThatMakesReservation];
   [self addWindowMenuItemThatViewsAllReservations];
+  [self addWindowMenuItemThatViewsAllAnimals];
 }
 
 -(void)addMainMenu
@@ -53,6 +55,14 @@
       [self aWindowMenuItemwithTitle:@"View All Reservations" 
                               action:@selector(activateReservationViewer:) 
                        keyEquivalent:'V'];
+}
+
+-(void)addWindowMenuItemThatViewsAllAnimals
+{
+  reservationViewerMenuItem = 
+      [self aWindowMenuItemwithTitle:@"View All Animals" 
+                              action:@selector(activateAnimalViewer:) 
+                       keyEquivalent:'A'];
 }
 
 // Util
