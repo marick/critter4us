@@ -1,32 +1,14 @@
 @import <AppKit/AppKit.j>
-@import "../util/AwakeningObject.j"
+@import "../controller/TableViewingPageController.j"
 
-@implementation PageControllerPVR : AwakeningObject
+@implementation PageControllerPVR : TableViewingPageController
 {
-	CPView pageView;
-	CPView table;
-	PersistentStore persistentStore;
 }
 
-- (void)reloadData // old
+- (CPString) fetchHTML
 {
-  [table loadHTMLString:@"<b>Some bew text will go here!</b>" baseURL: nil];
+  return [persistentStore pendingReservationTableAsHtml];
 }
-
-- (void) appear
-{
-	[pageView setHidden:NO];
-	
-	var tableHtml = [persistentStore pendingReservationTableAsHtml];
-	[table loadHTMLString:tableHtml baseURL: nil];
-}
-
-- (void) disappear
-{
-	[pageView setHidden:YES];
-}
-
-
 
 
 @end

@@ -2,9 +2,8 @@
 @import "MainMenuCib.j"
 @import "view/Advisor.j"
 @import "page-for-making-reservations/CibPMR.j"
-alert(1)
 @import "page-for-viewing-reservations/CibPVR.j"
-alert(2)
+// @import "page-for-viewing-animals/CibPVA.j"
 
 
 // This pure-javascript object is used to make forwarding from HTML
@@ -23,8 +22,11 @@ AppForwarder.copy = function(reservationId) {
 @implementation App : CPObject
 {
   CPWindow theWindow;
-  CPObject allReservationsPageController;
+  CPObject pvrPageController;
   CPObject pmrPageController;
+  CPObject pvaPageController;
+
+  CPArray allPageControllers;
 }
 
 - (void)applicationDidFinishLaunching:(CPNotification)aNotification
@@ -34,21 +36,22 @@ AppForwarder.copy = function(reservationId) {
   [theWindow orderFront:self];
 
   [self createMainMenu];
-  [self createCibPMR];
-  [self createAllReservationsPage];
   [[Advisor alloc] init];
+  [self createPage: CibPMR];
+  [self createPage: CibPVR];
+  [self initializationIndependentOfUI]
 
   [self activateReservationMaker: self];
 }
 
--(void)createAllReservationsPage
+-(void) initializationIndependentOfUI
 {
-  [[CibPVR alloc] instantiatePageInWindow: theWindow withOwner: self];
+  allPageControllers = [pvrPageController, pmrPageController, pvaPageController];
 }
 
--(void)createCibPMR
+-(void) createPage: klass
 {
-  [[CibPMR alloc] instantiatePageInWindow: theWindow withOwner: self];
+  [[klass alloc] instantiatePageInWindow: theWindow withOwner: self];
 }
 
 -(void)createMainMenu
@@ -56,16 +59,25 @@ AppForwarder.copy = function(reservationId) {
   [[MainMenuCib alloc] initializeWithOwner: self];
 }
 
+- (void) foreground: aPageController
+{
+  for (var i=0; i < [allPageControllers count]; i++)
+  {
+    if (allPageControllers[i] != aPageController)
+      [allPageControllers[i] disappear];
+  }
+  [aPageController appear];
+}
+
+
 - (void) activateReservationViewer: (CPMenuItem) sender
 {
-  [pmrPageController disappear];
-  [allReservationsPageController appear];
+  [self foreground: pvrPageController];
 }
 
 - (void) activateReservationMaker: (CPMenuItem) sender
 {
-  [pmrPageController appear];
-  [allReservationsPageController disappear];
+  [self foreground: pmrPageController];
 }
 
 - (void) editReservation: id

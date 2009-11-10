@@ -20,7 +20,7 @@
 	var pageController = [[PageControllerPVR alloc] init];
 	pageController.pageView = pageView;
 	pageController.table = table;
-	owner.allReservationsPageController = pageController;	
+	owner.pvrPageController = pageController;	
 	
         var persistentStore = [[PersistentStore alloc] init];
         persistentStore.network = [[NetworkConnection alloc] init];

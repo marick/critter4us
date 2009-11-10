@@ -9,13 +9,28 @@
 {
   sut = [[App alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasDownwardCollaborators: ['allReservationPageController, pmrPageController']];
+  [scenario sutHasDownwardOutlets: ['pvrPageController', 'pmrPageController',
+                                    'pvaPageController']];
 
+  [sut initializationIndependentOfUI];
   [[CPApplication sharedApplication] setDelegate: sut];
-  
 }
 
--(void) testThatClickingAnHtmlEditButtonStartsEditing
+-(void) test_that_app_can_foreground_one_page
+{
+  [scenario 
+    during: function() {
+      [sut foreground: sut.pvrPageController];
+    }
+  behold: function() { 
+      [sut.pvrPageController shouldReceive: @selector(appear)];
+      [sut.pmrPageController shouldReceive: @selector(disappear)];
+      [sut.pvaPageController shouldReceive: @selector(disappear)];
+    }];
+}
+
+
+-(void) test_that_clicking_the_HTML_edit_button_starts_editing
 {
   [scenario 
    during: function() { 
@@ -24,12 +39,12 @@
   behold: function() {
       [self listenersWillReceiveNotification: ModifyReservationNews
                                   containingObject: 33];
-      [sut.allReservationPageController shouldReceive: @selector(disappear)];
+      [sut.pvrPageController shouldReceive: @selector(disappear)];
       [sut.pmrPageController shouldReceive: @selector(appear)];
     }];
 }
 
--(void) testThatClickingAnHtmlEditButtonStartsCopinging
+-(void) test_that_clicking_the_HTML_copy_button_starts_copying
 {
   [scenario 
    during: function() { 
@@ -38,7 +53,7 @@
   behold: function() {
       [self listenersWillReceiveNotification: CopyReservationNews
                                   containingObject: 33];
-      [sut.allReservationPageController shouldReceive: @selector(disappear)];
+      [sut.pvrPageController shouldReceive: @selector(disappear)];
       [sut.pmrPageController shouldReceive: @selector(appear)];
     }];
 }

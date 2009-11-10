@@ -10,23 +10,9 @@
   sut = [[PageControllerPVR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
 
-  [scenario sutHasUpwardCollaborators: ['pageView', 'table']];
-  [scenario sutHasDownwardCollaborators: ['persistentStore']];
+  [scenario sutHasDownwardOutlets: ['persistentStore']];
 }
 
--(void) testAppearingMeansBecomingUnhidden
-{
-  [scenario
-   previousAction: function() { 
-     [sut.pageView setHidden:NO];
-   }
-   testAction: function() {
-     [sut appear];
-   }
-   andSo: function() {
-     [self assertFalse: [sut.pageView hidden]];
-   }];
-}
 
 - (void) testAppearingMeansDisplayingAFreshlyFetchedTable
 {
@@ -41,22 +27,6 @@
                           with: ["<p>html</p>", nil]];
    }];
 }
-
-
--(void) testDisappearingMeansBecomingHidden
-{
-  [scenario
-   previousAction: function() { 
-     [sut.pageView setHidden:YES];
-   }
-   testAction: function() {
-     [sut disappear];
-   }
-   andSo: function() {
-     [self assertTrue: [sut.pageView hidden]];
-   }];
-}
-
 
 
 @end
