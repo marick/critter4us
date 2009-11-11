@@ -5,9 +5,14 @@
 {
 }
 
+- (CPString) finishNotificationName
+{
+  return AnimalTableRetrievedNews;
+}
+
 - (CPString) fetchHTML
 {
-  return "<b>Nothing Yet</b>";
+  [persistentStore animalTableAsHtml];
 }
 
 

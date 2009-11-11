@@ -18,6 +18,8 @@ ReservationStoredNews = "reservation has been stored";
 ReservationRetrievedNews = "reservation has been retrieved";
 BusyNews = "hold on user";
 AvailableNews = "your turn";
+ReservationTableRetrievedNews = "a reservation table has been retrieved";
+AnimalTableRetrievedNews = "an animal table has been retrieved";
 
 // Route names
 AllReservationsTableRoute = @"reservations";  // TODO: this should be moved

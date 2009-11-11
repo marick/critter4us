@@ -66,7 +66,9 @@
 
 - (CPString) pendingReservationTableAsHtml
 {
-  return [network GETHtmlfromURL: AllReservationsTableRoute];
+  var string = [network GETHtmlfromURL: AllReservationsTableRoute];
+  [NotificationCenter postNotificationName: ReservationTableRetrievedNews
+                                    object: string];
 }
 
 // util
