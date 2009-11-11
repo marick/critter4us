@@ -33,5 +33,12 @@
   return [data description];
 }
 
+- (void) sendGetAsynchronouslyTo: route delegate: delegate
+{
+  var request = [CPURLRequest requestWithURL: route];
+  urlConnection = [CPURLConnection connectionWithRequest:request delegate:delegate];
+  [urlConnection start];
+}
+
 
 @end
