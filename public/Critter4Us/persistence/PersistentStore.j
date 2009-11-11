@@ -5,6 +5,9 @@
 @import "FromNetworkConverter.j"
 @import "TimeInvariantExclusionCache.j"
 @import "URIMaker.j"
+@import "ReservationTableFuture.j"
+
+var SharedPersistentStore = nil;
 
 @implementation PersistentStore : AwakeningObject
 {
@@ -13,7 +16,21 @@
   FromNetworkConverter fromNetworkConverter;
   CPDictionary timeInvariantExclusions;
   URIMaker uriMaker;
+
+  id reservationTableFuture;
 }
+
++ (PersistentStore) sharedPersistentStore
+{
+  if (!SharedPersistentStore)
+  {
+    SharedPersistentStore = [[PersistentStore alloc] init];
+    SharedPersistentStore.network = [[NetworkConnection alloc] init];
+    [SharedPersistentStore awakeFromCib];
+  }
+  return SharedPersistentStore;
+}
+
 
 - (void) awakeFromCib
 {
@@ -22,6 +39,8 @@
   toNetworkConverter = [[ToNetworkConverter alloc] init];
   fromNetworkConverter = [[FromNetworkConverter alloc] init];
   uriMaker = [[URIMaker alloc] init];
+
+  reservationTableFuture = ReservationTableFuture;
   [self setTimeInvariantExclusions: TimeInvariantExclusionCache];
 }
 
@@ -66,9 +85,12 @@
 
 - (CPString) pendingReservationTableAsHtml
 {
-  var string = [network GETHtmlfromURL: AllReservationsTableRoute];
-  [NotificationCenter postNotificationName: ReservationTableRetrievedNews
-                                    object: string];
+  [reservationTableFuture spawnRequestTo: network];
+}
+
+- (CPString) animalTableAsHtml
+{
+  alert("why animal table?");
 }
 
 // util

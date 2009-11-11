@@ -20,9 +20,7 @@
   pageController.pageView = pageView;
   pageController.table = table;
 	
-  var persistentStore = [[PersistentStore alloc] init];
-  persistentStore.network = [[NetworkConnection alloc] init];
-  pageController.persistentStore = persistentStore;
+  pageController.persistentStore = [PersistentStore sharedPersistentStore];
 
   [pageController awakeFromCib];
 }

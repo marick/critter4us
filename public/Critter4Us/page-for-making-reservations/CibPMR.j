@@ -40,7 +40,7 @@
 
   [self drawControlledSubgraphsIn: theWindow];
   coordinator = [self custom: [[CoordinatorPMR alloc] init]];
-  persistentStore = [self loadGlobalPersistentStore];
+  persistentStore = [PersistentStore sharedPersistentStore];
 
   currentGroupPanel = [[CurrentGroupPanel alloc] init];
   currentGroupPanelController = [[PanelController alloc] initWithPanel: currentGroupPanel];
@@ -79,12 +79,6 @@
   [groupControllerSubgraph connectOutlets];
 }
 
-- (PersistentStore) loadGlobalPersistentStore
-{
-  var persistentStore = [self custom: [[PersistentStore alloc] init]];
-  persistentStore.network = [[NetworkConnection alloc] init];
-  return persistentStore;
-}
 
 
 - (void) connectRemainingOutlets

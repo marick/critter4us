@@ -12,7 +12,6 @@ HasCorrectData = function(data) {
 HasExtraExclusions = function(exclusions) {
   return exclusions['floating'] == 'never this animal' 
 }
-GetEditableReservationRoute = @"reservation"; // DELETEME
 
 
 
@@ -26,14 +25,22 @@ GetEditableReservationRoute = @"reservation"; // DELETEME
   id timeInvariants;
 }
 
-
+- (void) test_there_is_a_singleton_for_persistent_store
+{
+  var first = [PersistentStore sharedPersistentStore];
+  var second = [PersistentStore sharedPersistentStore];
+  [self assert: first equals: second];
+}
 
 - (void)setUp
 {
   sut = [[PersistentStore alloc] init];
   [sut awakeFromCib];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasDownwardCollaborators: ['network', 'toNetworkConverter', 'fromNetworkConverter', 'uriMaker']];
+  [scenario sutHasDownwardOutlets: ['network']];
+  [scenario sutCreates: [ 'toNetworkConverter', 'fromNetworkConverter', 'uriMaker']];
+  [scenario sutCreates: ['reservationTableFuture']];
+
   timeInvariants = '{"floating":["never this animal"]}';
   [sut setTimeInvariantExclusions: timeInvariants];
 
@@ -43,6 +50,7 @@ GetEditableReservationRoute = @"reservation"; // DELETEME
   floating = [[Procedure alloc] initWithName: 'floating'];
   accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
 }
+
 
 - (void)test_how_persistent_store_coordinates_when_retrieving_data
 {
@@ -123,19 +131,15 @@ GetEditableReservationRoute = @"reservation"; // DELETEME
 }
 
 
--(void)test_can_fetch_reservation_list_data_from_network
+-(void)test_spawns_an_object_to_fetch_the_reservation_table
 {
   [scenario
     during: function() { 
       return [sut pendingReservationTableAsHtml];
     }
   behold: function() {
-      [sut.network shouldReceive: @selector(GETHtmlfromURL:) 
-                            with: AllReservationsTableRoute
-                       andReturn: "<html>stuff</html>"];
-    }
-  andSo: function() { 
-      [self assert: "<html>stuff</html>" equals: scenario.result];
+      [sut.reservationTableFuture shouldReceive: @selector(spawnRequestTo:)
+                                           with: sut.network];
     }];
 }
 
