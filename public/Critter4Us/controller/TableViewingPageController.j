@@ -22,7 +22,12 @@
   var tableHtml = [self fetchHTML];
 }
 
-- (CPString) startFetch
+- (CPString) finishNotificationName
+{
+  return "Subclass responsibility";
+}
+
+- (CPString) fetchHTML
 {
   return "Subclass responsibility";
 }
