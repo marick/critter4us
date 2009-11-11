@@ -61,11 +61,6 @@
   [self showGroupEditButtons: NO];
 }
 
-- (id) copyPreviousReservation: sender
-{
-  alert([sender tag]);
-}
-
 - (void) abandonReservation:sender
 {
   alert("This isn't implemented yet. You can achieve the same effect by reloading this page in your browser.");
