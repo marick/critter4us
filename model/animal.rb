@@ -26,8 +26,9 @@ class Animal < Sequel::Model
 
   def self.random(overrides = {})
     defaults = {
-      :name => 'bossy',
-      :kind => 'bovine'
+      :name => 'jake',
+      :kind => 'gelding',
+      :procedure_description_kind => 'equine'
     }
     create(defaults.merge(overrides));
   end

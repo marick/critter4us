@@ -154,7 +154,7 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
   end
 
   get '/animals' do 
-    "<b>The server says: Nothing Yet</b>"
+    view(AnimalListView).new(:animals => animal_source.all).to_s
   end
 
   def move_to_internal_format(hash)
