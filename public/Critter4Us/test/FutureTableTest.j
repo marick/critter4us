@@ -1,7 +1,21 @@
 @import <Critter4Us/persistence/ReservationTableFuture.j>
 @import "ScenarioTestCase.j"
 
+@implementation TestFuture : Future
+{
+}
 
+- (CPString) route
+{
+  return "some route";
+}
+
+-(CPString) notification
+{
+  return "some notification";
+}
+
+@end
 
 @implementation ReservationTableFutureTest : ScenarioTestCase
 {
@@ -9,7 +23,7 @@
 
 - (void) setUp
 {
-  sut = [[ReservationTableFuture alloc] init];
+  sut = [[TestFuture alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
 
   [scenario sutWillBeGiven: ['network']];
@@ -23,7 +37,7 @@
     }
   behold: function() { 
       [sut.network shouldReceive: @selector(sendGetAsynchronouslyTo:delegate:)
-                            with: [AllReservationsTableRoute, sut]];
+                            with: ["some route", sut]];
       [self listenersShouldReceiveNotification: BusyNews];
     }];
 }
@@ -39,7 +53,7 @@
       [sut connectionDidFinishLoading: UnusedArgument];
     }
   behold: function() {
-      [self listenersShouldReceiveNotification: ReservationTableRetrievedNews
+      [self listenersShouldReceiveNotification: "some notification"
                               containingObject: "foobar"];
       [self listenersShouldReceiveNotification: AvailableNews]
     }];

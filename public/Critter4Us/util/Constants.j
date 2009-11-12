@@ -21,17 +21,8 @@ AvailableNews = "your turn";
 ReservationTableRetrievedNews = "a reservation table has been retrieved";
 AnimalTableRetrievedNews = "an animal table has been retrieved";
 
-// Route names
-AllReservationsTableRoute = @"reservations";  // TODO: this should be moved
-
 // Other useful constants
 NotificationCenter = [CPNotificationCenter defaultCenter];
-
-// URI
-jsonURI = function(route)
-{
-  return url = "/json/" + route
-}
 
 // Standard window and view size information
 WindowBottomMargin = 20;
