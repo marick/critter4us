@@ -9,9 +9,6 @@ require 'pp'
 require 'erector'
 include Erector::Mixin
 
-# TODO: This is in root directory so that public is set right without
-# my having to do anything. Should probably migrate into subdirectory.
-
 # TODO: It might be a better idea to have a json controller and an
 # html controller instead of using includes with one controller.
 
@@ -19,7 +16,7 @@ class Controller < Sinatra::Base
   include TestSupport
 
   set :static, true
-  set :root, File.dirname(__FILE__)
+  set :root, File.join(File.dirname(__FILE__), "..")
   enable :raise_errors
   enable :sessions
 

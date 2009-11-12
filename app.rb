@@ -2,7 +2,7 @@ require 'rubygems'
 require File.expand_path('path-setting', File.dirname(__FILE__))
 
 require 'config'
-require 'controller'
+require 'controller/base'
 require 'view/requires'
 
 Sinatra::Base.configure :development do

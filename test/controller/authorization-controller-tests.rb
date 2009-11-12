@@ -1,6 +1,6 @@
 $: << '../..' unless $in_rake
 require 'test/testutil/requires'
-require 'controller'
+require 'controller/base'
 
 class AuthorizationControllerTests < FreshDatabaseTestCase
   include Rack::Test::Methods
