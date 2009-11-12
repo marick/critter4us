@@ -6,6 +6,7 @@
 @import "TimeInvariantExclusionCache.j"
 @import "URIMaker.j"
 @import "ReservationTableFuture.j"
+@import "AnimalTableFuture.j"
 
 var SharedPersistentStore = nil;
 
@@ -18,6 +19,7 @@ var SharedPersistentStore = nil;
   URIMaker uriMaker;
 
   id reservationTableFuture;
+  id animalTableFuture;
 }
 
 + (PersistentStore) sharedPersistentStore
@@ -41,6 +43,7 @@ var SharedPersistentStore = nil;
   uriMaker = [[URIMaker alloc] init];
 
   reservationTableFuture = ReservationTableFuture;
+  animalTableFuture = AnimalTableFuture;
   [self setTimeInvariantExclusions: TimeInvariantExclusionCache];
 }
 
@@ -90,7 +93,7 @@ var SharedPersistentStore = nil;
 
 - (CPString) animalTableAsHtml
 {
-  alert("why animal table?");
+  [animalTableFuture spawnRequestTo: network];
 }
 
 // util

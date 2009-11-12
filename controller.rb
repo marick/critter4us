@@ -153,6 +153,10 @@ class Controller < Sinatra::Base  # Todo: how can you have multiple controllers?
     view(ReservationListView).new(:reservations => reservation_source.all).to_s
   end
 
+  get '/animals' do 
+    "<b>The server says: Nothing Yet</b>"
+  end
+
   def move_to_internal_format(hash)
     result = symbol_keys(hash)
     result[:date] = Date.parse(result[:date]) if result[:date]
