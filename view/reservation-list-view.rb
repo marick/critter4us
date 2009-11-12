@@ -1,6 +1,7 @@
 require 'view/util'
 
-class ReservationListView < Erector::Widget
+class ReservationListView < Erector::Widget     
+  include ViewHelper
   include ReservationHelper
 
   def content
@@ -19,13 +20,7 @@ class ReservationListView < Erector::Widget
               td { text r.course }
               td { text r.animal_names.join(', ') }
               td { text r.procedure_names.join(', ') }
-              td do
-                form(:method => "POST",
-                     :action => "reservation/#{r.id}") do 
-                  input(:type => 'submit', :value=>'Delete')
-                  input(:type => 'hidden', :value=>"DELETE", :name=>"_method")
-                end
-              end
+              td { rawtext delete_button("reservation/#{r.id}") }
               td do
                 form do 
                   input(:type => 'button', :value=>'Edit',

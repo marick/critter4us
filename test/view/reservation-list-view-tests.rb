@@ -4,7 +4,9 @@ require 'model/requires'
 require 'view/requires'
 require 'assert2/xhtml'
 
-class ViewTests < FreshDatabaseTestCase
+class ReservationViewTests < FreshDatabaseTestCase
+  include ViewHelper
+
   should "sort reservations" do
     earlier = Reservation.random(:date => Date.new(2008, 8, 8))
     afternoon = Reservation.random(:date => Date.new(2009, 9, 9),
@@ -48,15 +50,7 @@ class ViewTests < FreshDatabaseTestCase
     reservation = Reservation.random(:course => 'v=m=1')
 
     output = ReservationListView.new(:reservations => [reservation]).to_s
-    assert_xhtml(output) do
-      td do
-        form :method => 'POST',
-        :action => "reservation/#{reservation.id}" do 
-          input(:type => 'hidden', :value => "DELETE", :name => "_method")
-          input(:type => 'submit')
-        end
-      end
-    end
+    assert { output.include? delete_button("reservation/#{reservation.id}") } 
   end
 
   should "contain well-formed edit button" do

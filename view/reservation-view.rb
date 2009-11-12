@@ -2,6 +2,7 @@ require 'view/util'
 require 'view/reservation-view-prelude'
 
 class ReservationView < Erector::Widget
+  include ViewHelper
   include ReservationHelper
 
   def initialize(*args)
