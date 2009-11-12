@@ -5,6 +5,11 @@ StoreReservationRoute = @"store_reservation";
 FetchReservationRoute = @"reservation";
 ModifyReservationRoute = @"modify_reservation";
 
+jsonURI = function(route)
+{
+  return url = "/json/" + route
+}
+
 @implementation URIMaker : CPObject
 
 - (CPString) reservationURIWithDate: date time: time
