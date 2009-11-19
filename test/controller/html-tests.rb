@@ -44,6 +44,7 @@ class HtmlControllerTests < FreshDatabaseTestCase
       get '/animals'
       actual_names = @dummy_view[:animals].map(&:name) 
       assert { actual_names == ['bossy', 'jake'] }
+      assert { @dummy_view[:date_source].is_a? DateSource } 
     end
   end
 
@@ -54,19 +55,38 @@ class HtmlControllerTests < FreshDatabaseTestCase
         use Procedure.random
       end
       assert { Reservation[:instructor => 'marge'] }
+      delete "/reservation/#{@reservation.id}"
     end
 
     should "be able to delete reservations" do
-      delete "/reservation/#{@reservation.id}"
-
       deny { Reservation[:instructor => 'marge'] }
     end
 
     should "redirect to reservations page" do
-      delete "/reservation/#{@reservation.id}"
       follow_redirect!
-      assert_equal "http://example.org/reservations", last_request.url
       assert last_response.ok?        
+      assert_equal "http://example.org/reservations", last_request.url
     end
   end
+
+
+  context "deleting animals" do
+    setup do 
+      @animal = Animal.random
+      deny { Animal[@animal.id].date_removed_from_service }
+      delete "/animal/#{@animal.id}?as_of=2012-03-30"
+    end
+
+    should "be able to delete animals" do
+      actual_effective_date = Animal[@animal.id].date_removed_from_service
+      assert { Date.parse('2012-03-30') == actual_effective_date }
+    end
+
+    should "redirect to animals page" do
+      follow_redirect!
+      assert last_response.ok?        
+      assert_equal "http://example.org/animals", last_request.url
+    end
+  end
+
 end

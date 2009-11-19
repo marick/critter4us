@@ -11,8 +11,6 @@ class AnimalListView < Erector::Widget
       end
       body do
         table(TableStyle) do 
-          th do 
-          end
           animals_sorted_by_name.each do | a |
             tr do 
               td { text a.name }

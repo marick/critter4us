@@ -22,7 +22,19 @@ class Controller
   end
 
   get '/animals' do 
-    view(AnimalListView).new(:animals => animal_source.all).to_s
+    view(AnimalListView).new(:animals => animal_source.all,
+                             :date_source => DateSource.new).to_s
   end
+
+  delete '/animal/:number' do
+    number = params[:number]
+    effective_date = params[:as_of]
+    animal = animal_source[number]
+    animal.date_removed_from_service = effective_date
+    animal.save
+    redirect '/animals'
+  end
+
+
 end
 
