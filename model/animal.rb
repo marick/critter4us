@@ -22,7 +22,7 @@ class Animal < Sequel::Model
     map
   end
 
-  def remove_from_service(date)
+  def remove_from_service_as_of(date)
     self.date_removed_from_service = date
     save_changes
   end

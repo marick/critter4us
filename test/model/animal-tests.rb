@@ -34,6 +34,13 @@ class AnimalTests < FreshDatabaseTestCase
       assert { 'bovine' ==  a.procedure_description_kind }
     end
 
+    should "be able to remove from scheduling as of a date" do
+      animal = Animal.random
+      animal.remove_from_service_as_of('2001-12-01')
+      
+      actual_date = Animal[animal.id].date_removed_from_service
+      assert { Date.parse('2001-12-01') == actual_date } 
+    end
   end
 end
 

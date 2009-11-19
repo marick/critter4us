@@ -276,10 +276,10 @@ end
         @date = Date.new(2010, 10, 10)
         @time = MORNING
         already_gone = Animal.random(:name => "already gone")
-        already_gone.remove_from_service(@date)
+        already_gone.remove_from_service_as_of(@date)
 
         still_here = Animal.random(:name => "still here")
-        still_here.remove_from_service(@date+1)
+        still_here.remove_from_service_as_of(@date+1)
       end
 
       should "not return animals removed from service as of given date" do

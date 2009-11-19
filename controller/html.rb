@@ -29,12 +29,8 @@ class Controller
   delete '/animal/:number' do
     number = params[:number]
     effective_date = params[:as_of]
-    animal = animal_source[number]
-    animal.date_removed_from_service = effective_date
-    animal.save
+    animal_source[number].remove_from_service_as_of(effective_date)
     redirect '/animals'
   end
-
-
 end
 
