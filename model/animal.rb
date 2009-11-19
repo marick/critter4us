@@ -22,6 +22,11 @@ class Animal < Sequel::Model
     map
   end
 
+  def remove_from_service(date)
+    self.date_removed_from_service = date
+    save_changes
+  end
+
   # following are for testing
 
   def self.random(overrides = {})

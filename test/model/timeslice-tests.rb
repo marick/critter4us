@@ -239,35 +239,54 @@ end
 
 
   context "delivering animal names" do 
-    setup do
-      @date = Date.new(2010, 10, 10)
-      @time = MORNING
-      cannot_be_used = Animal.random(:name => "cannot be used")
-      can_be_used = Animal.random(:name => "can be used")
-      procedure = Procedure.random(:name => 'lab procedure')
-      @cannot_be_used_reservation = Reservation.random(:date => @date,
-                                                       :time => MORNING) do
-        use cannot_be_used
-        use procedure
+    context "in the presence of reservations" do 
+      setup do
+        @date = Date.new(2010, 10, 10)
+        @time = MORNING
+        cannot_be_used = Animal.random(:name => "cannot be used")
+        can_be_used = Animal.random(:name => "can be used")
+        procedure = Procedure.random(:name => 'lab procedure')
+        @cannot_be_used_reservation = Reservation.random(:date => @date,
+                                                         :time => MORNING) do
+          use cannot_be_used
+          use procedure
+        end
+        Reservation.random(:date => @date,
+                           :time => EVENING) do
+          use can_be_used
+          use procedure
+        end
       end
-      Reservation.random(:date => @date,
-                         :time => EVENING) do
-        use can_be_used
-        use procedure
+
+      should "answer names of animals not in use during the timeslice" do
+        @timeslice.move_to(@date, @time)
+        result = @timeslice.available_animals_by_name
+        assert { result == ['can be used'] }
+      end
+
+      should "override exclusion for a specific reservation's animals" do
+        @timeslice.move_to(@date, @time,  @cannot_be_used_reservation)
+        result = @timeslice.available_animals_by_name
+        assert { result.sort == ['can be used', 'cannot be used'].sort }
       end
     end
 
-    should "answer names of animals not in use during the timeslice" do
-      @timeslice.move_to(@date, @time)
-      result = @timeslice.available_animals_by_name
-      assert { result == ['can be used'] }
-    end
+    context "in the presence of animals removed from service" do 
+      setup do 
+        @date = Date.new(2010, 10, 10)
+        @time = MORNING
+        already_gone = Animal.random(:name => "already gone")
+        already_gone.remove_from_service(@date)
 
+        still_here = Animal.random(:name => "still here")
+        still_here.remove_from_service(@date+1)
+      end
 
-    should "override exclusion for a specific reservation's animals" do
-      @timeslice.move_to(@date, @time,  @cannot_be_used_reservation)
-      result = @timeslice.available_animals_by_name
-      assert { result.sort == ['can be used', 'cannot be used'].sort }
+      should "not return animals removed from service as of given date" do
+        @timeslice.move_to(@date, @time)
+        result = @timeslice.available_animals_by_name
+        assert { result == ['still here'] }
+      end
     end
   end
 end

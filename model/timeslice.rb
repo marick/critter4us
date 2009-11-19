@@ -20,8 +20,10 @@ class Timeslice
   end
 
   def available_animals_by_name
-    animals = (Animal.all - animals_to_be_considered_in_use).uniq
-    animals.collect { | a | a.name }
+    in_service = Animal.filter(:date_removed_from_service => nil).union(
+                 Animal.filter(:date_removed_from_service > @date)).all
+    animals = (in_service - animals_to_be_considered_in_use).uniq
+    animals.collect { | a | a.name }  # &:name not built in at Heroku (1.8.6)
   end
 
   private
