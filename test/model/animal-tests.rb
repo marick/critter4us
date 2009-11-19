@@ -41,6 +41,17 @@ class AnimalTests < FreshDatabaseTestCase
       actual_date = Animal[animal.id].date_removed_from_service
       assert { Date.parse('2001-12-01') == actual_date } 
     end
+
+    should "be able to tell when in server" do 
+      still_in = Animal.random.remove_from_service_as_of('2001-12-02')
+      out = Animal.random.remove_from_service_as_of('2001-12-01')
+      never_removed = Animal.random
+
+      test_date = Date.parse('2001-12-01')
+      assert { still_in.in_service_on?(test_date) }
+      deny { out.in_service_on?(test_date) } 
+      assert { never_removed.in_service_on?(test_date) } 
+    end
   end
 end
 

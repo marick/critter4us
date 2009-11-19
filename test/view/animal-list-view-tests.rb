@@ -13,12 +13,13 @@ class AnimalViewTests < FreshDatabaseTestCase
     Animal.random(:name => '111')
     Animal.random(:name => '222')
     @date_source = flexmock("date source",
-                            :current_date_as_string => '2010-09-08').by_default
+                            :current_date_as_string => '2010-09-08',
+                            :current_date => Date.parse('2010-09-08')).by_default
     @view = AnimalListView.new(:animals => Animal.all, :date_source => @date_source)
   end
   
   should "sort animals by name" do
-    actual_names = @view.animals_sorted_by_name.map(&:name)
+    actual_names = @view.sorted_by_name(Animal.all).map(&:name)
     expected_names = ['111', '222', '333'] 
     assert { expected_names == actual_names }
   end
@@ -27,6 +28,25 @@ class AnimalViewTests < FreshDatabaseTestCase
     html = @view.to_s
     Animal.names.each do | a | 
       assert { html.include?(a) }
+    end
+  end
+
+  context "when animals have been removed from service" do 
+    setup do 
+      Animal[:name => '111'].remove_from_service_as_of('1989-08-12')
+      Animal[:name => '222'].remove_from_service_as_of('2009-11-19')
+      @view = AnimalListView.new(:animals => Animal.all, :date_source => @date_source)
+    end
+
+    should "not show them" do 
+      during {
+        @view.to_s
+      }.behold! { 
+        @date_source.should_receive(:current_date).and_return(Date.parse('2009-11-18'))
+      }
+      deny { @result.include?('111') } # removed
+      assert { @result.include?('222') } # not removed yet
+      assert { @result.include?('333') } # never removed
     end
   end
 

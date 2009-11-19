@@ -27,6 +27,11 @@ class Animal < Sequel::Model
     save_changes
   end
 
+  def in_service_on?(date)
+    return true unless date_removed_from_service
+    date_removed_from_service > date
+  end
+
   # following are for testing
 
   def self.random(overrides = {})

@@ -11,7 +11,8 @@ class AnimalListView < Erector::Widget
       end
       body do
         table(TableStyle) do 
-          animals_sorted_by_name.each do | a |
+          animals = in_service(sorted_by_name(@animals))
+          animals.each do | a |
             tr do 
               td { text a.name }
               today = @date_source.current_date_as_string
@@ -23,7 +24,13 @@ class AnimalListView < Erector::Widget
     end
   end
 
-  def animals_sorted_by_name 
-    @animals.sort { |a, b| a.name <=> b.name }
+  def sorted_by_name(animals)
+    animals.sort { |a, b| a.name <=> b.name }
+  end
+
+  def in_service(animals)
+    animals.find_all do | a | 
+      a.in_service_on?(@date_source.current_date)
+    end
   end
 end
