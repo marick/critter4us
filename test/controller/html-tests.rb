@@ -39,11 +39,10 @@ class HtmlControllerTests < FreshDatabaseTestCase
       
     end
 
-    should "pass a list of animals to the view" do
+    should "pass an animal source and date source to the view" do
       @app.test_view_builder = @dummy_view
       get '/animals'
-      actual_names = @dummy_view[:animals].map(&:name) 
-      assert { actual_names == ['bossy', 'jake'] }
+      assert { Animal == @dummy_view[:animal_source] }
       assert { @dummy_view[:date_source].is_a? DateSource } 
     end
   end

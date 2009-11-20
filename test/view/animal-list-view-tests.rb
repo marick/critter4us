@@ -15,19 +15,34 @@ class AnimalViewTests < FreshDatabaseTestCase
     @date_source = flexmock("date source",
                             :current_date_as_string => '2010-09-08',
                             :current_date => Date.parse('2010-09-08')).by_default
-    @view = AnimalListView.new(:animals => Animal.all, :date_source => @date_source)
   end
   
-  should "sort animals by name" do
-    actual_names = @view.sorted_by_name(Animal.all).map(&:name)
-    expected_names = ['111', '222', '333'] 
-    assert { expected_names == actual_names }
-  end
+  context "simple case" do 
+    setup do 
+      @view = AnimalListView.new(:animal_source => Animal,
+                                 :date_source => @date_source)
+    end
 
-  should "show all the animals" do 
-    html = @view.to_s
-    Animal.names.each do | a | 
-      assert { html.include?(a) }
+    should "show all the animals" do 
+      html = @view.to_s
+      Animal.names.each do | a | 
+        assert { html.include?(a) }
+      end
+    end
+
+    should "sort animals by name" do
+      actual_names = @view.sorted_by_name(Animal.all).map(&:name)
+      expected_names = ['111', '222', '333'] 
+      assert { expected_names == actual_names }
+    end
+
+    should "contain a deletion button" do
+      during { 
+        @view.to_s
+      }.behold! { 
+        @date_source.should_receive(:current_date_as_string).and_return('2012-01-03')
+      }
+      assert { @result.include? delete_button("animal/#{Animal.first.id}?as_of=2012-01-03") } 
     end
   end
 
@@ -35,10 +50,11 @@ class AnimalViewTests < FreshDatabaseTestCase
     setup do 
       Animal[:name => '111'].remove_from_service_as_of('1989-08-12')
       Animal[:name => '222'].remove_from_service_as_of('2009-11-19')
-      @view = AnimalListView.new(:animals => Animal.all, :date_source => @date_source)
+      @view = AnimalListView.new(:animal_source => Animal,
+                                 :date_source => @date_source)
     end
 
-    should "not show them" do 
+    should "show only animals that have not been removed" do 
       during {
         @view.to_s
       }.behold! { 
@@ -50,13 +66,20 @@ class AnimalViewTests < FreshDatabaseTestCase
     end
   end
 
-  should "contain a delete button" do
-    during { 
-      @view.to_s
-    }.behold! { 
-      @date_source.should_receive(:current_date_as_string).and_return('2012-01-03')
-    }
-    assert { @result.include? delete_button("animal/#{Animal.first.id}?as_of=2012-01-03") } 
+  context "animals reserved in future" do 
+    setup do 
+      @view = AnimalListView.new(:animal_source => Animal,
+                                 :date_source => @date_source)
+    end
+
+    should_eventually "show dates instead of deletion button" do
+      during { 
+        @view.to_s
+      }.behold! { 
+        @date_source.should_receive(:current_date_as_string).and_return('2012-01-03')
+      }
+      assert { @result.include? delete_button("animal/#{Animal.first.id}?as_of=2012-01-03") } 
+    end
   end
 end
 

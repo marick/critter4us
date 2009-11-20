@@ -22,7 +22,7 @@ class Controller
   end
 
   get '/animals' do 
-    view(AnimalListView).new(:animals => animal_source.all,
+    view(AnimalListView).new(:animal_source => animal_source,
                              :date_source => DateSource.new).to_s
   end
 
