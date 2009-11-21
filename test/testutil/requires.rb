@@ -13,6 +13,7 @@ require 'test/testutil/hacks'
 require 'test/testutil/test-cases'
 require 'test/testutil/mock-talk'
 require 'test/testutil/controller-helpers'
+require 'test/testutil/erector-test-support'
 
 
 
