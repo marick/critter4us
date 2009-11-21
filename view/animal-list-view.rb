@@ -1,8 +1,19 @@
 require 'view/util'
 
+class DeletionCell < Erector::Widget
+  include ViewHelper
+  needs :animal, :today
+
+  def content
+    rawtext delete_button("animal/#{@animal.id}?as_of=#{@today}")
+  end
+end
+
+
 class AnimalListView < Erector::Widget
   include ViewHelper
   needs :animal_source, :date_source
+  needs :deletion_cell_class => DeletionCell
 
   def content
     @animals = @animal_source.all
@@ -17,7 +28,7 @@ class AnimalListView < Erector::Widget
             tr do 
               td { text a.name }
               today = @date_source.current_date_as_string
-              td { rawtext delete_button("animal/#{a.id}?as_of=#{today}") }
+              td { widget @deletion_cell_class, :animal => a, :today => today }
             end
           end
         end
