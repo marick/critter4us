@@ -2,6 +2,7 @@ $: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'model/requires'
 require 'view/requires'
+require 'assert2/xhtml'
 
 class AnimalListDeletionCellWidgetTests < Test::Unit::TestCase
   include ViewHelper
@@ -21,7 +22,15 @@ class AnimalListDeletionCellWidgetTests < Test::Unit::TestCase
               with(@proposed_removal_from_service_date).
               and_return([])
     }
-    assert { @result.include? delete_button("animal/#{@animal.id}?as_of=#{@proposed_removal_from_service_date}") } 
+    action = "animal/#{@animal.id}"
+    default_date = @proposed_removal_from_service_date
+    assert_xhtml(@result) do
+      form(:method => "POST", :action => action) do
+        input(:type => "submit", :value => 'Remove from service')
+        input(:name => "_method", :value => "DELETE")
+        input(:type => "text", :value => default_date)
+      end
+    end
   end
 
   should "procedure a list of dates if future reservations" do 
