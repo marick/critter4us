@@ -4,11 +4,22 @@ class AnimalDeletionCell < Erector::Widget
   include ViewHelper
   needs :animal, :proposed_removal_from_service_date
 
+  def deletion_button
+    form(:method => "POST",
+         :action => "animal/#{@animal.id}") do 
+      text "As of "
+      input(:type => "text", :value => @proposed_removal_from_service_date,
+            :name => "as_of")
+      text ", "
+      input(:type => 'hidden', :value=>"DELETE", :name=>"_method")
+      input(:type => 'submit', :value=>"Remove from service")
+    end
+  end
+
   def content
     dates_to_be_used = @animal.dates_used_after_beginning_of(@proposed_removal_from_service_date)
     if dates_to_be_used.empty?
-      form_data = "animal/#{@animal.id}?as_of=#{@proposed_removal_from_service_date}"
-      rawtext delete_button(form_data)
+      deletion_button
     else
       text "Reserved on #{dates_to_be_used.join(', ')}"
     end
