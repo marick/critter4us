@@ -10,9 +10,9 @@ class AnimalViewTests < FreshDatabaseTestCase
 
   def setup
     super
-    Animal.random(:name => '333')
-    Animal.random(:name => '111')
-    Animal.random(:name => '222')
+    Animal.random(:name => 'three333')
+    Animal.random(:name => 'aaaaa')
+    Animal.random(:name => 'LOWER')
     @date_source = flexmock("date source",
                             :current_date_as_string => '2010-09-08',
                             :current_date => Date.parse('2010-09-08')).by_default
@@ -33,7 +33,7 @@ class AnimalViewTests < FreshDatabaseTestCase
 
     should "sort animals by name" do
       actual_names = @view.sorted_by_name(Animal.all).map(&:name)
-      expected_names = ['111', '222', '333'] 
+      expected_names = ['aaaaa', 'LOWER', 'three333'] 
       assert { expected_names == actual_names }
     end
 
@@ -45,13 +45,13 @@ class AnimalViewTests < FreshDatabaseTestCase
       }.behold! { 
         @date_source.should_receive(:current_date_as_string).and_return('2012-01-03')
         view_itself.should_use_widget(AnimalDeletionCell).
-                    handing_it([:animal, 'with', :name] => '111',
+                    handing_it([:animal, 'with', :name] => 'aaaaa',
                                :proposed_removal_from_service_date => '2012-01-03')
         view_itself.should_use_widget(AnimalDeletionCell).
-                    handing_it([:animal, 'with', :name] => '222',
+                    handing_it([:animal, 'with', :name] => 'LOWER',
                                :proposed_removal_from_service_date => '2012-01-03')
         view_itself.should_use_widget(AnimalDeletionCell).
-                    handing_it([:animal, 'with', :name] => '333',
+                    handing_it([:animal, 'with', :name] => 'three333',
                                :proposed_removal_from_service_date => '2012-01-03')
       }
     end
@@ -59,8 +59,8 @@ class AnimalViewTests < FreshDatabaseTestCase
 
   context "when animals have been removed from service" do 
     setup do 
-      Animal[:name => '111'].remove_from_service_as_of('1989-08-12')
-      Animal[:name => '222'].remove_from_service_as_of('2009-11-19')
+      Animal[:name => 'aaaaa'].remove_from_service_as_of('1989-08-12')
+      Animal[:name => 'LOWER'].remove_from_service_as_of('2009-11-19')
       @view = AnimalListView.new(:animal_source => Animal,
                                  :date_source => @date_source)
     end
@@ -71,9 +71,9 @@ class AnimalViewTests < FreshDatabaseTestCase
       }.behold! { 
         @date_source.should_receive(:current_date).and_return(Date.parse('2009-11-18'))
       }
-      deny { @result.include?('111') } # removed
-      assert { @result.include?('222') } # not removed yet
-      assert { @result.include?('333') } # never removed
+      deny { @result.include?('aaaaa') } # removed
+      assert { @result.include?('LOWER') } # not removed yet
+      assert { @result.include?('three333') } # never removed
     end
   end
 
