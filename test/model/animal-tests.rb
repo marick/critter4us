@@ -55,6 +55,39 @@ class AnimalTests < FreshDatabaseTestCase
       deny { out.in_service_on?(test_date) } 
       assert { never_removed.in_service_on?(test_date) } 
     end
+
+    context "dates on which animals are used" do 
+      setup do 
+        @animal = animal = Animal.random
+        r = Reservation.random(:date => Date.new(2009, 12, 3)) do 
+          use animal
+          use Procedure.random
+        end
+      end
+
+      # TODO: should use one consistent format for dates throughout, and
+      # it shouldn't be String. 
+      should "should include the given date" do
+        assert_equal([], @animal.dates_used_after_beginning_of('2009-12-4'))
+        assert_equal(['2009-12-03'],
+                     @animal.dates_used_after_beginning_of('2009-12-3'))
+      end
+
+      should "return dates in descending order" do
+        Reservation.random(:date => Date.new(2010, 12, 3)) do 
+          use @animal; use Procedure.random
+        end
+        Reservation.random(:date => Date.new(2020, 12, 3)) do 
+          use @animal; use Procedure.random
+        end
+        Reservation.random(:date => Date.new(2011, 12, 3)) do 
+          use @animal; use Procedure.random
+        end
+
+        assert_equal(['2020-12-03', '2011-12-03', '2010-12-03', '2009-12-03'],
+                     @animal.dates_used_after_beginning_of('2009-12-3'))
+      end
+    end
   end
 end
 

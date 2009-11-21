@@ -32,6 +32,16 @@ class Animal < Sequel::Model
     date_removed_from_service > date
   end
 
+  def dates_used_after_beginning_of(date)
+    Reservation.filter(:date >= date).find_all { | r |
+      r.animals.include?(self)
+    }.collect { | r |
+      r.date.to_s
+    }.sort { | a, b |
+      -(a<=>b)
+    }
+  end
+
   # following are for testing
 
   def self.random(overrides = {})

@@ -44,15 +44,15 @@ class AnimalViewTests < FreshDatabaseTestCase
         @view.to_s
       }.behold! { 
         @date_source.should_receive(:current_date_as_string).and_return('2012-01-03')
-        view_itself.should_use_widget(DeletionCell).
+        view_itself.should_use_widget(AnimalDeletionCell).
                     handing_it([:animal, 'with', :name] => '111',
-                               :today => '2012-01-03')
-        view_itself.should_use_widget(DeletionCell).
+                               :proposed_removal_from_service_date => '2012-01-03')
+        view_itself.should_use_widget(AnimalDeletionCell).
                     handing_it([:animal, 'with', :name] => '222',
-                               :today => '2012-01-03')
-        view_itself.should_use_widget(DeletionCell).
+                               :proposed_removal_from_service_date => '2012-01-03')
+        view_itself.should_use_widget(AnimalDeletionCell).
                     handing_it([:animal, 'with', :name] => '333',
-                               :today => '2012-01-03')
+                               :proposed_removal_from_service_date => '2012-01-03')
       }
     end
   end
@@ -77,20 +77,5 @@ class AnimalViewTests < FreshDatabaseTestCase
     end
   end
 
-  context "animals reserved in future" do 
-    setup do 
-      @view = AnimalListView.new(:animal_source => Animal,
-                                 :date_source => @date_source)
-    end
-
-    should_eventually "show dates instead of deletion button" do
-      during { 
-        @view.to_s
-      }.behold! { 
-        @date_source.should_receive(:current_date_as_string).and_return('2012-01-03')
-      }
-      assert { @result.include? delete_button("animal/#{Animal.first.id}?as_of=2012-01-03") } 
-    end
-  end
 end
 

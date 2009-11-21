@@ -1,11 +1,17 @@
 require 'view/util'
 
-class DeletionCell < Erector::Widget
+class AnimalDeletionCell < Erector::Widget
   include ViewHelper
-  needs :animal, :today
+  needs :animal, :proposed_removal_from_service_date
 
   def content
-    rawtext delete_button("animal/#{@animal.id}?as_of=#{@today}")
+    dates_to_be_used = @animal.dates_used_after_beginning_of(@proposed_removal_from_service_date)
+    if dates_to_be_used.empty?
+      form_data = "animal/#{@animal.id}?as_of=#{@proposed_removal_from_service_date}"
+      rawtext delete_button(form_data)
+    else
+      text "Reserved on #{dates_to_be_used.join(', ')}"
+    end
   end
 end
 
@@ -13,7 +19,7 @@ end
 class AnimalListView < Erector::Widget
   include ViewHelper
   needs :animal_source, :date_source
-  needs :deletion_cell_class => DeletionCell
+  needs :deletion_cell_class => AnimalDeletionCell
 
   def content
     @animals = @animal_source.all
@@ -28,7 +34,8 @@ class AnimalListView < Erector::Widget
             tr do 
               td { text a.name }
               today = @date_source.current_date_as_string
-              td { widget @deletion_cell_class, :animal => a, :today => today }
+              td { widget @deletion_cell_class,
+                          :animal => a, :proposed_removal_from_service_date => today }
             end
           end
         end
