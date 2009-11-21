@@ -46,7 +46,7 @@ desc "migrate database from version 0 to 1 (hack)"
 task :migrate1 do
   migrate(1, 0)
 end
-
+  
 desc "migrate from version 1 to 2 (hack)"
 task :migrate2 do
   migrate(2, 1)
