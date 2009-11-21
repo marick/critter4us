@@ -4,17 +4,13 @@ require 'model/requires'
 
 class AnimalTests < FreshDatabaseTestCase
 
-  context "animals" do 
-    should "individually be able to return a wire-format of self" do
-      assert { Animal.random(:name => 'fred').in_wire_format == 'fred' }
-    end
-
-    should "collectively be able to return their names" do
+  context "the animal class" do 
+    should "be able to return all animal names" do
       Animal.random_with_names('c', 'a', 'b')
       assert { Animal.names.sort == ['a', 'b', 'c'] }
     end
 
-    should "collectively be able to return sorted versions of names" do
+    should "be able to return sorted versions of names" do
       Animal.random_with_names('c', 'a', 'b')
       assert { Animal.sorted_names == ['a', 'b', 'c'] }
     end
@@ -23,6 +19,13 @@ class AnimalTests < FreshDatabaseTestCase
       Animal.random(:name => 'bossie', :kind => 'cow')
       Animal.random(:name => 'fred', :kind => 'horse')
       assert { Animal.kind_map == {'bossie' => 'cow', 'fred' => 'horse'} }
+    end
+
+  end
+
+  context "animal instances" do 
+    should "be able to return a wire-format of self" do
+      assert { Animal.random(:name => 'fred').in_wire_format == 'fred' }
     end
 
     # Tested because PostGres 8.3 and 8.4 behave differently for
@@ -42,7 +45,7 @@ class AnimalTests < FreshDatabaseTestCase
       assert { Date.parse('2001-12-01') == actual_date } 
     end
 
-    should "be able to tell when in server" do 
+    should "be able to tell when in service" do 
       still_in = Animal.random.remove_from_service_as_of('2001-12-02')
       out = Animal.random.remove_from_service_as_of('2001-12-01')
       never_removed = Animal.random
