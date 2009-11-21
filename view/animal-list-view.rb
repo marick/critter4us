@@ -44,7 +44,7 @@ class AnimalListView < Erector::Widget
   end
 
   def sorted_by_name(animals)
-    animals.sort { |a, b| a.name <=> b.name }
+    animals.sort { |a, b| a.name.downcase <=> b.name.downcase }
   end
 
   def in_service(animals)   # TODO: make this a method on Animal class?
