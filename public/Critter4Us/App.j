@@ -4,7 +4,7 @@
 @import "view/Spinner.j"
 @import "page-for-making-reservations/CibPMR.j"
 @import "page-for-viewing-reservations/CibPVR.j"
-@import "page-for-viewing-animals/CibPVA.j"
+@import "page-for-deleting-animals/CibPDA.j"
 
 
 // This pure-javascript object is used to make forwarding from HTML
@@ -25,7 +25,7 @@ AppForwarder.copy = function(reservationId) {
   CPWindow theWindow;
   CPObject pvrPageController;
   CPObject pmrPageController;
-  CPObject pvaPageController;
+  CPObject pdaPageController;
 
   CPArray allPageControllers;
 }
@@ -41,7 +41,7 @@ AppForwarder.copy = function(reservationId) {
   [[Spinner alloc] initWithin: theWindow];
   [self createPage: CibPMR];
   [self createPage: CibPVR];
-  [self createPage: CibPVA];
+  [self createPage: CibPDA];
   [self initializationIndependentOfUI]
 
   [self activateReservationMaker: self];
@@ -49,7 +49,7 @@ AppForwarder.copy = function(reservationId) {
 
 -(void) initializationIndependentOfUI
 {
-  allPageControllers = [pvrPageController, pmrPageController, pvaPageController];
+  allPageControllers = [pvrPageController, pmrPageController, pdaPageController];
 }
 
 -(void) createPage: klass
@@ -78,9 +78,9 @@ AppForwarder.copy = function(reservationId) {
   [self foreground: pvrPageController];
 }
 
-- (void) activateAnimalViewer: (CPMenuItem) sender
+- (void) activateAnimalDeleter: (CPMenuItem) sender
 {
-  [self foreground: pvaPageController];
+  [self foreground: pdaPageController];
 }
 
 - (void) activateReservationMaker: (CPMenuItem) sender

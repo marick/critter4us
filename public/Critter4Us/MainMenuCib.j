@@ -4,10 +4,6 @@
 {
   CPObject owner;
   CPMenu mainMenu;
-  CPMenu windowMenu;
-  CPMenuItem newReservationMakerMenuItem;
-  CPMenuItem reservationViewerMenuItem;
-  CPMenuItem animalViewerMenuItem;
 }
 
 -(void) initializeWithOwner: anOwner
@@ -15,10 +11,8 @@
   owner = anOwner;
   
   [self addMainMenu];
-  [self addWindowMenuToMainMenu];
-  [self addWindowMenuItemThatMakesReservation];
-  [self addWindowMenuItemThatViewsAllReservations];
-  [self addWindowMenuItemThatViewsAllAnimals];
+  [self addReservationsSubmenu];
+  [self addAnimalsSubmenu];
 }
 
 -(void)addMainMenu
@@ -29,58 +23,55 @@
   [CPMenu setMenuBarVisible:YES];  
 }
 
--(void)addWindowMenuToMainMenu
+- (void) addReservationsSubmenu
 {
-  var windowMenuItem = [[CPMenuItem alloc] initWithTitle:@"Window" 
-                                                  action:nil 
-                                           keyEquivalent:nil];
-  windowMenu = [[CPMenu alloc] initWithTitle:@"Window"];
-  [windowMenuItem setSubmenu:windowMenu];
-  [mainMenu addItem:windowMenuItem];
+  var reservationsMenu = [self submenuNamed: "Reservations" below: mainMenu];
+
+  [self addMenuItemwithTitle: "Make a Reservation..."
+                      action: @selector(activateReservationMaker:)
+               keyEquivalent: "N"
+                       under: reservationsMenu];
+
+  [self addMenuItemwithTitle: "View All Reservations..."
+                      action: @selector(activateReservationViewer:)
+               keyEquivalent: "V"
+                       under: reservationsMenu];
 }
 
-
-
--(void)addWindowMenuItemThatMakesReservation
+- (void) addAnimalsSubmenu
 {
-  newReservationMakerMenuItem = 
-       [self aWindowMenuItemwithTitle:@"Make a Reservation"
-                               action:@selector(activateReservationMaker:)
-                        keyEquivalent:'N'];
+  var animalsMenu = [self submenuNamed: "Animals" below: mainMenu];
+  [self addMenuItemwithTitle: "Take Animals Out of Service..."
+                      action: @selector(activateAnimalDeleter:)
+               keyEquivalent: "T"
+                       under: animalsMenu];
 }
 
--(void)addWindowMenuItemThatViewsAllReservations
-{
-  reservationViewerMenuItem = 
-      [self aWindowMenuItemwithTitle:@"View All Reservations" 
-                              action:@selector(activateReservationViewer:) 
-                       keyEquivalent:'V'];
-}
-
--(void)addWindowMenuItemThatViewsAllAnimals
-{
-  reservationViewerMenuItem = 
-      [self aWindowMenuItemwithTitle:@"View All Animals" 
-                              action:@selector(activateAnimalViewer:) 
-                       keyEquivalent:'A'];
-}
 
 // Util
 
--(void) separate
+-(CPMenu) submenuNamed: aName below: menu
 {
-  [windowMenu addItem: [CPMenuItem separatorItem]];
+  var submenu = [[CPMenu alloc] initWithTitle:aName];
+  var submenuItem = [[CPMenuItem alloc] initWithTitle: aName 
+                                           action: nil 
+                                    keyEquivalent: nil];
+
+  [submenuItem setSubmenu:submenu];
+  [mainMenu addItem:submenuItem];
+  return submenu;
 }
 
--(CPMenuItem)aWindowMenuItemwithTitle: aTitle action: anAction keyEquivalent: aKeyEquivalent
+-(void) addMenuItemwithTitle: aTitle action: anAction keyEquivalent: aKeyEquivalent
+                       under: aMenu
 {
   var item = [[CPMenuItem alloc] initWithTitle:aTitle
                                         action:anAction
                                  keyEquivalent:aKeyEquivalent];
   [item setTarget: owner];
   [item setKeyEquivalentModifierMask:CPControlKeyMask];  
-  [windowMenu addItem:item];
-  return item;
+  [aMenu addItem:item];
 }
+
 
 @end

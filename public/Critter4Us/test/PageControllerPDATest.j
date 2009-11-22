@@ -1,13 +1,13 @@
-@import <Critter4Us/page-for-viewing-animals/PageControllerPVA.j>
+@import <Critter4Us/page-for-deleting-animals/PageControllerPDA.j>
 @import "ScenarioTestCase.j"
 
-@implementation PageControllerPVATest : ScenarioTestCase
+@implementation PageControllerPDATest : ScenarioTestCase
 {
 }
 
 - (void)setUp
 {
-  sut = [[PageControllerPVA alloc] init];
+  sut = [[PageControllerPDA alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
 
   [scenario sutHasUpwardOutlets: ['table']];
