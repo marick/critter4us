@@ -4,7 +4,7 @@
 @import "view/Spinner.j"
 @import "page-for-making-reservations/CibPMR.j"
 @import "page-for-viewing-reservations/CibPVR.j"
-@import "page-for-viewing-animals/CibPVA.j"
+@import "page-for-deleting-animals/CibPDA.j"
 
 
 // This pure-javascript object is used to make forwarding from HTML
@@ -41,7 +41,7 @@ AppForwarder.copy = function(reservationId) {
   [[Spinner alloc] initWithin: theWindow];
   [self createPage: CibPMR];
   [self createPage: CibPVR];
-  [self createPage: CibPVA];
+  [self createPage: CibPDA];
   [self initializationIndependentOfUI]
 
   [self activateReservationMaker: self];

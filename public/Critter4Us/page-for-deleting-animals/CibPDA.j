@@ -1,14 +1,14 @@
 @import "../util/Constants.j"
 @import "../cib/TableViewingCib.j"
-@import "PageControllerPVA.j"
+@import "PageControllerPDA.j"
 
-@implementation CibPVA : TableViewingCib
+@implementation CibPDA : TableViewingCib
 {
 }
 
 - (id) makePageControllerUnder: owner
 {
-  var pageController = [[PageControllerPVA alloc] init];
+  var pageController = [[PageControllerPDA alloc] init];
   owner.pdaPageController = pageController;	
   return pageController;
 }
