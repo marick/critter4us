@@ -10,7 +10,7 @@
   sut = [[App alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasDownwardOutlets: ['pvrPageController', 'pmrPageController',
-                                    'pvaPageController']];
+                                    'pdaPageController']];
 
   [sut initializationIndependentOfUI];
   [[CPApplication sharedApplication] setDelegate: sut];
@@ -25,7 +25,7 @@
   behold: function() { 
       [sut.pvrPageController shouldReceive: @selector(appear)];
       [sut.pmrPageController shouldReceive: @selector(disappear)];
-      [sut.pvaPageController shouldReceive: @selector(disappear)];
+      [sut.pdaPageController shouldReceive: @selector(disappear)];
     }];
 }
 

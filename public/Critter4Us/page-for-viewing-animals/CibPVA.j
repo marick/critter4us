@@ -9,7 +9,7 @@
 - (id) makePageControllerUnder: owner
 {
   var pageController = [[PageControllerPVA alloc] init];
-  owner.pvaPageController = pageController;	
+  owner.pdaPageController = pageController;	
   return pageController;
 }
 

@@ -25,7 +25,7 @@ AppForwarder.copy = function(reservationId) {
   CPWindow theWindow;
   CPObject pvrPageController;
   CPObject pmrPageController;
-  CPObject pvaPageController;
+  CPObject pdaPageController;
 
   CPArray allPageControllers;
 }
@@ -49,7 +49,7 @@ AppForwarder.copy = function(reservationId) {
 
 -(void) initializationIndependentOfUI
 {
-  allPageControllers = [pvrPageController, pmrPageController, pvaPageController];
+  allPageControllers = [pvrPageController, pmrPageController, pdaPageController];
 }
 
 -(void) createPage: klass
@@ -78,9 +78,9 @@ AppForwarder.copy = function(reservationId) {
   [self foreground: pvrPageController];
 }
 
-- (void) activateAnimalViewer: (CPMenuItem) sender
+- (void) activateAnimalDeleter: (CPMenuItem) sender
 {
-  [self foreground: pvaPageController];
+  [self foreground: pdaPageController];
 }
 
 - (void) activateReservationMaker: (CPMenuItem) sender
