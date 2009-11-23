@@ -14,29 +14,4 @@
   [scenario sutHasDownwardOutlets: ['persistentStore']];
 }
 
-- (void) test_appearing_fetches_the_latest_version_of_the_reservation_table
-{
-  [scenario
-   during: function() {
-     [sut appear];
-   }
-   behold: function() {
-      [sut.persistentStore shouldReceive: @selector(animalTableAsHtml)];
-   }];
-}
-
-
-- (void) test_arrival_of_reservation_table_updates_HTML
-{
-  [scenario
-   during: function() {
-      [self sendNotification: AnimalTableRetrievedNews
-                  withObject: "a string"];
-   }
-   behold: function() {
-      [sut.table shouldReceive: @selector(loadHTMLString:baseURL:)
-                          with: ["a string", nil]];
-   }];
-}
-
 @end

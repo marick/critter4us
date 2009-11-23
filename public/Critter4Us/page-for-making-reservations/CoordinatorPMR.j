@@ -8,8 +8,8 @@
 @implementation CoordinatorPMR : AwakeningObject
 {
   ReservationDataControllerPMR reservationDataController;
-  NamedObjectController animalController;
-  NamedObjectController procedureController;
+  NamedObjectListController animalController;
+  NamedObjectListController procedureController;
   GroupControllerPMR groupController;
   CurrentGroupPanelController currentGroupPanelController;
   

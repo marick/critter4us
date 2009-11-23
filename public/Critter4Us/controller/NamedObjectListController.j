@@ -1,6 +1,6 @@
 @import "PanelController.j"
 
-@implementation NamedObjectController : PanelController
+@implementation NamedObjectListController : PanelController
 {
   CPArray originalObjects;
   CPCollectionView available;
