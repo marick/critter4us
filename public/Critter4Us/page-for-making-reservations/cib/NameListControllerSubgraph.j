@@ -1,4 +1,4 @@
-@import "Subgraph.j"
+@import "../../cib/Subgraph.j"
 @import "../../view/NameListPanel.j"
 @import "../NamedObjectControllerPMR.j"
 
