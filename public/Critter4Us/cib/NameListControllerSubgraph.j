@@ -1,6 +1,6 @@
-@import "../../cib/Subgraph.j"
-@import "../../view/NameListPanel.j"
-@import "../NamedObjectControllerPMR.j"
+@import "Subgraph.j"
+@import "../view/NameListPanel.j"
+@import "../controller/NamedObjectController.j"
 
 @implementation NameListControllerSubgraph : Subgraph
 {
@@ -26,7 +26,7 @@
 
 - (id) newController
 {
-  return [NamedObjectControllerPMR alloc];
+  return [NamedObjectController alloc];
 }
 
 - (void) connectOutlets

@@ -1,10 +1,10 @@
-@import <Critter4Us/page-for-making-reservations/NamedObjectControllerPMR.j>
+@import <Critter4Us/controller/NamedObjectController.j>
 @import <Critter4Us/view/NamedObjectCollectionView.j>
 @import <Critter4Us/model/NamedObject.j>
 @import <Critter4Us/model/Group.j>
 @import "ScenarioTestCase.j"
 
-@implementation NamedObjectControllerPMRTest : ScenarioTestCase
+@implementation NamedObjectControllerTest : ScenarioTestCase
 {
   NamedObject betsy;
   NamedObject spike;
@@ -13,7 +13,7 @@
 
 - (void)setUp
 {
-  sut = [[NamedObjectControllerPMR alloc] init];
+  sut = [[NamedObjectController alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasUpwardCollaborators: ['available', 'used']];
 

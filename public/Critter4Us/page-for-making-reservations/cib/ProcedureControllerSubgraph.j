@@ -1,4 +1,4 @@
-@import "NameListControllerSubgraph.j"
+@import "../../cib/NameListControllerSubgraph.j"
 
 @implementation ProcedureControllerSubgraph : NameListControllerSubgraph
 {
