@@ -1,6 +1,6 @@
 @import "../../cib/NameListControllerSubgraph.j"
 
-@implementation ProcedureControllerSubgraph : NameListControllerSubgraph
+@implementation ProcedureControllerSubgraphPMR : NameListControllerSubgraph
 {
 }
 

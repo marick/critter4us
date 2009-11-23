@@ -7,11 +7,11 @@
 @import "ConstantsPMR.j"
 @import "CoordinatorPMR.j"
 
-@import "cib/AnimalControllerSubgraph.j"
-@import "cib/ProcedureControllerSubgraph.j"
-@import "cib/GroupControllerSubgraph.j"
-@import "cib/ReservationDataControllerSubgraph.j"
-@import "cib/PageControllerSubgraph.j"
+@import "cib/AnimalControllerSubgraphPMR.j"
+@import "cib/ProcedureControllerSubgraphPMR.j"
+@import "cib/GroupControllerSubgraphPMR.j"
+@import "cib/ReservationDataControllerSubgraphPMR.j"
+@import "cib/PageControllerSubgraphPMR.j"
 
 @implementation CibPMR : Subgraph
 {
@@ -19,11 +19,11 @@
   CPPanel animalPanel;
   CPPanel groupPanel;
 
-  PageControllerSubgraph pageControllerSubgraph;
-  GroupControllerSubgraph groupControllerSubgraph;
-  ReservationDataControllerSubgraph reservationDataControllerSubgraph;
-  ProcedureControllerSubgraph procedureControllerSubgraph;
-  AnimalControllerSubgraph animalControllerSubgraph;
+  PageControllerSubgraphPMR pageControllerSubgraph;
+  GroupControllerSubgraphPMR groupControllerSubgraph;
+  ReservationDataControllerSubgraphPMR reservationDataControllerSubgraph;
+  ProcedureControllerSubgraphPMR procedureControllerSubgraph;
+  AnimalControllerSubgraphPMR animalControllerSubgraph;
 
   CurrentGroupPanel currentGroupPanel;
   PanelController currentGroupPanelController;
@@ -56,25 +56,25 @@
 - (void) drawControlledSubgraphsIn: (CPWindow) theWindow
 {
   pageControllerSubgraph =
-    [self custom: [[PageControllerSubgraph alloc]
+    [self custom: [[PageControllerSubgraphPMR alloc]
                     initWithWindow: theWindow]];
   [pageControllerSubgraph connectOutlets];
 
   reservationDataControllerSubgraph =
-    [self custom: [[ReservationDataControllerSubgraph alloc]
+    [self custom: [[ReservationDataControllerSubgraphPMR alloc]
       initOnPage: pageControllerSubgraph.pageView]];
   [reservationDataControllerSubgraph connectOutlets];
 
   procedureControllerSubgraph =
-    [self custom: [[ProcedureControllerSubgraph alloc] init]];
+    [self custom: [[ProcedureControllerSubgraphPMR alloc] init]];
   [procedureControllerSubgraph connectOutlets];
 
   animalControllerSubgraph =
-    [self custom: [[AnimalControllerSubgraph alloc] init]];
+    [self custom: [[AnimalControllerSubgraphPMR alloc] init]];
   [animalControllerSubgraph connectOutlets];
 
   groupControllerSubgraph =
-    [self custom: [[GroupControllerSubgraph alloc]
+    [self custom: [[GroupControllerSubgraphPMR alloc]
                     initAbovePage: pageControllerSubgraph.pageView]];
   [groupControllerSubgraph connectOutlets];
 }

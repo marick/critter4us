@@ -7,7 +7,7 @@
 @import "../../util/Constants.j"
 
 
-@implementation ReservationDataControllerSubgraph : Subgraph
+@implementation ReservationDataControllerSubgraphPMR : Subgraph
 {
   ReservationDataControllerPMR controller;
 

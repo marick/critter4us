@@ -1,7 +1,7 @@
 @import "../../cib/Subgraph.j"
 @import "../PageControllerPMR.j"
 
-@implementation PageControllerSubgraph : Subgraph
+@implementation PageControllerSubgraphPMR : Subgraph
 {
   PageControllerPMR controller;
   CPView pageView;
