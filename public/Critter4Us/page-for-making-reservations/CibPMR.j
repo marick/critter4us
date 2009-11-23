@@ -44,6 +44,8 @@
 
   currentGroupPanel = [[CurrentGroupPanel alloc] init];
   currentGroupPanelController = [[PanelController alloc] initWithPanel: currentGroupPanel];
+  [pageControllerSubgraph.controller addPanelController: currentGroupPanelController];
+
 
   [self connectRemainingOutlets];
 
