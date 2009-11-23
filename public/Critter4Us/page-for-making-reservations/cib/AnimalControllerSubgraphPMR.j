@@ -1,6 +1,7 @@
-@import "../../cib/NameListControllerSubgraph.j"
+@import "FromToNameListControllerSubgraphPMR.j"
 
-@implementation AnimalControllerSubgraphPMR : NameListControllerSubgraph
+
+@implementation AnimalControllerSubgraphPMR : FromToNameListControllerSubgraphPMR
 {
 }
 - (CPInteger) xPosition
