@@ -17,15 +17,8 @@
 {
   [self init];
   panel = aPanel;
-  [NotificationCenter postNotificationName: NewPanelOnPageNews object: self];
   [self setUpNotifications];
   return self;
-}
-
--(CPBoolean) windowShouldClose: aNotification
-{
-  [NotificationCenter postNotificationName: ClosedPanelOnPageNews object: self];
-  return YES;
 }
 
 -(void) appear

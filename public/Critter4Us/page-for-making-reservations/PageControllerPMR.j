@@ -7,19 +7,19 @@
 - (void) init
 {
   self = [super init];
-  [self notificationNamed: NewPanelOnPageNews
-                    calls: @selector(addPanelControllerFromNotification:)];
-  [self notificationNamed: ClosedPanelOnPageNews
-                    calls: @selector(removePanelControllerFromNotification:)];
+  [self notificationNamed: NewAdvisorPanelOnPageNews
+                    calls: @selector(addAdvisorPanelControllerFromNotification:)];
+  [self notificationNamed: ClosedAdvisorPanelOnPageNews
+                    calls: @selector(removeAdvisorPanelControllerFromNotification:)];
   return self;
 }
 
-- (void) addPanelControllerFromNotification: aNotification
+- (void) addAdvisorPanelControllerFromNotification: aNotification
 {
   [[self panelControllers] addObject: [aNotification object]];
 }
 
-- (void) removePanelControllerFromNotification: aNotification
+- (void) removeAdvisorPanelControllerFromNotification: aNotification
 {
   [[self panelControllers] removeObject: [aNotification object]];
 }

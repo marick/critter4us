@@ -19,7 +19,7 @@
   [scenario
     previousAction: function() { 
       [scenario sutWillBeGiven: ['newPanelController']];
-      [self sendNotification: NewPanelOnPageNews
+      [self sendNotification: NewAdvisorPanelOnPageNews
                   withObject: sut.newPanelController];
     }
   during: function() {
@@ -35,7 +35,7 @@
   [scenario
     previousAction: function() { 
       [sut addPanelControllersFromArray: [sut.panelController1, sut.panelController2]];
-      [self sendNotification: ClosedPanelOnPageNews
+      [self sendNotification: ClosedAdvisorPanelOnPageNews
                   withObject: sut.panelController2];
     }
   during: function() {

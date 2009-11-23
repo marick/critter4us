@@ -25,7 +25,7 @@
       [sut.textField shouldReceive: @selector(setStringValue:) with: "some text"];
       [sut.panel shouldReceive: @selector(setDelegate:) with: sut.controller];
       [sut.controller shouldReceive: @selector(appear)];
-      [self listenersShouldReceiveNotification: NewPanelOnPageNews 
+      [self listenersShouldReceiveNotification: NewAdvisorPanelOnPageNews 
                               containingObject: sut.controller];
     }];
 }
