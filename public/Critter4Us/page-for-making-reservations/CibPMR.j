@@ -3,15 +3,16 @@
 @import "../view/NameListPanel.j"
 @import "../view/CurrentGroupPanel.j"
 @import "../persistence/PersistentStore.j"
+@import "../cib/PageControllerSubgraph.j"
 
 @import "ConstantsPMR.j"
 @import "CoordinatorPMR.j"
+@import "PageControllerPMR.j"
 
 @import "cib/AnimalControllerSubgraphPMR.j"
 @import "cib/ProcedureControllerSubgraphPMR.j"
 @import "cib/GroupControllerSubgraphPMR.j"
 @import "cib/ReservationDataControllerSubgraphPMR.j"
-@import "cib/PageControllerSubgraphPMR.j"
 
 @implementation CibPMR : Subgraph
 {
@@ -19,7 +20,7 @@
   CPPanel animalPanel;
   CPPanel groupPanel;
 
-  PageControllerSubgraphPMR pageControllerSubgraph;
+  PageControllerSubgraph pageControllerSubgraph;
   GroupControllerSubgraphPMR groupControllerSubgraph;
   ReservationDataControllerSubgraphPMR reservationDataControllerSubgraph;
   ProcedureControllerSubgraphPMR procedureControllerSubgraph;
@@ -58,8 +59,9 @@
 - (void) drawControlledSubgraphsIn: (CPWindow) theWindow
 {
   pageControllerSubgraph =
-    [self custom: [[PageControllerSubgraphPMR alloc]
-                    initWithWindow: theWindow]];
+    [self custom: [[PageControllerSubgraph alloc]
+                    initWithWindow: theWindow
+                        controller: [[PageControllerPMR alloc] init]]];
   [pageControllerSubgraph connectOutlets];
 
   reservationDataControllerSubgraph =

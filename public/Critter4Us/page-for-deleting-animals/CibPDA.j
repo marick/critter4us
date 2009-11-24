@@ -4,12 +4,11 @@
 @import "CoordinatorPDA.j"
 
 @import "cib/AnimalListControllerSubgraphPDA.j"
-@import "cib/PageControllerSubgraphPDA.j"
 @import "cib/BackgroundControllerSubgraphPDA.j"
 
 @implementation CibPDA : Subgraph
 {
-  PageControllerSubgraphPDA pageControllerSubgraph;
+  PageControllerSubgraph pageControllerSubgraph;
   AnimalListControllerSubgraphPDA animalListControllerSubgraph;
   BackgroundControllerSubgraphPDA backgroundControllerSubGraph;
 
@@ -35,7 +34,7 @@
 - (void) drawControlledSubgraphsIn: (CPWindow) theWindow
 {
   pageControllerSubgraph =
-    [self custom: [[PageControllerSubgraphPDA alloc]
+    [self custom: [[PageControllerSubgraph alloc]
                     initWithWindow: theWindow]];
   [pageControllerSubgraph connectOutlets];
 
