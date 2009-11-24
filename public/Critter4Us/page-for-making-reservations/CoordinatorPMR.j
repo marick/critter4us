@@ -14,7 +14,6 @@
   CurrentGroupPanelController currentGroupPanelController;
   
   PersistentStore persistentStore;
-  id finishReservationClosure;
 
   id currentStep;
 }

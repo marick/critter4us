@@ -63,8 +63,9 @@
   [pageControllerSubgraph connectOutlets];
 
   reservationDataControllerSubgraph =
-    [self custom: [[ReservationDataControllerSubgraphPMR alloc]
-      initOnPage: pageControllerSubgraph.pageView]];
+    [self custom: 
+            [[ReservationDataControllerSubgraphPMR alloc]
+              initOnPage: pageControllerSubgraph.pageView]];
   [reservationDataControllerSubgraph connectOutlets];
 
   procedureControllerSubgraph =
