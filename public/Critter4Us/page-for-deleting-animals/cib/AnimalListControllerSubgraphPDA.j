@@ -15,6 +15,11 @@
   return FarthestLeftWindowX;
 }
 
+- (CPInteger) yPosition
+{
+  return 120;
+}
+
 - (CPString) nameListTitle
 {
   return "Animals Currently Available for Use";
