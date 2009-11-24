@@ -1,4 +1,5 @@
 @import "../../cib/NameListControllerSubgraph.j"
+@import "../AnimalListControllerPDA.j"
 
 @implementation AnimalListControllerSubgraphPDA : NameListControllerSubgraph
 {

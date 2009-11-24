@@ -1,10 +1,13 @@
 @import <AppKit/AppKit.j>
 
 @import "../persistence/PersistentStore.j"
-@import "CoordinatorPDA.j"
+@import "../util/StateMachineCoordinator.j"
 
 @import "cib/AnimalListControllerSubgraphPDA.j"
 @import "cib/BackgroundControllerSubgraphPDA.j"
+
+@import "state-machine/GatheringAnimalListStepPDA.j"
+
 
 @implementation CibPDA : Subgraph
 {
@@ -12,7 +15,7 @@
   AnimalListControllerSubgraphPDA animalListControllerSubgraph;
   BackgroundControllerSubgraphPDA backgroundControllerSubGraph;
 
-  CoordinatorPDA coordinator;
+  StateMachineCoordinator coordinator;
   PersistentStore persistentStore;
 }
 
@@ -21,7 +24,6 @@
   self = [super init];  // TODO: Hack. This should not be an initializer.
 
   [self drawControlledSubgraphsIn: theWindow];
-  coordinator = [self custom: [[CoordinatorPDA alloc] init]];
   persistentStore = [PersistentStore sharedPersistentStore];
   [self connectRemainingOutlets];
 
@@ -29,6 +31,13 @@
 
   [animalListControllerSubgraph.controller appear];
   [self awakeFromCib];
+
+  var peers = { 'persistentStore' : persistentStore,
+                'animalListController' : animalListControllerSubgraph.controller,
+                'backgroundController' : backgroundControllerSubgraph.controller 
+  };
+  [[StateMachineCoordinator coordinating: peers]
+    takeStep: GatheringAnimalListStepPDA];
 }
 
 - (void) drawControlledSubgraphsIn: (CPWindow) theWindow
@@ -49,10 +58,6 @@
 
 - (void) connectRemainingOutlets
 {
-  coordinator.persistentstore = persistentStore;
-  coordinator.animalListController = animalListControllerSubgraph.controller;
-  coordinator.backgroundController = backgroundControllerSubgraph.controller;
-  
   [pageControllerSubgraph.controller addPanelControllersFromArray: 
                            [animalListControllerSubgraph.controller]];
 }

@@ -2,18 +2,12 @@
 
 @implementation StepPDA : CritterObject
 {
-  PersistentStore persistentStore;
-  CoordinatorPDA master;
+  StateMachineCoordinator master;
 }
 
-- (void) initWithAnimalListController: anAnimalListController
-                      persistentStore: aPersistentStore
-                               master: aCoordinator
+- (void) initWithMaster: aCoordinator
 {
-  animalListController = anAnimalListController;
-  persistentStore = aPersistentStore;
   master = aCoordinator;
-
   [self setUpNotifications];
   return self;
 }
@@ -34,6 +28,5 @@
   [self resignInFavorOf: step];
   func();
 }
-
 
 @end
