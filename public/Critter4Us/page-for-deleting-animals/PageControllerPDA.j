@@ -1,19 +1,8 @@
 @import <AppKit/AppKit.j>
-@import "../controller/TableViewingPageController.j"
+@import "../controller/PageController.j"
 
-@implementation PageControllerPDA : TableViewingPageController
+@implementation PageControllerPDA : PageController
 {
 }
-
-- (CPString) finishNotificationName
-{
-  return AnimalTableRetrievedNews;
-}
-
-- (CPString) fetchHTML
-{
-  [persistentStore animalTableAsHtml];
-}
-
 
 @end
