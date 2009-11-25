@@ -1,6 +1,6 @@
 @import "Subgraph.j"
-@import "../../view/NameListPanel.j"
-@import "../NamedObjectControllerPMR.j"
+@import "../view/NameListPanel.j"
+@import "../controller/NamedObjectListController.j"
 
 @implementation NameListControllerSubgraph : Subgraph
 {
@@ -14,6 +14,7 @@
 {
   self = [super init];
   nameList = [self panelOutlineAtX: [self xPosition]
+                                 y: [self yPosition]
                          withTitle: [self nameListTitle]];
 
   controller = [self custom: [[self newController] initWithPanel: nameList]];
@@ -26,7 +27,7 @@
 
 - (id) newController
 {
-  return [NamedObjectControllerPMR alloc];
+  return [NamedObjectListController alloc];
 }
 
 - (void) connectOutlets
@@ -35,10 +36,14 @@
   controller.panel = nameList;
 }
 
-
--(CPPanel) panelOutlineAtX: x withTitle: aTitle
+- (id) yPosition
 {
-  var panelRect = CGRectMake(x, WindowTops, SourceWindowWidth,
+  return WindowTops;
+}
+
+-(CPPanel) panelOutlineAtX: x y: y withTitle: aTitle
+{
+  var panelRect = CGRectMake(x, y, SourceWindowWidth,
                              SourceWindowHeight);
   panel = [self custom: [[NameListPanel alloc] initWithContentRect: panelRect]];
   [panel setTitle: aTitle];

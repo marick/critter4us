@@ -1,11 +1,8 @@
-@import <AppKit/AppKit.j>
-@import "../util/AwakeningObject.j"
+@import "PageController.j"
 
-@implementation TableViewingPageController : AwakeningObject
+@implementation TableViewingPageController : PageController
 {
-  CPView pageView;
   CPView table;
-  PersistentStore persistentStore;
 }
 
 - (void) setUpNotifications
@@ -17,8 +14,7 @@
 
 - (void) appear
 {
-  [pageView setHidden:NO];
-	
+  [super appear]
   var tableHtml = [self fetchHTML];
 }
 
@@ -35,11 +31,6 @@
 - (void) finishFetch: aNotification
 {
    [table loadHTMLString: [aNotification object] baseURL: nil];
-}
-
-- (void) disappear
-{
-  [pageView setHidden:YES];
 }
 
 @end

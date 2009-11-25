@@ -1,6 +1,6 @@
-@import "NameListControllerSubgraph.j"
+@import "FromToNameListControllerSubgraphPMR.j"
 
-@implementation ProcedureControllerSubgraph : NameListControllerSubgraph
+@implementation ProcedureControllerSubgraphPMR : FromToNameListControllerSubgraphPMR
 {
 }
 

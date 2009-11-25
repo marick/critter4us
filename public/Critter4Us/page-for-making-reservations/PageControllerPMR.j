@@ -1,64 +1,27 @@
-@import <AppKit/AppKit.j>
-@import "../util/AwakeningObject.j"
+@import "../controller/PageController.j"
 
-@implementation PageControllerPMR : CritterObject
+@implementation PageControllerPMR : PageController
 {
-  CPView pageView;
-  CPArray panelControllers;
 }
 
 - (void) init
 {
   self = [super init];
-  [self notificationNamed: NewPanelOnPageNews
-                    calls: @selector(addPanelControllerFromNotification:)];
-  [self notificationNamed: ClosedPanelOnPageNews
-                    calls: @selector(removePanelControllerFromNotification:)];
+  [self notificationNamed: NewAdvisorPanelOnPageNews
+                    calls: @selector(addAdvisorPanelControllerFromNotification:)];
+  [self notificationNamed: ClosedAdvisorPanelOnPageNews
+                    calls: @selector(removeAdvisorPanelControllerFromNotification:)];
   return self;
 }
 
-- (void) addPanelController: aController
-{
-  [[self panelControllers] addObject: aController];
-}
-
-- (void) addPanelControllersFromArray: controllers
-{
-  [[self panelControllers] addObjectsFromArray: controllers];
-}
-
-- (void) addPanelControllerFromNotification: aNotification
+- (void) addAdvisorPanelControllerFromNotification: aNotification
 {
   [[self panelControllers] addObject: [aNotification object]];
 }
 
-- (void) removePanelControllerFromNotification: aNotification
+- (void) removeAdvisorPanelControllerFromNotification: aNotification
 {
   [[self panelControllers] removeObject: [aNotification object]];
-}
-
--(void) appear
-{
-  [pageView setHidden:NO];
-  for(var i=0; i < [panelControllers count]; i++)
-  {
-    [panelControllers[i] showPanelIfAppropriate];
-  }
-}
-
--(void) disappear
-{
-  [pageView setHidden:YES];
-  for(var i=0; i < [panelControllers count]; i++)
-  {
-    [panelControllers[i] hideAnyVisiblePanels];
-  }
-}
-
-- (CPArray) panelControllers
-{
-  if (!panelControllers) panelControllers = [];
-  return panelControllers;
 }
 
 @end

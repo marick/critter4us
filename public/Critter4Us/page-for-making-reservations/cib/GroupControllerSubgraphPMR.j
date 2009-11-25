@@ -1,9 +1,9 @@
-@import "Subgraph.j"
+@import "../../cib/Subgraph.j"
 @import "../GroupControllerPMR.j"
 @import "../ConstantsPMR.j"
 @import "../../view/ButtonCollectionView.j"
 
-@implementation GroupControllerSubgraph : Subgraph
+@implementation GroupControllerSubgraphPMR : Subgraph
 {
   id controller;
   CPButton newGroupButton;

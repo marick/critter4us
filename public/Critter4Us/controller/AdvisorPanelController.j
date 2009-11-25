@@ -4,6 +4,18 @@
 {
 }
 
+-(id) initWithPanel: aPanel
+{
+  [super initWithPanel: aPanel];
+  [NotificationCenter postNotificationName: NewAdvisorPanelOnPageNews object: self];
+  return self;
+}
+
+-(CPBoolean) windowShouldClose: aNotification
+{
+  [NotificationCenter postNotificationName: ClosedAdvisorPanelOnPageNews object: self];
+  return YES;
+}
 
 - (void) setUpNotifications
 {

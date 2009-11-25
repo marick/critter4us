@@ -1,16 +1,20 @@
 @import "Subgraph.j"
-@import "../PageControllerPMR.j"
 
 @implementation PageControllerSubgraph : Subgraph
 {
-  PageControllerPMR controller;
+  id controller;
   CPView pageView;
 }
 
 - (id) initWithWindow: theWindow
 {
+  return [self initWithWindow: theWindow controller: [self controller]];
+}
+
+- (id) initWithWindow: theWindow controller: aController
+{
   self = [super init];
-  controller = [self custom: [[PageControllerPMR alloc] init]];
+  controller = [self custom: aController];
   [self putPageViewOverWindow: theWindow];
   return self;
 }
@@ -20,6 +24,10 @@
   controller.pageView = pageView;
 }
 
+- (id) controller
+{
+  return [[PageController alloc] init];
+}
 
 -(void) putPageViewOverWindow: window
 {

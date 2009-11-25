@@ -13,35 +13,6 @@
   [sut initWithPanel: sut.panel];
 }
 
-- (void) testWhenHandedPanelIssuesNotification
-{
-  [scenario
-    during: function() {
-      [sut initWithPanel: sut.panel];
-    }
-  behold: function() { 
-      [self listenersWillReceiveNotification: NewPanelOnPageNews
-                            containingObject: sut];
-    }];
-}
-
-- (void) testNotifiesWhenPanelCloses
-{
-  // This is peculiar, but cappuccino sends windowWillClose on orderOut. That seems
-  // consistent with Cocoa, odd though it may be. So this is the way to distinguish 
-  // between "go away forever" and "disappear for now".
-  [scenario
-    during: function() {
-      return [sut windowShouldClose: UnusedArgument];
-    }
-  behold: function() { 
-      [self listenersWillReceiveNotification: ClosedPanelOnPageNews
-                            containingObject: sut];
-    }
-  andSo: function() {
-      [self assertTrue: scenario.result];
-    }];
-}
 
 -(void) testAppear
 {

@@ -1,4 +1,4 @@
-@import "Subgraph.j"
+@import "../../cib/Subgraph.j"
 @import "../ReservationDataControllerPMR.j"
 @import "../../view/TimeControl.j"
 @import "../../view/DateTimeEditingPanel.j"
@@ -7,7 +7,7 @@
 @import "../../util/Constants.j"
 
 
-@implementation ReservationDataControllerSubgraph : Subgraph
+@implementation ReservationDataControllerSubgraphPMR : Subgraph
 {
   ReservationDataControllerPMR controller;
 

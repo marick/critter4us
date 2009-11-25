@@ -3,8 +3,8 @@
 @implementation StepPMR : CritterObject
 {
   ReservationDataControllerPMR reservationDataController;
-  NamedObjectControllerPMR animalController;
-  NamedObjectControllerPMR procedureController;
+  FromToNamedObjectListControllerPMR animalController;
+  FromToNamedObjectListControllerPMR procedureController;
   GroupControllerPMR groupController;
   CurrentGroupPanelController currentGroupPanelController;
   PersistentStore persistentStore;

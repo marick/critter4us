@@ -1,7 +1,7 @@
-@import <Critter4Us/persistence/ReservationTableFuture.j>
+@import <Critter4Us/persistence/Future.j>
 @import "ScenarioTestCase.j"
 
-@implementation TestFuture : Future
+@implementation SomeRandomFuture : Future
 {
 }
 
@@ -17,13 +17,13 @@
 
 @end
 
-@implementation ReservationTableFutureTest : ScenarioTestCase
+@implementation FutureTest : ScenarioTestCase
 {
 }
 
 - (void) setUp
 {
-  sut = [[TestFuture alloc] init];
+  sut = [[SomeRandomFuture alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
 
   [scenario sutWillBeGiven: ['network']];

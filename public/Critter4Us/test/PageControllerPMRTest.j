@@ -14,73 +14,12 @@
   [scenario sutWillBeGiven: ['panelController1', 'panelController2']];
 }
 
-
--(void) testDisappearingHidesPage
-{
-  [scenario
-   previousAction: function() { 
-     [sut.pageView setHidden:NO];
-   }
-  testAction: function() {
-      [sut disappear];
-   }
-  andSo: function() {
-      [self assertTrue: [sut.pageView hidden]];
-   }];
-}
-
-
--(void) testDisappearingTellsControllersToHideAnyPanelsTheyAreShowing
-{
-  [scenario
-   previousAction: function() { 
-      [sut addPanelControllersFromArray: [sut.panelController1, sut.panelController2]];
-    }
-  during: function() {
-      [sut disappear];
-    }
-  behold: function() {
-      [sut.panelController1 shouldReceive: @selector(hideAnyVisiblePanels)];
-      [sut.panelController2 shouldReceive: @selector(hideAnyVisiblePanels)];
-   }];
-}
-
--(void) testAppearingUnhidesPage
-{
-  [scenario
-   previousAction: function() { 
-     [sut.pageView setHidden:YES];
-   }
-  testAction: function() {
-      [sut appear];
-   }
-  andSo: function() {
-     [self assertFalse: [sut.pageView hidden]];
-   }];
-}
-
--(void) testAppearingTellsControllersToDisplayTheirPanelIfAppropriate
-{
-  [scenario
-    previousAction: function() {
-      [sut addPanelController: sut.panelController1];
-      [sut addPanelController: sut.panelController2];
-    }
-  during: function() {
-      [sut appear];
-    }
-  behold: function() {
-      [sut.panelController1 shouldReceive: @selector(showPanelIfAppropriate)];
-      [sut.panelController2 shouldReceive: @selector(showPanelIfAppropriate)];
-    }];
-}
-
 -(void) testNotificationsCanAddPanelControllers
 {
   [scenario
     previousAction: function() { 
       [scenario sutWillBeGiven: ['newPanelController']];
-      [self sendNotification: NewPanelOnPageNews
+      [self sendNotification: NewAdvisorPanelOnPageNews
                   withObject: sut.newPanelController];
     }
   during: function() {
@@ -96,7 +35,7 @@
   [scenario
     previousAction: function() { 
       [sut addPanelControllersFromArray: [sut.panelController1, sut.panelController2]];
-      [self sendNotification: ClosedPanelOnPageNews
+      [self sendNotification: ClosedAdvisorPanelOnPageNews
                   withObject: sut.panelController2];
     }
   during: function() {

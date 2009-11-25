@@ -8,13 +8,12 @@
 @implementation CoordinatorPMR : AwakeningObject
 {
   ReservationDataControllerPMR reservationDataController;
-  NamedObjectControllerPMR animalController;
-  NamedObjectControllerPMR procedureController;
+  FromToNamedObjectListControllerPMR animalController;
+  FromToNamedObjectListControllerPMR procedureController;
   GroupControllerPMR groupController;
   CurrentGroupPanelController currentGroupPanelController;
   
   PersistentStore persistentStore;
-  id finishReservationClosure;
 
   id currentStep;
 }

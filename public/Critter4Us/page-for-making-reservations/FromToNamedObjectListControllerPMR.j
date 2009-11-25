@@ -1,20 +1,29 @@
-@import "../controller/PanelController.j"
+@import "../controller/NamedObjectListController.j"
 
-@implementation NamedObjectControllerPMR : PanelController
+@implementation FromToNamedObjectListControllerPMR : NamedObjectListController
 {
-  CPArray originalObjects;
-  CPCollectionView available;
   CPCollectionView used;
 }
 
 - (void) allPossibleObjects: someObjects
 {
-  originalObjects = [someObjects copy];
-  [available setContent: someObjects];
+  [super allPossibleObjects: someObjects];
   [used setContent: []];
-  [available setNeedsDisplay: YES];
   [used setNeedsDisplay: YES];
 }
+
+- (void) withholdNamedObjects: someNamedObjects
+{
+  [super withholdNamedObjects: someNamedObjects];
+  [used setContent: 
+       [self array: [used content] without: someNamedObjects]];
+  [available setContent: 
+            [self array: [available content] without: [used content]]];
+
+  [used setNeedsDisplay: YES];
+}
+
+
 
 - (void) presetUsed: usedObjects
 {
@@ -82,32 +91,6 @@
   }
   [available setContent: availableContents];
   [used setContent: usedContents];
-  [available setNeedsDisplay: YES];
-  [used setNeedsDisplay: YES];
-}
-
-- (void) withholdNamedObjects: someNamedObjects
-{
-  [used setContent: 
-       [self array: [used content] without: someNamedObjects]];
-
-  [available setContent: 
-       [self array: originalObjects without: someNamedObjects]];
-  [available setContent: 
-       [self array: [available content] without: [used content]]];
-
-  [self bothNeedDisplay];
-}
-
-- (CPArray) array: array without: someNamedObjects
-{
-  var copy = [array copy]
-  [copy removeObjectsInArray: someNamedObjects];
-  return copy;
-}
-
--(void) bothNeedDisplay
-{
   [available setNeedsDisplay: YES];
   [used setNeedsDisplay: YES];
 }

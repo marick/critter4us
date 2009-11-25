@@ -29,5 +29,9 @@
     }
 }
 
+-(void) connectOutlets
+{
+}
+
 
 @end
