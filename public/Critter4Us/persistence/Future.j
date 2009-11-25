@@ -3,23 +3,38 @@
 
 @implementation Future : CPObject
 {
-  CPMutableString result;
+  CPMutableString result, route, notificationName;
+  
 }
 
-+ (void) spawnRequestTo: network
++ (void) spawnGetTo: network
+          withRoute: route
+   notificationName: notificationName
 {
-  [[[self alloc] init] sendAsynchronousRequestTo: network];
+  var future = [[self alloc] initWithRoute: route notificationName: notificationName];
+  [future sendAsynchronousGetTo: network];
 }
 
-- (id) init
+- (id) initWithRoute: aRoute notificationName: aName
 {
   self = [super init];
+  route = aRoute;
+  notificationName = aName;
   result = "";
   return self;
 }
 
+- (CPString) route
+{
+  return route;
+}
+- (CPString) notificationName
+{
+  return notificationName;
+}
 
--(void) sendAsynchronousRequestTo: network
+
+-(void) sendAsynchronousGetTo: network
 {
   [NotificationCenter postNotificationName: BusyNews object: nil];
   [network sendGetAsynchronouslyTo: [self route]
@@ -43,9 +58,10 @@
 
 -(void)connectionDidFinishLoading:(CPURLConnection)connection
 {
-  [NotificationCenter postNotificationName: [self notification]
+  [NotificationCenter postNotificationName: [self notificationName]
                                     object: result];
   [NotificationCenter postNotificationName: AvailableNews object: nil];
+  [NotificationCenter removeObserver: self];
 }
 
 -(void)connectionDidReceiveAuthenticationChallenge:(CPURLConnection)connection

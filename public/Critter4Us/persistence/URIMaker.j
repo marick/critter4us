@@ -4,6 +4,8 @@ CourseSessionDataBlobRoute = @"course_session_data_blob";
 StoreReservationRoute = @"store_reservation";
 FetchReservationRoute = @"reservation";
 ModifyReservationRoute = @"modify_reservation";
+AllReservationsTableRoute = @"reservations";
+AllAnimalsTableRoute = @"animals";  // Should this go into URIMaker?
 
 jsonURI = function(route)
 {

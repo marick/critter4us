@@ -5,8 +5,7 @@
 @import "FromNetworkConverter.j"
 @import "TimeInvariantExclusionCache.j"
 @import "URIMaker.j"
-@import "ReservationTableFuture.j"
-@import "AnimalTableFuture.j"
+@import "Future.j"
 
 var SharedPersistentStore = nil;
 
@@ -17,9 +16,6 @@ var SharedPersistentStore = nil;
   FromNetworkConverter fromNetworkConverter;
   CPDictionary timeInvariantExclusions;
   URIMaker uriMaker;
-
-  id reservationTableFuture;
-  id animalTableFuture;
 }
 
 + (PersistentStore) sharedPersistentStore
@@ -42,8 +38,6 @@ var SharedPersistentStore = nil;
   fromNetworkConverter = [[FromNetworkConverter alloc] init];
   uriMaker = [[URIMaker alloc] init];
 
-  reservationTableFuture = ReservationTableFuture;
-  animalTableFuture = AnimalTableFuture;
   [self setTimeInvariantExclusions: TimeInvariantExclusionCache];
 }
 
@@ -88,13 +82,22 @@ var SharedPersistentStore = nil;
 
 - (CPString) pendingReservationTableAsHtml
 {
-  [reservationTableFuture spawnRequestTo: network];
+  [Future spawnGetTo: network
+           withRoute: AllReservationsTableRoute
+    notificationName: ReservationTableRetrievedNews];
 }
 
 - (CPString) animalTableAsHtml
 {
-  [animalTableFuture spawnRequestTo: network];
+  [Future spawnGetTo: network
+           withRoute: AllAnimalsTableRoute
+    notificationName: AnimalTableRetrievedNews];
 }
+
+- (void) fetchAnimalDeletionData
+{
+}
+
 
 // util
 
@@ -111,5 +114,7 @@ var SharedPersistentStore = nil;
                               withAddedExclusions: timeInvariantExclusions];
   return dictionary;
 }
+
+
 
 @end
