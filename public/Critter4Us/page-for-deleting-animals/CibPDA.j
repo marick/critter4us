@@ -5,6 +5,7 @@
 
 @import "cib/AnimalListControllerSubgraphPDA.j"
 @import "cib/BackgroundControllerSubgraphPDA.j"
+@import "cib/PageControllerSubgraphPDA.j"
 
 @import "state-machine/GatheringAnimalListStepPDA.j"
 
@@ -43,7 +44,7 @@
 - (void) drawControlledSubgraphsIn: (CPWindow) theWindow
 {
   pageControllerSubgraph =
-    [self custom: [[PageControllerSubgraph alloc]
+    [self custom: [[PageControllerSubgraphPDA alloc]
                     initWithWindow: theWindow]];
   [pageControllerSubgraph connectOutlets];
 

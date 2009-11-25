@@ -5,7 +5,8 @@ StoreReservationRoute = @"store_reservation";
 FetchReservationRoute = @"reservation";
 ModifyReservationRoute = @"modify_reservation";
 AllReservationsTableRoute = @"reservations";
-AllAnimalsTableRoute = @"animals";  // Should this go into URIMaker?
+AllAnimalsTableRoute = @"animals"; 
+AnimalDeletionInfoRoute = @"animal_deletion_info";
 
 jsonURI = function(route)
 {

@@ -39,7 +39,6 @@ HasExtraExclusions = function(exclusions) {
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasDownwardOutlets: ['network']];
   [scenario sutCreates: [ 'toNetworkConverter', 'fromNetworkConverter', 'uriMaker']];
-  [scenario sutCreates: ['reservationTableFuture', 'animalTableFuture']];
 
   timeInvariants = '{"floating":["never this animal"]}';
   [sut setTimeInvariantExclusions: timeInvariants];
@@ -131,28 +130,5 @@ HasExtraExclusions = function(exclusions) {
 }
 
 
--(void)test_spawns_an_object_to_fetch_the_reservation_table
-{
-  [scenario
-    during: function() { 
-      return [sut pendingReservationTableAsHtml];
-    }
-  behold: function() {
-      [sut.reservationTableFuture shouldReceive: @selector(spawnRequestTo:)
-                                           with: sut.network];
-    }];
-}
-
--(void)test_spawns_an_object_to_fetch_the_animal_table
-{
-  [scenario
-    during: function() { 
-      return [sut animalTableAsHtml];
-    }
-  behold: function() {
-      [sut.animalTableFuture shouldReceive: @selector(spawnRequestTo:)
-                                      with: sut.network];
-    }];
-}
 
 @end

@@ -20,6 +20,9 @@ BusyNews = "hold on user";
 AvailableNews = "your turn";
 ReservationTableRetrievedNews = "a reservation table has been retrieved";
 AnimalTableRetrievedNews = "an animal table has been retrieved";
+UserWantsToDeleteAnimalsNews = "user wants to delete at least one animal";
+AnimalDeletionInfoRetrievedNews = "deletion info has been retrieved";
+
 
 // Other useful constants
 NotificationCenter = [CPNotificationCenter defaultCenter];

@@ -6,12 +6,17 @@
 
 - (void) setUpNotifications
 {
-  //  [self notificationNamed: ReservationDataAvailable
-  //                    calls: @selector(reservationDataAvailable:)];
+  [self notificationNamed: UserWantsToDeleteAnimalsNews
+                      calls: @selector(fetchDeletionData:)];
 }
 
 - (void) start
 {
+}
+
+- (void) fetchDeletionData: aNotification
+{
+  [persistentStore fetchAnimalDeletionData];
 }
 
 
