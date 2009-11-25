@@ -1,8 +1,9 @@
-@import <Critter4Us/page-for-making-reservations/state-machine/StepPMR.j>
-@import "StateMachineTestCase.j"
+@import <Critter4Us/util/Step.j>
+@import <Critter4Us/util/StateMachineCoordinator.j>
+@import "ScenarioTestCase.j"
 
 
-@implementation FirstStep : StepPMR
+@implementation FirstStep : Step
 {
   int counter;
 }
@@ -33,33 +34,42 @@
 
 @end
 
-@implementation StepPMRTest : StateMachineTestCase
+@implementation NextStep : Step
+@end
+
+
+@implementation StepTest : ScenarioTestCase
 {
+  CPString variableToBeSet;
 }
 
 - (void) setUp
 {
   sut = [FirstStep alloc];
-  [super setUp];
+  scenario = [[Scenario alloc] initForTest: self andSut: sut];
 }
 
 - (void) test_life_span
 {
+  [scenario sutWillBeGiven: ['master']]
+  [sut initWithMaster: sut.master];
   [sut start];
+  [self assert: 0 equals: sut.counter];
+
   [self sendNotification: "count"];
   [self assert: 1 equals: sut.counter];
 
-  [scenario
-    during: function() {
+  [scenario 
+    during: function() { 
       [self sendNotification: "finish"];
     }
-  behold: function() {
-      [sut.master shouldReceive: @selector(nextStep:)
+  behold: function() { 
+      [sut.master shouldReceive: @selector(takeStep:)
                            with: NextStep];
-    }];
-
-  [self sendNotification: "count"];
-  [self assert: 1 equals: sut.counter]; // Notifications turned off.
+    }
+  andSo: function() { 
+      [self sendNotification: "count"];
+      [self assert: 1 equals: sut.counter]; // Notifications turned off.
     }];
 }
 
@@ -69,25 +79,26 @@
   // that might provoke new notifications, else the new notifications
   // might get dropped.
 
+  [sut initWithMaster: self]; // Act like master; see below
   [sut start];
-  [sut.master = self];
 
-  NextStep['started'] = NO;
+  variableToBeSet = "unset";
   [sut afterResigningInFavorOf: NextStep 
             causeNextEventWith: function() {
-      [self assert: YES equals: NextStep["started"]];
-          }];
+      variableToBeSet = "set";
+    }];
+  [self assert: "set" equals: variableToBeSet];
 }
 
--(void) nextStep: step // Behave like the master (normally a CoordinatorPMR).
+// When the next step is called for, the variable should still be
+// unset. It should be set after this method returns. Note: can't put
+// assert into a behold! clause because that function is executed at
+// the end of the method, well after nextStep: returns.
+-(void) takeStep: step
 {
-  step['started'] = YES;
+  [self assert: "unset" equals: variableToBeSet];
 }
 
 @end
 
-@implementation NextStep : StepPMR 
-{
-}
-@end
 

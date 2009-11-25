@@ -1,19 +1,21 @@
 @import <Critter4Us/page-for-making-reservations/state-machine/DateChangingGroupDataStepPMR.j>
-@import "StateMachineTestCase.j"
 @import <Critter4Us/model/Animal.j>
 @import <Critter4Us/model/Procedure.j>
 @import <Critter4Us/model/Group.j>
 @import <Critter4Us/util/Time.j>
+@import "ScenarioTestCase.j"
 
 
-@implementation DateChangingGroupDataStepPMRTest : StateMachineTestCase
+@implementation DateChangingGroupDataStepPMRTest : ScenarioTestCase
 {
 }
 
 - (void) setUp
 {
   sut = [DateChangingGroupDataStepPMR alloc];
-  [super setUp];
+  scenario = [[Scenario alloc] initForTest: self andSut: sut];
+  [scenario sutWillBeGiven: ['reservationDataController', 'animalController', 'procedureController', 'groupController', 'currentGroupPanelController', 'persistentStore', 'master']];
+  [sut initWithMaster: sut.master];
 }
 
 

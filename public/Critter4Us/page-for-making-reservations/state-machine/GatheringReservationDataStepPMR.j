@@ -1,8 +1,9 @@
-@import "StepPMR.j"
+@import "../../util/Step.j"
+@import "../../persistence/URIMaker.j"
 @import "GatheringGroupDataStepPMR.j"
 @import "DateChangingGroupDataStepPMR.j"
 
-@implementation GatheringReservationDataStepPMR : StepPMR
+@implementation GatheringReservationDataStepPMR : Step
 {
 }
 

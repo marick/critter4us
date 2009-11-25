@@ -1,18 +1,19 @@
 @import <AppKit/AppKit.j>
 @import "../util/Constants.j"
+@import "../util/StateMachineCoordinator.j"
 @import "../view/NameListPanel.j"
 @import "../view/CurrentGroupPanel.j"
 @import "../persistence/PersistentStore.j"
 @import "../cib/PageControllerSubgraph.j"
 
 @import "ConstantsPMR.j"
-@import "CoordinatorPMR.j"
 @import "PageControllerPMR.j"
 
 @import "cib/AnimalControllerSubgraphPMR.j"
 @import "cib/ProcedureControllerSubgraphPMR.j"
 @import "cib/GroupControllerSubgraphPMR.j"
 @import "cib/ReservationDataControllerSubgraphPMR.j"
+@import "state-machine/GatheringReservationDataStepPMR.j"
 
 @implementation CibPMR : Subgraph
 {
@@ -29,7 +30,6 @@
   CurrentGroupPanel currentGroupPanel;
   PanelController currentGroupPanelController;
 
-  CoordinatorPMR coordinator;
   PersistentStore persistentStore;
 }
 
@@ -40,7 +40,6 @@
 
 
   [self drawControlledSubgraphsIn: theWindow];
-  coordinator = [self custom: [[CoordinatorPMR alloc] init]];
   persistentStore = [PersistentStore sharedPersistentStore];
 
   currentGroupPanel = [[CurrentGroupPanel alloc] init];
@@ -53,6 +52,18 @@
   owner.pmrPageController = pageControllerSubgraph.controller;
 
   [self awakeFromCib];
+
+
+  var peers = { 'persistentStore':persistentStore,
+                'reservationDataController': reservationDataControllerSubgraph.controller,
+                'animalController' : animalControllerSubgraph.controller,
+                'procedureController' : procedureControllerSubgraph.controller,
+                'groupController' : groupControllerSubgraph.controller,
+                'currentGroupPanelController' : currentGroupPanelController
+  };
+  
+  [[StateMachineCoordinator coordinating: peers]
+    takeStep: GatheringReservationDataStepPMR];
 }
 
 
@@ -88,17 +99,13 @@
 
 - (void) connectRemainingOutlets
 {
-  coordinator.persistentStore = persistentStore;
-  coordinator.reservationDataController = reservationDataControllerSubgraph.controller;
-  coordinator.animalController = animalControllerSubgraph.controller;
-  coordinator.procedureController = procedureControllerSubgraph.controller;
-  coordinator.groupController = groupControllerSubgraph.controller;
-  coordinator.currentGroupPanelController = currentGroupPanelController;
+  var animalController = animalControllerSubgraph.controller;
+  animalController.used = currentGroupPanel.animalCollectionView;
+  [currentGroupPanel.animalCollectionView setDelegate: animalController];
 
-  coordinator.animalController.used = currentGroupPanel.animalCollectionView;
-  [currentGroupPanel.animalCollectionView setDelegate: coordinator.animalController];
-  coordinator.procedureController.used = currentGroupPanel.procedureCollectionView;
-  [currentGroupPanel.procedureCollectionView setDelegate: coordinator.procedureController];
+  var procedureController = procedureControllerSubgraph.controller;
+  procedureController.used = currentGroupPanel.procedureCollectionView;
+  [currentGroupPanel.procedureCollectionView setDelegate: procedureController];
 
   [pageControllerSubgraph.controller addPanelControllersFromArray: [animalControllerSubgraph.controller,
                                      procedureControllerSubgraph.controller,

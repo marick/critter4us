@@ -12,7 +12,7 @@
 -(void) takeStep: stepClass
 {
   currentStep = [[stepClass alloc] initWithMaster: self];
-  [self setStepInstanceVariables: currentStep]
+  [self setStepInstanceVariables: currentStep];
   [currentStep start];
 }
 

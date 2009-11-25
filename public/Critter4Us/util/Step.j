@@ -1,6 +1,6 @@
-@import "../../util/CritterObject.j"
+@import "CritterObject.j"
 
-@implementation StepPDA : CritterObject
+@implementation Step : CritterObject
 {
   StateMachineCoordinator master;
 }
@@ -19,7 +19,7 @@
 - (void) resignInFavorOf: (Class) step
 {
   [self stopObserving];
-  [master nextStep: step];
+  [master takeStep: step];
 }
 
 - (void) afterResigningInFavorOf: (Class) step

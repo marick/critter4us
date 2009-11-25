@@ -277,6 +277,17 @@ var Skip = function() {}
     }
 }
 
+// TODO: This really should store the mocks in the scenario, not in
+// the sut (as sutHashOutlets does). As is, leads to weird setups like
+// this:
+// 
+//   [scenario sutWillBeGiven: ['instanceVar']];
+//   [sut initWithInstanceVar: sut.instanceVar];
+//
+// That is, the sut is given something it already has (and will likely 
+// store into the same instance var slot/name as it came from).
+
+
 - (void) sutWillBeGiven: anArray
 {
   [self sutHasOutlets: anArray];

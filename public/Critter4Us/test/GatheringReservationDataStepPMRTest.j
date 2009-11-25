@@ -1,17 +1,19 @@
 @import <Critter4Us/page-for-making-reservations/state-machine/GatheringReservationDataStepPMR.j>
 @import <Critter4Us/page-for-making-reservations/state-machine/GatheringGroupDataStepPMR.j>
-@import "StateMachineTestCase.j"
+@import "ScenarioTestCase.j"
 @import <Critter4Us/util/Time.j>
 
 
-@implementation GatheringReservationDataStepPMRTest : StateMachineTestCase
+@implementation GatheringReservationDataStepPMRTest : ScenarioTestCase
 {
 }
 
 - (void) setUp
 {
   sut = [GatheringReservationDataStepPMR alloc];
-  [super setUp];
+  scenario = [[Scenario alloc] initForTest: self andSut: sut];
+  [scenario sutWillBeGiven: ['reservationDataController', 'animalController', 'procedureController', 'groupController', 'currentGroupPanelController', 'persistentStore', 'master']];
+  [sut initWithMaster: sut.master];
 }
 
 // At the beginning: Ready to gather data for a new reservation. 
@@ -52,7 +54,7 @@
         }];
       [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:)
                                     with: ['2009-02-02', [Time morning]]];
-      [sut.master shouldReceive: @selector(nextStep:)
+      [sut.master shouldReceive: @selector(takeStep:)
                            with: GatheringGroupDataStepPMR];
     }];
 }
@@ -75,7 +77,7 @@
         }];
       [sut.persistentStore shouldReceive: @selector(fetchReservation:)
                                     with: 33];
-      [sut.master shouldReceive: @selector(nextStep:)
+      [sut.master shouldReceive: @selector(takeStep:)
                            with: GatheringGroupDataStepPMR];
     }];
 }
@@ -97,7 +99,7 @@
         }];
       [sut.persistentStore shouldReceive: @selector(fetchReservation:)
                                     with: 33];
-      [sut.master shouldReceive: @selector(nextStep:)
+      [sut.master shouldReceive: @selector(takeStep:)
                            with: DateChangingGroupDataStepPMR];
     }];
 }

@@ -1,4 +1,3 @@
-@import "StepPMR.j"
 @import "GatheringGroupDataStepPMR.j"
 
 @implementation DateChangingGroupDataStepPMR : GatheringGroupDataStepPMR

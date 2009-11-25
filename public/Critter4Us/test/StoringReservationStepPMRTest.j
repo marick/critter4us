@@ -1,16 +1,17 @@
 @import <Critter4Us/page-for-making-reservations/state-machine/StoringReservationStepPMR.j>
-@import "StateMachineTestCase.j"
 @import <Critter4Us/util/Time.j>
+@import "ScenarioTestCase.j"
 
-
-@implementation StoringReservationStepPMRTest : StateMachineTestCase
+@implementation StoringReservationStepPMRTest : ScenarioTestCase
 {
 }
 
 - (void) setUp
 {
   sut = [StoringReservationStepPMR alloc];
-  [super setUp];
+  scenario = [[Scenario alloc] initForTest: self andSut: sut];
+  [scenario sutWillBeGiven: ['reservationDataController', 'animalController', 'procedureController', 'groupController', 'currentGroupPanelController', 'persistentStore', 'master']];
+  [sut initWithMaster: sut.master];
 }
 
 - (void) test_start_by_doing_nothing
@@ -26,7 +27,7 @@
   behold: function() {
       [sut.reservationDataController shouldReceive: @selector(offerOperationsOnJustFinishedReservation:)
                                               with: 5];
-      [sut.master shouldReceive: @selector(nextStep:)
+      [sut.master shouldReceive: @selector(takeStep:)
                            with: GatheringReservationDataStepPMR];
       
     }];

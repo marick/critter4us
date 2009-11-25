@@ -1,7 +1,7 @@
-@import "StepPMR.j"
+@import "../../util/Step.j"
 @import "StoringReservationStepPMR.j"
 
-@implementation GatheringGroupDataStepPMR : StepPMR
+@implementation GatheringGroupDataStepPMR : Step
 {
 }
 

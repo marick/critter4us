@@ -1,6 +1,6 @@
-@import "StepPDA.j"
+@import "../../util/Step.j"
 
-@implementation GatheringAnimalListStepPDA : StepPDA
+@implementation GatheringAnimalListStepPDA : Step
 {
 }
 
