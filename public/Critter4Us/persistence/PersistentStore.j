@@ -97,7 +97,7 @@ var SharedPersistentStore = nil;
 - (void) fetchAnimalDeletionData
 {
   [Future spawnGetTo: network
-           withRoute: AnimalDeletionInfoRoute
+           withRoute: jsonURI(AnimalDeletionInfoRoute)
     notificationName: AnimalDeletionInfoRetrievedNews];
 }
 

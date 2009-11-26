@@ -141,6 +141,26 @@ class JsonGenerationTests < FreshDatabaseTestCase
     end
   end
 
+  context "producing deletion information" do 
+    should "just return jsonified version of animal info" do 
+      @app.override(mocks(:animal_source, :timeslice))
+      brooke = Animal.random(:name => 'brooke')
+
+      during { 
+        get '/json/animal_deletion_info', :date => '2009-01-01'
+      }.behold! {
+        @timeslice.should_receive(:move_to).once.with(Date.new(2009,1,1), MORNING, nil)
+        @timeslice.should_receive(:available_animals).once.
+                   and_return([brooke])
+        @timeslice.should_receive(:hashes_from_animals_to_pending_dates).once.
+                   with([brooke]).
+                   and_return([{brooke => [Date.new(2009,1,1), Date.new(2010,1,1)]}])
+      }
+      assert_json_response
+      assert_jsonification_of([{'brooke' => ['2009-01-01', '2010-01-01']}])
+    end
+  end
+
   context "adding a reservation" do 
 
     setup do
@@ -224,9 +244,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
       assert_jsonification_of({'reservation' => @new_reservation.pk.to_s})
       assert { @id_to_modify == @new_reservation.pk.to_s }
     end
-
   end
-
 
   context "retrieving a reservation" do
     setup do

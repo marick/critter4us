@@ -51,6 +51,21 @@ class Controller
     end
   end
 
+  get '/json/animal_deletion_info' do
+    internal = move_to_internal_format(params)
+    timeslice.move_to(internal[:date], MORNING, nil)
+    animals = timeslice.available_animals
+    internal_retval = timeslice.hashes_from_animals_to_pending_dates(animals)
+    jsonically do 
+      internal_retval.collect do | animal_to_dates | 
+        animal = animal_to_dates.to_a[0][0]
+        dates = animal_to_dates.to_a[0][1]
+        { animal.name => dates.collect { | d | d.to_s } }
+      end
+    end
+  end
+
+
 
   # tested
   def symbol_keys(hash)

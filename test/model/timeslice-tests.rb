@@ -278,15 +278,43 @@ end
         already_gone = Animal.random(:name => "already gone")
         already_gone.remove_from_service_as_of(@date)
 
-        still_here = Animal.random(:name => "still here")
-        still_here.remove_from_service_as_of(@date+1)
+        @still_here = Animal.random(:name => "still here")
+        @still_here.remove_from_service_as_of(@date+1)
       end
 
       should "not return animals removed from service as of given date" do
         @timeslice.move_to(@date, @time)
+
+        result = @timeslice.available_animals
+        assert { result == [@still_here] }
+
         result = @timeslice.available_animals_by_name
         assert { result == ['still here'] }
+
       end
+    end
+  end
+
+  context "returning animals and their pending reservations" do
+    setup do
+      @date = Date.new(2010, 10, 10)
+      @brooke = brooke = Animal.random(:name => 'brooke')
+      Reservation.random(:date => @date, :time => MORNING) do 
+        use brooke
+        use Procedure.random
+      end
+    end
+
+    should "include animals used at timeslice" do
+      @timeslice.move_to(@date, MORNING)
+      result = @timeslice.hashes_from_animals_to_pending_dates([@brooke])
+      assert_equal([ {@brooke => [@date] } ], result)
+    end
+
+    should "not include animals used before timeslice" do
+      @timeslice.move_to(@date+1, MORNING)
+      result = @timeslice.hashes_from_animals_to_pending_dates([@brooke])
+      assert_equal([ {@brooke => [] } ], result)
     end
   end
 end

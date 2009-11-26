@@ -35,8 +35,8 @@ class Animal < Sequel::Model
   def dates_used_after_beginning_of(date)
     Reservation.filter(:date >= date).find_all { | r |
       r.animals.include?(self)
-    }.collect { | r |
-      r.date.to_s
+    }.collect { | r |    # No &:date in Heroku Ruby.
+      r.date 
     }.sort { | a, b |
       -(a<=>b)
     }
