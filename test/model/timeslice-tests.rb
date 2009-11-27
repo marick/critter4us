@@ -303,18 +303,21 @@ end
         use brooke
         use Procedure.random
       end
+      @jake = Animal.random(:name => 'jake')
     end
 
     should "include animals used at timeslice" do
       @timeslice.move_to(@date, MORNING)
-      result = @timeslice.hashes_from_animals_to_pending_dates([@brooke])
-      assert_equal([ {@brooke => [@date] } ], result)
+      result = @timeslice.hashes_from_animals_to_pending_dates([@brooke, @jake])
+      assert { result.include?({@brooke => [@date]}) }
+      assert { result.include?({@jake => []}) }
     end
 
     should "not include animals used before timeslice" do
       @timeslice.move_to(@date+1, MORNING)
-      result = @timeslice.hashes_from_animals_to_pending_dates([@brooke])
-      assert_equal([ {@brooke => [] } ], result)
+      result = @timeslice.hashes_from_animals_to_pending_dates([@brooke, @jake])
+      assert { result.include?({@brooke => []}) }
+      assert { result.include?({@jake => []}) }
     end
   end
 end

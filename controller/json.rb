@@ -1,3 +1,5 @@
+require 'util/extensions.rb'
+
 class Controller
 
   get '/json/course_session_data_blob' do
@@ -55,13 +57,10 @@ class Controller
     internal = move_to_internal_format(params)
     timeslice.move_to(internal[:date], MORNING, nil)
     animals = timeslice.available_animals
-    internal_retval = timeslice.hashes_from_animals_to_pending_dates(animals)
+    hashes = timeslice.hashes_from_animals_to_pending_dates(animals)
     jsonically do 
-      internal_retval.collect do | animal_to_dates | 
-        animal = animal_to_dates.to_a[0][0]
-        dates = animal_to_dates.to_a[0][1]
-        { animal.name => dates.collect { | d | d.to_s } }
-      end
+      animals_without_uses = filter_unused_animal_names(hashes)
+      {:unused => animals_without_uses}
     end
   end
 
@@ -120,6 +119,13 @@ class Controller
     Reservation[ignoring.to_i]
   end
 
+  def filter_unused_animal_names(hashes)
+    hashes.find_all { | hash |
+      hash.only_value.empty?
+    }.collect { | hash | 
+      hash.only_key.name
+    }.sort
+  end
 
 
 end

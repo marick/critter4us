@@ -141,23 +141,25 @@ class JsonGenerationTests < FreshDatabaseTestCase
     end
   end
 
-  context "producing lists of animals in use" do 
-    should "just return jsonified version of animal info" do 
+  context "producing lists of animals in service" do 
+    should "return a list of animals with no pending reservations" do 
       @app.override(mocks(:animal_source, :timeslice))
       brooke = Animal.random(:name => 'brooke')
+      jake = Animal.random(:name => 'jake')
 
       during { 
         get '/json/animals_in_service_blob', :date => '2009-01-01'
       }.behold! {
         @timeslice.should_receive(:move_to).once.with(Date.new(2009,1,1), MORNING, nil)
         @timeslice.should_receive(:available_animals).once.
-                   and_return([brooke])
+                   and_return([brooke, jake])
         @timeslice.should_receive(:hashes_from_animals_to_pending_dates).once.
-                   with([brooke]).
-                   and_return([{brooke => [Date.new(2009,1,1), Date.new(2010,1,1)]}])
+                   with([brooke, jake]).
+                   and_return([{brooke => [Date.new(2009,1,1), Date.new(2010,1,1)]},
+                               {jake => []}])
       }
       assert_json_response
-      assert_jsonification_of([{'brooke' => ['2009-01-01', '2010-01-01']}])
+      assert_jsonification_of('unused' => ['jake'])
     end
   end
 
