@@ -21,45 +21,7 @@
   spike = [[NamedObject alloc] initWithName: 'spike'];
   fang = [[NamedObject alloc] initWithName: 'fang'];
 }
--(void) testBeginning
-{
-  [scenario 
-    during: function() {
-      [sut allPossibleObjects: [betsy, spike, fang]];
-    }
-    behold: function() { 
-      [sut.available shouldReceive: @selector(setNeedsDisplay:) with: YES];
-      [sut.used shouldReceive: @selector(setNeedsDisplay:) with: YES];
-    }
-    andSo: function() {
-      [self assert: [betsy, spike, fang]
-            equals: [sut.available content]];
-      [self assert: []
-            equals: [sut.used content]];
-    }];
-}
 
-- (void) testHandsObjectsThemselvesToCollectionView
-{
-  var objects = [betsy, spike];
-
-  [scenario
-    during: function() {
-      [sut allPossibleObjects: objects];
-    } 
-  behold: function() {
-      [sut.available shouldReceive: @selector(setContent:)
-                                   with: [objects]];
-      [sut.available shouldReceive: @selector(setNeedsDisplay:)
-                                   with: YES];
-
-      [sut.used shouldReceive: @selector(setContent:)
-                                   with: [[]]];
-      [sut.used shouldReceive: @selector(setNeedsDisplay:)
-                                   with: YES];
-    }
-   ];
-}
 
 - (void) testSelectionMovesObjectFromAvailableToUsed
 {
@@ -109,21 +71,6 @@
 }
 
 
-- (void) testCanInitializedUsedArrayFromASource
-{
-  [scenario 
-    previousAction: function() { 
-      [sut allPossibleObjects: [betsy, spike, fang]];
-    }
-    testAction: function() { 
-      [sut presetUsed: [betsy, fang] ];
-    }
-  andSo: function() {
-      [self assert: [spike] equals: [sut.available content]];
-      [self assert: [betsy, fang] equals: [sut.used content]];
-    }];
-}
-
 
 - (void) testPresetsDoNotCountAsNotifiableMovement
 {
@@ -139,26 +86,6 @@
     }];
 }
 
-- (void) testCanMoveAllUsedObjectsBack
-{
-  var a = [[NamedObject alloc] initWithName: 'a'];
-  var b = [[NamedObject alloc] initWithName: 'b'];
-  var c = [[NamedObject alloc] initWithName: 'c'];
-  [scenario
-    previousAction: function() { 
-      [sut allPossibleObjects: [a, b, c]];
-      [sut presetUsed: [b, c]];
-    }
-    testAction: function() {
-      [sut stopUsingAll];
-    }
-  andSo: function() {
-      [self assert: [a, b, c]
-            equals: [sut.available content]];
-      [self assert: []
-            equals: [sut.used content]];
-    }];
-}
 
 
 - (void) testCanBackUpToBeginningOfReservationWorkflow
@@ -182,24 +109,6 @@
       [self assert: [] equals: [sut.available content]];
     }];
 }
-
-- (void) testCanReturnUsedObjects
-{
-  sut.used = [[NamedObjectCollectionView alloc] initWithFrame: CGRectMakeZero()]
-  sut.available = [[NamedObjectCollectionView alloc] initWithFrame: CGRectMakeZero()]
-  [sut presetUsed: [betsy, spike, fang]];
-  [self assert: [betsy, fang, spike] equals: [sut usedObjects]];
-}
-
-
-- (void) testCanReturnUsedObjectNames
-{
-  sut.used = [[NamedObjectCollectionView alloc] initWithFrame: CGRectMakeZero()]
-  sut.available = [[NamedObjectCollectionView alloc] initWithFrame: CGRectMakeZero()]
-  [sut presetUsed: [betsy, spike, fang]];
-  [self assert: ['betsy', 'fang', 'spike'] equals: [sut usedNames]];
-}
-
 
 - (void)testWithholdingNamedObjectsLeavesThemOutOfAvailableList
 {
