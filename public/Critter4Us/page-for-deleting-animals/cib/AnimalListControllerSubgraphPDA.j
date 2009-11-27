@@ -23,7 +23,7 @@
 
 - (CPString) nameListTitle
 {
-  return "Animals Currently Available for Use";
+  return "Animals That Can Be Removed";
 }
 
 - (CPColor) color

@@ -37,5 +37,11 @@
         equals: [maker fetchReservationURI: 333]];
 }
 
+-(void) test_can_make_uri_to_fetch_animals_in_service_on_a_date
+{
+  [self assert: '/json/animals_in_service_blob?date=2009-12-30'
+        equals: [maker inServiceAnimalListWithDate: '2009-12-30']];
+}
+
 
 @end

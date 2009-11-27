@@ -12,16 +12,4 @@
 }
 
 
-- (void) test_appearing_tells_state_machine_user_wants_deletion_data
-{
-  [scenario
-   during: function() {
-     [sut appear];
-   }
-   behold: function() {
-      [self listenersShouldReceiveNotification: UserWantsToDeleteAnimalsNews];
-   }];
-}
-
-
 @end

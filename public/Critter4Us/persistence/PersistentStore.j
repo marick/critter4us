@@ -94,11 +94,11 @@ var SharedPersistentStore = nil;
     notificationName: AnimalTableRetrievedNews];
 }
 
-- (void) fetchAnimalDeletionData
+- (void) fetchAnimalsInServiceOnDate: (CPString) aDateString
 {
   [Future spawnGetTo: network
-           withRoute: jsonURI(AnimalDeletionInfoRoute)
-    notificationName: AnimalDeletionInfoRetrievedNews];
+           withRoute: [uriMaker inServiceAnimalListWithDate: aDateString]
+    notificationName: AnimalInServiceListRetrievedNews];
 }
 
 

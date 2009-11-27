@@ -51,7 +51,7 @@ HasExtraExclusions = function(exclusions) {
 }
 
 
-- (void)test_how_persistent_store_coordinates_when_retrieving_data
+- (void)test_how_persistent_stores_coordinates_when_retrieving_data
 {
   // TODO: replace complicated convert:withAddedExclusions: functions
   // with a simple checker function.
@@ -129,6 +129,22 @@ HasExtraExclusions = function(exclusions) {
     }];
 }
 
+- (void) test_persistent_store_uses_uri_maker_to_construct_uri
+{
+  [scenario 
+   during: function() { 
+      [sut fetchAnimalsInServiceOnDate: '2009-12-12'];
+    }
+  behold: function() {
+      [sut.uriMaker shouldReceive: @selector(inServiceAnimalListWithDate:)
+                             with: ['2009-12-12']];
+    }];
+}
+
+
+// Note: some PersistentStore methods that do nothing but trampoline
+// over to Future are not tested, since they're no more complex than
+// setters.
 
 
 @end

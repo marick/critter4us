@@ -51,7 +51,7 @@ class Controller
     end
   end
 
-  get '/json/animal_deletion_info' do
+  get '/json/animals_in_service_blob' do
     internal = move_to_internal_format(params)
     timeslice.move_to(internal[:date], MORNING, nil)
     animals = timeslice.available_animals

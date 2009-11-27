@@ -141,13 +141,13 @@ class JsonGenerationTests < FreshDatabaseTestCase
     end
   end
 
-  context "producing deletion information" do 
+  context "producing lists of animals in use" do 
     should "just return jsonified version of animal info" do 
       @app.override(mocks(:animal_source, :timeslice))
       brooke = Animal.random(:name => 'brooke')
 
       during { 
-        get '/json/animal_deletion_info', :date => '2009-01-01'
+        get '/json/animals_in_service_blob', :date => '2009-01-01'
       }.behold! {
         @timeslice.should_receive(:move_to).once.with(Date.new(2009,1,1), MORNING, nil)
         @timeslice.should_receive(:available_animals).once.

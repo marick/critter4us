@@ -7,8 +7,7 @@
 @import "cib/BackgroundControllerSubgraphPDA.j"
 @import "cib/PageControllerSubgraphPDA.j"
 
-@import "state-machine/GatheringAnimalListStepPDA.j"
-
+@import "state-machine/AwaitingDateChoiceStepPDA.j"
 
 @implementation CibPDA : Subgraph
 {
@@ -38,7 +37,7 @@
                 'backgroundController' : backgroundControllerSubgraph.controller 
   };
   [[StateMachineCoordinator coordinating: peers]
-    takeStep: GatheringAnimalListStepPDA];
+    takeStep: AwaitingDateChoiceStepPDA];
 }
 
 - (void) drawControlledSubgraphsIn: (CPWindow) theWindow

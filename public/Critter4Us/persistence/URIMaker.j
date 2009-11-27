@@ -1,12 +1,13 @@
 @import "../util/Constants.j"
 
 CourseSessionDataBlobRoute = @"course_session_data_blob";
+InServiceAnimalListBlogRoute = @"animals_in_service_blob";
+
 StoreReservationRoute = @"store_reservation";
 FetchReservationRoute = @"reservation";
 ModifyReservationRoute = @"modify_reservation";
 AllReservationsTableRoute = @"reservations";
 AllAnimalsTableRoute = @"animals"; 
-AnimalDeletionInfoRoute = @"animal_deletion_info";
 
 jsonURI = function(route)
 {
@@ -18,6 +19,11 @@ jsonURI = function(route)
 - (CPString) reservationURIWithDate: date time: time
 {
   return jsonURI(CourseSessionDataBlobRoute)+"?date=" + date + "&time=" + time;
+}
+
+- (CPString) inServiceAnimalListWithDate: date
+{
+  return jsonURI(InServiceAnimalListBlogRoute)+"?date=" + date
 }
 
 - (CPString) POSTReservationContentFrom: (id) jsData
