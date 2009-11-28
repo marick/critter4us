@@ -6,9 +6,15 @@
 
 - (void) setUpNotifications
 {
+  [self notificationNamed: AnimalInServiceListRetrievedNews
+                      calls: @selector(gotAnimalList:)];
 }
 
 - (void) start
+{
+}
+
+- (void) gotAnimalList: aNotification
 {
 }
 

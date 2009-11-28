@@ -1,7 +1,7 @@
 @import "../../cib/NameListControllerSubgraph.j"
 @import "../AnimalListControllerPDA.j"
 
-@implementation AnimalListControllerSubgraphPDA : NameListControllerSubgraph
+@implementation FromListSubgraphPDA : NameListControllerSubgraph
 {
 }
 
@@ -13,12 +13,12 @@
 
 - (CPInteger) xPosition
 {
-  return FarthestLeftWindowX;
+  return 80;
 }
 
 - (CPInteger) yPosition
 {
-  return 120;
+  return 150;
 }
 
 - (CPString) nameListTitle

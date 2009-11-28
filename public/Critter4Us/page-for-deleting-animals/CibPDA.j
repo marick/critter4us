@@ -3,7 +3,8 @@
 @import "../persistence/PersistentStore.j"
 @import "../util/StateMachineCoordinator.j"
 
-@import "cib/AnimalListControllerSubgraphPDA.j"
+@import "cib/FromListSubgraphPDA.j"
+@import "cib/ToListSubgraphPDA.j"
 @import "cib/BackgroundControllerSubgraphPDA.j"
 @import "cib/PageControllerSubgraphPDA.j"
 
@@ -12,7 +13,8 @@
 @implementation CibPDA : Subgraph
 {
   PageControllerSubgraph pageControllerSubgraph;
-  AnimalListControllerSubgraphPDA animalListControllerSubgraph;
+  FromListSubgraphPDA fromListSubgraph;
+  ToListSubgraphPDA toListSubgraph;
   BackgroundControllerSubgraphPDA backgroundControllerSubGraph;
 
   StateMachineCoordinator coordinator;
@@ -29,11 +31,13 @@
 
   owner.pdaPageController = pageControllerSubgraph.controller;
 
-  [animalListControllerSubgraph.controller appear];
+  [fromListSubgraph.controller appear];
+  [toListSubgraph.controller appear];
   [self awakeFromCib];
 
   var peers = { 'persistentStore' : persistentStore,
-                'animalListController' : animalListControllerSubgraph.controller,
+                'fromListController' : fromListSubgraph.controller,
+                'toListController' : toListSubgraph.controller,
                 'backgroundController' : backgroundControllerSubgraph.controller 
   };
   [[StateMachineCoordinator coordinating: peers]
@@ -47,9 +51,13 @@
                     initWithWindow: theWindow]];
   [pageControllerSubgraph connectOutlets];
 
-  animalListControllerSubgraph =
-    [self custom: [[AnimalListControllerSubgraphPDA alloc] init]];
-  [animalListControllerSubgraph connectOutlets];
+  fromListSubgraph =
+    [self custom: [[FromListSubgraphPDA alloc] init]];
+  [fromListSubgraph connectOutlets];
+
+  toListSubgraph =
+    [self custom: [[ToListSubgraphPDA alloc] init]];
+  [toListSubgraph connectOutlets];
 
   backgroundControllerSubgraph =
     [self custom: [[BackgroundControllerSubgraphPDA alloc] initOnPage: pageControllerSubgraph.pageView]];
@@ -59,7 +67,9 @@
 - (void) connectRemainingOutlets
 {
   [pageControllerSubgraph.controller addPanelControllersFromArray: 
-                           [animalListControllerSubgraph.controller]];
+                           [fromListSubgraph.controller]];
+  [pageControllerSubgraph.controller addPanelControllersFromArray: 
+                           [toListSubgraph.controller]];
 }
 
 @end

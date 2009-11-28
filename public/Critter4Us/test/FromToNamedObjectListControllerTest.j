@@ -92,7 +92,7 @@
 
 
 
-- (void) testCanInitializedUsedArrayFromASource
+- (void) testCanInitializeUsedArrayFromASource
 {
   [scenario 
     previousAction: function() { 
