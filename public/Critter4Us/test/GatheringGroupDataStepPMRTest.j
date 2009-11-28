@@ -47,7 +47,7 @@
       [sut.reservationDataController shouldReceive:@selector(prepareToFinishReservation)];
       [sut.procedureController shouldReceive:@selector(appear)];
       [sut.animalController shouldReceive:@selector(appear)];
-      [sut.groupController shouldReceive:@selector(appear)];
+      [sut.currentGroupPanelController shouldReceive:@selector(appear)];
       [sut.groupController shouldReceive: @selector(showGroupButtons)];
       [sut.groupController shouldReceive: @selector(addEmptyGroupToCollection)];
     }];

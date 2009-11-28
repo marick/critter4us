@@ -30,7 +30,6 @@
   [reservationDataController prepareToFinishReservation];
   [procedureController appear];
   [animalController appear];
-  [groupController appear];
   [groupController showGroupButtons];
   [groupController addEmptyGroupToCollection];
   [currentGroupPanelController appear];

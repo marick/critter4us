@@ -91,7 +91,7 @@
 
   groupControllerSubgraph =
     [self custom: [[GroupControllerSubgraphPMR alloc]
-                    initAbovePage: pageControllerSubgraph.pageView]];
+                    initOnPage: pageControllerSubgraph.pageView]];
   [groupControllerSubgraph connectOutlets];
 }
 
@@ -109,7 +109,6 @@
 
   [pageControllerSubgraph.controller addPanelControllersFromArray: [animalControllerSubgraph.controller,
                                      procedureControllerSubgraph.controller,
-                                     groupControllerSubgraph.controller,
                                      reservationDataControllerSubgraph.panelController]];
 
 }
