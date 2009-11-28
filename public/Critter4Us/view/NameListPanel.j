@@ -3,8 +3,8 @@
 
 @implementation NameListPanel : CPPanel
 {
+  CPCollectionView collectionView;
 }
-
 
 - (id) initWithContentRect: panelRect
 {
@@ -14,18 +14,29 @@
   return self;
 }
 
-- (CPCollectionView)addCollectionWithBackgroundColor: color 
+- (id) initAtX: x y: y withTitle: aTitle color: aColor
 {
-  var bounds = [self usableArea];
-  var collectionView = [[NamedObjectCollectionView alloc] initWithFrame:bounds];
-        
-  [collectionView placeScrollablyWithin: [self contentView]
-                    withBackgroundColor: color];
-
-  return collectionView;
+  var panelRect = CGRectMake(x, y, SourceWindowWidth,
+                             SourceWindowHeight);
+  [self initWithContentRect: panelRect];
+  [self setTitle: aTitle];
+  [self orderFront: self]; // TODO: delete when page layout done.
+  [self addCollectionWithBackgroundColor: aColor]
+  return self;
 }
 
 // Util
+
+
+- (void) addCollectionWithBackgroundColor: color 
+{
+  var bounds = [self usableArea];
+  collectionView = [[NamedObjectCollectionView alloc] initWithFrame:bounds];
+        
+  [collectionView placeScrollablyWithin: [self contentView]
+                    withBackgroundColor: color];
+}
+
 
 - (CPRect) usableArea
 {
