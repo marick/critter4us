@@ -45,7 +45,7 @@
 {
   var panelRect = CGRectMake(x, y, SourceWindowWidth,
                              SourceWindowHeight);
-  panel = [self custom: [[NameListPanel alloc] initWithContentRect: panelRect]];
+  var panel = [self custom: [[NameListPanel alloc] initWithContentRect: panelRect]];
   [panel setTitle: aTitle];
   [panel orderFront: self]; // TODO: delete when page layout done.
   return panel;
