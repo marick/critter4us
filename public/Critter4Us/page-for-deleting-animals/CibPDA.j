@@ -3,21 +3,22 @@
 @import "../persistence/PersistentStore.j"
 @import "../util/StateMachineCoordinator.j"
 
-@import "cib/BackgroundControllerSubgraphPDA.j"
-@import "cib/PageControllerSubgraphPDA.j"
-
 @import "AnimalsControllerPDA.j"
+@import "BackgroundControllerPDA.j"
+@import "../cib/PageControllerSubgraph.j"
 @import "state-machine/AwaitingDateChoiceStepPDA.j"
 
 @implementation CibPDA : Subgraph
 {
   PageControllerSubgraph pageControllerSubgraph;
-  BackgroundControllerSubgraphPDA backgroundControllerSubGraph;
 
-  StateMachineCoordinator coordinator;
+  BackgroundControllerPDA backgroundController;
   PersistentStore persistentStore;
 
   AnimalsControllerPDA animalsController;
+
+  View changeableDateView;
+  View fixedDateView;
 }
 
 - (void)instantiatePageInWindow: theWindow withOwner: owner
@@ -34,7 +35,7 @@
 
   var peers = { 'persistentStore' : persistentStore,
                 'animalsController' : animalsController,
-                'backgroundController' : backgroundControllerSubgraph.controller 
+                'backgroundController' : [self backgroundController]
   };
   [[StateMachineCoordinator coordinating: peers]
     takeStep: AwaitingDateChoiceStepPDA];
@@ -43,7 +44,7 @@
 - (void) drawControlledSubgraphsIn: (CPWindow) theWindow
 {
   pageControllerSubgraph =
-    [self custom: [[PageControllerSubgraphPDA alloc]
+    [self custom: [[PageControllerSubgraph alloc]
                     initWithWindow: theWindow]];
   [pageControllerSubgraph connectOutlets];
 
@@ -77,9 +78,7 @@
   [submitButton setAction: @selector(removeAnimalsFromService:)];
   
 
-  backgroundControllerSubgraph =
-    [self custom: [[BackgroundControllerSubgraphPDA alloc] initOnPage: pageControllerSubgraph.pageView]];
-  [backgroundControllerSubgraph connectOutlets];
+  [self initOnPage: pageControllerSubgraph.pageView];
 }
 
 - (void) connectRemainingOutlets
@@ -87,6 +86,39 @@
   [pageControllerSubgraph.controller addPanelControllersFromArray: 
                            [animalsController.availablePanelController, 
                             animalsController.usedPanelController]];
+}
+
+
+-(id) initOnPage: pageView
+{
+
+  var dateInstructionLabel = [[CPTextField alloc] initWithFrame:CGRectMake(10, 30, 440, 30)];
+  [dateInstructionLabel setStringValue: "On what date should the animals be taken out of service? "];
+  [pageView addSubview: dateInstructionLabel];
+  
+  dateField = [[CPTextField alloc] initWithFrame:CGRectMake(330, 25, 100, 30)];
+  [dateField setEditable:YES];
+  [dateField setBezeled:YES];
+  var date = new Date();
+  [dateField setStringValue: [CPString stringWithFormat: "%d-%d-%d", date.getFullYear(), date.getMonth()+1, date.getDate()]];
+  [pageView addSubview:dateField];
+
+  var showButton = [[CPButton alloc] initWithFrame:  
+CGRectMake(450, 28, 250, 30)];
+  [showButton setTitle: "Show Animals In Service on that Date"];
+  [showButton setHidden: NO];
+  [pageView addSubview:showButton];
+  [self backgroundController].showButton = showButton;
+  [showButton setTarget: [self backgroundController]];
+  [showButton setAction: @selector(animalsInServiceForDate:)];
+  [self backgroundController].dateField = dateField;
+}  
+
+- (void) backgroundController
+{
+  if (!backgroundController)
+    backgroundController = [self custom: [[BackgroundControllerPDA alloc] init]];
+  return backgroundController;
 }
 
 @end
