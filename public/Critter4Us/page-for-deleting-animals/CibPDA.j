@@ -84,7 +84,9 @@
 
 - (void) connectRemainingOutlets
 {
-  [pageControllerSubgraph.controller addPanelControllersFromArray: [animalsController]];
+  [pageControllerSubgraph.controller addPanelControllersFromArray: 
+                           [animalsController.availablePanelController, 
+                            animalsController.usedPanelController]];
 }
 
 @end
