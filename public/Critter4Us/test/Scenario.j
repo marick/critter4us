@@ -234,7 +234,7 @@ var Skip = function() {}
         // CPLog("... checking expectations");
         [test assertTrue: [mock wereExpectationsFulfilled]];
     }
-  [randomListener wereExpectationsFulfilled];
+  [test assertTrue: [randomListener wereExpectationsFulfilled]];
 }
 
 - (void)removeAllExpectations
