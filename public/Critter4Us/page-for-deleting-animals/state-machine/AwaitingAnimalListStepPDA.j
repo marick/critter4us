@@ -1,4 +1,5 @@
 @import "../../util/Step.j"
+@import "AwaitingDateChoiceStepPDA.j"
 
 @implementation AwaitingAnimalListStepPDA : Step
 {
@@ -27,7 +28,8 @@
 {
   [self afterResigningInFavorOf: AwaitingDateChoiceStepPDA
              causeNextEventWith: function() { 
-      [persistentStore takeAnimalsOutOfService: [aNotification object]];
+      [persistentStore takeAnimals: [aNotification object]
+                    outOfServiceOn: [backgroundController effectiveDate]];
     }];
 }
 

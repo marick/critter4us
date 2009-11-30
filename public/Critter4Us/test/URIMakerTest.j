@@ -43,5 +43,10 @@
         equals: [maker inServiceAnimalListWithDate: '2009-12-30']];
 }
 
+- (void) test_can_construct_POST_content_from_hash
+{
+  [self assert: "foo=%221%201%22&bar=2"
+        equals: [maker POSTContentFrom: {'foo':"1 1",'bar':2}]];
+}
 
 @end

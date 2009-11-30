@@ -142,6 +142,40 @@ HasExtraExclusions = function(exclusions) {
 }
 
 
+
+- (void) test_how_persistentStore_coordinates_taking_animals_out_of_service
+{
+  var animals = [ [[NamedObject alloc] initWithName: 'fred'] ];
+  var date = '2001-12-01';
+  // TODO: Mock framework can't handle same method call w/ different arguments, 
+  // so use the real thing instead of documenting interaction as commented out below.
+  [sut.toNetworkConverter = [[ToNetworkConverter alloc] init]];
+
+  [scenario 
+   during: function() { 
+      [sut takeAnimals: animals outOfServiceOn: date];
+    }
+  behold: function() {
+      [sut.uriMaker shouldReceive: @selector(POSTAnimalsOutOfServiceURI)
+                        andReturn: 'uri'];
+      //      [sut.toNetworkConverter shouldReceive: @selector(convert:)
+      //                                       with: date
+      //                                  andReturn: date];
+      //      [sut.toNetworkConverter shouldReceive: @selector(convert:)
+      //                                       with: animals
+      //                                  andReturn: ['fred']];
+      [sut.uriMaker shouldReceive: @selector(POSTContentFrom:)
+                             with: function(arg) { 
+          [self assert: date equals: arg['date']];
+          [self assert: ['fred'] equals: arg['animals']];
+          return YES;
+        }
+                        andReturn: 'content'];
+      // Not tested: forwarding to Future. 
+    }];
+}
+
+
 // Note: some PersistentStore methods that do nothing but trampoline
 // over to Future are not tested, since they're no more complex than
 // setters.

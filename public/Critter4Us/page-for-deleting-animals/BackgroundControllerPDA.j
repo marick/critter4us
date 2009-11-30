@@ -9,8 +9,12 @@
 - (void) animalsInServiceForDate: sender
 {
   [NotificationCenter postNotificationName: UserWantsAnimalsInServiceOnDateNews
-                                    object: [dateField stringValue]];
-                      
+                                    object: [self effectiveDate]];
+}
+
+- (CPString) effectiveDate
+{
+  return [dateField stringValue];
 }
 
 @end

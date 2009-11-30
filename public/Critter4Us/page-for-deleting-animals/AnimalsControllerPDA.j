@@ -25,7 +25,6 @@
 - (void) removeAnimalsFromService: sender
 {
   var animals = [used content];
-  alert([animals description]);
   [NotificationCenter postNotificationName: AnimalsToRemoveFromServiceNews
                                     object: animals];
 }

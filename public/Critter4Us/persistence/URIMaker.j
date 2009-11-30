@@ -4,6 +4,8 @@ CourseSessionDataBlobRoute = @"course_session_data_blob";
 InServiceAnimalListBlogRoute = @"animals_in_service_blob";
 
 StoreReservationRoute = @"store_reservation";
+TakeAnimalsOutOfServiceRoute = "take_animals_out_of_service";
+
 FetchReservationRoute = @"reservation";
 ModifyReservationRoute = @"modify_reservation";
 AllReservationsTableRoute = @"reservations";
@@ -26,15 +28,34 @@ jsonURI = function(route)
   return jsonURI(InServiceAnimalListBlogRoute)+"?date=" + date
 }
 
+- (CPString) POSTReservationURI
+{
+  return jsonURI(StoreReservationRoute);
+}
+
 - (CPString) POSTReservationContentFrom: (id) jsData
 {
   var json = [CPString JSONFromObject: jsData];
   return 'data=' + encodeURIComponent(json);
 }
 
-- (CPString) POSTReservationURI
+- (CPString) POSTAnimalsOutOfServiceURI
 {
-  return jsonURI(StoreReservationRoute);
+  return jsonURI(TakeAnimalsOutOfServiceRoute);
+}
+
+- (CPString) POSTContentFrom: jsHash
+{
+  var dict = [CPDictionary dictionaryWithJSObject: jsHash];
+  var converted = [];
+  var enumerator = [dict keyEnumerator];
+  var key;
+  while (key = [enumerator nextObject])
+  {
+    var json = [CPString JSONFromObject: [dict valueForKey: key]];
+    [converted addObject: (key + '=' + encodeURIComponent(json))];
+  }
+  return converted.join('&');
 }
 
 - (CPString) fetchReservationURI: id

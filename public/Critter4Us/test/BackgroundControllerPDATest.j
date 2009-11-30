@@ -29,5 +29,11 @@
    ]   
 }
 
+- (void) testEffectiveDateIsValueOfDateField
+{
+  [sut.dateField setStringValue: '2009-12-10'];
+  [self assert: '2009-12-10' equals: [sut effectiveDate]];
+}
+
 
 @end

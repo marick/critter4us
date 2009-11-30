@@ -102,8 +102,16 @@ var SharedPersistentStore = nil;
     notificationName: AnimalInServiceListRetrievedNews];
 }
 
-- (void) takeAnimalsOutOfService: (CPArray) animals
+- (void) takeAnimals: animals outOfServiceOn: (CPString) date
 {
+  var uri = [uriMaker POSTAnimalsOutOfServiceURI];
+  var content = [uriMaker POSTContentFrom: 
+                               {'date':[toNetworkConverter convert: date],
+                                'animals': [toNetworkConverter convert: animals]}];
+  [Future spawnPostTo: network
+            withRoute: uri
+              content: content
+     notificationName: UniversallyIgnoredNews];
 }
 
 

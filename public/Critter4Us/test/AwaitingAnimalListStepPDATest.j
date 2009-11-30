@@ -11,7 +11,7 @@
 {
   sut = [AwaitingAnimalListStepPDA alloc];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardOutlets: ['animalsController']];
+  [scenario sutHasUpwardOutlets: ['animalsController', 'backgroundController']];
   [scenario sutWillBeGiven: ['master']];
   [scenario sutHasDownwardOutlets: ['persistentStore']]
   [sut initWithMaster: sut.master];
@@ -67,8 +67,10 @@
                   withObject: chosen];
     }
   behold: function() {
-      [sut.persistentStore shouldReceive: @selector(takeAnimalsOutOfService:)
-                                    with: [chosen]];
+      [sut.backgroundController shouldReceive: @selector(effectiveDate)
+                                    andReturn: "2009-12-01"];
+      [sut.persistentStore shouldReceive: @selector(takeAnimals:outOfServiceOn:)
+                                    with: [chosen, '2009-12-01']];
       [sut.master shouldReceive: @selector(takeStep:)
                            with: AwaitingDateChoiceStepPDA];
     }];

@@ -8,6 +8,7 @@
 - (void) setUp
 {
   sut = [[Future alloc] initWithRoute: "some route" notificationName: "some notification"];
+
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
 
   [scenario sutWillBeGiven: ['network', 'notificationCenter']];
@@ -40,6 +41,20 @@
       [self listenersShouldReceiveNotification: "some notification"
                               containingObject: "foobar"];
       [self listenersShouldReceiveNotification: AvailableNews]
+    }];
+}
+
+
+- (void) test_sending_post_registers_for_callbacks_and_becomes_busy
+{
+  [scenario
+    during: function() { 
+      [sut sendAsynchronousPostTo: sut.network content: 'content'];
+    }
+  behold: function() { 
+      [sut.network shouldReceive: @selector(POSTFormDataAsynchronouslyTo:withContent:delegate:)
+                            with: ['some route', 'content', sut]];
+      [self listenersShouldReceiveNotification: BusyNews];
     }];
 }
 

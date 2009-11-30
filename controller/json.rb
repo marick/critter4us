@@ -31,6 +31,11 @@ class Controller
     end
   end
 
+  post '/json/take_animals_out_of_service' do
+    pp params
+    ""
+  end
+
   get '/json/reservation/:number' do
     number = params[:number]
     jsonically do 

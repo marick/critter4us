@@ -25,7 +25,12 @@ UserWantsAnimalsInServiceOnDateNews = "user wants list of animals in service on 
 AnimalInServiceListRetrievedNews = "deletion info has been retrieved";
 AnimalsToRemoveFromServiceNews = "user has chosen animals to take out of service";
 
+// Following used when a method that doesn't want to provoke a
+// notification must call a method that takes a notification name.
+UniversallyIgnoredNews = "No objects listen for this";
+
 // Other useful constants
+
 NotificationCenter = [CPNotificationCenter defaultCenter];
 
 // Standard window and view size information

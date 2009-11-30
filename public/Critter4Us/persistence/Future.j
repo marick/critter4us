@@ -15,6 +15,15 @@
   [future sendAsynchronousGetTo: network];
 }
 
++ (void) spawnPostTo: network
+           withRoute: route
+             content: content
+    notificationName: notificationName
+{
+  var future = [[self alloc] initWithRoute: route notificationName: notificationName];
+  [future sendAsynchronousPostTo: network content: content]
+}
+
 - (id) initWithRoute: aRoute notificationName: aName
 {
   self = [super init];
@@ -39,6 +48,14 @@
   [NotificationCenter postNotificationName: BusyNews object: nil];
   [network sendGetAsynchronouslyTo: [self route]
                           delegate: self];
+}
+
+-(void) sendAsynchronousPostTo: network content: content
+{
+  [NotificationCenter postNotificationName: BusyNews object: nil];
+  [network POSTFormDataAsynchronouslyTo: [self route]
+                            withContent: content
+                               delegate: self];
 }
 
 
