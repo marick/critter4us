@@ -21,7 +21,7 @@
   [dateField setEditable:YES];
   [dateField setBezeled:YES];
   var date = new Date();
-  [dateField setStringValue: [CPString stringWithFormat: "%d-%d-%d", date.getFullYear(), date.getMonth()+1, date.getDate()+1]];
+  [dateField setStringValue: [CPString stringWithFormat: "%d-%d-%d", date.getFullYear(), date.getMonth()+1, date.getDate()]];
   [pageView addSubview:dateField];
 
   var showButton = [[CPButton alloc] initWithFrame:CGRectMake(450, 28, 250, 30)];
