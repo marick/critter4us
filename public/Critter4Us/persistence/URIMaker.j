@@ -33,7 +33,7 @@ jsonURI = function(route)
   return jsonURI(StoreReservationRoute);
 }
 
-- (CPString) POSTReservationContentFrom: (id) jsData
+- (CPString) POSTContentFrom: (id) jsData
 {
   var json = [CPString JSONFromObject: jsData];
   return 'data=' + encodeURIComponent(json);
@@ -42,20 +42,6 @@ jsonURI = function(route)
 - (CPString) POSTAnimalsOutOfServiceURI
 {
   return jsonURI(TakeAnimalsOutOfServiceRoute);
-}
-
-- (CPString) POSTContentFrom: jsHash
-{
-  var dict = [CPDictionary dictionaryWithJSObject: jsHash];
-  var converted = [];
-  var enumerator = [dict keyEnumerator];
-  var key;
-  while (key = [enumerator nextObject])
-  {
-    var json = [CPString JSONFromObject: [dict valueForKey: key]];
-    [converted addObject: (key + '=' + encodeURIComponent(json))];
-  }
-  return converted.join('&');
 }
 
 - (CPString) fetchReservationURI: id
@@ -96,9 +82,9 @@ jsonURI = function(route)
   return jsonURI(ModifyReservationRoute);
 }
 
-- (CPString) POSTReservationContentFrom: (id) jsData
+- (CPString) POSTContentFrom: (id) jsData
 {
-  return [super POSTReservationContentFrom: jsData] + '&reservationID=' + reservationBeingEdited;
+  return [super POSTContentFrom: jsData] + '&reservationID=' + reservationBeingEdited;
 }
 
 - (CPString) reservationURIWithDate: date time: time

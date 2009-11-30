@@ -96,7 +96,7 @@ HasExtraExclusions = function(exclusions) {
                                   andReturn: {'a':'jshash'}];
       [sut.uriMaker shouldReceive: @selector(POSTReservationURI)
                         andReturn: 'uri'];
-      [sut.uriMaker shouldReceive: @selector(POSTReservationContentFrom:)
+      [sut.uriMaker shouldReceive: @selector(POSTContentFrom:)
                              with: function(arg) { return arg['a'] == 'jshash'}
                         andReturn: 'content'];
       [sut.network shouldReceive: @selector(POSTFormDataTo:withContent:)
@@ -170,7 +170,7 @@ HasExtraExclusions = function(exclusions) {
           [self assert: ['fred'] equals: arg['animals']];
           return YES;
         }
-                        andReturn: 'content'];
+                        andReturn: 'data=content'];
       // Not tested: forwarding to Future. 
     }];
 }

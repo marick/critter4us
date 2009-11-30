@@ -28,7 +28,7 @@
 {
   var data = {'aaa':'bbb'};
   [self assert: "data=%7B%22aaa%22%3A%22bbb%22%7D"
-        equals: [maker POSTReservationContentFrom: data]];
+        equals: [maker POSTContentFrom: data]];
 }
 
 -(void) test_can_make_uri_to_fetch_reservation_by_id
@@ -41,12 +41,6 @@
 {
   [self assert: '/json/animals_in_service_blob?date=2009-12-30'
         equals: [maker inServiceAnimalListWithDate: '2009-12-30']];
-}
-
-- (void) test_can_construct_POST_content_from_hash
-{
-  [self assert: "foo=%221%201%22&bar=2"
-        equals: [maker POSTContentFrom: {'foo':"1 1",'bar':2}]];
 }
 
 @end

@@ -64,7 +64,7 @@ var SharedPersistentStore = nil;
 - (void) makeReservation: dict
 {
   var jsData = [toNetworkConverter convert: dict];
-  var postContent = [uriMaker POSTReservationContentFrom: jsData];
+  var postContent = [uriMaker POSTContentFrom: jsData];
   var url = [uriMaker POSTReservationURI];
   var json = [network POSTFormDataTo: url withContent: postContent];
   var jsHash = [json objectFromJSON];

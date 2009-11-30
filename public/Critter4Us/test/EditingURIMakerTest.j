@@ -36,7 +36,7 @@
 {
   var data = {'aaa':'bbb'};
   [self assert: "data=%7B%22aaa%22%3A%22bbb%22%7D&reservationID=19"
-        equals: [maker POSTReservationContentFrom: data]];
+        equals: [maker POSTContentFrom: data]];
 }
 
 

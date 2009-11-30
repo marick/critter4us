@@ -23,6 +23,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
   end
 
   context "utilities" do
+
     should "turn hash keys into symbols" do
       input = { 'key' => 'value' } 
       expected = { :key => 'value' }
@@ -160,6 +161,31 @@ class JsonGenerationTests < FreshDatabaseTestCase
       }
       assert_json_response
       assert_jsonification_of('unused animals' => ['jake'])
+    end
+  end
+
+  context "taking animals out of service" do 
+    setup do
+      @data = {
+        'date' => '2009-02-03',
+        'animals' => ['betsy', 'jake']
+      }
+
+      puts @data.to_json
+      Animal.random(:name => 'betsy')
+      Animal.random(:name => 'jake')
+      Animal.random(:name => 'fred')
+    end
+
+    should "remove the named animals as of the given date" do
+      post '/json/take_animals_out_of_service', 'data' => @data.to_json
+      
+      assert_equal(Date.new(2009, 2, 3),
+                   Animal[:name => 'betsy'].date_removed_from_service)
+      assert_equal(Date.new(2009, 2, 3),
+                   Animal[:name => 'jake'].date_removed_from_service)
+      assert_equal(nil,
+                   Animal[:name => 'fred'].date_removed_from_service)
     end
   end
 
