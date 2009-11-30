@@ -10,11 +10,11 @@
   CPCollectionView groupCollectionView;
 }
 
-- (id) initAbovePage: (CPView) aPage
+- (id) initOnPage: (CPView) aPage
 {
   self = [super init];
 
-  controller = [self custom: [[GroupControllerPMR alloc] initWithPanel: panel]];
+  controller = [self custom: [[GroupControllerPMR alloc] init]];
 
   [self placeControlsOn: aPage];
   return self;

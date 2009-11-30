@@ -1,12 +1,13 @@
+@import <Critter4Us/page-for-making-reservations/state-machine/DateChangingGroupDataStepPMR.j>
 @import <Critter4Us/page-for-making-reservations/state-machine/GatheringGroupDataStepPMR.j>
-@import "StateMachineTestCase.j"
+@import "ScenarioTestCase.j"
 @import <Critter4Us/model/Animal.j>
 @import <Critter4Us/model/Procedure.j>
 @import <Critter4Us/model/Group.j>
 @import <Critter4Us/util/Time.j>
 
 
-@implementation GatheringGroupDataStepPMRTest : StateMachineTestCase
+@implementation GatheringGroupDataStepPMRTest : ScenarioTestCase
 {
   Animal betsy;
   Animal jake;
@@ -20,7 +21,9 @@
 - (void) setUp
 {
   sut = [GatheringGroupDataStepPMR alloc];
-  [super setUp];
+  scenario = [[Scenario alloc] initForTest: self andSut: sut];
+  [scenario sutWillBeGiven: ['reservationDataController', 'animalController', 'procedureController', 'groupController', 'currentGroupPanelController', 'persistentStore', 'master']];
+  [sut initWithMaster: sut.master];
 
   betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
   jake = [[Animal alloc] initWithName: 'jake' kind: 'horse'];
@@ -44,7 +47,7 @@
       [sut.reservationDataController shouldReceive:@selector(prepareToFinishReservation)];
       [sut.procedureController shouldReceive:@selector(appear)];
       [sut.animalController shouldReceive:@selector(appear)];
-      [sut.groupController shouldReceive:@selector(appear)];
+      [sut.currentGroupPanelController shouldReceive:@selector(appear)];
       [sut.groupController shouldReceive: @selector(showGroupButtons)];
       [sut.groupController shouldReceive: @selector(addEmptyGroupToCollection)];
     }];
@@ -201,7 +204,7 @@
                                              message: "wrong " + [dict description]];
                                         return YES;
         }];
-      [sut.master shouldReceive: @selector(nextStep:)
+      [sut.master shouldReceive: @selector(takeStep:)
                            with: StoringReservationStepPMR];
     }];
 }

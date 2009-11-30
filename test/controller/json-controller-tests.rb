@@ -23,6 +23,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
   end
 
   context "utilities" do
+
     should "turn hash keys into symbols" do
       input = { 'key' => 'value' } 
       expected = { :key => 'value' }
@@ -141,6 +142,53 @@ class JsonGenerationTests < FreshDatabaseTestCase
     end
   end
 
+  context "producing lists of animals in service" do 
+    should "return a list of animals with no pending reservations" do 
+      @app.override(mocks(:animal_source, :timeslice))
+      brooke = Animal.random(:name => 'brooke')
+      jake = Animal.random(:name => 'jake')
+
+      during { 
+        get '/json/animals_in_service_blob', :date => '2009-01-01'
+      }.behold! {
+        @timeslice.should_receive(:move_to).once.with(Date.new(2009,1,1), MORNING, nil)
+        @timeslice.should_receive(:available_animals).once.
+                   and_return([brooke, jake])
+        @timeslice.should_receive(:hashes_from_animals_to_pending_dates).once.
+                   with([brooke, jake]).
+                   and_return([{brooke => [Date.new(2009,1,1), Date.new(2010,1,1)]},
+                               {jake => []}])
+      }
+      assert_json_response
+      assert_jsonification_of('unused animals' => ['jake'])
+    end
+  end
+
+  context "taking animals out of service" do 
+    setup do
+      @data = {
+        'date' => '2009-02-03',
+        'animals' => ['betsy', 'jake']
+      }
+
+      puts @data.to_json
+      Animal.random(:name => 'betsy')
+      Animal.random(:name => 'jake')
+      Animal.random(:name => 'fred')
+    end
+
+    should "remove the named animals as of the given date" do
+      post '/json/take_animals_out_of_service', 'data' => @data.to_json
+      
+      assert_equal(Date.new(2009, 2, 3),
+                   Animal[:name => 'betsy'].date_removed_from_service)
+      assert_equal(Date.new(2009, 2, 3),
+                   Animal[:name => 'jake'].date_removed_from_service)
+      assert_equal(nil,
+                   Animal[:name => 'fred'].date_removed_from_service)
+    end
+  end
+
   context "adding a reservation" do 
 
     setup do
@@ -224,9 +272,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
       assert_jsonification_of({'reservation' => @new_reservation.pk.to_s})
       assert { @id_to_modify == @new_reservation.pk.to_s }
     end
-
   end
-
 
   context "retrieving a reservation" do
     setup do

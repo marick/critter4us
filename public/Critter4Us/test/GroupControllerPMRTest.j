@@ -210,19 +210,13 @@
 {
   [scenario
     previousAction: function() {
-      [sut appear];
-      [self assertTrue: [sut wouldShowPanel]];
       [sut.newGroupButton setHidden: NO];
       [sut.groupCollectionView setHidden: NO];
     }
-    during: function() {
+    testAction: function() {
       [sut beginningOfReservationWorkflow];
     }
-  behold: function() {
-      [sut.panel shouldReceive: @selector(orderOut:)];
-    }
   andSo: function() {
-      [self assertFalse: [sut wouldShowPanel]];
       [self assert: YES equals: [sut.newGroupButton hidden] ];
       [self assert: YES equals: [sut.groupCollectionView hidden] ];
     }];

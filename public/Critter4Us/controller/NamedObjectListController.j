@@ -1,5 +1,8 @@
 @import "PanelController.j"
 
+
+// TODO: The mixing up of controlling the lists and controlling the
+// panels leads to pain, since lists and panels are no longer 1-1.
 @implementation NamedObjectListController : PanelController
 {
   CPArray originalObjects;

@@ -28,7 +28,7 @@
 {
   var data = {'aaa':'bbb'};
   [self assert: "data=%7B%22aaa%22%3A%22bbb%22%7D"
-        equals: [maker POSTReservationContentFrom: data]];
+        equals: [maker POSTContentFrom: data]];
 }
 
 -(void) test_can_make_uri_to_fetch_reservation_by_id
@@ -37,5 +37,10 @@
         equals: [maker fetchReservationURI: 333]];
 }
 
+-(void) test_can_make_uri_to_fetch_animals_in_service_on_a_date
+{
+  [self assert: '/json/animals_in_service_blob?date=2009-12-30'
+        equals: [maker inServiceAnimalListWithDate: '2009-12-30']];
+}
 
 @end

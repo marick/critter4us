@@ -65,12 +65,10 @@ class AnimalTests < FreshDatabaseTestCase
         end
       end
 
-      # TODO: should use one consistent format for dates throughout, and
-      # it shouldn't be String. 
       should "should include the given date" do
-        assert_equal([], @animal.dates_used_after_beginning_of('2009-12-4'))
-        assert_equal(['2009-12-03'],
-                     @animal.dates_used_after_beginning_of('2009-12-3'))
+        assert_equal([], @animal.dates_used_after_beginning_of(Date.new(2009,12,4)))
+        assert_equal([Date.new(2009,12,03)],
+                     @animal.dates_used_after_beginning_of(Date.new(2009,12,3)))
       end
 
       should "return dates in descending order" do
@@ -84,8 +82,9 @@ class AnimalTests < FreshDatabaseTestCase
           use @animal; use Procedure.random
         end
 
-        assert_equal(['2020-12-03', '2011-12-03', '2010-12-03', '2009-12-03'],
-                     @animal.dates_used_after_beginning_of('2009-12-3'))
+        assert_equal([Date.new(2020,12,03), Date.new(2011,12,03),
+                      Date.new(2010,12,03), Date.new(2009,12,03)],
+                     @animal.dates_used_after_beginning_of(Date.new(2009,12,3)))
       end
     end
   end

@@ -1,39 +1,24 @@
 @import <Critter4Us/persistence/Future.j>
 @import "ScenarioTestCase.j"
 
-@implementation SomeRandomFuture : Future
-{
-}
-
-- (CPString) route
-{
-  return "some route";
-}
-
--(CPString) notification
-{
-  return "some notification";
-}
-
-@end
-
 @implementation FutureTest : ScenarioTestCase
 {
 }
 
 - (void) setUp
 {
-  sut = [[SomeRandomFuture alloc] init];
+  sut = [[Future alloc] initWithRoute: "some route" notificationName: "some notification"];
+
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
 
-  [scenario sutWillBeGiven: ['network']];
+  [scenario sutWillBeGiven: ['network', 'notificationCenter']];
 }
 
 - (void) test_sending_request_registers_for_callbacks_and_becomes_busy
 {
   [scenario
     during: function() { 
-      [sut sendAsynchronousRequestTo: sut.network];
+      [sut sendAsynchronousGetTo: sut.network];
     }
   behold: function() { 
       [sut.network shouldReceive: @selector(sendGetAsynchronouslyTo:delegate:)
@@ -42,7 +27,7 @@
     }];
 }
 
-- (void) test_receives_data_and_announces_it
+- (void) test_receives_data_announces_it
 {
   [scenario
     previousAction: function() { 
@@ -56,6 +41,20 @@
       [self listenersShouldReceiveNotification: "some notification"
                               containingObject: "foobar"];
       [self listenersShouldReceiveNotification: AvailableNews]
+    }];
+}
+
+
+- (void) test_sending_post_registers_for_callbacks_and_becomes_busy
+{
+  [scenario
+    during: function() { 
+      [sut sendAsynchronousPostTo: sut.network content: 'content'];
+    }
+  behold: function() { 
+      [sut.network shouldReceive: @selector(POSTFormDataAsynchronouslyTo:withContent:delegate:)
+                            with: ['some route', 'content', sut]];
+      [self listenersShouldReceiveNotification: BusyNews];
     }];
 }
 

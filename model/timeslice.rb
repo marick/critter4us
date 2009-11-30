@@ -19,11 +19,20 @@ class Timeslice
     pairs.insert(-1, *result)
   end
 
-  def available_animals_by_name
+  def available_animals
     in_service = Animal.filter(:date_removed_from_service => nil).union(
                  Animal.filter(:date_removed_from_service > @date)).all
-    animals = (in_service - animals_to_be_considered_in_use).uniq
-    animals.collect { | a | a.name }  # &:name not built in at Heroku (1.8.6)
+    (in_service - animals_to_be_considered_in_use).uniq
+  end
+
+  def available_animals_by_name
+    available_animals.collect { | a | a.name }  # &:name not built in at Heroku (1.8.6)
+  end
+
+  def hashes_from_animals_to_pending_dates(animals)
+    animals.collect do | animal | 
+      { animal => animal.dates_used_after_beginning_of(@date) } 
+    end
   end
 
   private

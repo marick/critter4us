@@ -1,9 +1,15 @@
 @import "../util/Constants.j"
 
 CourseSessionDataBlobRoute = @"course_session_data_blob";
+InServiceAnimalListBlogRoute = @"animals_in_service_blob";
+
 StoreReservationRoute = @"store_reservation";
+TakeAnimalsOutOfServiceRoute = "take_animals_out_of_service";
+
 FetchReservationRoute = @"reservation";
 ModifyReservationRoute = @"modify_reservation";
+AllReservationsTableRoute = @"reservations";
+AllAnimalsTableRoute = @"animals"; 
 
 jsonURI = function(route)
 {
@@ -17,15 +23,25 @@ jsonURI = function(route)
   return jsonURI(CourseSessionDataBlobRoute)+"?date=" + date + "&time=" + time;
 }
 
-- (CPString) POSTReservationContentFrom: (id) jsData
+- (CPString) inServiceAnimalListWithDate: date
 {
-  var json = [CPString JSONFromObject: jsData];
-  return 'data=' + encodeURIComponent(json);
+  return jsonURI(InServiceAnimalListBlogRoute)+"?date=" + date
 }
 
 - (CPString) POSTReservationURI
 {
   return jsonURI(StoreReservationRoute);
+}
+
+- (CPString) POSTContentFrom: (id) jsData
+{
+  var json = [CPString JSONFromObject: jsData];
+  return 'data=' + encodeURIComponent(json);
+}
+
+- (CPString) POSTAnimalsOutOfServiceURI
+{
+  return jsonURI(TakeAnimalsOutOfServiceRoute);
 }
 
 - (CPString) fetchReservationURI: id
@@ -66,9 +82,9 @@ jsonURI = function(route)
   return jsonURI(ModifyReservationRoute);
 }
 
-- (CPString) POSTReservationContentFrom: (id) jsData
+- (CPString) POSTContentFrom: (id) jsData
 {
-  return [super POSTReservationContentFrom: jsData] + '&reservationID=' + reservationBeingEdited;
+  return [super POSTContentFrom: jsData] + '&reservationID=' + reservationBeingEdited;
 }
 
 - (CPString) reservationURIWithDate: date time: time

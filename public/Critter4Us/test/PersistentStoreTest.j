@@ -39,7 +39,6 @@ HasExtraExclusions = function(exclusions) {
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasDownwardOutlets: ['network']];
   [scenario sutCreates: [ 'toNetworkConverter', 'fromNetworkConverter', 'uriMaker']];
-  [scenario sutCreates: ['reservationTableFuture', 'animalTableFuture']];
 
   timeInvariants = '{"floating":["never this animal"]}';
   [sut setTimeInvariantExclusions: timeInvariants];
@@ -52,7 +51,7 @@ HasExtraExclusions = function(exclusions) {
 }
 
 
-- (void)test_how_persistent_store_coordinates_when_retrieving_data
+- (void)test_how_persistent_stores_coordinates_when_retrieving_data
 {
   // TODO: replace complicated convert:withAddedExclusions: functions
   // with a simple checker function.
@@ -97,7 +96,7 @@ HasExtraExclusions = function(exclusions) {
                                   andReturn: {'a':'jshash'}];
       [sut.uriMaker shouldReceive: @selector(POSTReservationURI)
                         andReturn: 'uri'];
-      [sut.uriMaker shouldReceive: @selector(POSTReservationContentFrom:)
+      [sut.uriMaker shouldReceive: @selector(POSTContentFrom:)
                              with: function(arg) { return arg['a'] == 'jshash'}
                         andReturn: 'content'];
       [sut.network shouldReceive: @selector(POSTFormDataTo:withContent:)
@@ -130,29 +129,56 @@ HasExtraExclusions = function(exclusions) {
     }];
 }
 
-
--(void)test_spawns_an_object_to_fetch_the_reservation_table
+- (void) test_persistent_store_uses_uri_maker_to_construct_uri
 {
-  [scenario
-    during: function() { 
-      return [sut pendingReservationTableAsHtml];
+  [scenario 
+   during: function() { 
+      [sut fetchAnimalsInServiceOnDate: '2009-12-12'];
     }
   behold: function() {
-      [sut.reservationTableFuture shouldReceive: @selector(spawnRequestTo:)
-                                           with: sut.network];
+      [sut.uriMaker shouldReceive: @selector(inServiceAnimalListWithDate:)
+                             with: ['2009-12-12']];
     }];
 }
 
--(void)test_spawns_an_object_to_fetch_the_animal_table
+
+
+- (void) test_how_persistentStore_coordinates_taking_animals_out_of_service
 {
-  [scenario
-    during: function() { 
-      return [sut animalTableAsHtml];
+  var animals = [ [[NamedObject alloc] initWithName: 'fred'] ];
+  var date = '2001-12-01';
+  // TODO: Mock framework can't handle same method call w/ different arguments, 
+  // so use the real thing instead of documenting interaction as commented out below.
+  [sut.toNetworkConverter = [[ToNetworkConverter alloc] init]];
+
+  [scenario 
+   during: function() { 
+      [sut takeAnimals: animals outOfServiceOn: date];
     }
   behold: function() {
-      [sut.animalTableFuture shouldReceive: @selector(spawnRequestTo:)
-                                      with: sut.network];
+      [sut.uriMaker shouldReceive: @selector(POSTAnimalsOutOfServiceURI)
+                        andReturn: 'uri'];
+      //      [sut.toNetworkConverter shouldReceive: @selector(convert:)
+      //                                       with: date
+      //                                  andReturn: date];
+      //      [sut.toNetworkConverter shouldReceive: @selector(convert:)
+      //                                       with: animals
+      //                                  andReturn: ['fred']];
+      [sut.uriMaker shouldReceive: @selector(POSTContentFrom:)
+                             with: function(arg) { 
+          [self assert: date equals: arg['date']];
+          [self assert: ['fred'] equals: arg['animals']];
+          return YES;
+        }
+                        andReturn: 'data=content'];
+      // Not tested: forwarding to Future. 
     }];
 }
+
+
+// Note: some PersistentStore methods that do nothing but trampoline
+// over to Future are not tested, since they're no more complex than
+// setters.
+
 
 @end

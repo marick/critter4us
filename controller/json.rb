@@ -1,3 +1,5 @@
+require 'util/extensions.rb'
+
 class Controller
 
   get '/json/course_session_data_blob' do
@@ -29,6 +31,15 @@ class Controller
     end
   end
 
+  post '/json/take_animals_out_of_service' do
+    internal = move_to_internal_format(JSON.parse(params['data']))
+    pp internal
+    internal[:animals].each do | animal_name |
+      pp animal_name
+      Animal[:name => animal_name].remove_from_service_as_of(internal[:date])
+    end
+  end
+
   get '/json/reservation/:number' do
     number = params[:number]
     jsonically do 
@@ -50,6 +61,18 @@ class Controller
       # pp reservation_data
     end
   end
+
+  get '/json/animals_in_service_blob' do
+    internal = move_to_internal_format(params)
+    timeslice.move_to(internal[:date], MORNING, nil)
+    animals = timeslice.available_animals
+    hashes = timeslice.hashes_from_animals_to_pending_dates(animals)
+    jsonically do 
+      animals_without_uses = filter_unused_animal_names(hashes)
+      {'unused animals' => animals_without_uses}
+    end
+  end
+
 
 
   # tested
@@ -105,6 +128,13 @@ class Controller
     Reservation[ignoring.to_i]
   end
 
+  def filter_unused_animal_names(hashes)
+    hashes.find_all { | hash |
+      hash.only_value.empty?
+    }.collect { | hash | 
+      hash.only_key.name
+    }.sort
+  end
 
 
 end

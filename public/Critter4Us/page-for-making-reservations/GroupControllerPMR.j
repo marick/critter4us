@@ -1,5 +1,5 @@
 @import "../view/UnconditionalPopup.j"
-@import "../controller/PanelController.j"
+@import "../util/AwakeningObject.j"
 @import "../model/Group.j"
 @import "ConstantsPMR.j"
 
@@ -8,7 +8,7 @@
    knowledge of how that view represents them on the screen.
 */
 
-@implementation GroupControllerPMR : PanelController
+@implementation GroupControllerPMR : AwakeningObject
 {
   CPButton newGroupButton;
   CPCollectionView groupCollectionView;
@@ -25,7 +25,6 @@
 - (void) beginningOfReservationWorkflow
 {
   [groupCollectionView becomeEmpty];
-  [self disappear];
   [newGroupButton setHidden: YES];
   [groupCollectionView setHidden: YES];
 }

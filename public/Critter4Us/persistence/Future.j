@@ -3,27 +3,59 @@
 
 @implementation Future : CPObject
 {
-  CPMutableString result;
+  CPMutableString result, route, notificationName;
+  
 }
 
-+ (void) spawnRequestTo: network
++ (void) spawnGetTo: network
+          withRoute: route
+   notificationName: notificationName
 {
-  [[[self alloc] init] sendAsynchronousRequestTo: network];
+  var future = [[self alloc] initWithRoute: route notificationName: notificationName];
+  [future sendAsynchronousGetTo: network];
 }
 
-- (id) init
++ (void) spawnPostTo: network
+           withRoute: route
+             content: content
+    notificationName: notificationName
+{
+  var future = [[self alloc] initWithRoute: route notificationName: notificationName];
+  [future sendAsynchronousPostTo: network content: content]
+}
+
+- (id) initWithRoute: aRoute notificationName: aName
 {
   self = [super init];
+  route = aRoute;
+  notificationName = aName;
   result = "";
   return self;
 }
 
+- (CPString) route
+{
+  return route;
+}
+- (CPString) notificationName
+{
+  return notificationName;
+}
 
--(void) sendAsynchronousRequestTo: network
+
+-(void) sendAsynchronousGetTo: network
 {
   [NotificationCenter postNotificationName: BusyNews object: nil];
   [network sendGetAsynchronouslyTo: [self route]
                           delegate: self];
+}
+
+-(void) sendAsynchronousPostTo: network content: content
+{
+  [NotificationCenter postNotificationName: BusyNews object: nil];
+  [network POSTFormDataAsynchronouslyTo: [self route]
+                            withContent: content
+                               delegate: self];
 }
 
 
@@ -43,14 +75,20 @@
 
 -(void)connectionDidFinishLoading:(CPURLConnection)connection
 {
-  [NotificationCenter postNotificationName: [self notification]
-                                    object: result];
+  [NotificationCenter postNotificationName: [self notificationName]
+                                    object: [self convert: result]];
   [NotificationCenter postNotificationName: AvailableNews object: nil];
+  [NotificationCenter removeObserver: self];
 }
 
 -(void)connectionDidReceiveAuthenticationChallenge:(CPURLConnection)connection
 {
   alert("Authentication Challenge");
+}
+
+- (id) convert: data
+{
+  return data;
 }
 
 @end

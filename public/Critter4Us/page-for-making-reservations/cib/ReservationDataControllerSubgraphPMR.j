@@ -18,6 +18,7 @@
 
   CPButton dateTimeButton;
   PanelController panelController;
+  ReservationDataControllerPMR controller;
   // There are others but no need to make them instance vars.
 }
 

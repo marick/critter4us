@@ -1,7 +1,7 @@
-@import "StepPMR.j"
+@import "../../util/Step.j"
 @import "StoringReservationStepPMR.j"
 
-@implementation GatheringGroupDataStepPMR : StepPMR
+@implementation GatheringGroupDataStepPMR : Step
 {
 }
 
@@ -30,7 +30,6 @@
   [reservationDataController prepareToFinishReservation];
   [procedureController appear];
   [animalController appear];
-  [groupController appear];
   [groupController showGroupButtons];
   [groupController addEmptyGroupToCollection];
   [currentGroupPanelController appear];

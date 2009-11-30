@@ -5,8 +5,8 @@
 @import "FromNetworkConverter.j"
 @import "TimeInvariantExclusionCache.j"
 @import "URIMaker.j"
-@import "ReservationTableFuture.j"
-@import "AnimalTableFuture.j"
+@import "Future.j"
+@import "AnimalInServiceListFuture.j"
 
 var SharedPersistentStore = nil;
 
@@ -17,9 +17,6 @@ var SharedPersistentStore = nil;
   FromNetworkConverter fromNetworkConverter;
   CPDictionary timeInvariantExclusions;
   URIMaker uriMaker;
-
-  id reservationTableFuture;
-  id animalTableFuture;
 }
 
 + (PersistentStore) sharedPersistentStore
@@ -42,8 +39,6 @@ var SharedPersistentStore = nil;
   fromNetworkConverter = [[FromNetworkConverter alloc] init];
   uriMaker = [[URIMaker alloc] init];
 
-  reservationTableFuture = ReservationTableFuture;
-  animalTableFuture = AnimalTableFuture;
   [self setTimeInvariantExclusions: TimeInvariantExclusionCache];
 }
 
@@ -69,7 +64,7 @@ var SharedPersistentStore = nil;
 - (void) makeReservation: dict
 {
   var jsData = [toNetworkConverter convert: dict];
-  var postContent = [uriMaker POSTReservationContentFrom: jsData];
+  var postContent = [uriMaker POSTContentFrom: jsData];
   var url = [uriMaker POSTReservationURI];
   var json = [network POSTFormDataTo: url withContent: postContent];
   var jsHash = [json objectFromJSON];
@@ -88,13 +83,37 @@ var SharedPersistentStore = nil;
 
 - (CPString) pendingReservationTableAsHtml
 {
-  [reservationTableFuture spawnRequestTo: network];
+  [Future spawnGetTo: network
+           withRoute: AllReservationsTableRoute
+    notificationName: ReservationTableRetrievedNews];
 }
 
 - (CPString) animalTableAsHtml
 {
-  [animalTableFuture spawnRequestTo: network];
+  [Future spawnGetTo: network
+           withRoute: AllAnimalsTableRoute
+    notificationName: AnimalTableRetrievedNews];
 }
+
+- (void) fetchAnimalsInServiceOnDate: (CPString) aDateString
+{
+  [AnimalInServiceListFuture spawnGetTo: network
+           withRoute: [uriMaker inServiceAnimalListWithDate: aDateString]
+    notificationName: AnimalInServiceListRetrievedNews];
+}
+
+- (void) takeAnimals: animals outOfServiceOn: (CPString) date
+{
+  var uri = [uriMaker POSTAnimalsOutOfServiceURI];
+  var content = [uriMaker POSTContentFrom: 
+                               {'date':[toNetworkConverter convert: date],
+                                'animals': [toNetworkConverter convert: animals]}];
+  [Future spawnPostTo: network
+            withRoute: uri
+              content: content
+     notificationName: UniversallyIgnoredNews];
+}
+
 
 // util
 
@@ -111,5 +130,7 @@ var SharedPersistentStore = nil;
                               withAddedExclusions: timeInvariantExclusions];
   return dictionary;
 }
+
+
 
 @end
