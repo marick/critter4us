@@ -60,7 +60,7 @@ class Controller
     hashes = timeslice.hashes_from_animals_to_pending_dates(animals)
     jsonically do 
       animals_without_uses = filter_unused_animal_names(hashes)
-      {:unused => animals_without_uses}
+      {'unused animals' => animals_without_uses}
     end
   end
 

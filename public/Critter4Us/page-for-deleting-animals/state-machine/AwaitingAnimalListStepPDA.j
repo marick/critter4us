@@ -16,6 +16,9 @@
 
 - (void) gotAnimalList: aNotification
 {
+  [animalsController appear];
+  can_be_taken_out = [[aNotification object] valueForKey: 'unused animals'];
+  [animalsController allPossibleObjects: can_be_taken_out];
 }
 
 @end

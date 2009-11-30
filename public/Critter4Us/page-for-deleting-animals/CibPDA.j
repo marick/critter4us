@@ -3,22 +3,21 @@
 @import "../persistence/PersistentStore.j"
 @import "../util/StateMachineCoordinator.j"
 
-@import "cib/FromListSubgraphPDA.j"
-@import "cib/ToListSubgraphPDA.j"
 @import "cib/BackgroundControllerSubgraphPDA.j"
 @import "cib/PageControllerSubgraphPDA.j"
 
+@import "AnimalsControllerPDA.j"
 @import "state-machine/AwaitingDateChoiceStepPDA.j"
 
 @implementation CibPDA : Subgraph
 {
   PageControllerSubgraph pageControllerSubgraph;
-  FromListSubgraphPDA fromListSubgraph;
-  ToListSubgraphPDA toListSubgraph;
   BackgroundControllerSubgraphPDA backgroundControllerSubGraph;
 
   StateMachineCoordinator coordinator;
   PersistentStore persistentStore;
+
+  AnimalsControllerPDA animalsController;
 }
 
 - (void)instantiatePageInWindow: theWindow withOwner: owner
@@ -31,13 +30,10 @@
 
   owner.pdaPageController = pageControllerSubgraph.controller;
 
-  [fromListSubgraph.controller appear];
-  [toListSubgraph.controller appear];
   [self awakeFromCib];
 
   var peers = { 'persistentStore' : persistentStore,
-                'fromListController' : fromListSubgraph.controller,
-                'toListController' : toListSubgraph.controller,
+                'animalsController' : animalsController,
                 'backgroundController' : backgroundControllerSubgraph.controller 
   };
   [[StateMachineCoordinator coordinating: peers]
@@ -51,13 +47,24 @@
                     initWithWindow: theWindow]];
   [pageControllerSubgraph connectOutlets];
 
-  fromListSubgraph =
-    [self custom: [[FromListSubgraphPDA alloc] init]];
-  [fromListSubgraph connectOutlets];
+  var availablePanel = [[NameListPanel alloc] initAtX: 80
+                                                    y: 150
+                                            withTitle: "Animals That Can Be Removed"
+                                                color: AnimalHintColor];
 
-  toListSubgraph =
-    [self custom: [[ToListSubgraphPDA alloc] init]];
-  [toListSubgraph connectOutlets];
+  var usedPanel = [[NameListPanel alloc] initAtX: 80 + 300
+                                               y: 150
+                                       withTitle: "Animals That *Will* Be Removed"
+                                           color: AnimalHintColor];
+  
+  animalsController = [self custom: [[AnimalsControllerPDA alloc] init]];
+  animalsController.availablePanelController = [[PanelController alloc] initWithPanel: availablePanel];
+  animalsController.usedPanelController = [[PanelController alloc] initWithPanel: usedPanel];
+  animalsController.available = availablePanel.collectionView;
+  animalsController.used = usedPanel.collectionView;
+  
+  [availablePanel.collectionView setDelegate: animalsController];
+  [usedPanel.collectionView setDelegate: animalsController];
 
   backgroundControllerSubgraph =
     [self custom: [[BackgroundControllerSubgraphPDA alloc] initOnPage: pageControllerSubgraph.pageView]];
@@ -66,10 +73,7 @@
 
 - (void) connectRemainingOutlets
 {
-  [pageControllerSubgraph.controller addPanelControllersFromArray: 
-                           [fromListSubgraph.controller]];
-  [pageControllerSubgraph.controller addPanelControllersFromArray: 
-                           [toListSubgraph.controller]];
+  [pageControllerSubgraph.controller addPanelControllersFromArray: [animalsController]];
 }
 
 @end

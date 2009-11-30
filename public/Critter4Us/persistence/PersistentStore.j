@@ -6,6 +6,7 @@
 @import "TimeInvariantExclusionCache.j"
 @import "URIMaker.j"
 @import "Future.j"
+@import "AnimalInServiceListFuture.j"
 
 var SharedPersistentStore = nil;
 
@@ -96,7 +97,7 @@ var SharedPersistentStore = nil;
 
 - (void) fetchAnimalsInServiceOnDate: (CPString) aDateString
 {
-  [Future spawnGetTo: network
+  [AnimalInServiceListFuture spawnGetTo: network
            withRoute: [uriMaker inServiceAnimalListWithDate: aDateString]
     notificationName: AnimalInServiceListRetrievedNews];
 }

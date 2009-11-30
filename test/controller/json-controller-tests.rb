@@ -159,7 +159,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
                                {jake => []}])
       }
       assert_json_response
-      assert_jsonification_of('unused' => ['jake'])
+      assert_jsonification_of('unused animals' => ['jake'])
     end
   end
 

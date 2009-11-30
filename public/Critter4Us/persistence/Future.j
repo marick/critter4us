@@ -59,7 +59,7 @@
 -(void)connectionDidFinishLoading:(CPURLConnection)connection
 {
   [NotificationCenter postNotificationName: [self notificationName]
-                                    object: result];
+                                    object: [self convert: result]];
   [NotificationCenter postNotificationName: AvailableNews object: nil];
   [NotificationCenter removeObserver: self];
 }
@@ -67,6 +67,11 @@
 -(void)connectionDidReceiveAuthenticationChallenge:(CPURLConnection)connection
 {
   alert("Authentication Challenge");
+}
+
+- (id) convert: data
+{
+  return data;
 }
 
 @end
