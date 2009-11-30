@@ -10,7 +10,15 @@
 
 @implementation CibPDA : Subgraph
 {
-  PageControllerSubgraph pageControllerSubgraph;
+  CPWindow theWindow;
+
+  View background; 
+  PageController pageController;
+
+  CPPanel unchosenAnimalsPanel;
+  CPPanel chosenAnimalsPanel;
+  CPPanelController unchosenAnimalsPanelController;
+  CPPanelController chosenAnimalsPanelController;
 
   BackgroundControllerPDA backgroundController;
   PersistentStore persistentStore;
@@ -19,106 +27,200 @@
 
   View changeableDateView;
   View fixedDateView;
+
+  CPButton submitButton;
+  CPButton showButton;
+  CPTextField enteringDateInstructionLabel;
+  CPTextField dateEntryField;
 }
 
-- (void)instantiatePageInWindow: theWindow withOwner: owner
+- (void)instantiatePageInWindow: someWindow withOwner: owner
 {
+  theWindow = someWindow;
   self = [super init];  // TODO: Hack. This should not be an initializer.
 
-  [self drawControlledSubgraphsIn: theWindow];
-  persistentStore = [PersistentStore sharedPersistentStore];
-  [self connectRemainingOutlets];
+  [self connectControllers];
+  [self drawBackground];
 
-  owner.pdaPageController = pageControllerSubgraph.controller;
+  owner.pdaPageController = [self pageController];
 
   [self awakeFromCib];
 
-  var peers = { 'persistentStore' : persistentStore,
-                'animalsController' : animalsController,
+  var peers = { 'persistentStore' : [self persistentStore],
+                'animalsController' : [self animalsController],
                 'backgroundController' : [self backgroundController]
   };
   [[StateMachineCoordinator coordinating: peers]
     takeStep: AwaitingDateChoiceStepPDA];
 }
 
-- (void) drawControlledSubgraphsIn: (CPWindow) theWindow
+
+- (void) connectControllers
 {
-  pageControllerSubgraph =
-    [self custom: [[PageControllerSubgraph alloc]
-                    initWithWindow: theWindow]];
-  [pageControllerSubgraph connectOutlets];
+  [[self pageController] addPanelControllersFromArray: 
+                           [ [self unchosenAnimalsPanelController],
+                             [self chosenAnimalsPanelController]]];
 
-  var availablePanel = [[NameListPanel alloc] initAtX: 80
-                                                    y: 150
-                                            withTitle: "Animals That Can Be Removed"
-                                                color: AnimalHintColor];
+  [[self unchosenAnimalsPanel].collectionView setDelegate: [self animalsController]];
+  [[self chosenAnimalsPanel].collectionView setDelegate: [self animalsController]];
 
-  var usedPanel = [[NameListPanel alloc] initAtX: 80 + 300
-                                               y: 150
-                                       withTitle: "Animals That *Will* Be Removed"
-                                           color: AnimalHintColor];
+  [self backgroundController].showButton = [self showButton];
+  [self backgroundController].dateField = [self dateEntryField];
 
-  var submitButton = [[CPButton alloc] initWithFrame: CGRectMake(380 + 300,
-                                                                 150, 250, 30)];
-  [submitButton setTitle: "Take Chosen Animals Out of Service"];
-  [submitButton setHidden: YES];
-  [pageControllerSubgraph.pageView addSubview: submitButton];
+  [self animalsController].availablePanelController = [self unchosenAnimalsPanelController];
+  [self animalsController].usedPanelController = [self chosenAnimalsPanelController];
+
+  [self animalsController].available = [self unchosenAnimalsPanel].collectionView;
+  [self animalsController].used = [self chosenAnimalsPanel].collectionView;
+
+  [self animalsController].submitButton = [self submitButton];
+
+
+  [[self submitButton] setTarget: [self animalsController]];
+  [[self submitButton] setAction: @selector(removeAnimalsFromService:)];
   
-  animalsController = [self custom: [[AnimalsControllerPDA alloc] init]];
-  animalsController.availablePanelController = [[PanelController alloc] initWithPanel: availablePanel];
-  animalsController.usedPanelController = [[PanelController alloc] initWithPanel: usedPanel];
-  animalsController.available = availablePanel.collectionView;
-  animalsController.used = usedPanel.collectionView;
-  animalsController.submitButton = submitButton;
-  
-  [availablePanel.collectionView setDelegate: animalsController];
-  [usedPanel.collectionView setDelegate: animalsController];
+  [[self showButton] setTarget: [self backgroundController]];
+  [[self showButton] setAction: @selector(animalsInServiceForDate:)];
 
-  [submitButton setTarget: animalsController];
-  [submitButton setAction: @selector(removeAnimalsFromService:)];
-  
 
-  [self initOnPage: pageControllerSubgraph.pageView];
 }
 
-- (void) connectRemainingOutlets
+- (void) drawBackground
 {
-  [pageControllerSubgraph.controller addPanelControllersFromArray: 
-                           [animalsController.availablePanelController, 
-                            animalsController.usedPanelController]];
+  [[self background] addSubview: [self enteringDateInstructionLabel]];
+  [[self background] addSubview: [self dateEntryField]];
+  [[self background] addSubview: [self showButton]];
+  [[self background] addSubview: [self submitButton]];
 }
 
 
--(id) initOnPage: pageView
+// Lazy getters
+
+- (id) persistentStore
 {
+  if (!persistentStore)
+    persistentStore = [PersistentStore sharedPersistentStore];
+  return persistentStore;
+}
 
-  var dateInstructionLabel = [[CPTextField alloc] initWithFrame:CGRectMake(10, 30, 440, 30)];
-  [dateInstructionLabel setStringValue: "On what date should the animals be taken out of service? "];
-  [pageView addSubview: dateInstructionLabel];
-  
-  dateField = [[CPTextField alloc] initWithFrame:CGRectMake(330, 25, 100, 30)];
-  [dateField setEditable:YES];
-  [dateField setBezeled:YES];
-  var date = new Date();
-  [dateField setStringValue: [CPString stringWithFormat: "%d-%d-%d", date.getFullYear(), date.getMonth()+1, date.getDate()]];
-  [pageView addSubview:dateField];
 
-  var showButton = [[CPButton alloc] initWithFrame:  
-CGRectMake(450, 28, 250, 30)];
-  [showButton setTitle: "Show Animals In Service on that Date"];
-  [showButton setHidden: NO];
-  [pageView addSubview:showButton];
-  [self backgroundController].showButton = showButton;
-  [showButton setTarget: [self backgroundController]];
-  [showButton setAction: @selector(animalsInServiceForDate:)];
-  [self backgroundController].dateField = dateField;
-}  
+- (id) animalsController
+{
+  if (!animalsController)
+    animalsController = [self custom: [[AnimalsControllerPDA alloc] init]];
+  return animalsController;
+}
 
-- (void) backgroundController
+- (id) backgroundController
 {
   if (!backgroundController)
     backgroundController = [self custom: [[BackgroundControllerPDA alloc] init]];
   return backgroundController;
+}
+
+- (id) background
+{
+  if (!background) [self makePageStuff];
+  return background;
+}
+
+- (id) pageController
+{
+  if (!pageController) [self makePageStuff];
+  return pageController;
+}
+
+- (void) makePageStuff
+{
+  var pageControllerSubgraph =
+    [self custom: [[PageControllerSubgraph alloc] initWithWindow: theWindow]];
+  [pageControllerSubgraph connectOutlets];
+  background = pageControllerSubgraph.pageView;
+  pageController = pageControllerSubgraph.controller;
+}
+
+- (id) unchosenAnimalsPanel
+{
+  if (!unchosenAnimalsPanel)
+  {
+    unchosenAnimalsPanel = [[NameListPanel alloc] initAtX: 80
+                                                        y: 150
+                                                withTitle: "Animals That Can Be Removed"
+                                                    color: AnimalHintColor];
+  }
+  return unchosenAnimalsPanel;
+}
+
+- (id) chosenAnimalsPanel
+{
+  if (!chosenAnimalsPanel)
+    chosenAnimalsPanel = [[NameListPanel alloc] initAtX: 80 + 300
+                                                      y: 150
+                                              withTitle: "Animals That *Will* Be Removed"
+                                                  color: AnimalHintColor];
+  return chosenAnimalsPanel;
+}
+
+- (id) unchosenAnimalsPanelController
+{
+  if (!unchosenAnimalsPanelController)
+    unchosenAnimalsPanelController = [[PanelController alloc] initWithPanel: [self unchosenAnimalsPanel]];
+    return unchosenAnimalsPanelController;
+}
+
+- (id) chosenAnimalsPanelController
+{
+  if (!chosenAnimalsPanelController)
+    chosenAnimalsPanelController = [[PanelController alloc] initWithPanel: [self chosenAnimalsPanel]];
+    return chosenAnimalsPanelController;
+}
+
+-(id) submitButton
+{
+  if (!submitButton)
+  {
+    submitButton = [[CPButton alloc] initWithFrame: CGRectMake(380 + 300,
+                                                               150, 250, 30)];
+    [submitButton setTitle: "Take Chosen Animals Out of Service"];
+    [submitButton setHidden: YES];
+  }
+  return submitButton;
+}
+
+- (id) showButton
+{
+  if (!showButton)
+  {
+    showButton = [[CPButton alloc] initWithFrame: CGRectMake(450, 28, 250, 30)];
+    [showButton setTitle: "Show Animals In Service on that Date"];
+    [showButton setHidden: NO];
+  }
+  return showButton;
+}
+
+
+- (id) enteringDateInstructionLabel
+{
+  if (!enteringDateInstructionLabel)
+  {
+    enteringDateInstructionLabel = [[CPTextField alloc] initWithFrame:CGRectMake(10, 30, 440, 30)];
+    [enteringDateInstructionLabel setStringValue: "On what date should the animals be taken out of service? "];
+   }
+  return enteringDateInstructionLabel;
+}
+  
+
+- (id) dateEntryField
+{
+  if (! dateEntryField)
+  {
+    dateEntryField = [[CPTextField alloc] initWithFrame:CGRectMake(330, 25, 100, 30)];
+    [dateEntryField setEditable:YES];
+    [dateEntryField setBezeled:YES];
+    var date = new Date();
+    [dateEntryField setStringValue: [CPString stringWithFormat: "%d-%d-%d", date.getFullYear(), date.getMonth()+1, date.getDate()]];
+  }
+  return dateEntryField;
 }
 
 @end
