@@ -102,6 +102,10 @@ var SharedPersistentStore = nil;
     notificationName: AnimalInServiceListRetrievedNews];
 }
 
+- (void) takeAnimalsOutOfService: (CPArray) animals
+{
+}
+
 
 // util
 

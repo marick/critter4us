@@ -23,6 +23,7 @@ AnimalTableRetrievedNews = "an animal table has been retrieved";
 
 UserWantsAnimalsInServiceOnDateNews = "user wants list of animals in service on particular date"
 AnimalInServiceListRetrievedNews = "deletion info has been retrieved";
+AnimalsToRemoveFromServiceNews = "user has chosen animals to take out of service";
 
 // Other useful constants
 NotificationCenter = [CPNotificationCenter defaultCenter];

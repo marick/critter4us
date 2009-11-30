@@ -9,8 +9,9 @@
 {
   sut = [[AnimalsControllerPDA alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardOutlets: ['availablePanelController', 'availableView', 
-                                  'usedPanelController', 'usedView']];
+  [scenario sutHasUpwardOutlets: ['availablePanelController', 'available', 
+                                  'usedPanelController', 'used',
+                                  'submitButton']];
 }
 
 
@@ -23,7 +24,7 @@
     }];
 }
 
-- (void) test_controller_fans_out_appear
+- (void) test_controller_fans_out_appear_and_shows_button
 {
   [scenario 
     during: function() {
@@ -32,6 +33,25 @@
   behold: function() {
       [sut.availablePanelController shouldReceive: @selector(appear)];
       [sut.usedPanelController shouldReceive: @selector(appear)];
+      [sut.submitButton shouldReceive: @selector(setHidden:) with: NO];
+    }];
+}
+
+- (void) test_controller_posts_notification_when_submit_button_pressed
+{
+  var chosen = [ [[NamedObject alloc] initWithName: 'fred'], 
+                 [[NamedObject alloc] initWithName: 'betsy'] ];
+                                             
+                                      
+  [scenario 
+    during: function() {
+      [sut removeAnimalsFromService: UnusedArgument];
+    }
+  behold: function() {
+      [sut.used shouldReceive: @selector(content) 
+                        andReturn: chosen];
+      [self listenersShouldReceiveNotification: AnimalsToRemoveFromServiceNews
+                              containingObject: chosen];
     }];
 }
 

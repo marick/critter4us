@@ -4,6 +4,7 @@
 {
   PanelController availablePanelController;
   PanelController usedPanelController;
+  CPButton submitButton;
 }
 
 - (void) awakeFromCib
@@ -18,6 +19,15 @@
 {
   [availablePanelController appear];
   [usedPanelController appear];
+  [submitButton setHidden: NO];
+}
+
+- (void) removeAnimalsFromService: sender
+{
+  var animals = [used content];
+  alert([animals description]);
+  [NotificationCenter postNotificationName: AnimalsToRemoveFromServiceNews
+                                    object: animals];
 }
 
 @end

@@ -21,7 +21,7 @@
 {
 }
 
-// EVENT: animals are available
+// EVENT: animals are available to choose from
 
 - (void) test_makes_panels_appear_when_notified
 {
@@ -53,5 +53,26 @@
         }];
     }];
 }
+
+// EVENT: animals have been chosen
+
+- (void) test_sends_animal_list_off_and_transitions_to_starting_state
+{
+  var chosen = [ [[NamedObject alloc] initWithName: 'fred'], 
+                 [[NamedObject alloc] initWithName: 'betsy'] ];
+
+  [scenario 
+    during: function() { 
+      [self sendNotification: AnimalsToRemoveFromServiceNews
+                  withObject: chosen];
+    }
+  behold: function() {
+      [sut.persistentStore shouldReceive: @selector(takeAnimalsOutOfService:)
+                                    with: [chosen]];
+      [sut.master shouldReceive: @selector(takeStep:)
+                           with: AwaitingDateChoiceStepPDA];
+    }];
+}
+
 
 @end

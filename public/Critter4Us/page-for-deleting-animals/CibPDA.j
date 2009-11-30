@@ -56,15 +56,26 @@
                                                y: 150
                                        withTitle: "Animals That *Will* Be Removed"
                                            color: AnimalHintColor];
+
+  var submitButton = [[CPButton alloc] initWithFrame: CGRectMake(380 + 300,
+                                                                 150, 250, 30)];
+  [submitButton setTitle: "Take Chosen Animals Out of Service"];
+  [submitButton setHidden: YES];
+  [pageControllerSubgraph.pageView addSubview: submitButton];
   
   animalsController = [self custom: [[AnimalsControllerPDA alloc] init]];
   animalsController.availablePanelController = [[PanelController alloc] initWithPanel: availablePanel];
   animalsController.usedPanelController = [[PanelController alloc] initWithPanel: usedPanel];
   animalsController.available = availablePanel.collectionView;
   animalsController.used = usedPanel.collectionView;
+  animalsController.submitButton = submitButton;
   
   [availablePanel.collectionView setDelegate: animalsController];
   [usedPanel.collectionView setDelegate: animalsController];
+
+  [submitButton setTarget: animalsController];
+  [submitButton setAction: @selector(removeAnimalsFromService:)];
+  
 
   backgroundControllerSubgraph =
     [self custom: [[BackgroundControllerSubgraphPDA alloc] initOnPage: pageControllerSubgraph.pageView]];
