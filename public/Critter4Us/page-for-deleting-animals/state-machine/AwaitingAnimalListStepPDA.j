@@ -14,7 +14,7 @@
   [self notificationNamed: RestartAnimalRemovalStateMachineNews
                       calls: @selector(restart:)];
   [self notificationNamed: TableOfAnimalsWithPendingReservationsNews
-                     calls: @selector(setPendingTable:)]
+                     calls: @selector(showAnimalsWithPendingReservations:)]
 }
 
 - (void) start
@@ -44,8 +44,9 @@
   [self resignInFavorOf: AwaitingDateChoiceStepPDA];
 }
 
-- (void) setPendingTable: aNotification
+- (void) showAnimalsWithPendingReservations: aNotification
 {
+  [backgroundController showAnimalsWithPendingReservations: [aNotification object]];
 }
 
 @end

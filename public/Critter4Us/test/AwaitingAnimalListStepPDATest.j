@@ -50,6 +50,24 @@
     }];
 }
 
+// EVENT: A supplementary list of animals UNavailable to choose from is available.
+
+- (void) test_initializes_table_showing_animals_with_pending_reservations
+{
+  [scenario 
+    during: function() { 
+      [self sendNotification: TableOfAnimalsWithPendingReservationsNews
+                  withObject: "html"];
+    }
+  behold: function() {
+      [sut.backgroundController shouldReceive: @selector(showAnimalsWithPendingReservations:)
+                                         with: "html"]
+    }];
+}
+
+
+
+
 // EVENT: animals have been chosen
 
 - (void) test_sends_animal_list_off_and_transitions_to_starting_state

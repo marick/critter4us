@@ -9,7 +9,8 @@
 {
   sut = [[BackgroundControllerPDA alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardOutlets: ['dateField', 'changeableDateView', 'fixedDateView']];
+  [scenario sutHasUpwardOutlets: ['dateField', 'changeableDateView', 'fixedDateView',
+                                  'pendingReservationView']];
 }
 
 - (void)testNotifiesListenersWhenDateChosen
@@ -72,6 +73,19 @@
     }
   behold: function() {
       [self listenersShouldReceiveNotification: RestartAnimalRemovalStateMachineNews];
+    }];
+}
+
+
+- (void) test_can_stuff_html_into_pending_reservation_webview
+{
+  [scenario 
+    during: function() {
+      [sut showAnimalsWithPendingReservations: "html"]
+    }
+  behold: function() {
+      [sut.pendingReservationView shouldReceive: @selector(loadHTMLString:baseURL:)
+                                           with: ["html", nil]];
     }];
 }
 

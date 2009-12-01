@@ -22,6 +22,11 @@
                                     object: nil];
 }
 
+- (void) showAnimalsWithPendingReservations: html
+{
+  [pendingReservationView loadHTMLString: html baseURL: nil];
+}
+
 
 
 - (CPString) effectiveDate
