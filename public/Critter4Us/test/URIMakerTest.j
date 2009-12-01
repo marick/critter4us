@@ -43,4 +43,10 @@
         equals: [maker inServiceAnimalListWithDate: '2009-12-30']];
 }
 
+-(void) test_can_make_uri_to_fetch_animals_with_pending_reservations_on_a_date
+{
+  [self assert: '/animals_with_pending_reservations?date=2009-12-30'
+        equals: [maker pendingReservationAnimalListWithDate: '2009-12-30']];
+}
+
 @end

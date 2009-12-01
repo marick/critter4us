@@ -138,7 +138,7 @@ ChattyFutureLog = "";
 {
   var msg = "Connection" + methodConnection + ": Future for route " + [self route] + " finished with " + result + "\n";
   [self log: msg];
-  //  alert(msg);
+  alert(msg);
   [super connectionDidFinishLoading: methodConnection];
 }
 

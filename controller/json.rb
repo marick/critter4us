@@ -33,9 +33,7 @@ class Controller
 
   post '/json/take_animals_out_of_service' do
     internal = move_to_internal_format(JSON.parse(params['data']))
-    pp internal
     internal[:animals].each do | animal_name |
-      pp animal_name
       Animal[:name => animal_name].remove_from_service_as_of(internal[:date])
     end
   end

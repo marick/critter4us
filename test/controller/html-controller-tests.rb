@@ -88,4 +88,13 @@ class HtmlControllerTests < FreshDatabaseTestCase
     end
   end
 
+  context "returning a table of animals with pending reservations" do 
+    should "pass date and animal source to view" do
+      @app.test_view_builder = @dummy_view
+      get "/animals_with_pending_reservations?date=2009-08-03"
+      assert_equal(Animal, @dummy_view[:animal_source])
+      assert { Date.new(2009, 8, 3) == @dummy_view[:date] }
+    end
+  end
+
 end

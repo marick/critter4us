@@ -10,11 +10,16 @@ FetchReservationRoute = @"reservation";
 ModifyReservationRoute = @"modify_reservation";
 AllReservationsTableRoute = @"reservations";
 AllAnimalsTableRoute = @"animals"; 
-PendingAnimalsTableRoute = "animals_with_reservations"
+PendingAnimalsTableRoute = "animals_with_pending_reservations"
 
 jsonURI = function(route)
 {
   return url = "/json/" + route
+}
+
+htmlURI = function(route)
+{
+  return '/' + route
 }
 
 @implementation URIMaker : CPObject
@@ -31,7 +36,7 @@ jsonURI = function(route)
 
 - (CPString) pendingReservationAnimalListWithDate: date
 {
-  return PendingAnimalsTableRoute+"?date=" + date
+  return htmlURI(PendingAnimalsTableRoute+"?date=" + date)
 }
 
 - (CPString) POSTReservationURI

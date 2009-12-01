@@ -171,7 +171,6 @@ class JsonGenerationTests < FreshDatabaseTestCase
         'animals' => ['betsy', 'jake']
       }
 
-      puts @data.to_json
       Animal.random(:name => 'betsy')
       Animal.random(:name => 'jake')
       Animal.random(:name => 'fred')

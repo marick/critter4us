@@ -30,7 +30,6 @@ end
 class AnimalListView < Erector::Widget
   include ViewHelper
   needs :animal_source, :date_source
-  needs :deletion_cell_class => AnimalDeletionCell
 
   def content
     @animals = @animal_source.all
@@ -45,7 +44,7 @@ class AnimalListView < Erector::Widget
             tr do 
               td { text a.name }
               today = @date_source.current_date_as_string
-              td { widget @deletion_cell_class,
+              td { widget AnimalDeletionCell,
                           :animal => a, :proposed_removal_from_service_date => today }
             end
           end

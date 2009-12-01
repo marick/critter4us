@@ -33,8 +33,9 @@ class Controller
     redirect '/animals'
   end
 
-  get '/animals_with_reservations' do
-    view(AnimalListView).new(:animal_source=>Animal, :date_source => DateSource.new).to_s
+  get '/animals_with_pending_reservations' do
+    view(AnimalsWithPendingReservationsView).new(:animal_source => Animal,
+                                                 :date => Date.parse(params[:date])).to_s
   end
 end
 
