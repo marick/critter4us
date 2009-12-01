@@ -37,6 +37,19 @@
     }];
 }
 
+- (void) test_controller_fans_out_disappear_and_hides_button
+{
+  [scenario 
+    during: function() {
+      [sut disappear];
+    }
+  behold: function() {
+      [sut.availablePanelController shouldReceive: @selector(disappear)];
+      [sut.usedPanelController shouldReceive: @selector(disappear)];
+      [sut.submitButton shouldReceive: @selector(setHidden:) with: YES];
+    }];
+}
+
 - (void) test_controller_posts_notification_when_submit_button_pressed
 {
   var chosen = [ [[NamedObject alloc] initWithName: 'fred'], 
@@ -54,7 +67,5 @@
                               containingObject: chosen];
     }];
 }
-
-
 
 @end

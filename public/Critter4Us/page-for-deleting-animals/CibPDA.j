@@ -12,7 +12,7 @@
 {
   CPWindow theWindow;
 
-  View background; 
+  CPView background; 
   PageController pageController;
 
   CPPanel unchosenAnimalsPanel;
@@ -32,6 +32,7 @@
   CPButton showButton;
   CPTextField enteringDateInstructionLabel;
   CPTextField dateEntryField;
+  CPTextField noteSelectedDateField;
 }
 
 - (void)instantiatePageInWindow: someWindow withOwner: owner
@@ -64,8 +65,10 @@
   [[self unchosenAnimalsPanel].collectionView setDelegate: [self animalsController]];
   [[self chosenAnimalsPanel].collectionView setDelegate: [self animalsController]];
 
-  [self backgroundController].showButton = [self showButton];
+  [self backgroundController].changeableDateView = [self changeableDateView];
+  [self backgroundController].fixedDateView = [self fixedDateView];
   [self backgroundController].dateField = [self dateEntryField];
+  [self backgroundController].noteSelectedDateField = [self noteSelectedDateField];
 
   [self animalsController].availablePanelController = [self unchosenAnimalsPanelController];
   [self animalsController].usedPanelController = [self chosenAnimalsPanelController];
@@ -81,15 +84,12 @@
   
   [[self showButton] setTarget: [self backgroundController]];
   [[self showButton] setAction: @selector(animalsInServiceForDate:)];
-
-
 }
 
 - (void) drawBackground
 {
-  [[self background] addSubview: [self enteringDateInstructionLabel]];
-  [[self background] addSubview: [self dateEntryField]];
-  [[self background] addSubview: [self showButton]];
+  [[self background] addSubview: [self changeableDateView]];
+  [[self background] addSubview: [self fixedDateView]];
   [[self background] addSubview: [self submitButton]];
 }
 
@@ -221,6 +221,37 @@
     [dateEntryField setStringValue: [CPString stringWithFormat: "%d-%d-%d", date.getFullYear(), date.getMonth()+1, date.getDate()]];
   }
   return dateEntryField;
+}
+
+- (id) changeableDateView
+{
+  if (!changeableDateView)
+  {
+    changeableDateView = [[CPView alloc] initWithFrame: CGRectMake(0, 0, 900, 200)];
+    [changeableDateView addSubview: [self enteringDateInstructionLabel]];
+    [changeableDateView addSubview: [self dateEntryField]];
+    [changeableDateView addSubview: [self showButton]];
+  }
+  return changeableDateView;
+}
+
+- (id) fixedDateView
+{
+  if (!fixedDateView)
+  {
+    fixedDateView = [[CPView alloc] initWithFrame: CGRectMake(0, 0, 900, 200)];
+    [fixedDateView addSubview: [self noteSelectedDateField]];
+  }
+  return fixedDateView;
+}
+
+- (id) noteSelectedDateField
+{
+  if (!noteSelectedDateField)
+  {
+    noteSelectedDateField = [[CPTextField alloc] initWithFrame:CGRectMake(10, 30, 5200, 30)];
+  }
+  return noteSelectedDateField;
 }
 
 @end

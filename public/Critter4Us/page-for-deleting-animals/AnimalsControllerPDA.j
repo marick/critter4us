@@ -22,6 +22,13 @@
   [submitButton setHidden: NO];
 }
 
+- (void) disappear
+{
+  [availablePanelController disappear];
+  [usedPanelController disappear];
+  [submitButton setHidden: YES];
+}
+
 - (void) removeAnimalsFromService: sender
 {
   var animals = [used content];

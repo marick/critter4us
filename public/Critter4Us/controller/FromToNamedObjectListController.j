@@ -12,6 +12,12 @@
   [used setNeedsDisplay: YES];
 }
 
+- (void) emptyLists
+{
+  [self allPossibleObjects: []];
+}
+
+
 - (void) presetUsed: usedObjects
 {
   var availableObjects = [originalObjects copy];

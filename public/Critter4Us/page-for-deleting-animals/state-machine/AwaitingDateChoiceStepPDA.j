@@ -13,6 +13,8 @@
 
 - (void) start
 {
+  [backgroundController allowDateEntry];
+  [animalsController disappear];
 }
 
 - (void) fetchAnimalList: aNotification

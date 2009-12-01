@@ -148,5 +148,20 @@
   [self assert: ['betsy', 'fang', 'spike'] equals: [sut usedNames]];
 }
 
+- (void) test_can_empty_both_lists
+{
+  sut.used = [[NamedObjectCollectionView alloc] initWithFrame: CGRectMakeZero()]
+  sut.available = [[NamedObjectCollectionView alloc] initWithFrame: CGRectMakeZero()]
+  [sut allPossibleObjects: [betsy, spike, fang]];
+  [sut presetUsed: [betsy]];
+  [self assertFalse: [[sut.used content] isEqual: []]];
+  [self assertFalse: [[sut.available content] isEqual: []]];
+
+  [sut emptyLists];
+
+  [self assert: [] equals: [sut.used content]];
+  [self assert: [] equals: [sut.available content]];
+}
+
 
 @end	

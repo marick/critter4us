@@ -17,24 +17,20 @@
   [sut initWithMaster: sut.master];
 }
 
-- (void) test_does_nothing_when_started
+- (void) test_starting
 {
-}
-
-// EVENT: animals are available to choose from
-
-- (void) test_makes_panels_appear_when_notified
-{
-  var dict = [CPDictionary dictionaryWithJSObject: {'unused animals' : []}];
   [scenario 
-    during: function() { 
-      [self sendNotification: AnimalInServiceListRetrievedNews
-                  withObject: dict];
+    during: function() {
+      [sut start];
     }
   behold: function() {
+      [sut.backgroundController shouldReceive: @selector(forbidDateEntry)];
+      [sut.animalsController shouldReceive: @selector(emptyLists)];
       [sut.animalsController shouldReceive: @selector(appear)];
     }];
 }
+
+// EVENT: animals are available to choose from
 
 - (void) test_initializes_collection_views
 {

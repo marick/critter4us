@@ -15,11 +15,13 @@
 
 - (void) start
 {
+  [animalsController emptyLists]; // Clear out leftovers from before.
+  [animalsController appear];
+  [backgroundController forbidDateEntry];
 }
 
 - (void) gotAnimalList: aNotification
 {
-  [animalsController appear];
   can_be_taken_out = [[aNotification object] valueForKey: 'unused animals'];
   [animalsController allPossibleObjects: can_be_taken_out];
 }
