@@ -64,5 +64,16 @@
     }];
 }
 
+- (void) test_controller_posts_notification_when_restart_button_pressed
+{
+  [scenario 
+    during: function() {
+      [sut restart: UnusedArgument];
+    }
+  behold: function() {
+      [self listenersShouldReceiveNotification: RestartAnimalRemovalStateMachineNews];
+    }];
+}
+
 
 @end

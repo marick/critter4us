@@ -29,6 +29,7 @@
   View fixedDateView;
 
   CPButton submitButton;
+  CPButton restartButton;
   CPButton showButton;
   CPTextField enteringDateInstructionLabel;
   CPTextField dateEntryField;
@@ -77,13 +78,14 @@
   [self animalsController].used = [self chosenAnimalsPanel].collectionView;
 
   [self animalsController].submitButton = [self submitButton];
-
-
   [[self submitButton] setTarget: [self animalsController]];
   [[self submitButton] setAction: @selector(removeAnimalsFromService:)];
   
   [[self showButton] setTarget: [self backgroundController]];
   [[self showButton] setAction: @selector(animalsInServiceForDate:)];
+
+  [[self restartButton] setTarget: [self backgroundController]];
+  [[self restartButton] setAction: @selector(restart:)];
 }
 
 - (void) drawBackground
@@ -187,13 +189,22 @@
   return submitButton;
 }
 
+-(id) restartButton
+{
+  if (!restartButton)
+  {
+    restartButton = [[CPButton alloc] initWithFrame: CGRectMake(350, 28, 250, 30)];
+    [restartButton setTitle: "Pick a Different Date"];
+  }
+  return restartButton;
+}
+
 - (id) showButton
 {
   if (!showButton)
   {
-    showButton = [[CPButton alloc] initWithFrame: CGRectMake(450, 28, 250, 30)];
+    showButton = [[CPButton alloc] initWithFrame: CGRectMake(315, 70, 250, 30)];
     [showButton setTitle: "Show Animals In Service on that Date"];
-    [showButton setHidden: NO];
   }
   return showButton;
 }
@@ -241,6 +252,7 @@
   {
     fixedDateView = [[CPView alloc] initWithFrame: CGRectMake(0, 0, 900, 200)];
     [fixedDateView addSubview: [self noteSelectedDateField]];
+    [fixedDateView addSubview: [self restartButton]];
   }
   return fixedDateView;
 }

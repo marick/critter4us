@@ -11,6 +11,8 @@
                       calls: @selector(gotAnimalList:)];
   [self notificationNamed: AnimalsToRemoveFromServiceNews
                       calls: @selector(userChoseAnimals:)];
+  [self notificationNamed: RestartAnimalRemovalStateMachineNews
+                      calls: @selector(restart:)];
 }
 
 - (void) start
@@ -33,6 +35,11 @@
       [persistentStore takeAnimals: [aNotification object]
                     outOfServiceOn: [backgroundController effectiveDate]];
     }];
+}
+
+- (void) restart: aNotification
+{
+  [self resignInFavorOf: AwaitingDateChoiceStepPDA];
 }
 
 @end

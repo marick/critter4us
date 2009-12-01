@@ -73,4 +73,20 @@
 }
 
 
+// EVENT: User wants to restart
+
+- (void) test_restart_transitions_to_initial_state
+{
+  [scenario 
+    during: function() { 
+      [self sendNotification: RestartAnimalRemovalStateMachineNews];
+    }
+  behold: function() {
+      [sut.master shouldReceive: @selector(takeStep:)
+                           with: AwaitingDateChoiceStepPDA];
+    }];
+}
+
+
+
 @end

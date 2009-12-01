@@ -24,6 +24,7 @@ AnimalTableRetrievedNews = "an animal table has been retrieved";
 UserWantsAnimalsInServiceOnDateNews = "user wants list of animals in service on particular date"
 AnimalInServiceListRetrievedNews = "deletion info has been retrieved";
 AnimalsToRemoveFromServiceNews = "user has chosen animals to take out of service";
+RestartAnimalRemovalStateMachineNews = "probably want to pick a new date for taking out of service";
 
 // Following used when a method that doesn't want to provoke a
 // notification must call a method that takes a notification name.

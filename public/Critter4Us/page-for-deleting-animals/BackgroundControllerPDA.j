@@ -15,6 +15,14 @@
                                     object: [self effectiveDate]];
 }
 
+- (void) restart: sender
+{
+  [NotificationCenter postNotificationName: RestartAnimalRemovalStateMachineNews
+                                    object: nil];
+}
+
+
+
 - (CPString) effectiveDate
 {
   return [dateField stringValue];
