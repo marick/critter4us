@@ -3,8 +3,9 @@
 
 @implementation Future : CPObject
 {
-  CPMutableString result, route, notificationName;
-  
+  CPString result;
+  CPString route, notificationName;
+  CPURLConnection connection;
 }
 
 + (void) spawnGetTo: network
@@ -29,7 +30,7 @@
   self = [super init];
   route = aRoute;
   notificationName = aName;
-  result = "";
+  result = [CPString string];
   return self;
 }
 
@@ -46,42 +47,44 @@
 -(void) sendAsynchronousGetTo: network
 {
   [NotificationCenter postNotificationName: BusyNews object: nil];
-  [network sendGetAsynchronouslyTo: [self route]
-                          delegate: self];
+  connection = [network sendGetAsynchronouslyTo: [self route]
+                                       delegate: self];
 }
 
 -(void) sendAsynchronousPostTo: network content: content
 {
   [NotificationCenter postNotificationName: BusyNews object: nil];
-  [network POSTFormDataAsynchronouslyTo: [self route]
-                            withContent: content
-                               delegate: self];
+  connection = [network POSTFormDataAsynchronouslyTo: [self route]
+                                         withContent: content
+                                            delegate: self];
 }
 
 
--(void)connection:(CPURLConnection)connection didFailWithError:(id)error
+-(void)connection:(CPURLConnection)methodConnection didFailWithError:(id)error
 {
   alert("Fail with error");
 }
 
--(void)connection:(CPURLConnection)connection didReceiveResponse:(CPHTTPURLResponse)response
+-(void)connection:(CPURLConnection)methodConnection didReceiveResponse:(CPHTTPURLResponse)response
 {
 }
 
--(void)connection:(CPURLConnection)connection didReceiveData:(CPString)data
+-(void)connection:(CPURLConnection)methodConnection didReceiveData:(CPString)data
 {
+  [self checkConnection: methodConnection];
   result += data;
 }
 
--(void)connectionDidFinishLoading:(CPURLConnection)connection
+-(void)connectionDidFinishLoading:(CPURLConnection)methodConnection
 {
+  [self checkConnection: methodConnection];
   [NotificationCenter postNotificationName: [self notificationName]
                                     object: [self convert: result]];
   [NotificationCenter postNotificationName: AvailableNews object: nil];
   [NotificationCenter removeObserver: self];
 }
 
--(void)connectionDidReceiveAuthenticationChallenge:(CPURLConnection)connection
+-(void)connectionDidReceiveAuthenticationChallenge:(CPURLConnection)methodConnection
 {
   alert("Authentication Challenge");
 }
@@ -91,4 +94,55 @@
   return data;
 }
 
+- (void) checkConnection: methodConnection
+{
+  if (connection != methodConnection)
+    alert("Different connections: " + connection + " received " + methodConnection + "\nPlease report this problem.");
+}
+  
+
 @end
+
+ChattyFutureLog = "";
+
+@implementation ChattyFuture : Future
+{
+  CPMutableString result, route, notificationName;
+}
+
+-(void) sendAsynchronousGetTo: network
+{
+  var msg = "Future getting " + [self route] + "; will post" + [self notificationName] + "\n";
+  [self log: msg];
+  //  alert(msg);
+  [super sendAsynchronousGetTo: network];
+}
+
+-(void) sendAsynchronousPostTo: network content: content
+{
+  var msg = "Future posting " + [self route] + "with content" + content + "; will post" + [self notificationName] + "\n";
+  [self log: msg];
+  //  alert(msg);
+  [super sendAsynchronousPostTo: network content: content];
+}
+
+-(void)connection:(CPURLConnection)methodConnection didReceiveData:(CPString)data
+{
+  var msg = "Class" + [self class] + "/Connection" + methodConnection + ": Future for route " + [self route] + " received " + data + " to add to " + result + "\n";
+  [self log: msg];
+  //  alert(msg);
+  [super connection: methodConnection didReceiveData: data];
+}
+
+-(void)connectionDidFinishLoading:(CPURLConnection)methodConnection
+{
+  var msg = "Connection" + methodConnection + ": Future for route " + [self route] + " finished with " + result + "\n";
+  [self log: msg];
+  //  alert(msg);
+  [super connectionDidFinishLoading: methodConnection];
+}
+
+- (void) log: msg
+{
+  ChattyFutureLog += msg;
+}

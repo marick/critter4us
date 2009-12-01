@@ -28,18 +28,20 @@
   return [data description];
 }
 
-- (CPString) POSTFormDataAsynchronouslyTo: (CPString) url withContent: content delegate: delegate
+- (CPURLConnection) POSTFormDataAsynchronouslyTo: (CPString) url withContent: content delegate: delegate
 {
   var request = [self postRequestForRoute: url content: content]
   urlConnection = [CPURLConnection connectionWithRequest:request delegate:delegate];
   [urlConnection start];
+  return urlConnection;
 }
 
-- (void) sendGetAsynchronouslyTo: route delegate: delegate
+- (CPURLConnection) sendGetAsynchronouslyTo: route delegate: delegate
 {
   var request = [CPURLRequest requestWithURL: route];
   urlConnection = [CPURLConnection connectionWithRequest:request delegate:delegate];
   [urlConnection start];
+  return urlConnection;
 }
 
 
