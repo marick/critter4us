@@ -7,6 +7,7 @@
   CPTextField noteSelectedDateField;
   CPView changeableDateView;
   CPView fixedDateView;
+  CPWebview pendingReservationView;
 }
 
 - (void) animalsInServiceForDate: sender

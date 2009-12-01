@@ -21,7 +21,9 @@
 {
   [self afterResigningInFavorOf: AwaitingAnimalListStepPDA
              causeNextEventWith: function() { 
-      [persistentStore fetchAnimalsInServiceOnDate: [aNotification object]];
+      var date = [aNotification object];
+      [persistentStore fetchAnimalsInServiceOnDate: date];
+      [persistentStore fetchAnimalsWithPendingReservationsOnDate: date];
     }];
 }
 

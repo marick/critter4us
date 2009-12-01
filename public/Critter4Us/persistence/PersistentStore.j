@@ -102,6 +102,13 @@ var SharedPersistentStore = nil;
     notificationName: AnimalInServiceListRetrievedNews];
 }
 
+- (void) fetchAnimalsWithPendingReservationsOnDate: (CPString) aDateString
+{
+  [Future spawnGetTo: network
+           withRoute: [uriMaker pendingReservationAnimalListWithDate: aDateString]
+    notificationName: TableOfAnimalsWithPendingReservationsNews];
+}
+
 - (void) takeAnimals: animals outOfServiceOn: (CPString) date
 {
   var uri = [uriMaker POSTAnimalsOutOfServiceURI];

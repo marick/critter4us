@@ -25,8 +25,10 @@
 
   AnimalsControllerPDA animalsController;
 
-  View changeableDateView;
-  View fixedDateView;
+  CPView changeableDateView;
+  CPView fixedDateView;
+  CPWebView pendingReservationView;
+  CPTextField pendingReservationViewInstructions;
 
   CPButton submitButton;
   CPButton restartButton;
@@ -70,6 +72,7 @@
   [self backgroundController].fixedDateView = [self fixedDateView];
   [self backgroundController].dateField = [self dateEntryField];
   [self backgroundController].noteSelectedDateField = [self noteSelectedDateField];
+  [self backgroundController].pendingReservationView = [self pendingReservationView];
 
   [self animalsController].availablePanelController = [self unchosenAnimalsPanelController];
   [self animalsController].usedPanelController = [self chosenAnimalsPanelController];
@@ -145,10 +148,11 @@
 {
   if (!unchosenAnimalsPanel)
   {
-    unchosenAnimalsPanel = [[NameListPanel alloc] initAtX: 80
-                                                        y: 150
-                                                withTitle: "Animals That Can Be Removed"
-                                                    color: AnimalHintColor];
+    rect = CGRectMake(80, 130, SourceWindowWidth, 10 * TextLineHeight);
+    unchosenAnimalsPanel = [[NameListPanel alloc]
+                             initWithRect: rect
+                                    title: "Animals That Can Be Removed"
+                                    color: AnimalHintColor];
   }
   return unchosenAnimalsPanel;
 }
@@ -156,10 +160,13 @@
 - (id) chosenAnimalsPanel
 {
   if (!chosenAnimalsPanel)
-    chosenAnimalsPanel = [[NameListPanel alloc] initAtX: 80 + 300
-                                                      y: 150
-                                              withTitle: "Animals That *Will* Be Removed"
-                                                  color: AnimalHintColor];
+  {
+    rect = CGRectMake(80+300, 130, SourceWindowWidth, 10 * TextLineHeight);
+    chosenAnimalsPanel = [[NameListPanel alloc] 
+                           initWithRect: rect
+                                  title: "Animals That *Will* Be Removed"
+                                  color: AnimalHintColor];
+  }
   return chosenAnimalsPanel;
 }
 
@@ -238,7 +245,7 @@
 {
   if (!changeableDateView)
   {
-    changeableDateView = [[CPView alloc] initWithFrame: CGRectMake(0, 0, 900, 200)];
+    changeableDateView = [[CPView alloc] initWithFrame: [background bounds]];
     [changeableDateView addSubview: [self enteringDateInstructionLabel]];
     [changeableDateView addSubview: [self dateEntryField]];
     [changeableDateView addSubview: [self showButton]];
@@ -250,9 +257,11 @@
 {
   if (!fixedDateView)
   {
-    fixedDateView = [[CPView alloc] initWithFrame: CGRectMake(0, 0, 900, 200)];
+    fixedDateView = [[CPView alloc] initWithFrame: [background bounds]];
     [fixedDateView addSubview: [self noteSelectedDateField]];
     [fixedDateView addSubview: [self restartButton]];
+    [fixedDateView addSubview: [self pendingReservationViewInstructions]];
+    [fixedDateView addSubview: [self pendingReservationView]];
   }
   return fixedDateView;
 }
@@ -264,6 +273,27 @@
     noteSelectedDateField = [[CPTextField alloc] initWithFrame:CGRectMake(10, 30, 5200, 30)];
   }
   return noteSelectedDateField;
+}
+
+- (id) pendingReservationView
+{
+  if (!pendingReservationView)
+  {
+    pendingReservationView = [[CPWebView alloc] initWithFrame: CGRectMake(50,360, 600,200)];
+    [pendingReservationView setBackgroundColor: [CPColor redColor]];
+  }
+  return pendingReservationView;
+}
+
+- (id) pendingReservationViewInstructions
+{
+  if (! pendingReservationViewInstructions)
+  {
+    pendingReservationViewInstructions = [[CPTextField alloc] initWithFrame: CGRectMake(20,330, 600, 30)];
+    [pendingReservationViewInstructions setLineBreakMode: CPLineBreakByWordWrapping];
+    [pendingReservationViewInstructions setStringValue: "The table below shows animals that cannot be taken out of service because they are reserved at the same or later date."];
+  }
+  return pendingReservationViewInstructions;
 }
 
 @end

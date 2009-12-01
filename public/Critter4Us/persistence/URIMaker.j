@@ -10,6 +10,7 @@ FetchReservationRoute = @"reservation";
 ModifyReservationRoute = @"modify_reservation";
 AllReservationsTableRoute = @"reservations";
 AllAnimalsTableRoute = @"animals"; 
+PendingAnimalsTableRoute = "animals_with_reservations"
 
 jsonURI = function(route)
 {
@@ -26,6 +27,11 @@ jsonURI = function(route)
 - (CPString) inServiceAnimalListWithDate: date
 {
   return jsonURI(InServiceAnimalListBlogRoute)+"?date=" + date
+}
+
+- (CPString) pendingReservationAnimalListWithDate: date
+{
+  return PendingAnimalsTableRoute+"?date=" + date
 }
 
 - (CPString) POSTReservationURI

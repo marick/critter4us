@@ -16,8 +16,13 @@
 
 - (id) initAtX: x y: y withTitle: aTitle color: aColor
 {
-  var panelRect = CGRectMake(x, y, SourceWindowWidth,
-                             SourceWindowHeight);
+  return [self initWithRect: CGRectMake(x, y, SourceWindowWidth, SourceWindowHeight)
+                      title: aTitle
+                      color: aColor];
+}
+
+- (id) initWithRect: panelRect title: aTitle color: aColor
+{
   [self initWithContentRect: panelRect];
   [self setTitle: aTitle];
   [self orderFront: self]; // TODO: delete when page layout done.

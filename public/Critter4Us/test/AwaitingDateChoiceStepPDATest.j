@@ -37,6 +37,8 @@
   behold: function() {
       [sut.persistentStore shouldReceive: @selector(fetchAnimalsInServiceOnDate:)
                                     with: '2009-12-12'];
+      [sut.persistentStore shouldReceive: @selector(fetchAnimalsWithPendingReservationsOnDate:)
+                                    with: '2009-12-12'];
       [sut.master shouldReceive: @selector(takeStep:)
                            with: AwaitingAnimalListStepPDA];
     }];

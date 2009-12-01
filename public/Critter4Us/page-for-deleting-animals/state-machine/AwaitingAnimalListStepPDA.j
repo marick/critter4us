@@ -13,6 +13,8 @@
                       calls: @selector(userChoseAnimals:)];
   [self notificationNamed: RestartAnimalRemovalStateMachineNews
                       calls: @selector(restart:)];
+  [self notificationNamed: TableOfAnimalsWithPendingReservationsNews
+                     calls: @selector(setPendingTable:)]
 }
 
 - (void) start
@@ -40,6 +42,10 @@
 - (void) restart: aNotification
 {
   [self resignInFavorOf: AwaitingDateChoiceStepPDA];
+}
+
+- (void) setPendingTable: aNotification
+{
 }
 
 @end

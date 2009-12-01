@@ -32,5 +32,9 @@ class Controller
     animal_source[number].remove_from_service_as_of(effective_date)
     redirect '/animals'
   end
+
+  get '/animals_with_reservations' do
+    view(AnimalListView).new(:animal_source=>Animal, :date_source => DateSource.new).to_s
+  end
 end
 
