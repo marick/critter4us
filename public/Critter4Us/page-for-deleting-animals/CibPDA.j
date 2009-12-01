@@ -194,7 +194,7 @@
   if (!restartButton)
   {
     restartButton = [[CPButton alloc] initWithFrame: CGRectMake(350, 28, 250, 30)];
-    [restartButton setTitle: "Pick a Different Date"];
+    [restartButton setTitle: "Start Over (Pick a Different Date)"];
   }
   return restartButton;
 }
