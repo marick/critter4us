@@ -41,7 +41,7 @@ class Animal < Sequel::Model
       u.reservation.date >= date
     }.collect { | u | 
       u.reservation 
-    }.sort { |a, b |
+    }.uniq.sort { |a, b |
       -(a.date <=> b.date)
     }
   end

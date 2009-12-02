@@ -101,6 +101,24 @@ class AnimalTests < FreshDatabaseTestCase
                        @animal.dates_used_after_beginning_of(Date.new(2009,12,3)))
         end
       end
+      
+      context "multiple uses of animal within a reservation" do
+        setup do
+          Use.create(:animal => @animal, :procedure => Procedure.random,
+                     :group => @reservation.groups.first)
+        end
+        
+        should "only return one reservation" do
+          assert_equal([@reservation], 
+                       @animal.reservations_pending_as_of(Date.new(2009,12,3)))
+        end
+
+        should ", and one date" do
+          assert_equal([Date.new(2009,12,03)],
+                       @animal.dates_used_after_beginning_of(Date.new(2009,12,3)))
+        end
+
+      end
     end
   end
 end
