@@ -2,14 +2,24 @@
 @import "../model/Animal.j"
 
 @implementation AnimalInServiceListFuture : Future
+{
+  int count;
+}
 
 - (CPDictionary) convert: json
 {
   if (! json)
-    alert("No JSON string received after posting. Please report this.   \nOriginal: " + json);
+  {
+    alert("AnimalInServiceList: No JSON string received after posting. Please report this.");
+    return;
+  }
+
   var jsHash =  [json objectFromJSON];
   if (! jsHash)
-    alert("No hash was obtained from JSON string " + json + "\n Please report this.");
+  {
+    alert("AnimalInServiceList: No hash was obtained from JSON string " + json + "\n Please report this.");
+    return;
+  }
   
   var retval = [CPDictionary dictionary];
   [retval setValue: [self makeNamedObjects: jsHash['unused animals']]

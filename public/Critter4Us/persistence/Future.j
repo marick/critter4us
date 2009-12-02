@@ -49,6 +49,8 @@
   [NotificationCenter postNotificationName: BusyNews object: nil];
   connection = [network sendGetAsynchronouslyTo: [self route]
                                        delegate: self];
+  [self log: "GET on connection %@ to %@",
+        [connection hash], [self route]];
 }
 
 -(void) sendAsynchronousPostTo: network content: content
@@ -71,12 +73,19 @@
 
 -(void)connection:(CPURLConnection)methodConnection didReceiveData:(CPString)data
 {
-  // if (methodConnection != connection) return; // Firefox sends spurious notifications
+  [self log: "connection %@ received %s",
+        [methodConnection hash], [self visible: data]];
   result += data;
 }
 
 -(void)connectionDidFinishLoading:(CPURLConnection)methodConnection
 {
+  [self log: "connection %@ finished", [methodConnection hash]];
+  if (result == "") 
+  {
+    [self log: "empty result suggests this is a spurious connection from Firefox"];
+    return;
+  }
   // if (methodConnection != connection) return; // Firefox sends spurious notifications
   [NotificationCenter postNotificationName: [self notificationName]
                                     object: [self convert: result]];
@@ -93,6 +102,20 @@
 {
   return data;
 }
+
+- (void) log: (CPString) format, ...
+{
+  var text = sprintf.apply(this, Array.prototype.slice.call(arguments, 2));
+  [[Logger defaultLogger] log: "%@: %s", [self hash], text];
+}
+
+- (CPString) visible: data
+{
+  if (! data) return "[nil]";
+  if (data == "") return "[empty string]";
+  return data.replace(/</g, "&lt;"); // This suffices to log HTML
+}
+
 
 - (void) checkConnection: methodConnection  // TODO: delete?
 {

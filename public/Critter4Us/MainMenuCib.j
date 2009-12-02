@@ -13,6 +13,7 @@
   [self addMainMenu];
   [self addReservationsSubmenu];
   [self addAnimalsSubmenu];
+  [self addDebugSubmenu];
 }
 
 -(void)addMainMenu
@@ -45,6 +46,15 @@
                       action: @selector(activateAnimalDeleter:)
                keyEquivalent: "T"
                        under: animalsMenu];
+}
+
+- (void) addDebugSubmenu
+{
+  var debugMenu = [self submenuNamed: "Debug" below: mainMenu];
+  [self addMenuItemwithTitle: "View Log"
+                      action: @selector(activateLogViewer:)
+               keyEquivalent: "L"
+                       under: debugMenu];
 }
 
 

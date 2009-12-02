@@ -40,6 +40,7 @@
 {
   var request = [CPURLRequest requestWithURL: route];
   urlConnection = [CPURLConnection connectionWithRequest:request delegate:delegate];
+  [[Logger defaultLogger] log: "Opened, but not started, connection %@", [urlConnection hash]];
   [urlConnection start];
   return urlConnection;
 }
