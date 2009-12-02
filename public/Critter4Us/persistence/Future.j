@@ -71,13 +71,13 @@
 
 -(void)connection:(CPURLConnection)methodConnection didReceiveData:(CPString)data
 {
-  [self checkConnection: methodConnection];
+  // if (methodConnection != connection) return; // Firefox sends spurious notifications
   result += data;
 }
 
 -(void)connectionDidFinishLoading:(CPURLConnection)methodConnection
 {
-  [self checkConnection: methodConnection];
+  // if (methodConnection != connection) return; // Firefox sends spurious notifications
   [NotificationCenter postNotificationName: [self notificationName]
                                     object: [self convert: result]];
   [NotificationCenter postNotificationName: AvailableNews object: nil];
@@ -94,7 +94,7 @@
   return data;
 }
 
-- (void) checkConnection: methodConnection
+- (void) checkConnection: methodConnection  // TODO: delete?
 {
   if (connection != methodConnection)
     alert("Different connections: " + connection + " received " + methodConnection + "\nPlease report this problem.");
