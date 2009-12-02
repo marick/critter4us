@@ -21,7 +21,8 @@ class Timeslice
 
   def available_animals
     in_service = Animal.filter(:date_removed_from_service => nil).union(
-                 Animal.filter(:date_removed_from_service > @date)).all
+                 Animal.filter(:date_removed_from_service > @date)).
+      eager(:uses => {:group => :reservation}).all
     (in_service - animals_to_be_considered_in_use).uniq
   end
 
@@ -57,7 +58,7 @@ class Timeslice
 
 
   def pairs_with_exclusion_range_overlapping_now
-    query = DB[:procedures, :animals, :uses, :groups, :reservations].
+    raw = DB[:procedures, :animals, :uses, :groups, :reservations].
       exclude(:reservations__id => @ignored_reservation.id).
       filter(:procedures__days_delay > 0).
       filter(:procedures__id => :uses__procedure_id).
@@ -68,13 +69,17 @@ class Timeslice
       filter(:reservations__date + :procedures__days_delay > @date).
       select(:procedures__id.as(:procedure_id), 
              :animals__id.as(:animal_id),
-             :reservations__id.as(:reservations_id))
+             :reservations__id.as(:reservations_id)).all
 
-    query.collect { | row |
-      proc = Procedure[row[:procedure_id]]
-      animal = Animal[row[:animal_id]]
-#      pp [proc.name, animal.name, row[:reservation_id]]
-      [proc, animal]
+    # Avoid queries. Yes, this was done after observing bad performance.
+    animals_by_id = Hash[*Animal.all.collect { | a | [a.id, a] }.flatten]
+    procedures_by_id = Hash[*Procedure.all.collect { | p | [p.id, p] }.flatten]
+
+    raw.collect { | row | 
+      proc = procedures_by_id[row[:procedure_id]]
+      animal = animals_by_id[row[:animal_id]]
+      #      pp [proc.name, animal.name, row[:reservation_id]]
+      [proc, animal]      
     }
   end
 

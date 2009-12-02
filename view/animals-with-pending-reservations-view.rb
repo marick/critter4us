@@ -13,7 +13,7 @@ class AnimalsWithPendingReservationsView < Erector::Widget
       end
       body do
         table(NarrowTableStyle) do 
-          animals = @animal_source.order_by(:name.desc).all
+          animals = @animal_source.eager(:uses => {:group => :reservation}).order_by(:name.desc).all
           animals.each do | a |
             reservations = a.reservations_pending_as_of(@date)
             unless reservations.empty?

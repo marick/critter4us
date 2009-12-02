@@ -33,18 +33,16 @@ class Animal < Sequel::Model
   end
 
   def dates_used_after_beginning_of(date)
-    Reservation.filter(:date >= date).find_all { | r |
-      r.animals.include?(self)
-    }.collect { | r |    # No &:date in Heroku Ruby.
-      r.date 
-    }.sort { | a, b |
-      -(a<=>b)
-    }
+    reservations_pending_as_of(date).collect { | r | r.date }
   end
 
   def reservations_pending_as_of(date)
-    Reservation.filter(:date >= date).order_by(:date.desc).find_all { | r | 
-      r.animals.include?(self)
+    uses.find_all { | u | 
+      u.reservation.date >= date
+    }.collect { | u | 
+      u.reservation 
+    }.sort { |a, b |
+      -(a.date <=> b.date)
     }
   end
 

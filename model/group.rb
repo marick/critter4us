@@ -1,7 +1,7 @@
 
 class Group < Sequel::Model
   many_to_one :reservation
-  one_to_many :uses, :eager => [:animal, :procedure]
+  one_to_many :uses
 
   def before_destroy
     uses.each { | use | use.destroy }
