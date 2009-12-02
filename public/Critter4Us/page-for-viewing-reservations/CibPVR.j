@@ -1,8 +1,8 @@
 @import "../util/Constants.j"
-@import "../cib/TableViewingCib.j"
+@import "../cib/HtmlViewingCib.j"
 @import "PageControllerPVR.j"
 
-@implementation CibPVR : TableViewingCib
+@implementation CibPVR : HtmlViewingCib
 {
   
 }

@@ -1,6 +1,6 @@
 @import "PageControllerPVL.j"
 
-@implementation CibPVL : TableViewingCib
+@implementation CibPVL : HtmlViewingCib
 {
   
 }

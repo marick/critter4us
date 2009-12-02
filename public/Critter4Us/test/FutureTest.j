@@ -45,6 +45,20 @@
 }
 
 
+// For some reason, Firefox peppers the app with an empty data callback and 
+// an empty end-of-request callback before it even sends the GET.
+- (void) test_a_connection_that_finishes_with_empty_data_does_nothing
+{
+  [scenario
+  during: function() {
+      [sut connectionDidFinishLoading: UnusedArgument];
+    }
+  behold: function() {
+      [self listenersShouldHearNo: "some notification"];
+    }];
+}
+
+
 - (void) test_sending_post_registers_for_callbacks_and_becomes_busy
 {
   [scenario

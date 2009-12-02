@@ -1,6 +1,6 @@
 @import "PageController.j"
 
-@implementation TableViewingPageController : PageController
+@implementation HtmlViewingPageController : PageController
 {
   CPView table;
 }

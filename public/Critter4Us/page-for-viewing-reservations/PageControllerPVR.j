@@ -1,7 +1,7 @@
 @import <AppKit/AppKit.j>
-@import "../controller/TableViewingPageController.j"
+@import "../controller/HtmlViewingPageController.j"
 
-@implementation PageControllerPVR : TableViewingPageController
+@implementation PageControllerPVR : HtmlViewingPageController
 {
 }
 

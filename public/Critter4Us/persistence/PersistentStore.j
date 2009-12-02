@@ -128,10 +128,16 @@ var SharedPersistentStore = nil;
 - (CPDictionary) dictionaryFromJSON: (CPString) json
 {
   if (! json)
-    alert("No JSON string received after posting. Please report this.   \nOriginal: " + json);
+  {
+    alert("No JSON string received after posting. Please report this.");
+    return;
+  }
   var jsHash =  [json objectFromJSON];
   if (! jsHash)
+  {
     alert("No hash was obtained from JSON string " + json + "\n Please report this.");
+    return;
+  }
   // CPLog([[CPDictionary dictionaryWithJSObject: jsHash] description]);
   var dictionary =  [fromNetworkConverter convert: jsHash
                               withAddedExclusions: timeInvariantExclusions];

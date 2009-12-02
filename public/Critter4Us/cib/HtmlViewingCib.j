@@ -1,6 +1,6 @@
 @import "../util/Constants.j"
 
-@implementation TableViewingCib : CPObject
+@implementation HtmlViewingCib : CPObject
 {
   
 }
