@@ -291,7 +291,7 @@
   {
     pendingReservationViewInstructions = [[CPTextField alloc] initWithFrame: CGRectMake(20,330, 600, 30)];
     [pendingReservationViewInstructions setLineBreakMode: CPLineBreakByWordWrapping];
-    [pendingReservationViewInstructions setStringValue: "The table below shows animals that cannot be taken out of service because they are reserved at the same or later date."];
+    [pendingReservationViewInstructions setStringValue: "Any animals that cannot be taken out of service are shown below, along with the reservations that prevent it."];
   }
   return pendingReservationViewInstructions;
 }
