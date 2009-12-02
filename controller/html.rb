@@ -18,7 +18,8 @@ class Controller
   end
 
   get '/reservations' do 
-    view(ReservationListView).new(:reservations => reservation_source.all).to_s
+    reservations = reservation_source.eager(:groups => {:uses => [:animal, :procedure]}).all
+    view(ReservationListView).new(:reservations => reservations).to_s
   end
 
   get '/animals' do 
