@@ -14,7 +14,7 @@
   [self notificationNamed: RestartAnimalRemovalStateMachineNews
                       calls: @selector(restart:)];
   [self notificationNamed: TableOfAnimalsWithPendingReservationsNews
-                     calls: @selector(showAnimalsWithPendingReservations:)]
+                    calls: @selector(showAnimalsWithPendingReservations:)];
 }
 
 - (void) start

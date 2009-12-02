@@ -115,6 +115,7 @@ var SharedPersistentStore = nil;
   var content = [uriMaker POSTContentFrom: 
                                {'date':[toNetworkConverter convert: date],
                                 'animals': [toNetworkConverter convert: animals]}];
+  alert("posting " + uri + " with content " + content);
   [Future spawnPostTo: network
             withRoute: uri
               content: content
