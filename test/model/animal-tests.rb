@@ -56,35 +56,50 @@ class AnimalTests < FreshDatabaseTestCase
       assert { never_removed.in_service_on?(test_date) } 
     end
 
-    context "dates on which animals are used" do 
+    context "an animal's pending reservations" do 
       setup do 
         @animal = animal = Animal.random
-        r = Reservation.random(:date => Date.new(2009, 12, 3)) do 
+        @reservation = Reservation.random(:date => Date.new(2009, 12, 3)) do 
           use animal
           use Procedure.random
         end
       end
 
-      should "should include the given date" do
+      should "be returned" do
+        assert_equal([], @animal.reservations_pending_as_of(Date.new(2009,12,4)))
+        assert_equal([@reservation],
+                     @animal.reservations_pending_as_of(Date.new(2009,12,3)))
+      end
+
+      should ", alternately, be returned in the form of dates" do
         assert_equal([], @animal.dates_used_after_beginning_of(Date.new(2009,12,4)))
         assert_equal([Date.new(2009,12,03)],
                      @animal.dates_used_after_beginning_of(Date.new(2009,12,3)))
       end
 
-      should "return dates in descending order" do
-        Reservation.random(:date => Date.new(2010, 12, 3)) do 
-          use @animal; use Procedure.random
-        end
-        Reservation.random(:date => Date.new(2020, 12, 3)) do 
-          use @animal; use Procedure.random
-        end
-        Reservation.random(:date => Date.new(2011, 12, 3)) do 
-          use @animal; use Procedure.random
+      context "multiple reservations" do
+        setup do
+          @third = Reservation.random(:date => Date.new(2010, 12, 3)) do 
+            use @animal; use Procedure.random
+          end
+          @first = Reservation.random(:date => Date.new(2020, 12, 3)) do 
+            use @animal; use Procedure.random
+          end
+          @second = Reservation.random(:date => Date.new(2011, 12, 3)) do 
+            use @animal; use Procedure.random
+          end
         end
 
-        assert_equal([Date.new(2020,12,03), Date.new(2011,12,03),
-                      Date.new(2010,12,03), Date.new(2009,12,03)],
-                     @animal.dates_used_after_beginning_of(Date.new(2009,12,3)))
+        should "return reservations in descending date order" do
+          assert_equal([@first, @second, @third, @reservation],
+                       @animal.reservations_pending_as_of(Date.new(2009,12,3)))
+        end
+
+        should "return dates in descending order" do
+          assert_equal([Date.new(2020,12,03), Date.new(2011,12,03),
+                        Date.new(2010,12,03), Date.new(2009,12,03)],
+                       @animal.dates_used_after_beginning_of(Date.new(2009,12,3)))
+        end
       end
     end
   end

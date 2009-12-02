@@ -42,6 +42,12 @@ class Animal < Sequel::Model
     }
   end
 
+  def reservations_pending_as_of(date)
+    Reservation.filter(:date >= date).order_by(:date.desc).find_all { | r | 
+      r.animals.include?(self)
+    }
+  end
+
   # following are for testing
 
   def self.random(overrides = {})

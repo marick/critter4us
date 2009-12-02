@@ -4,12 +4,24 @@ require 'model/requires'
 require 'view/requires'
 require 'assert2/xhtml'
 
-class ReservationDatesCellWidgetTests < Test::Unit::TestCase
+class ReservationDatesCellWidgetTests < FreshDatabaseTestCase
   include ViewHelper
-  should "include dates in its output" do 
-    html = ReservationDatesCell.new(:dates => [Date.new(2019, 12, 13),
-                                               Date.new(2010, 1, 1)]).to_s
-    assert { html.include? "2019-12-13" }
-    assert { html.include? "2010-01-01" }
+
+  def setup
+    @reservation = Reservation.random(:date => Date.new(2019, 12, 13))
+    @html = ReservationDatesCell.new(:reservations => [@reservation]).to_s
   end
+  
+  should "include dates in its output" do 
+    assert { @html.include? "2019-12-13" }
+  end
+
+  should "include a link to the reservation" do 
+    reservation = @reservation
+    assert_xhtml(@html) do
+        a('2019-12-13', :href => %r{reservation/#{reservation.pk}})
+    end
+  end
+
+  
 end

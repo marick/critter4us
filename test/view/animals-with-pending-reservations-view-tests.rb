@@ -25,13 +25,13 @@ class AnimalsWithPendingReservationsViewTests < FreshDatabaseTestCase
 
     # Here are two animals with reservations in the future. They're
     # the only ones of interest.
-    Reservation.random(:date => Date.new(2019, 12, 13)) do
+    @far_future_reservation = Reservation.random(:date => Date.new(2019, 12, 13)) do
       use Animal.random(:name => 'far future')
       use Procedure.random
     end
 
     near_future = Animal.random(:name => 'Near future')
-    Reservation.random(:date => Date.new(2010, 1, 1)) do
+    @near_future_reservation = Reservation.random(:date => Date.new(2010, 1, 1)) do
       use near_future
       use Procedure.random
     end
@@ -49,7 +49,6 @@ class AnimalsWithPendingReservationsViewTests < FreshDatabaseTestCase
 
   should "show animals with pending reservations" do 
     html = @view.to_s
-    puts html
     assert { html.include? 'far future' }
     assert { html.include? 'Near future' }
     deny { html.include? 'not reserved' }
@@ -66,9 +65,9 @@ class AnimalsWithPendingReservationsViewTests < FreshDatabaseTestCase
       @view.to_s
     }.behold! { 
       view_itself.should_use_widget(ReservationDatesCell).
-                  handing_it(:dates => [Date.new(2019, 12, 13)])
+                  handing_it(:reservations => [@far_future_reservation])
       view_itself.should_use_widget(ReservationDatesCell).
-                  handing_it(:dates => [Date.new(2010, 1, 1)])
+                  handing_it(:reservations => [@near_future_reservation])
     }
   end
 end

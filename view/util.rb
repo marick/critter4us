@@ -6,6 +6,9 @@ module ViewHelper
   TableStyle = { :style => "width: 900px", :border=>"1px",
                  :cellpadding => "5px", :cellspacing=>"0px" }
 
+  NarrowTableStyle = { :style => "width: 500px", :border=>"1px",
+                 :cellpadding => "5px", :cellspacing=>"0px" }
+
   def delete_button(route, hash={})
     hash = {:button_text => 'Delete'}.merge(hash)
     erector do 
