@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'sequel'
+require 'logger'
 
 Sinatra::Base.configure :test do 
 DB = Sequel.postgres("critter4us-test", :host => 'localhost', :user => 'postgres', :password => 'c0wm4gnet')
@@ -11,7 +12,7 @@ DB = Sequel.postgres("critter4us-test", :host => 'localhost', :user => 'postgres
 end
 
 Sinatra::Base.configure :development do 
-  DB = Sequel.postgres("critter4us", :host => 'localhost', :user => 'postgres', :password => 'c0wm4gnet')
+  DB = Sequel.postgres("critter4us", :host => 'localhost', :user => 'postgres', :password => 'c0wm4gnet', :loggers => [Logger.new($stdout)])
   
 #  DB = Sequel.mysql("critter4us", :host=>'localhost',
 #                    :user=>'root', :password=>'')
