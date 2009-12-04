@@ -22,32 +22,6 @@ class JsonGenerationTests < FreshDatabaseTestCase
     assert { ruby_obj == JSON[last_response.body] }
   end
 
-  context "utilities" do
-
-    should "turn hash keys into symbols" do
-      input = { 'key' => 'value' } 
-      expected = { :key => 'value' }
-      assert { expected == app.symbol_keys(input) }
-    end
-
-    should "convert to consistent internal format" do
-      input = {
-        "stringkey" => "value",
-        "time" => MORNING,
-        "date" => "2009-12-01",
-        "groups" => [ {'animals' => ['josie', 'frank'],
-                        'procedures' => ['venipuncture']}],
-      };
-      actual = app.move_to_internal_format(input)
-      expected = {
-        :stringkey => 'value', :time => MORNING,
-        :date => Date.new(2009,12,1),
-        :groups => [{:animals => ['josie', 'frank'],
-                      :procedures => ['venipuncture']}]
-      }
-      assert { actual == expected }
-    end
-  end
 
   context "delivering a blob of course-session-specific data" do
 

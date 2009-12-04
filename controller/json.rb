@@ -3,7 +3,7 @@ require 'util/extensions.rb'
 class Controller
 
   get '/json/course_session_data_blob' do
-    internal = move_to_internal_format(params)
+    internal = internalize(params)
     timeslice.move_to(internal[:date], internal[:time], ignored_reservation)
     procedure_names = procedure_source.sorted_names
     jsonically do 
@@ -32,7 +32,7 @@ class Controller
   end
 
   post '/json/take_animals_out_of_service' do
-    internal = move_to_internal_format(JSON.parse(params['data']))
+    internal = internalize(JSON.parse(params['data']))
     internal[:animals].each do | animal_name |
       Animal[:name => animal_name].remove_from_service_as_of(internal[:date])
     end
@@ -61,7 +61,7 @@ class Controller
   end
 
   get '/json/animals_in_service_blob' do
-    internal = move_to_internal_format(params)
+    internal = internalize(params)
     timeslice.move_to(internal[:date], MORNING, nil)
     animals = timeslice.available_animals
     hashes = timeslice.hashes_from_animals_to_pending_dates(animals)
@@ -74,24 +74,6 @@ class Controller
 
 
   # tested
-  def symbol_keys(hash)
-    retval = {}
-    hash.each do | k, v | 
-      retval[k.to_sym] = v
-    end
-    return retval
-  end
-
-  def move_to_internal_format(hash)
-    result = symbol_keys(hash)
-    result[:date] = Date.parse(result[:date]) if result[:date]
-    if result[:groups]
-      result[:groups] = result[:groups].collect { | group | 
-        symbol_keys(group)
-      }
-    end
-    result
-  end
 
   def exclusions(procedure_names)  # TODO: Why bother with hash_maker?
     excluded_pairs = []
@@ -101,8 +83,12 @@ class Controller
 
   private
 
+  def internalize(hash)
+    Internalizer.new.convert(hash)
+  end
+
   def tweak_reservation
-    hash = move_to_internal_format(JSON.parse(params['data']))
+    hash = internalize(JSON.parse(params['data']))
     reservation = yield hash
     jsonically do
       typing_as "reservation" do 
