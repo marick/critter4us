@@ -20,7 +20,7 @@ class Controller
 
   post '/json/modify_reservation' do
     internal = internalize(params)
-    id = internal[:reservationID].to_i;
+    id = internal[:reservationID]
     reservation_data = internal[:data]
     updated_reservation = reservation_source[id].with_updated_groups(reservation_data)
     externalize(reservation_hash(updated_reservation))
