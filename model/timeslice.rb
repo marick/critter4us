@@ -3,10 +3,44 @@ require 'util/requires'
 class Timeslice
   include TestSupport
 
+  def initialize(*args)
+    super
+    collaborators_start_as(:animal_source => Animal, 
+                           :procedure_source => Procedure)
+    self
+  end
+
+
   def move_to(date, time, ignoring = nil)
     @date = date
     @time = time
     @ignored_reservation = ignoring || unsaved_empty_reservation
+    @available_animals = nil
+  end
+
+  def available_animals
+    return @available_animals if @available_animals
+    in_service = Animal.filter(:date_removed_from_service => nil).union(
+                 Animal.filter(:date_removed_from_service > @date)).
+      eager(:uses => {:group => :reservation}).all
+    @available_animals = (in_service - animals_to_be_considered_in_use).uniq
+  end
+
+  def procedures
+    return @procedures if @procedures
+    @procedures = procedure_source.all.sort { | a, b |
+      a.name.downcase <=> b.name.downcase 
+    }
+  end
+
+  def procedure_names
+    procedures.collect { | p | p.name } 
+  end
+
+  def exclusions
+    excluded_pairs = []
+    add_excluded_pairs(excluded_pairs)
+    HashMaker.new.keys_and_pairs(procedure_names, excluded_pairs)
   end
 
 
@@ -17,13 +51,6 @@ class Timeslice
     # pp inuse
     result = (overlaps + inuse).uniq
     pairs.insert(-1, *result)
-  end
-
-  def available_animals
-    in_service = Animal.filter(:date_removed_from_service => nil).union(
-                 Animal.filter(:date_removed_from_service > @date)).
-      eager(:uses => {:group => :reservation}).all
-    (in_service - animals_to_be_considered_in_use).uniq
   end
 
   def available_animals_by_name

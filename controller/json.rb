@@ -5,11 +5,10 @@ class Controller
   get '/json/course_session_data_blob' do
     internal = internalize(params)
     timeslice.move_to(internal[:date], internal[:time], ignored_reservation)
-    procedure_names = procedure_source.sorted_names
     externalize('animals' => timeslice.available_animals_by_name,
-                'procedures' => procedure_names,
+                'procedures' => timeslice.procedure_names,
                 'kindMap' => animal_source.kind_map,
-                'exclusions' => self.exclusions(procedure_names))
+                'exclusions' => timeslice.exclusions)
   end
 
   post '/json/store_reservation' do
@@ -41,16 +40,15 @@ class Controller
     number = params[:number]
     reservation = reservation_source[number]
     timeslice.move_to(reservation.date, reservation.time, ignored_reservation)
-    procedure_names = procedure_source.sorted_names
     externalize(:instructor => reservation.instructor,
                 :course => reservation.course,
                 :date => reservation.date.to_s,
                 :time => reservation.time,
                 :groups => reservation.groups.collect { | g | g.in_wire_format },
-                :procedures => procedure_names,
+                :procedures => timeslice.procedure_names,
                 :animals => timeslice.available_animals_by_name,
                 :kindMap => animal_source.kind_map,
-                :exclusions => self.exclusions(procedure_names),
+                :exclusions => timeslice.exclusions,
                 :id => reservation.pk.to_s)
   end
 
@@ -61,16 +59,6 @@ class Controller
     hashes = timeslice.hashes_from_animals_to_pending_dates(animals)
     animals_without_uses = filter_unused_animal_names(hashes)
     externalize('unused animals' => animals_without_uses)
-  end
-
-
-
-  # tested
-
-  def exclusions(procedure_names)  # TODO: Why bother with hash_maker?
-    excluded_pairs = []
-    timeslice.add_excluded_pairs(excluded_pairs)
-    hash_maker.keys_and_pairs(procedure_names, excluded_pairs)
   end
 
   private

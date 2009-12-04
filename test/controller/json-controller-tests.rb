@@ -58,21 +58,17 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
     setup do
       @@stuff_that_always_happens = lambda() { 
-        pairs = []
         @timeslice.should_receive(:available_animals_by_name).once.and_return('some animals')
-        @procedure_source.should_receive(:sorted_names).once.and_return('some procedure names')
-
-        @timeslice.should_receive(:add_excluded_pairs).once.with(pairs)
-        @hash_maker.should_receive(:keys_and_pairs).once.
-                    with('some procedure names', pairs).
-                    and_return('some exclusions')
+        @timeslice.should_receive(:procedure_names).once.and_return('some sorted procedure names')
+        @timeslice.should_receive(:exclusions).once.
+                   and_return('some exclusions')
 
         @animal_source.should_receive(:kind_map).once.and_return('some kind map')
       }
 
       @results_of_what_happens = {
          'animals' => 'some animals',
-         'procedures' => 'some procedure names',
+         'procedures' => 'some sorted procedure names',
          'kindMap' => 'some kind map',
          'exclusions' => 'some exclusions'
       }

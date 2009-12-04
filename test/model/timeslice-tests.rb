@@ -7,7 +7,39 @@ class TimesliceTests < FreshDatabaseTestCase
   def setup
     super
     @timeslice = Timeslice.new
+    @timeslice.override(mocks(:animal_source, :procedure_source))
     @destination = []
+  end
+
+  context "procedures" do 
+    setup do 
+      @procedure_source.should_receive(:all).once.
+                        and_return([Procedure.new(:name => 'floating'),
+                                    Procedure.new(:name => 'epidural'),
+                                    Procedure.new(:name => 'Zygototomy'),
+                                    Procedure.new(:name => "Caslick's procedure")
+                                   ]).
+                        by_default
+    end
+    
+    should "be gotten from the procedure source" do
+      @timeslice.procedures
+    end
+
+    should "be lazy" do 
+      @timeslice.procedures
+    end
+
+    should "sort results" do
+      assert_equal( ["Caslick's procedure", 'epidural', 'floating', 'Zygototomy'],
+                    @timeslice.procedures.map(&:name))
+    end
+
+    should "also be provided in the form of names" do  # Todo: move toward doing this on the controller side, in externalizing.
+      assert_equal( ["Caslick's procedure", 'epidural', 'floating', 'Zygototomy'],
+                    @timeslice.procedure_names)
+      
+    end
   end
 
   context "adding pairs excluded at a given time" do
