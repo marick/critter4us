@@ -6,16 +6,10 @@ class Controller
     internal = internalize(params)
     timeslice.move_to(internal[:date], internal[:time], ignored_reservation)
     procedure_names = procedure_source.sorted_names
-    jsonically do 
-      answer = {
-        'animals' => timeslice.available_animals_by_name,
-        'procedures' => procedure_names,
-        'kindMap' => animal_source.kind_map,
-        'exclusions' => self.exclusions(procedure_names)
-        
-      }
-      answer
-    end
+    externalize('animals' => timeslice.available_animals_by_name,
+                'procedures' => procedure_names,
+                'kindMap' => animal_source.kind_map,
+                'exclusions' => self.exclusions(procedure_names))
   end
 
   post '/json/store_reservation' do
@@ -40,24 +34,19 @@ class Controller
 
   get '/json/reservation/:number' do
     number = params[:number]
-    jsonically do 
-      reservation = reservation_source[number]
-      timeslice.move_to(reservation.date, reservation.time, ignored_reservation)
-      procedure_names = procedure_source.sorted_names
-      reservation_data = {
-        :instructor => reservation.instructor,
-        :course => reservation.course,
-        :date => reservation.date.to_s,
-        :time => reservation.time,
-        :groups => reservation.groups.collect { | g | g.in_wire_format },
-        :procedures => procedure_names,
-        :animals => timeslice.available_animals_by_name,
-        :kindMap => animal_source.kind_map,
-        :exclusions => self.exclusions(procedure_names),
-        :id => reservation.pk.to_s
-      }
-      # pp reservation_data
-    end
+    reservation = reservation_source[number]
+    timeslice.move_to(reservation.date, reservation.time, ignored_reservation)
+    procedure_names = procedure_source.sorted_names
+    externalize(:instructor => reservation.instructor,
+                :course => reservation.course,
+                :date => reservation.date.to_s,
+                :time => reservation.time,
+                :groups => reservation.groups.collect { | g | g.in_wire_format },
+                :procedures => procedure_names,
+                :animals => timeslice.available_animals_by_name,
+                :kindMap => animal_source.kind_map,
+                :exclusions => self.exclusions(procedure_names),
+                :id => reservation.pk.to_s)
   end
 
   get '/json/animals_in_service_blob' do
@@ -65,10 +54,8 @@ class Controller
     timeslice.move_to(internal[:date], MORNING, nil)
     animals = timeslice.available_animals
     hashes = timeslice.hashes_from_animals_to_pending_dates(animals)
-    jsonically do 
-      animals_without_uses = filter_unused_animal_names(hashes)
-      {'unused animals' => animals_without_uses}
-    end
+    animals_without_uses = filter_unused_animal_names(hashes)
+    externalize('unused animals' => animals_without_uses)
   end
 
 
@@ -90,16 +77,12 @@ class Controller
   def tweak_reservation
     hash = internalize(JSON.parse(params['data']))
     reservation = yield hash
-    jsonically do
-      typing_as "reservation" do 
-        reservation.pk.to_s
-      end
-    end
+    externalize("reservation" => reservation.pk.to_s)
   end
 
-  def jsonically
+  def externalize(arg)
     response['Content-Type'] = 'application/json'
-    yield.to_json
+    arg.to_json
   end
 
   def typing_as(type)
