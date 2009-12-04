@@ -1,12 +1,12 @@
+require 'util/constants'
+require 'json'
+
 class Internalizer
   def convert(hash)
     result = symbol_keys(hash)
-    result[:date] = Date.parse(result[:date]) if result[:date]
-    if result[:groups]
-      result[:groups] = result[:groups].collect { | group | 
-        symbol_keys(group)
-      }
-    end
+    convert_date(result) if result.has_key?(:date)
+    convert_groups(result) if result.has_key?(:groups)
+    convert_json_data(result) if result.has_key?(:data) # Todo: change key to "json_data"
     result
   end
 
@@ -19,4 +19,17 @@ class Internalizer
     return retval
   end
 
+  def convert_date(hash)
+    hash[:date] = Date.parse(hash[:date])
+  end
+
+  def convert_groups(hash)
+    hash[:groups] = hash[:groups].collect do | group | 
+      symbol_keys(group)
+    end
+  end
+
+  def convert_json_data(hash)
+    hash[:data] = convert(JSON.parse(hash[:data]))
+  end
 end

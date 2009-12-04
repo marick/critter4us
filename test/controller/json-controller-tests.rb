@@ -19,7 +19,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
   def assert_jsonification_of(ruby_obj)
     # pp JSON[last_response.body]
-    assert { ruby_obj == JSON[last_response.body] }
+    assert_equal(ruby_obj, JSON[last_response.body])
   end
 
 
@@ -243,7 +243,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
     should "return the unchanged id" do 
       assert_json_response
       assert_jsonification_of({'reservation' => @new_reservation.pk.to_s})
-      assert { @id_to_modify == @new_reservation.pk.to_s }
+      assert_equal @id_to_modify, @new_reservation.pk.to_s 
     end
   end
 

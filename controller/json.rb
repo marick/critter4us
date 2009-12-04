@@ -13,20 +13,25 @@ class Controller
   end
 
   post '/json/store_reservation' do
-    tweak_reservation do | hash | 
-      reservation_source.create_with_groups(hash)
-    end
+    reservation_data = internalize(params)[:data]
+    new_reservation = reservation_source.create_with_groups(reservation_data)
+    externalize(reservation_hash(new_reservation))
   end
 
   post '/json/modify_reservation' do
-    id = params['reservationID'].to_i;
-    tweak_reservation do | hash | 
-      reservation_source[id].with_updated_groups(hash)
-    end
+    internal = internalize(params)
+    id = internal[:reservationID].to_i;
+    reservation_data = internal[:data]
+    updated_reservation = reservation_source[id].with_updated_groups(reservation_data)
+    externalize(reservation_hash(updated_reservation))
+  end
+
+  def reservation_hash(reservation) 
+    {"reservation" => reservation.pk.to_s}
   end
 
   post '/json/take_animals_out_of_service' do
-    internal = internalize(JSON.parse(params['data']))
+    internal = internalize(params)[:data]
     internal[:animals].each do | animal_name |
       Animal[:name => animal_name].remove_from_service_as_of(internal[:date])
     end
@@ -72,12 +77,6 @@ class Controller
 
   def internalize(hash)
     Internalizer.new.convert(hash)
-  end
-
-  def tweak_reservation
-    hash = internalize(JSON.parse(params['data']))
-    reservation = yield hash
-    externalize("reservation" => reservation.pk.to_s)
   end
 
   def externalize(arg)
