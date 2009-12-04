@@ -1,6 +1,10 @@
 require 'pp'
 require 'model/requires'
 
+class ExclusionRule < Sequel::Model
+  many_to_one :procedure
+end
+
 class Procedure  < Sequel::Model
   one_to_many :uses
 
