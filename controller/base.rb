@@ -41,6 +41,7 @@ class Controller < Sinatra::Base
                            :reservation_source => Reservation,
                            :timeslice => Timeslice.new,
                            :hash_maker => HashMaker.new)
+    self
   end
 end
 
