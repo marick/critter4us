@@ -26,8 +26,9 @@ class JsonGenerationTests < FreshDatabaseTestCase
   context "delivering a blob of course-session-specific data" do
 
     should "exclude animals that are currently in use" do 
-      @app.override(mocks(:timeslice, :animal_source, :procedure_source,
-                          :procedure_rules, :hash_maker))
+      @app.override(mocks(:animal_source, :procedure_source,
+                          :procedure_rules))
+      @timeslice = @app.mock_timeslice = flexmock('timeslice')
       during { 
         get '/json/course_session_data_blob', {:date => '2009-01-01', :time => MORNING}
       }.behold! {
@@ -43,8 +44,9 @@ class JsonGenerationTests < FreshDatabaseTestCase
                                        :time => MORNING,
                                        :procedure => Procedure.random,
                                        :animal => Animal.random)
-      @app.override(mocks(:timeslice, :animal_source, :procedure_source,
-                          :procedure_rules, :hash_maker))
+      @app.override(mocks(:animal_source, :procedure_source,
+                          :procedure_rules))
+      @timeslice = @app.mock_timeslice = flexmock('timeslice')
       during { 
         get "/json/course_session_data_blob",
             {:date => '2009-01-01', :time => MORNING, :ignoring => reservation.id}
@@ -114,7 +116,8 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
   context "producing lists of animals in service" do 
     should "return a list of animals with no pending reservations" do 
-      @app.override(mocks(:animal_source, :timeslice))
+      @app.override(mocks(:animal_source))
+      @timeslice = @app.mock_timeslice = flexmock("timeslice")
       brooke = Animal.random(:name => 'brooke')
       jake = Animal.random(:name => 'jake')
 

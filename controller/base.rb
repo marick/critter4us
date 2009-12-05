@@ -32,15 +32,17 @@ class Controller < Sinatra::Base
     unless request.path =~ %r{/reservation/\d+} # generalize?
       protected! 
     end
+    @timeslice = @mock_timeslice || Timeslice.new
   end
+
+  attr_writer :mock_timeslice
+  attr_accessor :timeslice
 
   def initialize(*args)
     super
     collaborators_start_as(:animal_source => Animal, 
                            :procedure_source => Procedure,
-                           :reservation_source => Reservation,
-                           :timeslice => Timeslice.new,
-                           :hash_maker => HashMaker.new)
+                           :reservation_source => Reservation)
     self
   end
 end
