@@ -6,7 +6,8 @@ class Timeslice
   def initialize(*args)
     super
     collaborators_start_as(:animal_source => Animal, 
-                           :procedure_source => Procedure)
+                           :procedure_source => Procedure,
+                           :use_source => Use)
     self
   end
 
@@ -20,10 +21,15 @@ class Timeslice
 
   def available_animals
     return @available_animals if @available_animals
-    in_service = Animal.filter(:date_removed_from_service => nil).union(
-                 Animal.filter(:date_removed_from_service > @date)).
-      eager(:uses => {:group => :reservation}).all
-    @available_animals = (in_service - animals_to_be_considered_in_use).uniq
+
+    in_service = animal_source.all_in_service_on(@date)
+    in_use = use_source.animals_in_use_at(@date, @time)
+    to_be_considered_in_use = in_use - @ignored_reservation.animals
+    @available_animals = (in_service - to_be_considered_in_use)
+  end
+
+  def available_animals_by_name
+    available_animals.collect { | a | a.name }  # &:name not built in at Heroku (1.8.6)
   end
 
   def procedures
@@ -51,10 +57,6 @@ class Timeslice
     # pp inuse
     result = (overlaps + inuse).uniq
     pairs.insert(-1, *result)
-  end
-
-  def available_animals_by_name
-    available_animals.collect { | a | a.name }  # &:name not built in at Heroku (1.8.6)
   end
 
   def hashes_from_animals_to_pending_dates(animals)

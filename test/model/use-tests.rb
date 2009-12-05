@@ -27,4 +27,35 @@ class UseTests < FreshDatabaseTestCase
     assert { result[0].animal == matching_animal }
     assert { result[0].procedure == matching_procedure }
   end
+
+
+  context "returning animals in use" do
+    setup do 
+      @date = Date.new(2010, 10, 10)
+      @time = MORNING
+      @fred = Animal.random(:name => "fred")
+      @unused = Animal.random(:name => "will not appear")
+    end
+
+    should "include animals in use at the exact moment" do 
+      fred = @fred; unused = @unused
+      Reservation.random(:date => @date, :time => @time) do
+        use fred
+        use Procedure.random
+      end
+      Reservation.random(:date => @date, :time => EVENING) do
+        use unused
+        use Procedure.random
+      end
+      Reservation.random(:date => @date+1, :time => @time) do 
+        use unused
+        use Procedure.random
+      end
+
+      assert_equal([@fred], Use.animals_in_use_at(@date, @time))
+    end
+  end
+
+
+
 end

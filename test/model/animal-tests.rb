@@ -56,6 +56,17 @@ class AnimalTests < FreshDatabaseTestCase
       assert { never_removed.in_service_on?(test_date) } 
     end
 
+
+    should "be able to return a sorted list of all animals in service" do
+      still_in = Animal.random.remove_from_service_as_of('2001-12-02')
+      out = Animal.random.remove_from_service_as_of('2001-12-01')
+      never_removed = Animal.random
+
+      test_date = Date.parse('2001-12-01')
+      assert_equal([still_in, never_removed],
+                   Animal.all_in_service_on(test_date))
+    end
+
     context "an animal's pending reservations" do 
       setup do 
         @animal = animal = Animal.random
@@ -117,9 +128,18 @@ class AnimalTests < FreshDatabaseTestCase
           assert_equal([Date.new(2009,12,03)],
                        @animal.dates_used_after_beginning_of(Date.new(2009,12,3)))
         end
-
       end
     end
+
+    should "be sortable by lowercase name" do 
+      z = Animal.random(:name => 'Z')
+      m = Animal.random(:name => 'm')
+      d = Animal.random(:name => 'd')
+      a = Animal.random(:name => 'A')
+      assert_equal([a, d, m, z],
+                   [z, m, d, a].sort)
+    end
+
   end
 end
 

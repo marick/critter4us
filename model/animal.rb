@@ -22,6 +22,12 @@ class Animal < Sequel::Model
     map
   end
 
+  def self.all_in_service_on(date)
+    filter(:date_removed_from_service => nil).union(
+    filter(:date_removed_from_service > date)).
+       eager(:uses => {:group => :reservation}).all
+  end
+
   def remove_from_service_as_of(date)
     self.date_removed_from_service = date
     save_changes
@@ -45,6 +51,17 @@ class Animal < Sequel::Model
       -(a.date <=> b.date)
     }
   end
+
+  def <=>(other)
+    name.downcase <=> other.name.downcase
+  end
+
+  private
+
+  def sort_by_name(animals)   # Delete this.
+    animals.sort
+  end
+
 
   # following are for testing
 

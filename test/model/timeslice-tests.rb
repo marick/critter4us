@@ -1,13 +1,14 @@
 $: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'model/requires'
+require 'ostruct'
 
 class TimesliceTests < FreshDatabaseTestCase
 
   def setup
     super
     @timeslice = Timeslice.new
-    @timeslice.override(mocks(:animal_source, :procedure_source))
+    @timeslice.override(mocks(:animal_source, :procedure_source, :use_source))
     @destination = []
   end
 
@@ -41,6 +42,66 @@ class TimesliceTests < FreshDatabaseTestCase
       
     end
   end
+
+  context "animals" do 
+    setup do 
+      @date = Date.new(2010, 10, 10)
+      @time = MORNING
+      @fred = Animal.new(:name => 'fred')
+
+      @animal_source.should_receive(:all_in_service_on).once.
+                     with(@date).
+                     and_return([@fred]).
+                     by_default
+      @use_source.should_receive(:animals_in_use_at).once.
+                  with(@date, @time).
+                  and_return([]).
+                  by_default
+    end
+
+    should "be returned if they are available at the moment of reservation" do
+      @timeslice.move_to(@date, @time)
+      assert_equal([@fred], @timeslice.available_animals)
+    end
+
+    should "also return names" do 
+      @timeslice.move_to(@date, @time)
+      assert_equal([@fred.name], @timeslice.available_animals_by_name)
+    end
+
+    should "not be returned if they are in use at the time of reservation" do
+      @timeslice.move_to(@date, @time)
+      during { 
+        @timeslice.available_animals
+      }.behold! {
+        @use_source.should_receive(:animals_in_use_at).once.
+                    with(@date, @time).
+                    and_return([@fred])
+      }
+      assert_equal([], @result)
+    end
+    
+    should "be included even when in use if timeslice asked to ignore their reservation" do
+      reservation = flexmock("reservation")
+      @timeslice.move_to(@date, @time, ignoring = reservation)
+      during { 
+        @timeslice.available_animals
+      }.behold!{
+        @use_source.should_receive(:animals_in_use_at).once.
+                    with(@date, @time).
+                    and_return([@fred])
+        reservation.should_receive(:animals).once.
+                    and_return([@fred])
+      }
+      assert_equal([@fred], @result)
+    end
+  end
+
+# STOPPED
+
+
+
+
 
   context "adding pairs excluded at a given time" do
 
@@ -270,62 +331,6 @@ end
   end
 
 
-  context "delivering animal names" do 
-    context "in the presence of reservations" do 
-      setup do
-        @date = Date.new(2010, 10, 10)
-        @time = MORNING
-        cannot_be_used = Animal.random(:name => "cannot be used")
-        can_be_used = Animal.random(:name => "can be used")
-        procedure = Procedure.random(:name => 'lab procedure')
-        @cannot_be_used_reservation = Reservation.random(:date => @date,
-                                                         :time => MORNING) do
-          use cannot_be_used
-          use procedure
-        end
-        Reservation.random(:date => @date,
-                           :time => EVENING) do
-          use can_be_used
-          use procedure
-        end
-      end
-
-      should "answer names of animals not in use during the timeslice" do
-        @timeslice.move_to(@date, @time)
-        result = @timeslice.available_animals_by_name
-        assert { result == ['can be used'] }
-      end
-
-      should "override exclusion for a specific reservation's animals" do
-        @timeslice.move_to(@date, @time,  @cannot_be_used_reservation)
-        result = @timeslice.available_animals_by_name
-        assert { result.sort == ['can be used', 'cannot be used'].sort }
-      end
-    end
-
-    context "in the presence of animals removed from service" do 
-      setup do 
-        @date = Date.new(2010, 10, 10)
-        @time = MORNING
-        already_gone = Animal.random(:name => "already gone")
-        already_gone.remove_from_service_as_of(@date)
-
-        @still_here = Animal.random(:name => "still here")
-        @still_here.remove_from_service_as_of(@date+1)
-      end
-
-      should "not return animals removed from service as of given date" do
-        @timeslice.move_to(@date, @time)
-
-        result = @timeslice.available_animals
-        assert { result == [@still_here] }
-
-        result = @timeslice.available_animals_by_name
-        assert { result == ['still here'] }
-
-      end
-    end
-  end
 
   context "returning animals and their pending reservations" do
     setup do

@@ -10,9 +10,14 @@ class Use < Sequel::Model
   end
 
   def self.at(date, time)
-    Reservation.filter(:date => date, :time => time).collect { | r |
+    reservations = Reservation.filter(:date => date, :time => time).all
+    reservations.collect { | r |
       r.uses
     }.flatten
+  end
+
+  def self.animals_in_use_at(date, time)
+    at(date, time).collect { | u | u.animal }
   end
 
 end
