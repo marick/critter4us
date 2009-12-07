@@ -2,10 +2,12 @@ $: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'controller/externalizer'
 
-class ExternalizerTests < Test::Unit::TestCase
+class ExternalizerTests < FreshDatabaseTestCase
   def setup
+    super
     @externalizer = Externalizer.new
   end
+
 
   should "convert symbol keys into strings" do
     input = {:key => 'value'}
@@ -37,6 +39,44 @@ class ExternalizerTests < Test::Unit::TestCase
 
     actual = @externalizer.convert(input)
     assert_equal(expected, actual)
+  end
+
+  context "operates on group structures" do
+
+    setup do 
+      @fred = Animal.create(:name => 'fred')
+      @betsy = Animal.create(:name => 'betsy')
+      @floating = Procedure.create(:name => 'floating')
+      @vaccination = Procedure.create(:name => 'vaccination')
+      @group = Group.create
+    end
+
+    should "convert a one-use group into nested structures" do
+      Use.create(:procedure => @floating, :animal => @fred, :group => @group)
+
+      input = {:groups => [@group]}
+      expected = {'groups' => [ {'procedures' => ['floating'],
+                                  'animals' => ['fred']} ]}.to_json
+      actual = @externalizer.convert(input)
+      assert_equal(expected, actual)
+    end
+
+    should "not be fooled by duplication in uses" do
+      Use.create(:procedure => @floating, :animal => @fred, :group => @group)
+      Use.create(:procedure => @floating, :animal => @betsy, :group => @group)
+      Use.create(:procedure => @vaccination, :animal => @fred, :group => @group)
+      Use.create(:procedure => @vaccination, :animal => @betsy, :group => @group)
+
+      input = {:groups => [@group]}
+      expected = {'groups' => [{
+                                 'procedures' => ['floating', 'vaccination'],
+                                 'animals' => ['betsy', 'fred'] }]
+                 }.to_json
+
+      actual = @externalizer.convert(input)
+      assert_equal(expected, actual)
+    end
+
   end
 
   should "recursively convert hashes" do 

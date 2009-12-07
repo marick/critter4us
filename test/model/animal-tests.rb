@@ -24,9 +24,6 @@ class AnimalTests < FreshDatabaseTestCase
   end
 
   context "animal instances" do 
-    should "be able to return a wire-format of self" do
-      assert { Animal.random(:name => 'fred').in_wire_format == 'fred' }
-    end
 
     # Tested because PostGres 8.3 and 8.4 behave differently for
     # method names with underscores in them (I think). Result is that

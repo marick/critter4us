@@ -17,10 +17,6 @@ class Procedure  < Sequel::Model
     end
   end
 
-  # This doesn't work under 1.8.7 / Snow Leopard - perhaps because name isn't defined yet.
-  # alias_method :in_wire_format, :name
-  def in_wire_format; name; end
-
   # following are for testing
 
   def self.random(overrides = {})

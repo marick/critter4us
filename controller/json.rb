@@ -50,7 +50,7 @@ class Controller
                 :course => reservation.course,
                 :date => reservation.date,
                 :time => reservation.time,
-                :groups => reservation.groups.collect { | g | g.in_wire_format },
+                :groups => reservation.groups,
                 :procedures => timeslice.procedures,
                 :animals => timeslice.animals_at_all_available,
                 :kindMap => animal_source.kind_map,

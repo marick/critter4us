@@ -23,8 +23,23 @@ class Externalizer
       convert_hash(value)
     when Animal, Procedure then
       value.name
+    when Group then
+      convert_group(value)
     else
       value
     end
   end
+
+  def convert_group(group)
+    { 
+      'procedures' => collect_each_for_group(:procedure, group),
+      'animals' => collect_each_for_group(:animal, group),
+    }
+  end
+
+  def collect_each_for_group(attribute, group)
+    group.uses.collect { |use| convert_one(use.send(attribute)) }.uniq.sort
+  end
+      
+
 end
