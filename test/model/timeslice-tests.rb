@@ -35,12 +35,6 @@ class TimesliceTests < FreshDatabaseTestCase
       assert_equal( ["Caslick's procedure", 'epidural', 'floating', 'Zygototomy'],
                     @timeslice.procedures.map(&:name))
     end
-
-    should "also be provided in the form of names" do  # Todo: move toward doing this on the controller side, in externalizing.
-      assert_equal( ["Caslick's procedure", 'epidural', 'floating', 'Zygototomy'],
-                    @timeslice.procedure_names)
-      
-    end
   end
 
   context "animals available" do 
@@ -62,11 +56,6 @@ class TimesliceTests < FreshDatabaseTestCase
     should "be returned if they are available at the timeslice moment" do
       @timeslice.move_to(@date, @time)
       assert_equal([@fred], @timeslice.animals_at_all_available)
-    end
-
-    should "also return names" do 
-      @timeslice.move_to(@date, @time)
-      assert_equal([@fred.name], @timeslice.animals_at_all_available_by_name)
     end
 
     should "not be returned if they are in use at the timeslice moment" do

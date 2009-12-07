@@ -11,10 +11,10 @@ class Controller
   get '/json/course_session_data_blob' do
     internal = internalize(params)
     timeslice.move_to(internal[:date], internal[:time], ignored_reservation)
-    externalize('animals' => timeslice.animals_at_all_available_by_name,
-                'procedures' => timeslice.procedure_names,
+    externalize('animals' => timeslice.animals_at_all_available,
+                'procedures' => timeslice.procedures,
                 'kindMap' => animal_source.kind_map,
-                'exclusions' => timeslice.exclusions_by_name)
+                'exclusions' => timeslice.exclusions)
   end
 
   post '/json/store_reservation' do
@@ -48,13 +48,13 @@ class Controller
     timeslice.move_to(reservation.date, reservation.time, ignored_reservation)
     externalize(:instructor => reservation.instructor,
                 :course => reservation.course,
-                :date => reservation.date.to_s,
+                :date => reservation.date,
                 :time => reservation.time,
                 :groups => reservation.groups.collect { | g | g.in_wire_format },
-                :procedures => timeslice.procedure_names,
-                :animals => timeslice.animals_at_all_available_by_name,
+                :procedures => timeslice.procedures,
+                :animals => timeslice.animals_at_all_available,
                 :kindMap => animal_source.kind_map,
-                :exclusions => timeslice.exclusions_by_name,
+                :exclusions => timeslice.exclusions,
                 :id => reservation.pk.to_s)
   end
 
@@ -63,7 +63,7 @@ class Controller
     timeslice.move_to(internal[:date], MORNING, nil)
     animals = timeslice.animals_at_all_available
     hashes = timeslice.hashes_from_animals_to_pending_dates(animals)
-    animals_without_uses = filter_unused_animal_names(hashes)
+    animals_without_uses = filter_unused_animals(hashes)
     externalize('unused animals' => animals_without_uses)
   end
 
@@ -77,23 +77,17 @@ class Controller
     Externalizer.new.convert(hash)
   end
 
-  def typing_as(type)
-    {type.to_s => yield }
-  end
-
   def ignored_reservation
     ignoring = params[:ignoring]
     return nil unless ignoring
     Reservation[ignoring.to_i]
   end
 
-  def filter_unused_animal_names(hashes)
+  def filter_unused_animals(hashes)
     hashes.find_all { | hash |
       hash.only_value.empty?
     }.collect { | hash | 
-      hash.only_key.name
+      hash.only_key
     }.sort
   end
-
-
 end

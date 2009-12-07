@@ -23,10 +23,6 @@ class Timeslice
     @procedures = nil
   end
 
-  def animals_at_all_available_by_name
-    animals_at_all_available.collect { | a | a.name }  # &:name not built in at Heroku (1.8.6)
-  end
-
   def animals_at_all_available
     return @animals_at_all_available if @animals_at_all_available
 
@@ -48,10 +44,6 @@ class Timeslice
     }
   end
 
-  def procedure_names
-    procedures.collect { | p | p.name } 
-  end
-
   def exclusions
     overlaps = ProcedureOverlaps.new(@date, @time, @ignored_reservation)
     overlaps.calculate
@@ -60,17 +52,9 @@ class Timeslice
     procedures.each do | p | 
       retval[p] += animals_to_be_considered_in_use
       retval[p].uniq!
+      retval[p].sort!  # Sorting is just for testing.
     end
 
-    retval
-  end
-
-  
-  def exclusions_by_name
-    retval = {}
-    exclusions.each do | procedure, animal_list | 
-      retval[procedure.name] = animal_list.map { | a | a.name }.sort
-    end
     retval
   end
 
