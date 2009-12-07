@@ -48,6 +48,7 @@ class Controller < Sinatra::Base
 end
 
 require 'controller/internalizer'
+require 'controller/externalizer'
 require 'controller/authorization'
 require 'controller/html'
 require 'controller/json'

@@ -1,6 +1,12 @@
-require 'util/extensions.rb'
+require 'util/extensions'
 
 class Controller
+
+  before do
+    if request.path =~ %r{/json/}
+      response['Content-Type'] = 'application/json'
+    end
+  end
 
   get '/json/course_session_data_blob' do
     internal = internalize(params)
@@ -67,9 +73,8 @@ class Controller
     Internalizer.new.convert(hash)
   end
 
-  def externalize(arg)
-    response['Content-Type'] = 'application/json'
-    arg.to_json
+  def externalize(hash)
+    Externalizer.new.convert(hash)
   end
 
   def typing_as(type)
