@@ -5,10 +5,10 @@ class Controller
   get '/json/course_session_data_blob' do
     internal = internalize(params)
     timeslice.move_to(internal[:date], internal[:time], ignored_reservation)
-    externalize('animals' => timeslice.available_animals_by_name,
+    externalize('animals' => timeslice.animals_at_all_available_by_name,
                 'procedures' => timeslice.procedure_names,
                 'kindMap' => animal_source.kind_map,
-                'exclusions' => timeslice.exclusions)
+                'exclusions' => timeslice.exclusions_by_name)
   end
 
   post '/json/store_reservation' do
@@ -46,16 +46,16 @@ class Controller
                 :time => reservation.time,
                 :groups => reservation.groups.collect { | g | g.in_wire_format },
                 :procedures => timeslice.procedure_names,
-                :animals => timeslice.available_animals_by_name,
+                :animals => timeslice.animals_at_all_available_by_name,
                 :kindMap => animal_source.kind_map,
-                :exclusions => timeslice.exclusions,
+                :exclusions => timeslice.exclusions_by_name,
                 :id => reservation.pk.to_s)
   end
 
   get '/json/animals_in_service_blob' do
     internal = internalize(params)
     timeslice.move_to(internal[:date], MORNING, nil)
-    animals = timeslice.available_animals
+    animals = timeslice.animals_at_all_available
     hashes = timeslice.hashes_from_animals_to_pending_dates(animals)
     animals_without_uses = filter_unused_animal_names(hashes)
     externalize('unused animals' => animals_without_uses)

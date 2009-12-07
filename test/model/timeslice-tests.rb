@@ -43,7 +43,7 @@ class TimesliceTests < FreshDatabaseTestCase
     end
   end
 
-  context "animals" do 
+  context "animals available" do 
     setup do 
       @date = Date.new(2010, 10, 10)
       @time = MORNING
@@ -59,20 +59,20 @@ class TimesliceTests < FreshDatabaseTestCase
                   by_default
     end
 
-    should "be returned if they are available at the moment of reservation" do
+    should "be returned if they are available at the timeslice moment" do
       @timeslice.move_to(@date, @time)
-      assert_equal([@fred], @timeslice.available_animals)
+      assert_equal([@fred], @timeslice.animals_at_all_available)
     end
 
     should "also return names" do 
       @timeslice.move_to(@date, @time)
-      assert_equal([@fred.name], @timeslice.available_animals_by_name)
+      assert_equal([@fred.name], @timeslice.animals_at_all_available_by_name)
     end
 
-    should "not be returned if they are in use at the time of reservation" do
+    should "not be returned if they are in use at the timeslice moment" do
       @timeslice.move_to(@date, @time)
       during { 
-        @timeslice.available_animals
+        @timeslice.animals_at_all_available
       }.behold! {
         @use_source.should_receive(:animals_in_use_at).once.
                     with(@date, @time).
@@ -85,7 +85,7 @@ class TimesliceTests < FreshDatabaseTestCase
       reservation = flexmock("reservation")
       @timeslice.move_to(@date, @time, ignoring = reservation)
       during { 
-        @timeslice.available_animals
+        @timeslice.animals_at_all_available
       }.behold!{
         @use_source.should_receive(:animals_in_use_at).once.
                     with(@date, @time).
@@ -97,242 +97,7 @@ class TimesliceTests < FreshDatabaseTestCase
     end
   end
 
-# STOPPED
-
-
-
-
-
-  context "adding pairs excluded at a given time" do
-
-    setup do 
-      @date=Date.new(2009, 12, 12)
-      @time = MORNING
-    end
-    
-    should "include the null case" do 
-      @timeslice.move_to(@date, @time)
-      @destination = ['...'] # starts with some contents.
-      Procedure.random(:name => 'only', :days_delay => 14)
-      @timeslice.add_excluded_pairs(@destination)
-      assert { @destination == ['...'] }
-    end
-
-    context "with an animal used during the timeslice" do 
-      setup do
-        @inuse = Animal.random(:name => "inuse")
-        @procedure = Procedure.random(:name => 'lab procedure')
-        @reservation = Reservation.random(:date => @date,
-                                          :time => @time,
-                                          :animal => @inuse,
-                                          :procedure => @procedure)
-        @other = Procedure.random(:name => 'other')
-      end
-      should "include ALL procedures for that animal" do
-        @timeslice.move_to(@date, @time)
-        @timeslice.add_excluded_pairs(@destination)
-        assert { @destination.size == 2 }
-        assert { @destination.include?([@other, @inuse]) }
-        assert { @destination.include?([@procedure, @inuse]) }
-      end
-
-
-      should "not count the animal if its reservation is ignored" do
-        @timeslice.move_to(@date, @time, @reservation)
-        @timeslice.add_excluded_pairs(@destination)
-        assert { @destination == [] }
-      end
-    end
-
-
-
-    should "not exclude an animal that's used for a 0-delay procedure on a different day" do
-      Reservation.random(:date => @date+1,
-                         :time => @time) do
-        use Animal.random
-        use Procedure.random(:name => 'proc', :days_delay => 0)
-      end
-      @timeslice.move_to(@date, @time)
-      @timeslice.add_excluded_pairs(@destination)
-      assert { @destination == [] }
-    end
-
-    should "not exclude an animal that's used for a 0-delay procedure earlier today" do
-      Reservation.random(:date => @date,
-                         :time => MORNING) do
-        use Animal.random
-        use Procedure.random(:name => 'proc', :days_delay => 0)
-      end
-      @timeslice.move_to(@date, time = AFTERNOON)
-      @timeslice.add_excluded_pairs(@destination)
-      assert { @destination == [] }
-    end
-
-
-    context "with an animal that's been used for the same procedure too recently" do
-      setup do
-        @recent =  Animal.random(:name => 'recent')
-        @proc = Procedure.random(:name => 'proc', :days_delay => 15)
-        @reservation = Reservation.random(:date => @date-1,
-                                          :time => MORNING,
-                                          :animal => @recent,
-                                          :procedure => @proc)
-      end
-
-      should "normally exclude" do
-        @timeslice.move_to(@date, @time)
-        @timeslice.add_excluded_pairs(@destination)
-        assert { @destination == [[@proc, @recent]] }
-      end
-
-      # This could happen if a reservation is being edited and the date/time
-      # is being changed. 
-      should "not exclude if reservation to be ignored" do
-        @timeslice.move_to(@date, @time, @reservation)
-        @timeslice.add_excluded_pairs(@destination)
-        assert { @destination == [] }
-      end
-    end
-
-
-    context "with an existing reservation in the future" do 
-      setup do 
-        @near_future =  Animal.random(:name => 'near future')
-        @proc = Procedure.random(:name => 'proc', :days_delay => 15)
-        @reservation = Reservation.random(:date => @date+3,
-                                          :time => MORNING,
-                                          :animal => @near_future,
-                                          :procedure => @proc)
-      end
-
-      should "normally exclude a pair" do
-        @timeslice.move_to(@date, @time)
-        @timeslice.add_excluded_pairs(@destination)
-        assert { @destination == [[@proc, @near_future]] }
-      end
-
-      # This could happen if a reservation is being edited and the date/time
-      # is being changed. 
-      should "not exclude if the reservation is to be ignored" do
-        @timeslice.move_to(@date, @time, @reservation)
-        @timeslice.add_excluded_pairs(@destination)
-        assert { @destination == [] }
-      end
-  end
-end
-
-  context "typical example of 7 and 1 day exclusion" do 
-
-    setup do 
-      @venipuncture = Procedure.random(:name => 'venipuncture', :days_delay => 7)
-      @physical_exam = Procedure.random(:name => 'physical exam', :days_delay => 1)
-      
-      @veinie = Animal.random(:name => 'veinie')
-      @bossie = Animal.random(:name => 'bossie')
-      @staggers = Animal.random(:name => 'staggers')
-
-      @eight31 = Reservation.random(:date => Date.new(2009, 8, 31)) # Previous Monday
-      @nine1 = Reservation.random(:date => Date.new(2009, 9, 1))  # Previous Tuesday
-      @nine7 = Reservation.random(:date => Date.new(2009, 9, 7))  # Today, Monday
-
-      
-      only_eight31_group = Group.create(:reservation => @eight31)
-      only_nine1_group = Group.create(:reservation => @nine1)
-      only_nine7_group = Group.create(:reservation => @nine7)
-
-      
-      Use.create(:animal => @bossie, :procedure => @venipuncture,
-                 :group => only_eight31_group);
-      Use.create(:animal => @staggers, :procedure => @venipuncture,
-                 :group => only_nine1_group);
-      Use.create(:animal => @veinie, :procedure => @venipuncture,
-                 :group => only_nine7_group);
-      Use.create(:animal => @veinie, :procedure => @physical_exam,
-                 :group => only_nine7_group)
-    end
-
-    should "handle scheduling for today" do 
-      @timeslice.move_to(Date.new(2009, 9, 7), MORNING)
-      @timeslice.add_excluded_pairs(@destination)
-      assert { @destination.include?([@venipuncture, @staggers]) }
-      assert { @destination.include?([@venipuncture, @veinie]) }
-      deny { @destination.include?([@venipuncture, @bossie]) }
-      assert { @destination.include?([@physical_exam, @veinie]) }
-      deny { @destination.include?([@physical_exam, @staggers]) }
-      deny { @destination.include?([@physical_exam, @bossie]) }
-    end
-
-    should "handle moving last week's reservation to today" do
-      @timeslice.move_to(Date.new(2009, 9, 7), MORNING, @nine1)
-      @timeslice.add_excluded_pairs(@destination)
-      deny { @destination.include?([@venipuncture, @staggers]) } # part of @nine1
-      assert { @destination.include?([@venipuncture, @veinie]) }
-      deny { @destination.include?([@venipuncture, @bossie]) }
-      assert { @destination.include?([@physical_exam, @veinie]) }
-      deny { @destination.include?([@physical_exam, @staggers]) }
-      deny { @destination.include?([@physical_exam, @bossie]) }
-    end
-
-    should "handle moving earliest reservation up two days" do
-      @timeslice.move_to(Date.new(2009, 9, 2), MORNING, @eight31)
-      @timeslice.add_excluded_pairs(@destination)
-      assert { @destination.include?([@venipuncture, @staggers]) }
-      assert { @destination.include?([@venipuncture, @veinie]) }
-      deny { @destination.include?([@venipuncture, @bossie]) }
-      deny { @destination.include?([@physical_exam, @veinie]) }
-      deny { @destination.include?([@physical_exam, @staggers]) }
-      deny { @destination.include?([@physical_exam, @bossie]) }
-    end
-
-    should "handle moving today's reservation to tomorrow" do
-      @timeslice.move_to(Date.new(2009, 8, 7), MORNING,  @nine7)
-      @timeslice.add_excluded_pairs(@destination)
-      deny { @destination.include?([@venipuncture, @staggers]) }
-      deny { @destination.include?([@venipuncture, @veinie]) }
-      deny { @destination.include?([@venipuncture, @bossie]) }
-      deny { @destination.include?([@physical_exam, @veinie]) }
-      deny { @destination.include?([@physical_exam, @staggers]) }
-      deny { @destination.include?([@physical_exam, @bossie]) }
-    end
-
-    should "handle scheduling for tomorrow" do 
-      @timeslice.move_to(Date.new(2009, 9, 8), MORNING)
-      @timeslice.add_excluded_pairs(@destination)
-      deny { @destination.include?([@venipuncture, @staggers]) }
-      assert { @destination.include?([@venipuncture, @veinie]) }
-      deny { @destination.include?([@venipuncture, @bossie]) }
-      deny { @destination.include?([@physical_exam, @veinie]) }
-      deny { @destination.include?([@physical_exam, @staggers]) }
-      deny { @destination.include?([@physical_exam, @bossie]) }
-    end
-
-    should "handle scheduling for next Sunday" do 
-      @timeslice.move_to(Date.new(2009, 9, 13), MORNING)
-      @timeslice.add_excluded_pairs(@destination)
-      deny { @destination.include?([@venipuncture, @staggers]) }
-      assert { @destination.include?([@venipuncture, @veinie]) }
-      deny { @destination.include?([@venipuncture, @bossie]) }
-      deny { @destination.include?([@physical_exam, @veinie]) }
-      deny { @destination.include?([@physical_exam, @staggers]) }
-      deny { @destination.include?([@physical_exam, @bossie]) }
-    end
-
-    should "handle scheduling for next Monday" do 
-      @timeslice.move_to(Date.new(2009, 9, 14), MORNING)
-      @timeslice.add_excluded_pairs(@destination)
-      deny { @destination.include?([@venipuncture, @staggers]) }
-      deny { @destination.include?([@venipuncture, @veinie]) }
-      deny { @destination.include?([@venipuncture, @bossie]) }
-      deny { @destination.include?([@physical_exam, @veinie]) }
-      deny { @destination.include?([@physical_exam, @staggers]) }
-      deny { @destination.include?([@physical_exam, @bossie]) }
-    end
-
-  end
-
-
-
-  context "returning animals and their pending reservations" do
+  context "maps from animals to their pending reservations" do
     setup do
       @date = Date.new(2010, 10, 10)
       @brooke = brooke = Animal.random(:name => 'brooke')
@@ -357,14 +122,71 @@ end
       assert { result.include?({@jake => []}) }
     end
   end
+
+
+  # Most of the logic for exclusions is done by another object. The timeslice
+  # is responsible for adding in animals that are currently in use.
+  context "exclusions" do 
+    setup do 
+      @date=Date.new(2009, 12, 12)
+      @time = MORNING
+    end
+
+    context "for animals in use during the timeslice moment" do 
+      setup do
+        @inuse = Animal.random(:name => "inuse")
+        @procedure = Procedure.random(:name => 'lab procedure')
+        @reservation = Reservation.random(:date => @date,
+                                          :time => @time,
+                                          :animal => @inuse,
+                                          :procedure => @procedure)
+        @other = Procedure.random(:name => 'other')
+        @procedure_source.should_receive(:all).
+                          and_return([@procedure, @other]).
+                          by_default
+        @animal_source.should_receive(:all_in_service_on).
+                       with(@date).
+                       and_return([@inuse]).
+                       by_default
+      end
+
+      should "include the animal for all procedures" do
+        @timeslice.move_to(@date, @time)
+        during {
+          @timeslice.exclusions
+        }.behold! {
+          @use_source.should_receive(:animals_in_use_at).
+                      with(@date, @time).
+                      and_return([@inuse])
+        }
+        assert_equal([@inuse], @result[@procedure])
+        assert_equal([@inuse], @result[@other])
+      end
+
+      should "not count the animal if its reservation is ignored" do
+        @timeslice.move_to(@date, @time, @reservation)
+        during {
+          @timeslice.exclusions
+        }.behold! {
+          @use_source.should_receive(:animals_in_use_at).
+                      with(@date, @time).
+                      and_return([@inuse])
+        }
+        assert_equal([], @result[@procedure])
+        assert_equal([], @result[@other])
+      end
+    end
+  end
 end
+
+
 
 class DetailsAboutTimingTests < FreshDatabaseTestCase
 
     BoundaryCases = [
       # Reservation attempt for date after previously-made reservation
       # DELAY       USED-ON        TRY-AGAIN          OK?
-[          0,       1, MORNING,     1, MORNING,        :NO ],        # 1
+[          0,       1, MORNING,     1, MORNING,        :NO ],        
 [          0,       1, MORNING,     1, AFTERNOON,        :YES ],
 [          0,       1, AFTERNOON,     1, EVENING,        :YES ],
 [          0,       1, MORNING,     1, EVENING,        :YES ],
@@ -437,13 +259,14 @@ class DetailsAboutTimingTests < FreshDatabaseTestCase
     @pairs = []
     timeslice = Timeslice.new
     timeslice.move_to(Date.new(2009, 12, attempt_date), attempt_time)
-    timeslice.add_excluded_pairs(@pairs)
+    @map = timeslice.exclusions
   end
 
   def assert_reservation_success(is_ok)
-    expected = excluded?(is_ok) ? [[@procedure, @animal]] : []
-    # puts "actual: #{@pairs}"
-    # puts "expected: #{expected}"
-    assert { @pairs == expected }
+    if excluded?(is_ok)
+      assert_equal([@animal], @map[@procedure])
+    else
+      assert_equal([], @map[@procedure])
+    end
   end
 end

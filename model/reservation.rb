@@ -1,5 +1,6 @@
 require 'pp'
 require 'util/constants'
+require 'ostruct'
 
 class Reservation < Sequel::Model
   # TODO: this should probably be a first-class object that can mediate between 
@@ -80,6 +81,15 @@ class Reservation < Sequel::Model
     ReservationStructureChanger.build_from(data)
   end
 
+  def self.acts_as_empty
+    o = OpenStruct.new(:animals => [])
+    # Need an id field, and this is the way to prevent the "Object#id
+    # will be deprecated warning."
+    def o.id; -1; end
+    def o.acts_as_empty?; true; end
+    o
+  end
+
   # Don't know why this method isn't auto-created at Heroku.
   def time
     self.values[:time]
@@ -93,6 +103,7 @@ class Reservation < Sequel::Model
   def animals; x_objects(:animal); end
   def procedure_names; x_names(:procedure); end
   def procedures; x_objects(:procedure); end
+  def acts_as_empty?; false; end
 
   def procedure_description_kinds
     animals.collect { | animal | animal.procedure_description_kind }.uniq.sort

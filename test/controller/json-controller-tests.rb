@@ -60,9 +60,9 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
     setup do
       @@stuff_that_always_happens = lambda() { 
-        @timeslice.should_receive(:available_animals_by_name).once.and_return('some animals')
+        @timeslice.should_receive(:animals_at_all_available_by_name).once.and_return('some animals')
         @timeslice.should_receive(:procedure_names).once.and_return('some sorted procedure names')
-        @timeslice.should_receive(:exclusions).once.
+        @timeslice.should_receive(:exclusions_by_name).once.
                    and_return('some exclusions')
 
         @animal_source.should_receive(:kind_map).once.and_return('some kind map')
@@ -125,7 +125,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
         get '/json/animals_in_service_blob', :date => '2009-01-01'
       }.behold! {
         @timeslice.should_receive(:move_to).once.with(Date.new(2009,1,1), MORNING, nil)
-        @timeslice.should_receive(:available_animals).once.
+        @timeslice.should_receive(:animals_at_all_available).once.
                    and_return([brooke, jake])
         @timeslice.should_receive(:hashes_from_animals_to_pending_dates).once.
                    with([brooke, jake]).
@@ -307,7 +307,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
       should "retrieve exclusion information that does not include animals used in the reservation" do
         expected = { 'floating' => [], 'venipuncture' => [] }
-        assert { expected == @result['exclusions'] }
+        assert_equal(expected, @result['exclusions'])
       end
 
       should "retrieve animal information" do
