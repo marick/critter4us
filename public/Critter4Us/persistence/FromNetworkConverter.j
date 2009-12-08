@@ -40,13 +40,13 @@
         break;
       case 'procedure':
         var procedure = [self procedure: jsHash[key]
-                             exclusions: jsHash['exclusions']
+                             exclusions: jsHash['reservationExclusions']
                                 kindMap: jsHash['kindMap']];
         [retval setValue: procedure forKey: key];
         break;
       case 'procedures':
         var array = [self procedures: jsHash[key]
-                          exclusions: jsHash['exclusions']
+                          exclusions: jsHash['reservationExclusions']
                              kindMap: jsHash['kindMap']];
         [retval setValue: array forKey: key];
         break;
@@ -144,7 +144,7 @@
 - (void) addInvariantExclusions: newExclusions to: jsHash // TODO: move this
 {
   var procedures = jsHash['procedures'];
-  var exclusions = jsHash['exclusions']
+  var exclusions = jsHash['reservationExclusions']
   for (var i=0; i < [procedures count]; i++)
   {
     var procedureName = procedures[i];

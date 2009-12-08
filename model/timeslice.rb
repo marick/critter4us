@@ -44,7 +44,7 @@ class Timeslice
     }
   end
 
-  def exclusions
+  def exclusions_due_to_other_reservations
     overlaps = ProcedureOverlaps.new(@date, @time, @ignored_reservation)
     overlaps.calculate
     retval = overlaps.as_map(procedures, animals_at_all_available)

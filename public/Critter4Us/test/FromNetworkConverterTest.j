@@ -88,7 +88,7 @@
 {
   var input = {
     'procedure' : 'floating',
-    'exclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
+    'reservationExclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
     'kindMap' : { 'betsy':'cow', 'jake':'horse'}
   };
   var converted = [FromNetworkConverter convert: input];
@@ -113,7 +113,7 @@
 {
   var input = {
     'procedures' : ['floating', 'venipuncture'],
-    'exclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
+    'reservationExclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
     'kindMap' : { 'betsy':'cow', 'jake':'horse'}
   };
   var converted = [FromNetworkConverter convert: input];
@@ -130,7 +130,7 @@
 {
   var input = {
     'procedures' : ['floating', 'venipuncture'],
-    'exclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
+    'reservationExclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
     'kindMap' : { 'betsy':'cow', 'jake':'horse', 'fred':'goat'}
   };
   var extras = {'floating':['fred', 'jake'], 'venipuncture':['jake']};

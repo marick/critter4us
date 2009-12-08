@@ -11,10 +11,10 @@ class Controller
   get '/json/course_session_data_blob' do
     internal = internalize(params)
     timeslice.move_to(internal[:date], internal[:time], ignored_reservation)
-    externalize('animals' => timeslice.animals_at_all_available,
-                'procedures' => timeslice.procedures,
-                'kindMap' => animal_source.kind_map,
-                'exclusions' => timeslice.exclusions)
+    externalize(:animals => timeslice.animals_at_all_available,
+                :procedures => timeslice.procedures,
+                :kindMap => animal_source.kind_map,
+                :reservationExclusions => timeslice.exclusions_due_to_other_reservations)
   end
 
   post '/json/store_reservation' do
@@ -54,7 +54,7 @@ class Controller
                 :procedures => timeslice.procedures,
                 :animals => timeslice.animals_at_all_available,
                 :kindMap => animal_source.kind_map,
-                :exclusions => timeslice.exclusions,
+                :reservationExclusions => timeslice.exclusions_due_to_other_reservations,
                 :id => reservation.pk.to_s)
   end
 

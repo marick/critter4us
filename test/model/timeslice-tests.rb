@@ -115,7 +115,7 @@ class TimesliceTests < FreshDatabaseTestCase
 
   # Most of the logic for exclusions is done by another object. The timeslice
   # is responsible for adding in animals that are currently in use.
-  context "exclusions" do 
+  context "exclusions_due_to_other_reservations" do 
     setup do 
       @date=Date.new(2009, 12, 12)
       @time = MORNING
@@ -142,7 +142,7 @@ class TimesliceTests < FreshDatabaseTestCase
       should "include the animal for all procedures" do
         @timeslice.move_to(@date, @time)
         during {
-          @timeslice.exclusions
+          @timeslice.exclusions_due_to_other_reservations
         }.behold! {
           @use_source.should_receive(:animals_in_use_at).
                       with(@date, @time).
@@ -155,7 +155,7 @@ class TimesliceTests < FreshDatabaseTestCase
       should "not count the animal if its reservation is ignored" do
         @timeslice.move_to(@date, @time, @reservation)
         during {
-          @timeslice.exclusions
+          @timeslice.exclusions_due_to_other_reservations
         }.behold! {
           @use_source.should_receive(:animals_in_use_at).
                       with(@date, @time).
@@ -248,7 +248,7 @@ class DetailsAboutTimingTests < FreshDatabaseTestCase
     @pairs = []
     timeslice = Timeslice.new
     timeslice.move_to(Date.new(2009, 12, attempt_date), attempt_time)
-    @map = timeslice.exclusions
+    @map = timeslice.exclusions_due_to_other_reservations
   end
 
   def assert_reservation_success(is_ok)

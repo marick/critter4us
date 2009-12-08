@@ -62,7 +62,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
       @@stuff_that_always_happens = lambda() { 
         @timeslice.should_receive(:animals_at_all_available).once.and_return('some animals')
         @timeslice.should_receive(:procedures).once.and_return('some sorted procedures')
-        @timeslice.should_receive(:exclusions).once.
+        @timeslice.should_receive(:exclusions_due_to_other_reservations).once.
                    and_return('some exclusions')
 
         @animal_source.should_receive(:kind_map).once.and_return('some kind map')
@@ -72,7 +72,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
          'animals' => 'some animals',
          'procedures' => 'some sorted procedures',
          'kindMap' => 'some kind map',
-         'exclusions' => 'some exclusions'
+         'reservationExclusions' => 'some exclusions'
       }
 
     end
@@ -107,7 +107,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
                        'date mismatch animal' => 'date mismatch kind',
                        'animal' => 'animal kind'},
 
-        'exclusions' => { 'date mismatch procedure' => ['animal'],
+        'reservationExclusions' => { 'date mismatch procedure' => ['animal'],
                           'time mismatch procedure' => ['animal','time mismatch animal'],
                           'procedure' => ['animal'] }
          })
@@ -307,7 +307,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
       should "retrieve exclusion information that does not include animals used in the reservation" do
         expected = { 'floating' => [], 'venipuncture' => [] }
-        assert_equal(expected, @result['exclusions'])
+        assert_equal(expected, @result['reservationExclusions'])
       end
 
       should "retrieve animal information" do
@@ -332,7 +332,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
           'floating' => ['jinx', 'twitter'],
           'venipuncture' => ['jinx', 'twitter'] # twitter excluded because it's same day.
         }
-        assert { expected == @result['exclusions'] }
+        assert { expected == @result['reservationExclusions'] }
       end
 
       should "retrieve no animals because all are in use" do
