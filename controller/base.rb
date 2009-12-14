@@ -29,6 +29,8 @@ class Controller < Sinatra::Base
   enable :methodoverride unless environment == :test
 
   before do
+    LOGGER.info "==== #{request.path}"
+
     unless request.path =~ %r{/reservation/\d+} # generalize?
       protected! 
     end

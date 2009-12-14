@@ -13,7 +13,7 @@ end
 
 Sinatra::Base.configure :development do 
   DB = Sequel.postgres("critter4us", :host => 'localhost', :user => 'postgres', :password => 'c0wm4gnet', :loggers => [Logger.new($stdout)])
-  
+  LOGGER = Logger.new($stdout)
 #  DB = Sequel.mysql("critter4us", :host=>'localhost',
 #                    :user=>'root', :password=>'')
 end
