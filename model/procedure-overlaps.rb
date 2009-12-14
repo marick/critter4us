@@ -1,6 +1,7 @@
 require 'util/requires'
+require 'model/exclusion-maker'
 
-class ProcedureOverlaps
+class ProcedureOverlaps < ExclusionMaker
   def initialize(date, time, ignored_reservation = Reservation.acts_as_empty)
     @date = date
     @time = time # currently ignored
@@ -51,20 +52,6 @@ class ProcedureOverlaps
       end
     end
     retval
-  end
-
-  private
-
-  def listhash_with_keys(keys)
-    retval = {}
-    keys.each do | k | 
-      retval[k] = []
-    end
-    retval
-  end
-
-  def object_by_id(objects)
-    Hash[*objects.collect { | o | [o.id, o] }.flatten]
   end
 end
 

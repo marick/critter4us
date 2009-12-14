@@ -11,7 +11,7 @@ class Controller
   get '/json/course_session_data_blob' do
     internal = internalize(params)
     timeslice.move_to(internal[:date], internal[:time], ignored_reservation)
-    externalize(:animals => timeslice.animals_at_all_available,
+    externalize(:animals => timeslice.animals_that_can_be_reserved,
                 :procedures => timeslice.procedures,
                 :kindMap => animal_source.kind_map,
                 :reservationExclusions => timeslice.exclusions_due_to_other_reservations)
@@ -52,16 +52,16 @@ class Controller
                 :time => reservation.time,
                 :groups => reservation.groups,
                 :procedures => timeslice.procedures,
-                :animals => timeslice.animals_at_all_available,
+                :animals => timeslice.animals_that_can_be_reserved,
                 :kindMap => animal_source.kind_map,
                 :reservationExclusions => timeslice.exclusions_due_to_other_reservations,
                 :id => reservation.pk.to_s)
   end
 
-  get '/json/animals_in_service_blob' do
+  get '/json/animals_in_service_blob' do  # TODO: I think this name needs to be changed.
     internal = internalize(params)
     timeslice.move_to(internal[:date], MORNING, nil)
-    animals = timeslice.animals_at_all_available
+    animals = timeslice.animals_that_can_be_reserved
     hashes = timeslice.hashes_from_animals_to_pending_dates(animals)
     animals_without_uses = filter_unused_animals(hashes)
     externalize('unused animals' => animals_without_uses)

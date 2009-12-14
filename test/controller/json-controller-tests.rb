@@ -60,7 +60,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
     setup do
       @@stuff_that_always_happens = lambda() { 
-        @timeslice.should_receive(:animals_at_all_available).once.and_return('some animals')
+        @timeslice.should_receive(:animals_that_can_be_reserved).once.and_return('some animals')
         @timeslice.should_receive(:procedures).once.and_return('some sorted procedures')
         @timeslice.should_receive(:exclusions_due_to_other_reservations).once.
                    and_return('some exclusions')
@@ -125,7 +125,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
         get '/json/animals_in_service_blob', :date => '2009-01-01'
       }.behold! {
         @timeslice.should_receive(:move_to).once.with(Date.new(2009,1,1), MORNING, nil)
-        @timeslice.should_receive(:animals_at_all_available).once.
+        @timeslice.should_receive(:animals_that_can_be_reserved).once.
                    and_return([brooke, jake])
         @timeslice.should_receive(:hashes_from_animals_to_pending_dates).once.
                    with([brooke, jake]).
