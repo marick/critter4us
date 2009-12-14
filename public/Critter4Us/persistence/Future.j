@@ -1,7 +1,8 @@
 @import <Foundation/Foundation.j>
+@import "../util/CritterObject.j"
 @import "../util/Constants.j"
 
-@implementation Future : CPObject
+@implementation Future : CritterObject
 {
   CPString result;
   CPString route, notificationName;
@@ -101,12 +102,6 @@
 - (id) convert: data
 {
   return data;
-}
-
-- (void) log: (CPString) format, ...
-{
-  var text = sprintf.apply(this, Array.prototype.slice.call(arguments, 2));
-  [[Logger defaultLogger] log: "%@: %s", [self hash], text];
 }
 
 - (CPString) visible: data

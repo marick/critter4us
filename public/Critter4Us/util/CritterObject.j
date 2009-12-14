@@ -18,4 +18,12 @@
 {
   [[CPNotificationCenter defaultCenter] removeObserver: self];
 }
+
+- (void) log: (CPString) format, ...
+{
+  var text = sprintf.apply(this, Array.prototype.slice.call(arguments, 2));
+  [[Logger defaultLogger] log: "%@: %s", [self hash], text];
+}
+
+
 @end
