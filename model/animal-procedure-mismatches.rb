@@ -17,7 +17,7 @@ class AnimalProcedureMismatches < ExclusionMaker
       excluded = potential_animals.find_all do | a | 
         rule.animal_excluded?(a)
       end
-      retval[procedure] = potential_animals - excluded
+      retval[procedure] = excluded
     end
     retval
   end
