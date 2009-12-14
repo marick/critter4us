@@ -25,7 +25,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
   context "delivering a blob of course-session-specific data" do
 
-    should "exclude animals that are currently in use" do 
+    should_eventually "exclude animals that are currently in use" do 
       @app.override(mocks(:animal_source, :procedure_source,
                           :procedure_rules))
       @timeslice = @app.mock_timeslice = flexmock('timeslice')
@@ -39,7 +39,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
       assert_jsonification_of(@results_of_what_happens)
     end
 
-    should "exclude animals that are currently in use (but ignoring a reservation)" do 
+    should_eventually "exclude animals that are currently in use (but ignoring a reservation)" do 
       reservation = Reservation.random(:date => Date.new(2009, 3, 3),
                                        :time => MORNING,
                                        :procedure => Procedure.random,
@@ -82,7 +82,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
     # The following test predates mocks. They can continue to be used
     # but they're probably not worth fixing if they break.
 
-    should "return a JSON list of strings" do
+    should_eventually "return a JSON list of strings" do
       Reservation.random(:date => Date.new(2009, 3, 3), :time => MORNING) do 
         use Procedure.random(:name => 'date mismatch procedure', :days_delay => 0)
         use Animal.random(:name => 'date mismatch animal', :kind => 'date mismatch kind')

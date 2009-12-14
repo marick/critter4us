@@ -4,7 +4,7 @@
 @import "../model/Group.j"
 @import "../util/Time.j"
 
-@implementation FromNetworkConverter : CPObject
+@implementation FromNetworkConverter : CritterObject
 {
 }
 
@@ -145,6 +145,7 @@
 {
   var procedures = jsHash['procedures'];
   var exclusions = jsHash['reservationExclusions']
+
   for (var i=0; i < [procedures count]; i++)
   {
     var procedureName = procedures[i];

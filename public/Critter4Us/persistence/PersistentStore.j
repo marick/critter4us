@@ -3,7 +3,6 @@
 @import "NetworkConnection.j"
 @import "ToNetworkConverter.j"
 @import "FromNetworkConverter.j"
-@import "TimeInvariantExclusionCache.j"
 @import "URIMaker.j"
 @import "Future.j"
 @import "AnimalInServiceListFuture.j"
@@ -38,8 +37,6 @@ var SharedPersistentStore = nil;
   toNetworkConverter = [[ToNetworkConverter alloc] init];
   fromNetworkConverter = [[FromNetworkConverter alloc] init];
   uriMaker = [[URIMaker alloc] init];
-
-  [self setTimeInvariantExclusions: TimeInvariantExclusionCache];
 }
 
 - (void) setTimeInvariantExclusions: jsonString
@@ -138,12 +135,11 @@ var SharedPersistentStore = nil;
     alert("No hash was obtained from JSON string " + json + "\n Please report this.");
     return;
   }
-  // CPLog([[CPDictionary dictionaryWithJSObject: jsHash] description]);
+  // [self log: [[CPDictionary dictionaryWithJSObject: jsHash recursively: YES] description]];
   var dictionary =  [fromNetworkConverter convert: jsHash
-                              withAddedExclusions: timeInvariantExclusions];
+                              withAddedExclusions: jsHash['otherExclusions']];
   return dictionary;
 }
-
 
 
 @end

@@ -14,7 +14,8 @@ class Controller
     externalize(:animals => timeslice.animals_that_can_be_reserved,
                 :procedures => timeslice.procedures,
                 :kindMap => animal_source.kind_map,
-                :reservationExclusions => timeslice.exclusions_due_to_other_reservations)
+                :reservationExclusions => timeslice.exclusions_due_to_other_reservations,
+                :otherExclusions => timeslice.exclusions_due_to_procedure_vs_animal_mismatch)
   end
 
   post '/json/store_reservation' do
@@ -55,6 +56,7 @@ class Controller
                 :animals => timeslice.animals_that_can_be_reserved,
                 :kindMap => animal_source.kind_map,
                 :reservationExclusions => timeslice.exclusions_due_to_other_reservations,
+                :otherExclusions => timeslice.exclusions_due_to_procedure_vs_animal_mismatch,
                 :id => reservation.pk.to_s)
   end
 
