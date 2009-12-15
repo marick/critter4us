@@ -51,4 +51,8 @@ class Test::Unit::TestCase
     hash
   end
 
+  def mocked_class(klass)
+    flexmock(klass)
+  end
 end
+

@@ -43,4 +43,5 @@ module TestSupport
     end
   end
   alias_method :override, :unless_overridden_by
+  alias_method :override_collaborators_with, :override
 end

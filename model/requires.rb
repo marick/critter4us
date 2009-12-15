@@ -7,6 +7,4 @@ require 'model/use'
 require 'model/procedure-description'
 require 'model/timeslice'
 require 'model/rules'
-require 'model/exclusion-maker'
-require 'model/procedure-overlaps'
-require 'model/animal-procedure-mismatches'
+

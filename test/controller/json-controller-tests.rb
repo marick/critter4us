@@ -25,10 +25,11 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
   context "delivering a blob of course-session-specific data" do
 
-    should_eventually "exclude animals that are currently in use" do 
+    should "exclude animals that are currently in use" do 
       @app.override(mocks(:animal_source, :procedure_source,
                           :procedure_rules))
       @timeslice = @app.mock_timeslice = flexmock('timeslice')
+      @excluder = @app.mock_excluder = flexmock('excluder')
       during { 
         get '/json/course_session_data_blob', {:date => '2009-01-01', :time => MORNING}
       }.behold! {
@@ -39,7 +40,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
       assert_jsonification_of(@results_of_what_happens)
     end
 
-    should_eventually "exclude animals that are currently in use (but ignoring a reservation)" do 
+    should "exclude animals that are currently in use (but ignoring a reservation)" do 
       reservation = Reservation.random(:date => Date.new(2009, 3, 3),
                                        :time => MORNING,
                                        :procedure => Procedure.random,
@@ -47,6 +48,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
       @app.override(mocks(:animal_source, :procedure_source,
                           :procedure_rules))
       @timeslice = @app.mock_timeslice = flexmock('timeslice')
+      @excluder = @app.mock_excluder = flexmock('excluder')
       during { 
         get "/json/course_session_data_blob",
             {:date => '2009-01-01', :time => MORNING, :ignoring => reservation.id}
@@ -62,55 +64,22 @@ class JsonGenerationTests < FreshDatabaseTestCase
       @@stuff_that_always_happens = lambda() { 
         @timeslice.should_receive(:animals_that_can_be_reserved).once.and_return('some animals')
         @timeslice.should_receive(:procedures).once.and_return('some sorted procedures')
-        @timeslice.should_receive(:exclusions_due_to_other_reservations).once.
-                   and_return('some exclusions')
-
         @animal_source.should_receive(:kind_map).once.and_return('some kind map')
+        @excluder.should_receive(:time_sensitive_exclusions).once.
+                  and_return('some time-sensitive exclusions')
+        @excluder.should_receive(:timeless_exclusions).once.
+                  and_return('some time-independent exclusions')
+
       }
 
       @results_of_what_happens = {
          'animals' => 'some animals',
          'procedures' => 'some sorted procedures',
          'kindMap' => 'some kind map',
-         'reservationExclusions' => 'some exclusions'
+         'timeSensitiveExclusions' => 'some time-sensitive exclusions',
+         'timelessExclusions' => 'some time-independent exclusions',
       }
 
-    end
-
-
-
-    # The following test predates mocks. They can continue to be used
-    # but they're probably not worth fixing if they break.
-
-    should_eventually "return a JSON list of strings" do
-      Reservation.random(:date => Date.new(2009, 3, 3), :time => MORNING) do 
-        use Procedure.random(:name => 'date mismatch procedure', :days_delay => 0)
-        use Animal.random(:name => 'date mismatch animal', :kind => 'date mismatch kind')
-      end
-      
-      Reservation.random(:date => Date.new(2009, 1, 1), :time => AFTERNOON) do 
-        use Procedure.random(:name => 'time mismatch procedure', :days_delay => 1)
-        use Animal.random(:name => 'time mismatch animal', :kind => 'time mismatch kind')
-      end
-
-      Reservation.random(:date => Date.new(2009, 1, 1), :time => MORNING) do
-        use Procedure.random(:name => 'procedure', :days_delay => 3)
-        use Animal.random(:name => 'animal', :kind => 'animal kind')
-      end
-
-      get '/json/course_session_data_blob', {:date => '2009-01-01', :time => MORNING}
-      assert_json_response
-      assert_jsonification_of({
-         'procedures' => ['date mismatch procedure', 'procedure', 'time mismatch procedure'],
-         'animals' => ['date mismatch animal', 'time mismatch animal'],
-         'kindMap' => {'time mismatch animal' => 'time mismatch kind',
-                       'date mismatch animal' => 'date mismatch kind',
-                       'animal' => 'animal kind'},
-
-        'reservationExclusions' => { 'date mismatch procedure' => ['animal'],
-                          'time mismatch procedure' => ['animal','time mismatch animal'],
-                          'procedure' => ['animal'] }
-         })
     end
   end
 
@@ -307,7 +276,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
       should "retrieve exclusion information that does not include animals used in the reservation" do
         expected = { 'floating' => [], 'venipuncture' => [] }
-        assert_equal(expected, @result['reservationExclusions'])
+        assert_equal(expected, @result['timeSensitiveExclusions'])
       end
 
       should "retrieve animal information" do
@@ -332,7 +301,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
           'floating' => ['jinx', 'twitter'],
           'venipuncture' => ['jinx', 'twitter'] # twitter excluded because it's same day.
         }
-        assert { expected == @result['reservationExclusions'] }
+        assert { expected == @result['timeSensitiveExclusions'] }
       end
 
       should "retrieve no animals because all are in use" do

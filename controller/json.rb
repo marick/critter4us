@@ -1,4 +1,6 @@
 require 'util/extensions'
+require 'model/excluders/excluder.rb'
+
 
 class Controller
 
@@ -6,6 +8,9 @@ class Controller
     if request.path =~ %r{/json/}
       response['Content-Type'] = 'application/json'
     end
+
+    @timeslice = @mock_timeslice || Timeslice.new
+    @excluder = @mock_excluder || Excluder.new(@timeslice)
   end
 
   get '/json/course_session_data_blob' do
@@ -14,8 +19,8 @@ class Controller
     externalize(:animals => timeslice.animals_that_can_be_reserved,
                 :procedures => timeslice.procedures,
                 :kindMap => animal_source.kind_map,
-                :reservationExclusions => timeslice.exclusions_due_to_other_reservations,
-                :otherExclusions => timeslice.exclusions_due_to_procedure_vs_animal_mismatch)
+                :timeSensitiveExclusions => excluder.time_sensitive_exclusions,
+                :timelessExclusions => excluder.timeless_exclusions)
   end
 
   post '/json/store_reservation' do
@@ -55,8 +60,8 @@ class Controller
                 :procedures => timeslice.procedures,
                 :animals => timeslice.animals_that_can_be_reserved,
                 :kindMap => animal_source.kind_map,
-                :reservationExclusions => timeslice.exclusions_due_to_other_reservations,
-                :otherExclusions => timeslice.exclusions_due_to_procedure_vs_animal_mismatch,
+                :timeSensitiveExclusions => excluder.time_sensitive_exclusions,
+                :timelessExclusions => excluder.timeless_exclusions,
                 :id => reservation.pk.to_s)
   end
 

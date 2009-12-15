@@ -34,11 +34,12 @@ class Controller < Sinatra::Base
     unless request.path =~ %r{/reservation/\d+} # generalize?
       protected! 
     end
-    @timeslice = @mock_timeslice || Timeslice.new
   end
 
   attr_writer :mock_timeslice
+  attr_writer :mock_excluder
   attr_accessor :timeslice
+  attr_accessor :excluder
 
   def initialize(*args)
     super
