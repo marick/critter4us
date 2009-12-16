@@ -3,6 +3,7 @@
 @import "../model/Animal.j"
 @import "../model/Group.j"
 @import "../util/Time.j"
+@import "../util/CritterObject.j"
 
 @implementation FromNetworkConverter : CritterObject
 {
@@ -16,6 +17,12 @@
 - (CPDictionary) convert: jsHash
 {
   var retval = [CPDictionary dictionary];
+  if (jsHash['timeSensitiveExclusions'])
+  {
+    var sensitive = jsHash['timeSensitiveExclusions'];
+    var timeless = jsHash['timelessExclusions'];
+    jsHash['allExclusions'] = [self combine: sensitive with: timeless];
+  }
   for (key in jsHash)
   {
     if (jsHash.hasOwnProperty(key)) 
@@ -40,13 +47,13 @@
         break;
       case 'procedure':
         var procedure = [self procedure: jsHash[key]
-                             exclusions: jsHash['reservationExclusions']
+                             exclusions: jsHash['allExclusions']
                                 kindMap: jsHash['kindMap']];
         [retval setValue: procedure forKey: key];
         break;
       case 'procedures':
         var array = [self procedures: jsHash[key]
-                          exclusions: jsHash['reservationExclusions']
+                          exclusions: jsHash['allExclusions']
                              kindMap: jsHash['kindMap']];
         [retval setValue: array forKey: key];
         break;
@@ -65,13 +72,6 @@
     }
   }
   return retval;
-}
-
-// TODO: Note that this changes the argument. Make (painfully!) a copy?
-- (CPDictionary) convert: jsHash withAddedExclusions: exclusions
-{
-  [self addInvariantExclusions: exclusions to: jsHash];
-  return [self convert: jsHash];
 }
 
 - (Animal) animal: name kindMap: kindMap
@@ -141,22 +141,18 @@
 
 // 
 
-- (void) addInvariantExclusions: newExclusions to: jsHash // TODO: move this
+- (CPArray) combine: one with: another // TODO: move this
 {
-  var procedures = jsHash['procedures'];
-  var exclusions = jsHash['reservationExclusions']
-
+  retval = {};
+  var procedures = [[CPDictionary dictionaryWithJSObject: one] allKeys];
   for (var i=0; i < [procedures count]; i++)
   {
     var procedureName = procedures[i];
-    exclusions[procedureName] = exclusions[procedureName] || [];
-    var procedureExclusions = exclusions[procedureName];
-    var newProcedureExclusions = newExclusions[procedureName] || [];
-    exclusions[procedureName] = 
-        [procedureExclusions arrayByAddingObjectsFromArray: newProcedureExclusions];
+    var oneArray = one[procedureName] || [];
+    var anotherArray = another[procedureName] || [];
+    retval[procedureName] = [oneArray arrayByAddingObjectsFromArray: anotherArray];
   }
+  return retval
 }
-
-
 
 @end

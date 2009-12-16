@@ -6,14 +6,9 @@
 @import "ScenarioTestCase.j"
 @import "TestUtil.j"
 
-HasCorrectData = function(data) { 
+CorrectData = function(data) { 
   return data['a json'] == "string" 
 }
-HasExtraExclusions = function(exclusions) {
-  return exclusions['floating'] == 'never this animal' 
-}
-
-
 
 @implementation PersistentStoreTest : ScenarioTestCase
 {
@@ -41,7 +36,6 @@ HasExtraExclusions = function(exclusions) {
   [scenario sutCreates: [ 'toNetworkConverter', 'fromNetworkConverter', 'uriMaker']];
 
   timeInvariants = '{"floating":["never this animal"]}';
-  [sut setTimeInvariantExclusions: timeInvariants];
 
   betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
   josie = [[Animal alloc] initWithName: 'josie' kind: 'horse'];
@@ -53,8 +47,6 @@ HasExtraExclusions = function(exclusions) {
 
 - (void)test_how_persistent_stores_coordinates_when_retrieving_data
 {
-  // TODO: replace complicated convert:withAddedExclusions: functions
-  // with a simple checker function.
   [scenario 
    during: function() { 
       [sut loadInfoRelevantToDate: 'a date' time: 'a time'];
@@ -74,8 +66,8 @@ HasExtraExclusions = function(exclusions) {
                        andReturn: '{"a json":"string"}'];
       
 
-      [sut.fromNetworkConverter shouldReceive: @selector(convert:withAddedExclusions:)
-                                         with: [HasCorrectData, HasExtraExclusions]
+      [sut.fromNetworkConverter shouldReceive: @selector(convert:)
+                                         with: CorrectData
                                     andReturn: 'a big dictionary'];
       [self listenersShouldReceiveNotification: AnimalAndProcedureNews
                               containingObject: 'a big dictionary'];
@@ -121,8 +113,8 @@ HasExtraExclusions = function(exclusions) {
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
                             with: 'uri'
                        andReturn: '{"a json":"string"}'];
-      [sut.fromNetworkConverter shouldReceive: @selector(convert:withAddedExclusions:)
-                                         with: [HasCorrectData, HasExtraExclusions]
+      [sut.fromNetworkConverter shouldReceive: @selector(convert:)
+                                         with: CorrectData
                                     andReturn: 'a big dictionary'];
       [self listenersShouldReceiveNotification: ReservationRetrievedNews
                               containingObject: 'a big dictionary'];

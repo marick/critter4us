@@ -1,4 +1,5 @@
 @import "Constants.j"
+@import "Logger.j"
 
 @implementation CritterObject : CPObject
 {

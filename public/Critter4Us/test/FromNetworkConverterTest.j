@@ -88,7 +88,7 @@
 {
   var input = {
     'procedure' : 'floating',
-    'reservationExclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
+    'allExclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
     'kindMap' : { 'betsy':'cow', 'jake':'horse'}
   };
   var converted = [FromNetworkConverter convert: input];
@@ -96,6 +96,21 @@
         equals: [converted valueForKey: 'procedure']];
 }
 
+- (void) test_that_exclusions_are_merged_to_form_all_exclusions
+{
+  var input = {
+    'timeSensitiveExclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
+    'timelessExclusions' : {'floating' : ['betsy'], 'venipuncture' : ['betsy']}
+  };
+
+  [FromNetworkConverter convert: input];
+  var newEntry = input['allExclusions'];
+
+  // Note that we don't care about duplication or order
+  [self assertTrue: [newEntry['floating'] containsObject: 'betsy']];
+  [self assertTrue: [newEntry['floating'] containsObject: 'jake']];
+  [self assertTrue: [newEntry['venipuncture'] containsObject: 'betsy']];
+}
 
 
 - (void) testAProcedureListCanBeCreatedAsWell
@@ -113,7 +128,7 @@
 {
   var input = {
     'procedures' : ['floating', 'venipuncture'],
-    'reservationExclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
+    'allExclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
     'kindMap' : { 'betsy':'cow', 'jake':'horse'}
   };
   var converted = [FromNetworkConverter convert: input];
@@ -125,32 +140,6 @@
   [self assert: procedures
         equals: [converted valueForKey: 'procedures']];
 }
-
-- (void) testAProcedureListCanBeGivenAdditionalExclusions
-{
-  var input = {
-    'procedures' : ['floating', 'venipuncture'],
-    'reservationExclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
-    'kindMap' : { 'betsy':'cow', 'jake':'horse', 'fred':'goat'}
-  };
-  var extras = {'floating':['fred', 'jake'], 'venipuncture':['jake']};
-
-  // TODO: move away from class methods
-  var converter = [[FromNetworkConverter alloc] init];
-  var converted = [converter convert: input withAddedExclusions: extras];
-  var procedures = [converted valueForKey: 'procedures'];
-  [self assert: 2 equals: [procedures count]];
-
-  [self assert: 'floating' equals: [procedures[0] name]];
-  // Note: for the moment, the duplicate exclusions are not a problem. 
-  [self assert: [betsy, jake, fred, jake]
-        equals: [procedures[0] animalsThisProcedureExcludes]];
-
-  [self assert: 'venipuncture' equals: [procedures[1] name]];
-  [self assert: [jake]
-        equals: [procedures[1] animalsThisProcedureExcludes]];
-}
-
 
 - (void) testCanCreateAGroup
 {

@@ -14,7 +14,6 @@ var SharedPersistentStore = nil;
   id network;
   ToNetworkConverter toNetworkConverter;
   FromNetworkConverter fromNetworkConverter;
-  CPDictionary timeInvariantExclusions;
   URIMaker uriMaker;
 }
 
@@ -37,11 +36,6 @@ var SharedPersistentStore = nil;
   toNetworkConverter = [[ToNetworkConverter alloc] init];
   fromNetworkConverter = [[FromNetworkConverter alloc] init];
   uriMaker = [[URIMaker alloc] init];
-}
-
-- (void) setTimeInvariantExclusions: jsonString
-{
-  timeInvariantExclusions = [jsonString objectFromJSON];
 }
 
 - (void) makeURIsWith: aURIMaker
@@ -136,8 +130,7 @@ var SharedPersistentStore = nil;
     return;
   }
   // [self log: [[CPDictionary dictionaryWithJSObject: jsHash recursively: YES] description]];
-  var dictionary =  [fromNetworkConverter convert: jsHash
-                              withAddedExclusions: jsHash['otherExclusions']];
+  var dictionary =  [fromNetworkConverter convert: jsHash]
   return dictionary;
 }
 
