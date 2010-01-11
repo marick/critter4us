@@ -13,7 +13,7 @@
                                   'pendingReservationView']];
 }
 
-- (void)testNotifiesListenersWhenDateChosen
+- (void)test_listeners_are_notified_when_the_date_is_chosen
 {
   [scenario
     previously: function() {
