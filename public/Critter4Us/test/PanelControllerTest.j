@@ -61,7 +61,7 @@
 -(void) testPanelShouldReappearAfterBeingHiddenIfItWasAlreadyShowing
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut appear];
       [sut hideAnyVisiblePanels];
     }
@@ -76,7 +76,7 @@
 -(void) testPanelShouldNotReappearAfterBeingHiddenIfItWasNotAlreadyShowing
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut appear]
       [sut disappear];
       [sut hideAnyVisiblePanels];

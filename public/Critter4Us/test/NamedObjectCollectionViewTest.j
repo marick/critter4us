@@ -47,7 +47,7 @@
   [selected addIndex: 3];
 
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut setDelegate: sut.delegate]; // Because diff. conventions for names of instances in AppKit.
       [sut setContent: [aaaa, aaab, Abnot, cetsy, detsy]];
     }

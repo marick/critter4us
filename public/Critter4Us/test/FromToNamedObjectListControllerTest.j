@@ -95,7 +95,7 @@
 - (void) testCanInitializeUsedArrayFromASource
 {
   [scenario 
-    previousAction: function() { 
+    previously: function() { 
       [sut allPossibleObjects: [betsy, spike, fang]];
     }
     testAction: function() { 
@@ -114,7 +114,7 @@
   var b = [[NamedObject alloc] initWithName: 'b'];
   var c = [[NamedObject alloc] initWithName: 'c'];
   [scenario
-    previousAction: function() { 
+    previously: function() { 
       [sut allPossibleObjects: [a, b, c]];
       [sut presetUsed: [b, c]];
     }

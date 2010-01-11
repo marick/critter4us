@@ -34,7 +34,7 @@
 - (void) testCanBeToldToPrepareToEditGroups
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut.newGroupButton setHidden: YES];
       [sut.groupCollectionView setHidden: YES];
     }
@@ -67,7 +67,7 @@
   var aGroup = [[Group alloc] initWithProcedures: [] animals: []];
 
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
     }
   during: function() {
@@ -91,7 +91,7 @@
   var excluder = [[Procedure alloc] initWithName: 'excluder' excluding: [jake]];
   var mockPopup = [[Mock alloc] initWithName: 'popup'];
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
     }
   during: function() {
@@ -116,7 +116,7 @@
 - (void) testTheMirroringAlsoUpdatesGroupTitle
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
     }
   during: function() {
@@ -132,7 +132,7 @@
 -(void) testNewGroupAddsAnEntryToTheGroupCollectionView
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
     }
     during: function() {
@@ -165,7 +165,7 @@
   // they'll later edit.
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
     }
   during: function() {
@@ -185,7 +185,7 @@
   var another = [[Group alloc] initWithProcedures: [floating] animals: [betsy]];
 
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
     }
   during: function() {
@@ -209,7 +209,7 @@
 - (void) testCanBackUpToBeginningOfReservationWorkflow
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut.newGroupButton setHidden: NO];
       [sut.groupCollectionView setHidden: NO];
     }
@@ -226,7 +226,7 @@
 {
   var group = [[Group alloc] initWithProcedures: [floating] animals: [jake]];
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
     }
   during: function() {
@@ -258,7 +258,7 @@
   var group = [[Group alloc] initWithProcedures: [floating] animals: [jake]];
 
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
     }
   during: function() {
@@ -287,7 +287,7 @@
   sut.groupCollectionView = [[ButtonCollectionView alloc] initWithFrame: CGRectMakeZero()];
 
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
       [sut allPossibleObjects: [group]];
     }
@@ -314,7 +314,7 @@
   sut.groupCollectionView = [[ButtonCollectionView alloc] initWithFrame: CGRectMakeZero()];
 
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
       [sut allPossibleObjects: [group, otherGroup]];
     }
@@ -340,7 +340,7 @@
   sut.groupCollectionView = [[ButtonCollectionView alloc] initWithFrame: CGRectMakeZero()];
 
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
       [sut allPossibleObjects: [group]];
     }
@@ -363,7 +363,7 @@
   sut.groupCollectionView = [[ButtonCollectionView alloc] initWithFrame: CGRectMakeZero()];
 
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
       [sut allPossibleObjects: [group]];
     }
@@ -392,7 +392,7 @@
   sut.groupCollectionView = [[ButtonCollectionView alloc] initWithFrame: CGRectMakeZero()];
 
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
       [sut allPossibleObjects: [group]];
     }
@@ -413,7 +413,7 @@
   sut.groupCollectionView = [[ButtonCollectionView alloc] initWithFrame: CGRectMakeZero()];
 
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
       [sut allPossibleObjects: [group]];
     }
@@ -438,7 +438,7 @@
   sut.groupCollectionView = [[ButtonCollectionView alloc] initWithFrame: CGRectMakeZero()];
 
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut prepareToEditGroups];
       [sut allPossibleObjects: [group, otherGroup]];
     }

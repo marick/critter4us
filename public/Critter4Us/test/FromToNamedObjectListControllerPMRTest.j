@@ -54,7 +54,7 @@
 - (void)testMovingAnObjectAnnouncesUsedListIsUpdated
 {
   [scenario
-   previousAction: function() {
+   previously: function() {
       [sut allPossibleObjects: [betsy, spike]];
     }
   during: function() {
@@ -75,7 +75,7 @@
 - (void) testPresetsDoNotCountAsNotifiableMovement
 {
   [scenario 
-    previousAction: function() { 
+    previously: function() { 
       [sut allPossibleObjects: [betsy, spike, fang]];
     }
     during: function() { 
@@ -91,7 +91,7 @@
 - (void) testCanBackUpToBeginningOfReservationWorkflow
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut appear];
       [self assertTrue: [sut wouldShowPanel]];
       [sut.available setContent: [[NamedObject alloc] initWithName: 'a']];
@@ -113,7 +113,7 @@
 - (void)testWithholdingNamedObjectsLeavesThemOutOfAvailableList
 {
   [scenario
-   previousAction: function() {
+   previously: function() {
       [sut allPossibleObjects: [betsy, spike, fang]];
     }
   during: function() { 
@@ -131,7 +131,7 @@
 - (void)testWithholdingDoes_NOT_Accumulate
 {
   [scenario
-   previousAction: function() {
+   previously: function() {
       [sut allPossibleObjects: [betsy, spike, fang]];
       [sut withholdNamedObjects: [betsy]];
     }
@@ -147,7 +147,7 @@
 - (void)testWithholdingNamedObjectsNeedNotBePermanent
 {
   [scenario
-   previousAction: function() { 
+   previously: function() { 
       [sut allPossibleObjects: [betsy, spike, fang]];
       [sut withholdNamedObjects: [fang, betsy]];
     }
@@ -163,7 +163,7 @@
 - (void) testWithholdingAppliesToChosenNamedObjectsAsWell
 {
   [scenario
-  previousAction: function() {
+  previously: function() {
       [sut allPossibleObjects: [betsy, spike, fang]];
       [self simulateChoiceOf: [spike,fang]];
       [self assert: [betsy] equals: [sut.available content]];
@@ -181,7 +181,7 @@
 - (void) testWithholdingAnNamedObjectDoes_Not_RechooseItIfItReappears
 {
   [scenario
-  previousAction: function() {
+  previously: function() {
       [sut allPossibleObjects: [betsy, spike, fang]];
       [self simulateChoiceOf: [spike, fang]];
       [sut withholdNamedObjects: [betsy, fang]];

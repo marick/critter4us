@@ -18,7 +18,7 @@
 -(void) testCanBeSetToASpecificDateAndTime
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut.dateField setStringValue: 'BOGUS'];
       [sut.timeControl setTime: [Time afternoon]];
     }

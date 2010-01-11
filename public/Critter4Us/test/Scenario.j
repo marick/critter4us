@@ -55,14 +55,14 @@ var Skip = function() {}
 
 
 -(void)    beforeApp: beforeApp        // most specific version
-      previousAction: previousAction
+      previously: previously
           testAction: testAction
               behold: behold 
                andSo: consequence
 {
   beforeApp();
   if (! sut.awakened) [sut awakeFromCib];
-  previousAction();
+  previously();
   behold();
   result = testAction();
   [self checkAllExpectations];
@@ -71,13 +71,13 @@ var Skip = function() {}
 
 // synonym
 -(void)    beforeApp: beforeApp        // most specific version
-      previousAction: previousAction
+      previously: previously
               during: testAction
               behold: behold 
                andSo: consequence
 {
   [self      beforeApp: beforeApp
-        previousAction: previousAction
+        previously: previously
             testAction: testAction
 		behold: behold
     	         andSo: consequence];
@@ -89,24 +89,24 @@ var Skip = function() {}
 
 
 -(void)     beforeApp: beforeApp
-       previousAction: previousAction
+       previously: previously
            testAction: testAction
 	        andSo: consequence
 {
   [self      beforeApp: beforeApp
-        previousAction: previousAction
+        previously: previously
             testAction: testAction
 		behold: Skip
     	         andSo: consequence];
 }
 
 -(void)      beforeApp: beforeApp
-        previousAction: previousAction
+        previously: previously
                 during: testAction
 	        behold: behold
 {
   [self      beforeApp: beforeApp
-        previousAction: previousAction
+        previously: previously
             testAction: testAction
 		behold: behold
     	         andSo: Skip];
@@ -118,19 +118,19 @@ var Skip = function() {}
   		 andSo: consequence
 {
   [self      beforeApp: beforeApp
-        previousAction: Skip
+        previously: Skip
                 during: testAction
 		behold: behold
     	         andSo: consequence];
 }
 
--(void) previousAction: previousAction
+-(void) previously: previously
                 during: testAction
 	        behold: behold
   		 andSo: consequence
 {
   [self      beforeApp: Skip
-        previousAction: previousAction
+        previously: previously
                 during: testAction
 		behold: behold
     	         andSo: consequence];
@@ -145,29 +145,29 @@ var Skip = function() {}
 	       behold: behold 
 {
   [self       beforeApp: beforeApp
-         previousAction: Skip
+         previously: Skip
              testAction: during
 	         behold: behold
           	  andSo: Skip];
 }
 
--(void)previousAction: previousAction
+-(void)previously: previously
                during: during
 	       behold: behold 
 {
   [self       beforeApp: Skip
-         previousAction: previousAction
+         previously: previously
              testAction: during
 	         behold: behold
           	  andSo: Skip];
 }
 
--(void)  previousAction: previousAction
+-(void)  previously: previously
              testAction: during
 	          andSo: consequence
 {
   [self       beforeApp: Skip
-         previousAction: previousAction
+         previously: previously
              testAction: during
 	         behold: Skip
           	  andSo: consequence];
@@ -178,7 +178,7 @@ var Skip = function() {}
 	        andSo: consequence
 {
   [self       beforeApp: beforeApp
-         previousAction: Skip
+         previously: Skip
              testAction: during
 	         behold: Skip
           	  andSo: consequence];
@@ -189,7 +189,7 @@ var Skip = function() {}
 	        andSo: consequence 
 {
   [self       beforeApp: Skip
-         previousAction: Skip
+         previously: Skip
              testAction: during
 	         behold: behold
           	  andSo: consequence];
@@ -201,7 +201,7 @@ var Skip = function() {}
                  behold: behold 
 {
   [self       beforeApp: Skip
-         previousAction: Skip
+         previously: Skip
                  during: during
 		 behold: behold
 	          andSo: Skip];
@@ -212,7 +212,7 @@ var Skip = function() {}
                       andSo: consequence
 {
   [self       beforeApp: Skip
-         previousAction: Skip
+         previously: Skip
                  during: during
 		 behold: Skip
 	          andSo: consequence];

@@ -17,7 +17,7 @@
 -(void) test_appearing_unhides_page_view
 {
   [scenario
-   previousAction: function() { 
+   previously: function() { 
      [sut.pageView setHidden: YES];
    }
    testAction: function() {
@@ -31,7 +31,7 @@
 -(void) test_appearing_shows_any_panels_that_are_ready_to_be_shown
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut addPanelController: sut.panelController1];
       [sut addPanelController: sut.panelController2];
     }
@@ -50,7 +50,7 @@
 -(void) test_disappearing_hides_page_view
 {
   [scenario
-   previousAction: function() { 
+   previously: function() { 
      [sut.pageView setHidden: NO];
    }
    testAction: function() {
@@ -64,7 +64,7 @@
 -(void) test_disappearing_hides_any_panels_attached_to_page
 {
   [scenario
-   previousAction: function() { 
+   previously: function() { 
       [sut addPanelControllersFromArray: [sut.panelController1, sut.panelController2]];
     }
   during: function() {

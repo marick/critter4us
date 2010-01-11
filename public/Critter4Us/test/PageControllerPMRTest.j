@@ -17,7 +17,7 @@
 -(void) testNotificationsCanAddPanelControllers
 {
   [scenario
-    previousAction: function() { 
+    previously: function() { 
       [scenario sutWillBeGiven: ['newPanelController']];
       [self sendNotification: NewAdvisorPanelOnPageNews
                   withObject: sut.newPanelController];
@@ -33,7 +33,7 @@
 -(void) testNotificationsCanRemovePanelControllers
 {
   [scenario
-    previousAction: function() { 
+    previously: function() { 
       [sut addPanelControllersFromArray: [sut.panelController1, sut.panelController2]];
       [self sendNotification: ClosedAdvisorPanelOnPageNews
                   withObject: sut.panelController2];

@@ -58,7 +58,7 @@
 - (void)testWithholdingNamedObjectsLeavesThemOutOfAvailableList
 {
   [scenario
-   previousAction: function() {
+   previously: function() {
       [sut allPossibleObjects: [betsy, spike, fang]];
     }
   during: function() { 
@@ -76,7 +76,7 @@
 - (void)testWithholdingDoes_NOT_Accumulate
 {
   [scenario
-   previousAction: function() {
+   previously: function() {
       [sut allPossibleObjects: [betsy, spike, fang]];
       [sut withholdNamedObjects: [betsy]];
     }
@@ -92,7 +92,7 @@
 - (void)testWithholdingNamedObjectsNeedNotBePermanent
 {
   [scenario
-   previousAction: function() { 
+   previously: function() { 
       [sut allPossibleObjects: [betsy, spike, fang]];
       [sut withholdNamedObjects: [fang, betsy]];
     }

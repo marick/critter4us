@@ -116,7 +116,7 @@
 - (void) testClickingAButtonActsToSelectThatCollectionViewIndex
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [CPApplication sharedApplication]; // Needed for performClick: to work.
       [sut setTarget: sut.controller];
       [sut setAction: @selector(differentGroupChosen:)];

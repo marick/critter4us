@@ -30,7 +30,7 @@
 - (void) test_receives_data_announces_it
 {
   [scenario
-    previousAction: function() { 
+    previously: function() { 
       [sut connection: UnusedArgument didReceiveData: "foo"];
       [sut connection: UnusedArgument didReceiveData: "bar"];
     }

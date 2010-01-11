@@ -16,7 +16,7 @@
 - (void)testNotifiesListenersWhenDateChosen
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut.dateField setStringValue: '2009-12-10'];
     }
   during: function() {

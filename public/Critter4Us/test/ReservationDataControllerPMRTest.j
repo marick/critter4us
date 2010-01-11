@@ -25,7 +25,7 @@
 - (void)testNotifiesListenersWhenReservingStarts
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut.dateField setStringValue: '2009-12-10'];
       [sut.timeControl setTime: [Time afternoon]];
     }
@@ -50,7 +50,7 @@
 - (void) testDisplayedDateAndTimeWorksForMorning
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut.dateField setStringValue: '2010-12-02'];
       [sut.timeControl setTime: [Time morning]];
     }
@@ -67,7 +67,7 @@
 - (void) testDisplayedDateAndTimeWorksForAfternoon
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut.dateField setStringValue: '2012-01-12'];
       [sut.timeControl setTime: [Time afternoon]];
     }
@@ -84,7 +84,7 @@
 - (void) testDisplayedDateAndTimeWorksForEvening
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut.dateField setStringValue: '2012-01-12'];
       [sut.timeControl setTime: [Time evening]];
     }
@@ -102,7 +102,7 @@
   // because it's on top of buttons
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut.previousResultsView setHidden: NO];
     }
     testAction: function() {
@@ -128,7 +128,7 @@
 -(void)testCanReturn
 {
   [scenario
-   previousAction: function() { 
+   previously: function() { 
       [sut.courseField setStringValue: "some course"];
       [sut.instructorField setStringValue: "some instructor"];
       [sut.dateField setStringValue: "some date"];
@@ -195,7 +195,7 @@
 -(void)testCanReturnToBeginningOfReservationWorkflow
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut.dateGatheringView setHidden: YES];
       [sut.dateDisplayingView setHidden: NO];
 
@@ -267,7 +267,7 @@
 - (void) testDateAndTimeEditingPanelIsInitializedWithCurrentValues
 {
   [scenario
-    previousAction: function() {
+    previously: function() {
       [sut.dateField setStringValue: "a value"];
       [sut.timeControl setTime: [Time afternoon]];
     }
