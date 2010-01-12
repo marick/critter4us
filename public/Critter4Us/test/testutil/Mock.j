@@ -44,6 +44,7 @@
   expectations = [CPMutableArray array];
   matchedExpectation = nil;
   mock = aMock;
+  printErrors = YES;
   return self;
 }
 
@@ -128,7 +129,8 @@
     var expectation = expectations[i];
     if (expectation.expectedInvocationCount != expectation.actualInvocationCount)
     {
-      [self noteFailure: [CPString stringWithFormat: "%d expected invocations, got %d", 
+      [self noteFailure: [CPString stringWithFormat: "%@ expected %d invocations, got %d", 
+                                   [expectation description],
                                    expectation.expectedInvocationCount,
                                    expectation.actualInvocationCount]];
       retval = NO;
@@ -142,7 +144,7 @@
 {
   if (printErrors)
     {
-      CPLog([CPString stringWithFormat: "%s: %s", [mock description] aString],
+      CPLog([CPString stringWithFormat: "%s: %s", [mock description], aString],
             "warn");
     }
 }

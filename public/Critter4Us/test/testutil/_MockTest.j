@@ -93,6 +93,25 @@
   [self assertTrue: [mock wereExpectationsFulfilled]];
 }
 
+
+- (void) test_that_the_same_selector_can_be_named_twice
+{
+  [mock shouldReceive: @selector(foo:) with: 1];
+  [mock shouldReceive: @selector(foo:) with: 2];
+  [mock foo: 1];
+  [mock foo: 2];
+  [self assertTrue: [mock wereExpectationsFulfilled]];
+}
+
+- (void) test_that_calling_just_one_selector_does_not_mean_success
+{
+  [mock shouldReceive: @selector(foo:) with: 1];
+  [mock shouldReceive: @selector(foo:) with: 2];
+  [mock foo: 1];
+  [self assertFalse: [mock wereExpectationsFulfilled]];
+}
+
+
 - (void)testUnnamedMocksDescriptionsAreClassNames
 {
   [self assert: "Mock" equals: [[[Mock alloc] init] description]];
@@ -103,6 +122,8 @@
   [self assert: "Mock fred"
         equals: [[[Mock alloc] initWithName: "fred"] description]];
 }
+
+
 
 - (void)testMocksCanBeToldToSwallowUnexpectedMessages
 {
