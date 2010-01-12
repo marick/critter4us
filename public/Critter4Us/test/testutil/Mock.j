@@ -112,11 +112,7 @@
 	  goodArg = (expected === actual);
 	}
 
-      if (! goodArg)
-	{
-	  [self noteFailure: [CPString stringWithFormat: "For %@, expected arg %d to be %@, was %@.", expectation.selector, i, expected, actual]];
-          return NO;
-	}
+      if (! goodArg) return NO;
     }
   return YES;
 }
