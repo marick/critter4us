@@ -44,6 +44,7 @@
 
 - (void)testExpectationsCanCheckArgumentsAndFail
 {
+  mock.failOnUnexpectedSelector = NO
   [mock shouldReceive: @selector(foo:) with: [5]];
   [mock foo: 6];
   
@@ -131,6 +132,24 @@
   mock = [[Mock alloc] initWithName: "fred"];
   [mock setThatThing: 3];
   [self assert: 3 equals: [mock thatThing]];
+}
+
+-(void)testSettersAndGettersAreNotRecordedAsExpectationFailures
+{
+  mock = [[Mock alloc] initWithName: "fred"];
+  [mock setThatThing: 3];
+  [self assert: 3 equals: [mock thatThing]];
+  [self assertTrue: [mock wereExpectationsFulfilled]];
+}
+
+-(void)test_setters_and_getters_and_expectations_can_be_combined
+{
+  mock = [[Mock alloc] initWithName: "fred"];
+  [mock shouldReceive: @selector(foo:) with: 1];
+  [mock foo: 1];
+  [mock setThatThing: 3];
+  [self assert: 3 equals: [mock thatThing]];
+  [self assertTrue: [mock wereExpectationsFulfilled]];
 }
 
 @end

@@ -3,11 +3,23 @@
   SEL selector;
   CPArray args;
   id retval;
+  CPInteger expectedInvocationCount;
+  CPInteger actualInvocationCount;
+}
+
+- (Expectation) initForSelector: (SEL)aSelector
+{
+  selector = aSelector;
+  expectedInvocationCount = 1;
+  actualInvocationCount = 0;
+  return self;
 }
 
 - (CPString) description
 {
-  return [CPString stringWithFormat: "expectation: %s %@ => %@", selector, [args description], retval];
+  return [CPString stringWithFormat: "expectation: %s %@ => %@", selector,
+                                                                 [args description],
+                                                                 retval];
 }
 
 - (id) returnValue
@@ -15,11 +27,130 @@
   return retval;
 }
 
-- (Expectation) initForSelector: (SEL)aSelector
+@end
+
+
+@implementation ExpectationMatcher : CPObject
 {
-  selector = aSelector;
+  BOOL printErrors;
+  CPMutableArray expectations;
+  Expectation matchedExpectation;
+  Mock mock;
+}
+
+- (id) initForMock: aMock
+{
+  self = [super init];
+  expectations = [CPMutableArray array];
+  matchedExpectation = nil;
+  mock = aMock;
   return self;
 }
+
+- (void) add: expectation
+{
+  [expectations addObject: expectation];
+}
+
+- (id) returnValue
+{
+  return [matchedExpectation returnValue];
+}
+
+
+- (BOOL) hasMatchFor: invocation 
+{
+  matchedExpectation = nil;
+  for (var i=0; i < [expectations count]; i++)
+  {
+    var expectation = expectations[i];
+    if ([self expectation: expectation matches: invocation])
+    {
+      matchedExpectation = expectation;
+      matchedExpectation.actualInvocationCount++;
+      break;
+    }
+  }
+  if (matchedExpectation) return YES;
+  return NO;
+}
+
+
+- (BOOL) expectation: expectation matches: invocation
+{
+  if (![expectation.selector isEqual: [invocation selector]])
+    return NO;
+
+  return [self doExpectedArguments: expectation match: invocation];
+}
+
+
+- (BOOL) doExpectedArguments: (Expectation)expectation match: (CPInvocation)invocation
+{
+  if (expectation.args == null) return YES;
+
+  for(var i=0; i < [expectation.args count]; i++)
+    {
+      var expected = expectation.args[i];
+      var actual = [invocation argumentAtIndex: i+2];
+      var goodArg = NO;
+      if (typeof(expected) == "function") 
+	{
+	  goodArg = expected(actual);
+	}
+      else if (expected === nil)
+	{
+	  goodArg = (actual === nil);
+	}
+      else if (expected.isa != undefined) // There is probably a better test.
+	{
+	  goodArg = [expected isEqual: actual];
+	}
+      else  
+	{
+	  goodArg = (expected === actual);
+	}
+
+      if (! goodArg)
+	{
+	  [self noteFailure: [CPString stringWithFormat: "For %@, expected arg %d to be %@, was %@.", expectation.selector, i, expected, actual]];
+          return NO;
+	}
+    }
+  return YES;
+}
+
+- (BOOL) areCountsCorrect
+{
+  var retval = YES
+  for (var i=0; i < [expectations count]; i++)
+  {
+    var expectation = expectations[i];
+    if (expectation.expectedInvocationCount != expectation.actualInvocationCount)
+    {
+      [self noteFailure: [CPString stringWithFormat: "%d expected invocations, got %d", 
+                                   expectation.expectedInvocationCount,
+                                   expectation.actualInvocationCount]];
+      retval = NO;
+    }
+  }
+  return retval;
+}
+
+
+-(void)noteFailure: (CPString)aString
+{
+  if (printErrors)
+    {
+      CPLog([CPString stringWithFormat: "%s: %s", [mock description] aString],
+            "warn");
+    }
+}
+
+ - (void) noteFailure: aString forExpectation: expectation
+ {
+   [self noteFailure: [CPString stringWithFormat: "%s: %s", [expectation description], aString]];
+ }
 
 
 @end
@@ -30,22 +161,18 @@
 
 @implementation Mock : CPObject
 {
-  id expectationDictionary;
-  id actualities;
+  id expectationMatcher;
   id buildingExpectation;
-  BOOL printErrors;
-  BOOL happiness;
   CPString name;
   BOOL failOnUnexpectedSelector;
   id storedValues;
   BOOL trace;
+  BOOL happiness;
 }
 
 -(Mock)init
 {
   [self clear]
-  printErrors = YES;
-  happiness = YES;
   failOnUnexpectedSelector = YES;
   trace = NO;
   return self;
@@ -60,9 +187,9 @@
 
 -(void) clear
 {
-  expectationDictionary = [[CPMutableDictionary alloc] init];
-  actualities = [[CPArray alloc] init];
+  expectationMatcher = [[ExpectationMatcher alloc] initForMock: self];
   storedValues = [CPMutableDictionary dictionary];
+  happiness = YES;
 }
 
 - (CPString) description
@@ -81,7 +208,7 @@
 - (Mock)shouldReceive: (SEL)aSelector
 {
   buildingExpectation = [[Expectation alloc] initForSelector: aSelector];
-  [expectationDictionary setObject: buildingExpectation forKey: aSelector];
+  [expectationMatcher add: buildingExpectation];
   return self;
 }
 
@@ -112,75 +239,9 @@
 
 - (BOOL)wereExpectationsFulfilled
 {
-  // CPLog([actualities description]);
-  if ([expectationDictionary count] !== [actualities count])
-    {
-      [self noteFailure: [CPString stringWithFormat: "%d expected invocations, got %d", [expectationDictionary count], [actualities count]]];
-    }
-
-  for (var i=0; i < [actualities count]; i++)
-    {
-      var actuality = actualities[i];
-      var selector = [actuality selector];
-      // CPLog(selector)
-      var expectation = [expectationDictionary objectForKey: selector];
-      // CPLog([expectation description]);
-      if (expectation == null)
-	{
-	  [self noteFailure: [CPString stringWithFormat: "No expectation for %@", selector]];
-	}
-      else
-	{
-	  [self compareExpectedArguments: expectation toActual: actuality];
-	}
-    }
-  return happiness;
+  return happiness && [expectationMatcher areCountsCorrect];
 }
 
-
-- (void) compareExpectedArguments: (Expectation)expectation toActual: (CPInvocation)actuality
-{
-  if (expectation.args == null) return;
-
-  for(var i=0; i < [expectation.args count]; i++)
-    {
-      var expected = expectation.args[i];
-      var actual = [actuality argumentAtIndex: i+2];
-      var goodArg = NO;
-      if (typeof(expected) == "function") 
-	{
-	  goodArg = expected(actual);
-	}
-      else if (expected === nil)
-	{
-	  goodArg = (actual === nil);
-	}
-      else if (expected.isa != undefined) // There is probably a better test.
-	{
-	  goodArg = [expected isEqual: actual];
-	}
-      else  
-	{
-	  goodArg = (expected === actual);
-	}
-
-      if (! goodArg)
-	{
-	  [self noteFailure: [CPString stringWithFormat: "For %@, expected arg %d to be %@, was %@.", expectation.selector, i, expected, actual]];
-	}
-    }
-}
-
-
--(void)noteFailure: (CPString)aString
-{
-  happiness = NO;
-  if (printErrors)
-    {
-      CPLog([CPString stringWithFormat: "%s: %s", [self description], aString],
-            "warn");
-    }
-}
 
 // Method_Missing implementation
 
@@ -197,29 +258,28 @@
   }
   var selector = [anInvocation selector];
   // CPLog(selector);
-  var matchingMethod = [expectationDictionary objectForKey: selector];
-  if (matchingMethod)
+  if ([expectationMatcher hasMatchFor: anInvocation])
     {
-      //      CPLog("a matching method in dictionary" + [expectationDictionary description]);
-      [anInvocation setReturnValue: [matchingMethod returnValue]];
-      [actualities addObject: anInvocation];
+      // CPLog("a matching method");
+      [anInvocation setReturnValue: [expectationMatcher returnValue]];
     }
   else if ([self isSetter: selector])
     {
       var variable = [self setterToVariable: selector];
       var value = [anInvocation argumentAtIndex: 2];
-      // CPLog("Mock storing " + value + " for " + variable);
+      //      CPLog("Mock storing " + value + " for " + variable);
       [storedValues setValue: value forKey: variable];
     }
   else if ([self isExpectedGetter: selector])
     {
       var variable = CPStringFromSelector(selector);
       var retval = [storedValues objectForKey: variable];
-      // CPLog("Mock returning " + retval + " for " + variable);
+      //      CPLog("Mock returning " + retval + " for " + variable);
       [anInvocation setReturnValue: retval];
     }
   else if (failOnUnexpectedSelector)
     {
+      happiness = NO;
       [super forwardInvocation: anInvocation];
     }
 }
@@ -290,7 +350,7 @@
 // Test support
 -(void)silenceErrors
 {
-  printErrors = NO;
+  expectationMatcher.printErrors = NO;
 }
 
 
