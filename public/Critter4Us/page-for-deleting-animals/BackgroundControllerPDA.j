@@ -12,7 +12,7 @@
 
 - (void) animalsInServiceForDate: sender
 {
-  [NotificationCenter postNotificationName: UserWantsAnimalsInServiceOnDateNews
+  [NotificationCenter postNotificationName: UserWantsAnimalsThatCanBeRemovedFromService
                                     object: [self effectiveDate]];
 }
 

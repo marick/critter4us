@@ -38,7 +38,7 @@
   var dict = [CPDictionary dictionaryWithJSObject: {'unused animals' : [betsy]}];
   [scenario 
     during: function() { 
-      [self sendNotification: AnimalInServiceListRetrievedNews
+      [self sendNotification: AnimalsThatCanBeRemovedFromServiceRetrieved
                   withObject: dict];
     }
   behold: function() {

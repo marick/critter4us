@@ -1,7 +1,7 @@
 @import "../util/Constants.j"
 
 CourseSessionDataBlobRoute = @"course_session_data_blob";
-InServiceAnimalListBlogRoute = @"animals_in_service_blob";
+InServiceAnimalListBlogRoute = @"animals_that_can_be_taken_out_of_service";
 
 StoreReservationRoute = @"store_reservation";
 TakeAnimalsOutOfServiceRoute = "take_animals_out_of_service";

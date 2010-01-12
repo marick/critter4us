@@ -7,7 +7,7 @@
 
 - (void) setUpNotifications
 {
-  [self notificationNamed: UserWantsAnimalsInServiceOnDateNews
+  [self notificationNamed: UserWantsAnimalsThatCanBeRemovedFromService
                       calls: @selector(fetchAnimalList:)];
 }
 

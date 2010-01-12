@@ -91,7 +91,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
       jake = Animal.random(:name => 'jake')
 
       during { 
-        get '/json/animals_in_service_blob', :date => '2009-01-01'
+        get '/json/animals_that_can_be_taken_out_of_service', :date => '2009-01-01'
       }.behold! {
         @timeslice.should_receive(:move_to).once.with(Date.new(2009,1,1), MORNING, nil)
         @timeslice.should_receive(:animals_that_can_be_reserved).once.

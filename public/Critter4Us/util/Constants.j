@@ -21,8 +21,10 @@ AvailableNews = "your turn";
 ReservationTableRetrievedNews = "a reservation table has been retrieved";
 AnimalTableRetrievedNews = "an animal table has been retrieved";
 
-UserWantsAnimalsInServiceOnDateNews = "user wants list of animals in service on particular date"
-AnimalInServiceListRetrievedNews = "deletion info has been retrieved";
+// TODO: I'm moving away from suffix "News", since it adds nothing. That the 
+// constant is "news" is clear from context.
+UserWantsAnimalsThatCanBeRemovedFromService = "user wants list of animals in service on particular date"
+AnimalsThatCanBeRemovedFromServiceRetrieved = "deletion info has been retrieved";
 AnimalsToRemoveFromServiceNews = "user has chosen animals to take out of service";
 RestartAnimalRemovalStateMachineNews = "probably want to pick a new date for taking out of service";
 TableOfAnimalsWithPendingReservationsNews = "these cannot be put out of service"

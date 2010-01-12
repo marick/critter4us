@@ -7,7 +7,7 @@
 
 - (void) setUpNotifications
 {
-  [self notificationNamed: AnimalInServiceListRetrievedNews
+  [self notificationNamed: AnimalsThatCanBeRemovedFromServiceRetrieved
                       calls: @selector(gotAnimalList:)];
   [self notificationNamed: AnimalsToRemoveFromServiceNews
                       calls: @selector(userChoseAnimals:)];

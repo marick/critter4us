@@ -23,7 +23,7 @@
       [sut animalsInServiceForDate: UnusedArgument];
     }
   behold: function() {
-      [self listenersWillReceiveNotification: UserWantsAnimalsInServiceOnDateNews
+      [self listenersWillReceiveNotification: UserWantsAnimalsThatCanBeRemovedFromService
                             containingObject: '2009-12-10'];
         }];
 }

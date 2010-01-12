@@ -90,7 +90,7 @@ var SharedPersistentStore = nil;
 {
   [AnimalInServiceListFuture spawnGetTo: network
            withRoute: [uriMaker inServiceAnimalListWithDate: aDateString]
-    notificationName: AnimalInServiceListRetrievedNews];
+    notificationName: AnimalsThatCanBeRemovedFromServiceRetrieved];
 }
 
 - (void) fetchAnimalsWithPendingReservationsOnDate: (CPString) aDateString

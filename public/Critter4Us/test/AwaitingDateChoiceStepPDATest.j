@@ -31,7 +31,7 @@
 {
   [scenario
     during: function() {
-      [self sendNotification: UserWantsAnimalsInServiceOnDateNews
+      [self sendNotification: UserWantsAnimalsThatCanBeRemovedFromService
                   withObject: '2009-12-12'];
     }
   behold: function() {

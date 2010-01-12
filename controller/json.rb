@@ -65,7 +65,7 @@ class Controller
                 :id => reservation.pk.to_s)
   end
 
-  get '/json/animals_in_service_blob' do  # TODO: I think this name needs to be changed.
+  get '/json/animals_that_can_be_taken_out_of_service' do
     internal = internalize(params)
     timeslice.move_to(internal[:date], MORNING, nil)
     animals = timeslice.animals_that_can_be_reserved
