@@ -255,24 +255,24 @@
     CPLog('Mock ' + name + ' called: ' + [anInvocation selector] + [[self argumentsOf: invocation] description]);
   }
   var selector = [anInvocation selector];
-  // CPLog(selector);
+  //  CPLog(selector);
   if ([expectationMatcher hasMatchFor: anInvocation])
     {
-      // CPLog("a matching method");
+      // CPLog("a matching method will return " + [expectationMatcher returnValue]);
       [anInvocation setReturnValue: [expectationMatcher returnValue]];
     }
   else if ([self isSetter: selector])
     {
       var variable = [self setterToVariable: selector];
       var value = [anInvocation argumentAtIndex: 2];
-      //      CPLog("Mock storing " + value + " for " + variable);
+      // CPLog("Mock storing " + value + " for " + variable);
       [storedValues setValue: value forKey: variable];
     }
   else if ([self isExpectedGetter: selector])
     {
       var variable = CPStringFromSelector(selector);
       var retval = [storedValues objectForKey: variable];
-      //      CPLog("Mock returning " + retval + " for " + variable);
+      // CPLog("Mock returning " + retval + " for " + variable);
       [anInvocation setReturnValue: retval];
     }
   else if (failOnUnexpectedSelector)

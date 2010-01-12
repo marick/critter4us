@@ -28,8 +28,8 @@
 
 - (void)testExpectationsCanSpecifyReturnValue
 {
-  [mock shouldReceive: @selector(foo) andReturn: 5];
-  [self assert: 5 equals: [mock foo]];
+  [mock shouldReceive: @selector(foo) andReturn: [5, "hi"]];
+  [self assert: [5, "hi"] equals: [mock foo]];
   
   [self assertTrue: [mock wereExpectationsFulfilled]];
 }
@@ -96,10 +96,10 @@
 
 - (void) test_that_the_same_selector_can_be_named_twice
 {
-  [mock shouldReceive: @selector(foo:) with: 1];
-  [mock shouldReceive: @selector(foo:) with: 2];
-  [mock foo: 1];
-  [mock foo: 2];
+  [mock shouldReceive: @selector(foo:) with: [['array']]];
+  [mock shouldReceive: @selector(foo:) with: "string"];
+  [mock foo: "string"];
+  [mock foo: ['array']];
   [self assertTrue: [mock wereExpectationsFulfilled]];
 }
 
