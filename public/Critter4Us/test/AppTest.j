@@ -1,5 +1,5 @@
 @import <Critter4Us/App.j>
-@import "ScenarioTestCase.j"
+@import <Critter4Us/test/testutil/ScenarioTestCase.j>
 
 @implementation AppTest : ScenarioTestCase
 {

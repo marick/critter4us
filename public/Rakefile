@@ -24,7 +24,7 @@ end
 
 desc "Run Critter4Us tests"
 task :test do
-  system("cd Critter4Us/test; ojtest *Test.j")
+  system("cd Critter4Us/test; ojtest *Test.j */*Test.j")
 end
 
 task :default => :test
