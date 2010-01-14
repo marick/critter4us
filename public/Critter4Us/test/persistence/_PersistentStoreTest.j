@@ -33,10 +33,9 @@ CorrectData = function(data) {
   [sut awakeFromCib];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasDownwardOutlets: ['network']];
-  [scenario sutCreates: [ 'toNetworkConverter', 'primitivesConverter', 'uriMaker', 
+  [scenario sutCreates: [ 'toNetworkConverter', 'primitivesConverter', 'httpMaker', 
                           'futureMaker']];
 
-  [scenario sutCreates: [ 'httpMaker' ]];
   [scenario sutCreates: [ 'future' ]]
   self.future = sut.future
 
@@ -70,11 +69,11 @@ CorrectData = function(data) {
       [sut.toNetworkConverter shouldReceive: @selector(convertTime:)
                                        with: 'a time'
                                   andReturn: 'a network time'];
-      [sut.uriMaker shouldReceive: @selector(reservationURIWithDate:time:)
+      [sut.httpMaker shouldReceive: @selector(reservationRouteWithDate:time:)
                              with: ['a network date', 'a network time']
-                        andReturn: 'uri'];
+                        andReturn: 'route'];
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
-                            with: 'uri'
+                            with: 'route'
                        andReturn: '{"a json":"string"}'];
       
 
@@ -98,13 +97,13 @@ CorrectData = function(data) {
       [sut.toNetworkConverter shouldReceive: @selector(convert:)
                                        with: 'reservation data'
                                   andReturn: {'a':'jshash'}];
-      [sut.uriMaker shouldReceive: @selector(POSTReservationURI)
-                        andReturn: 'uri'];
-      [sut.uriMaker shouldReceive: @selector(POSTContentFrom:)
+      [sut.httpMaker shouldReceive: @selector(POSTReservationRoute)
+                        andReturn: 'route'];
+      [sut.httpMaker shouldReceive: @selector(POSTContentFrom:)
                              with: function(arg) { return arg['a'] == 'jshash'}
                         andReturn: 'content'];
       [sut.network shouldReceive: @selector(POSTFormDataTo:withContent:)
-                            with: ['uri', 'content']
+                            with: ['route', 'content']
                        andReturn: '{"reservation":"1"}'];
       [self listenersShouldReceiveNotification: ReservationStoredNews
                               containingObject: '1'];
@@ -119,11 +118,11 @@ CorrectData = function(data) {
       [sut fetchReservation: 'id'];
     }
   behold: function() {
-      [sut.uriMaker shouldReceive: @selector(fetchReservationURI:)
+      [sut.httpMaker shouldReceive: @selector(fetchReservationRoute:)
                              with: ['id']
-                        andReturn: 'uri'];
+                        andReturn: 'route'];
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
-                            with: 'uri'
+                            with: 'route'
                        andReturn: '{"a json":"string"}'];
       [sut.primitivesConverter shouldReceive: @selector(convert:)
                                          with: CorrectData
@@ -165,15 +164,15 @@ CorrectData = function(data) {
       [sut takeAnimals: ["some animals"] outOfServiceOn: "some date"];
     }
   behold: function() {
-      [sut.uriMaker shouldReceive: @selector(POSTAnimalsOutOfServiceURI)
-                        andReturn: 'uri'];
+      [sut.httpMaker shouldReceive: @selector(POSTAnimalsOutOfServiceRoute)
+                        andReturn: 'route'];
       [sut.toNetworkConverter shouldReceive: @selector(convert:)
                                        with: "some date"
                                   andReturn: "a converted date"];
       [sut.toNetworkConverter shouldReceive: @selector(convert:)
                                        with: [["some animals"]]
                                   andReturn: ["some converted animals"]];
-      [sut.uriMaker shouldReceive: @selector(POSTContentFrom:)
+      [sut.httpMaker shouldReceive: @selector(POSTContentFrom:)
                              with: function(arg) { 
                                         [self assert: "a converted date" equals: arg['date']];
                                         [self assert: ["some converted animals"] equals: arg['animals']];
@@ -181,7 +180,7 @@ CorrectData = function(data) {
                                    }
                         andReturn: 'data=content'];
       [sut.futureMaker shouldReceive: @selector(spawnPostTo:withRoute:content:notificationName:)
-                                with: [sut.network, 'uri', "data=content", 
+                                with: [sut.network, 'route', "data=content", 
                                           UniversallyIgnoredNews]];
     }];
 }

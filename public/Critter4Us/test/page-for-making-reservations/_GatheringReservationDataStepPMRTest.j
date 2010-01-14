@@ -47,9 +47,9 @@
       [self sendNotification: ReservationDataAvailable withObject: dict];
     }
   behold: function() {
-      [sut.persistentStore shouldReceive: @selector(makeURIsWith:)
+      [sut.persistentStore shouldReceive: @selector(makeHTTPWith:)
                                     with: function(arg) {
-          [self assert: "URIMaker" equals: [arg className]];
+          [self assert: "HTTPMaker" equals: [arg className]];
           return YES;
         }];
       [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:)
@@ -69,9 +69,9 @@
                   withObject: 33];
     }
    behold: function() {
-      [sut.persistentStore shouldReceive: @selector(makeURIsWith:)
+      [sut.persistentStore shouldReceive: @selector(makeHTTPWith:)
                                     with: function(arg) {
-          [self assert: "EditingURIMaker" equals: [arg className]];
+          [self assert: "EditingHTTPMaker" equals: [arg className]];
           [self assert: 33 equals: [arg reservationBeingEdited]];
           return YES;
         }];
@@ -92,9 +92,9 @@
                   withObject: 33];
     }
    behold: function() {
-      [sut.persistentStore shouldReceive: @selector(makeURIsWith:)
+      [sut.persistentStore shouldReceive: @selector(makeHTTPWith:)
                                     with: function(arg) {
-          [self assert: "URIMaker" equals: [arg className]];
+          [self assert: "HTTPMaker" equals: [arg className]];
           return YES;
         }];
       [sut.persistentStore shouldReceive: @selector(fetchReservation:)

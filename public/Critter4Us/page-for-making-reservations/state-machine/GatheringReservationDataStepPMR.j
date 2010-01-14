@@ -1,5 +1,5 @@
 @import "../../util/Step.j"
-@import "../../persistence/URIMaker.j"
+@import "../../persistence/HTTPMaker.j"
 @import "GatheringGroupDataStepPMR.j"
 @import "DateChangingGroupDataStepPMR.j"
 
@@ -32,7 +32,7 @@
 {
   [self afterResigningInFavorOf: GatheringGroupDataStepPMR
              causeNextEventWith: function() { 
-    [persistentStore makeURIsWith: [[URIMaker alloc] init]];
+    [persistentStore makeHTTPWith: [[HTTPMaker alloc] init]];
     [persistentStore loadInfoRelevantToDate: [[aNotification object] valueForKey: 'date']
                                        time: [[aNotification object] valueForKey: 'time']];
     }];
@@ -43,7 +43,7 @@
   var id = [aNotification object];
   [self afterResigningInFavorOf: GatheringGroupDataStepPMR
              causeNextEventWith: function() { 
-      [persistentStore makeURIsWith: [[EditingURIMaker alloc] initEditing: id]];
+      [persistentStore makeHTTPWith: [[EditingHTTPMaker alloc] initEditing: id]];
       [persistentStore fetchReservation: id];
     }];
 }
@@ -53,7 +53,7 @@
   var id = [aNotification object];
   [self afterResigningInFavorOf: DateChangingGroupDataStepPMR
              causeNextEventWith: function() { 
-      [persistentStore makeURIsWith: [[URIMaker alloc] init]];
+      [persistentStore makeHTTPWith: [[HTTPMaker alloc] init]];
       [persistentStore fetchReservation: id];
     }];
 }

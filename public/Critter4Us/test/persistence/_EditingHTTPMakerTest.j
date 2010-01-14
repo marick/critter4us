@@ -1,35 +1,35 @@
-@import <Critter4Us/persistence/URIMaker.j>
+@import <Critter4Us/persistence/HTTPMaker.j>
 @import <Critter4Us/test/testutil/TestUtil.j>
 
 
-@implementation _EditingURIMakerTest : OJTestCase
+@implementation _EditingHTTPMakerTest : OJTestCase
 {
-  URImaker maker;
+  HTTPmaker maker;
 }
 
 -(void) setUp
 {
-  maker = [[EditingURIMaker alloc] initEditing: 19];
+  maker = [[EditingHTTPMaker alloc] initEditing: 19];
 }
 
--(void) test_can_make_uri_to_fetch_reservation_by_id
+-(void) test_can_make_route_to_fetch_reservation_by_id
 {
   // The program-as-is will always use the same number for both bits
-  // of the URI, but they're conceptually different
+  // of the route, but they're conceptually different
   [self assert: '/json/reservation/333?ignoring=19'
-        equals: [maker fetchReservationURI: 333]];
+        equals: [maker fetchReservationRoute: 333]];
 }
 
--(void) test_when_building__fetch_by_date_time__uri_exclude_reservation_being_edited
+-(void) test_when_building__fetch_by_date_time__route_exclude_reservation_being_edited
 {
   [self assert: '/json/course_session_data_blob?date=2009-12-30&time=morning&ignoring=19'
-        equals: [maker reservationURIWithDate: '2009-12-30' time: 'morning']];
+        equals: [maker reservationRouteWithDate: '2009-12-30' time: 'morning']];
 }
 
 -(void) test_chooses_to_modify_a_reservation_when_storing
 {
   [self assert: '/json/modify_reservation'
-        equals: [maker POSTReservationURI]];
+        equals: [maker POSTReservationRoute]];
 }
 
 -(void) test_identifies_reservation_to_overwrite_when_modifying
