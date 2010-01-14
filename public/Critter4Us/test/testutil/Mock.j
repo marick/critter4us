@@ -17,9 +17,9 @@
 
 - (CPString) description
 {
-  return [CPString stringWithFormat: "expectation: %s %@ => %@", selector,
+  return [CPString stringWithFormat: "expectation: [%s %s => %s]", selector,
                                                                  [args description],
-                                                                 retval];
+                                                                 [retval description]];
 }
 
 - (id) returnValue
