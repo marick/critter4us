@@ -33,7 +33,7 @@ CorrectData = function(data) {
   [sut awakeFromCib];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasDownwardOutlets: ['network']];
-  [scenario sutCreates: [ 'toNetworkConverter', 'fromNetworkConverter', 'uriMaker', 
+  [scenario sutCreates: [ 'toNetworkConverter', 'primitivesConverter', 'uriMaker', 
                           'futureMaker']];
 
   [scenario sutCreates: [ 'httpMaker' ]];
@@ -50,7 +50,7 @@ CorrectData = function(data) {
 
 
   A_json_to_model_converter = function(arg) {
-    return JsonToModelConverter === [arg class];
+    return JsonToModelObjectsConverter === [arg class];
   }
 
 
@@ -78,7 +78,7 @@ CorrectData = function(data) {
                        andReturn: '{"a json":"string"}'];
       
 
-      [sut.fromNetworkConverter shouldReceive: @selector(convert:)
+      [sut.primitivesConverter shouldReceive: @selector(convert:)
                                          with: CorrectData
                                     andReturn: 'a big dictionary'];
       [self listenersShouldReceiveNotification: AnimalAndProcedureNews
@@ -125,7 +125,7 @@ CorrectData = function(data) {
       [sut.network shouldReceive: @selector(GETJsonFromURL:)
                             with: 'uri'
                        andReturn: '{"a json":"string"}'];
-      [sut.fromNetworkConverter shouldReceive: @selector(convert:)
+      [sut.primitivesConverter shouldReceive: @selector(convert:)
                                          with: CorrectData
                                     andReturn: 'a big dictionary'];
       [self listenersShouldReceiveNotification: ReservationRetrievedNews

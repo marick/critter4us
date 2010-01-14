@@ -5,7 +5,7 @@
 @import "../util/Time.j"
 @import "../util/CritterObject.j"
 
-@implementation FromNetworkConverter : CritterObject
+@implementation PrimitivesToModelObjectsConverter : CritterObject
 {
 }
 

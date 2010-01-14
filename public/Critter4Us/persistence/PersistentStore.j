@@ -2,13 +2,12 @@
 @import "../util/AwakeningObject.j"
 @import "NetworkConnection.j"
 @import "ToNetworkConverter.j"
-@import "FromNetworkConverter.j"
+@import "PrimitivesToModelObjectsConverter.j"
 @import "URIMaker.j"
 @import "Future.j"
-@import "AnimalInServiceListFuture.j"
 
 
-@import "JsonToModelConverter.j"
+@import "JsonToModelObjectsConverter.j"
 @import "HTTPMaker.j"
 
 var SharedPersistentStore = nil;
@@ -17,7 +16,7 @@ var SharedPersistentStore = nil;
 {
   id network;
   ToNetworkConverter toNetworkConverter;
-  FromNetworkConverter fromNetworkConverter;
+  PrimitivesToModelObjectsConverterd primitivesConverter;
   URIMaker uriMaker;
   id futureMaker;
 
@@ -41,7 +40,7 @@ var SharedPersistentStore = nil;
   if (awakened) return;
   [super awakeFromCib]
   toNetworkConverter = [[ToNetworkConverter alloc] init];
-  fromNetworkConverter = [[FromNetworkConverter alloc] init];
+  primitivesConverter = [[PrimitivesToModelObjectsConverter alloc] init];
   uriMaker = [[URIMaker alloc] init];
   futureMaker = Future;
 
@@ -100,7 +99,7 @@ var SharedPersistentStore = nil;
 {
   var route = [httpMaker animalsThatCanBeTakenOutOfServiceRoute: aDateString];
   future = [futureMaker futureToAccomplish: AnimalsThatCanBeRemovedFromServiceRetrieved
-                      convertingResultsWith: [[JsonToModelConverter alloc] init]];
+                      convertingResultsWith: [[JsonToModelObjectsConverter alloc] init]];
   CPLog(future);
   [future get: route from: network];
 }
@@ -141,7 +140,7 @@ var SharedPersistentStore = nil;
     return;
   }
   // [self log: [[CPDictionary dictionaryWithJSObject: jsHash recursively: YES] description]];
-  var dictionary =  [fromNetworkConverter convert: jsHash]
+  var dictionary =  [primitivesConverter convert: jsHash]
   return dictionary;
 }
 

@@ -2,9 +2,9 @@
 @import <Critter4Us/model/Animal.j>
 @import <Critter4Us/model/Procedure.j>
 @import <Critter4Us/model/Group.j>
-@import <Critter4Us/persistence/FromNetworkConverter.j>
+@import <Critter4Us/persistence/PrimitivesToModelObjectsConverter.j>
 
-@implementation _FromNetworkConverterTest : OJTestCase
+@implementation _PrimitivesToModelObjectsConverterTest : OJTestCase
 {
   Animal betsy;
   Animal jake;
@@ -26,28 +26,28 @@
 -(void) testConvertsMiscellaneousKeyValuePairsByDoingNothing
 {
   var input = { 'miscellaneous' : 'output' };
-  var converted = [FromNetworkConverter convert: input];
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
   [self assert: "output" equals: [converted valueForKey: 'miscellaneous']];
 }
 
 -(void) testConvertsMorningsToTimeObjects
 {
   var input = { 'time' : 'morning' };
-  var converted = [FromNetworkConverter convert: input];
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
   [self assert: [Time morning] equals: [converted valueForKey: 'time']];
 }
 
 -(void) testConvertsAfternoonsToTimeObjects
 {
   var input = { 'time' : 'afternoon' };
-  var converted = [FromNetworkConverter convert: input];
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
   [self assert: [Time afternoon] equals: [converted valueForKey: 'time']];
 }
 
 -(void) testConvertsEveningsToTimeObjects
 {
   var input = { 'time' : 'evening' };
-  var converted = [FromNetworkConverter convert: input];
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
   [self assert: [Time evening] equals: [converted valueForKey: 'time']];
 }
 
@@ -57,7 +57,7 @@
     'animal' : 'betsy',
     'kindMap' : { 'betsy':'cow'}
   };
-  var converted = [FromNetworkConverter convert: input];
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
   [self assert: betsy
         equals: [converted valueForKey: 'animal']];
 }
@@ -68,7 +68,7 @@
     'animals' : ['betsy', 'jake'],
     'kindMap' : { 'betsy':'cow', 'jake':'horse'}
   };
-  var converted = [FromNetworkConverter convert: input];
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
   [self assert: [betsy, jake]
         equals: [converted valueForKey: 'animals']];
 }
@@ -76,7 +76,7 @@
 - (void) test_that_unused_animals_are_converted_to_named_objects
 {
   var input = {"unused animals":["betsy"]};
-  var converted = [FromNetworkConverter convert: input];
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
 
   [self assert: [[[NamedObject alloc] initWithName: "betsy"]]
         equals: [converted valueForKey: 'unused animals']];
@@ -88,7 +88,7 @@
   var input = {
     'procedure' : 'floating'
   };
-  var converted = [FromNetworkConverter convert: input];
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
   [self assert: [[Procedure alloc] initWithName: 'floating']
         equals: [converted valueForKey: 'procedure']];
 }
@@ -101,7 +101,7 @@
     'allExclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
     'kindMap' : { 'betsy':'cow', 'jake':'horse'}
   };
-  var converted = [FromNetworkConverter convert: input];
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
   [self assert: [[Procedure alloc] initWithName: 'floating' excluding: [betsy, jake]]
         equals: [converted valueForKey: 'procedure']];
 }
@@ -113,7 +113,7 @@
     'timelessExclusions' : {'floating' : ['betsy'], 'venipuncture' : ['betsy']}
   };
 
-  [FromNetworkConverter convert: input];
+  [PrimitivesToModelObjectsConverter convert: input];
   var newEntry = input['allExclusions'];
 
   // Note that we don't care about duplication or order
@@ -128,7 +128,7 @@
   var input = {
     'procedures' : ['floating', 'venipuncture']
   };
-  var converted = [FromNetworkConverter convert: input];
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
   [self assert: [floating, venipuncture]
         equals: [converted valueForKey: 'procedures']];
 }
@@ -141,7 +141,7 @@
     'allExclusions' : {'floating' : ['betsy', 'jake'], 'venipuncture':[]},
     'kindMap' : { 'betsy':'cow', 'jake':'horse'}
   };
-  var converted = [FromNetworkConverter convert: input];
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
   var exclusions = [betsy, jake];
   var procedures = [
                     [[Procedure alloc] initWithName: 'floating' excluding: exclusions],
@@ -158,7 +158,7 @@
                'animals' : ['betsy', 'jake'] },
     'kindMap' : { 'betsy':'cow', 'jake':'horse'}
   };
-  var converted = [FromNetworkConverter convert: input];
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
 
   var animals = [betsy, jake];
   var procedures = [ floating, venipuncture];
@@ -175,7 +175,7 @@
                   'animals' : ['jake']}],
     'kindMap' : { 'betsy':'cow', 'jake':'horse'}
   };
-  var converted = [FromNetworkConverter convert: input];
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
 
   var expected = [
                   [[Group alloc] initWithProcedures: [floating] animals: [betsy, jake]],

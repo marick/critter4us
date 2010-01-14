@@ -1,7 +1,12 @@
-@import "FromNetworkConverter.j"
+@import "PrimitivesToModelObjectsConverter.j"
 
-@implementation JsonToModelConverter : CritterObject
+@implementation JsonToModelObjectsConverter : CritterObject
 {
+}
+
++ (CPDictionary) convert: json
+{
+  return [[[JsonToModelObjectsConverter alloc] init] convert: json];
 }
 
 - (CPDictionary) convert: json
@@ -19,7 +24,7 @@
     return;
   }
 
-  return [FromNetworkConverter convert: jsHash];
+  return [PrimitivesToModelObjectsConverter convert: jsHash];
 }
 
 @end
