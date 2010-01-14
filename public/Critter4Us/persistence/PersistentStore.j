@@ -7,6 +7,10 @@
 @import "Future.j"
 @import "AnimalInServiceListFuture.j"
 
+
+@import "JsonToModelConverter.j"
+@import "HTTPMaker.j"
+
 var SharedPersistentStore = nil;
 
 @implementation PersistentStore : AwakeningObject
@@ -15,6 +19,9 @@ var SharedPersistentStore = nil;
   ToNetworkConverter toNetworkConverter;
   FromNetworkConverter fromNetworkConverter;
   URIMaker uriMaker;
+  id futureMaker;
+
+  HTTPMaker httpMaker;
 }
 
 + (PersistentStore) sharedPersistentStore
@@ -36,6 +43,9 @@ var SharedPersistentStore = nil;
   toNetworkConverter = [[ToNetworkConverter alloc] init];
   fromNetworkConverter = [[FromNetworkConverter alloc] init];
   uriMaker = [[URIMaker alloc] init];
+  futureMaker = Future;
+
+  httpMaker = [[HTTPMaker alloc] init];
 }
 
 - (void) makeURIsWith: aURIMaker
@@ -74,28 +84,30 @@ var SharedPersistentStore = nil;
 
 - (CPString) pendingReservationTableAsHtml
 {
-  [Future spawnGetTo: network
-           withRoute: AllReservationsTableRoute
-    notificationName: ReservationTableRetrievedNews];
+  [futureMaker spawnGetTo: network
+                withRoute: AllReservationsTableRoute
+         notificationName: ReservationTableRetrievedNews];
 }
 
 - (CPString) animalTableAsHtml
 {
-  [Future spawnGetTo: network
+  [futureMaker spawnGetTo: network
            withRoute: AllAnimalsTableRoute
     notificationName: AnimalTableRetrievedNews];
 }
 
 - (void) fetchAnimalsInServiceOnDate: (CPString) aDateString
 {
-  [AnimalInServiceListFuture spawnGetTo: network
-           withRoute: [uriMaker inServiceAnimalListWithDate: aDateString]
-    notificationName: AnimalsThatCanBeRemovedFromServiceRetrieved];
+  var route = [httpMaker animalsThatCanBeTakenOutOfServiceRoute: aDateString];
+  future = [futureMaker futureToAccomplish: AnimalsThatCanBeRemovedFromServiceRetrieved
+                      convertingResultsWith: [[JsonToModelConverter alloc] init]];
+  CPLog(future);
+  [future get: route from: network];
 }
 
 - (void) fetchAnimalsWithPendingReservationsOnDate: (CPString) aDateString
 {
-  [Future spawnGetTo: network
+  [futureMaker spawnGetTo: network
            withRoute: [uriMaker pendingReservationAnimalListWithDate: aDateString]
     notificationName: TableOfAnimalsWithPendingReservationsNews];
 }
@@ -103,10 +115,9 @@ var SharedPersistentStore = nil;
 - (void) takeAnimals: animals outOfServiceOn: (CPString) date
 {
   var uri = [uriMaker POSTAnimalsOutOfServiceURI];
-  var content = [uriMaker POSTContentFrom: 
-                               {'date':[toNetworkConverter convert: date],
-                                'animals': [toNetworkConverter convert: animals]}];
-  [Future spawnPostTo: network
+  var content = [uriMaker POSTContentFrom: {'date':[toNetworkConverter convert: date],
+                                            'animals': [toNetworkConverter convert: animals]}];
+  [futureMaker spawnPostTo: network
             withRoute: uri
               content: content
      notificationName: UniversallyIgnoredNews];

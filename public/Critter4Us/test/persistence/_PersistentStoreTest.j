@@ -33,7 +33,12 @@ CorrectData = function(data) {
   [sut awakeFromCib];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasDownwardOutlets: ['network']];
-  [scenario sutCreates: [ 'toNetworkConverter', 'fromNetworkConverter', 'uriMaker']];
+  [scenario sutCreates: [ 'toNetworkConverter', 'fromNetworkConverter', 'uriMaker', 
+                          'futureMaker']];
+
+  [scenario sutCreates: [ 'httpMaker' ]];
+  [scenario sutCreates: [ 'future' ]]
+  self.future = sut.future
 
   timeInvariants = '{"floating":["never this animal"]}';
 
@@ -42,6 +47,13 @@ CorrectData = function(data) {
 
   floating = [[Procedure alloc] initWithName: 'floating'];
   accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
+
+
+  A_json_to_model_converter = function(arg) {
+    return JsonToModelConverter === [arg class];
+  }
+
+
 }
 
 
@@ -121,15 +133,23 @@ CorrectData = function(data) {
     }];
 }
 
-- (void) test_persistent_store_uses_uri_maker_to_construct_uri
+
+- (void) test_persistent_store_asks_for_animals_in_service_on_date
 {
   [scenario 
    during: function() { 
       [sut fetchAnimalsInServiceOnDate: '2009-12-12'];
     }
   behold: function() {
-      [sut.uriMaker shouldReceive: @selector(inServiceAnimalListWithDate:)
-                             with: ['2009-12-12']];
+      [sut.httpMaker shouldReceive: @selector(animalsThatCanBeTakenOutOfServiceRoute:)
+                              with: ['2009-12-12']
+                         andReturn: "some route"];
+      [sut.futureMaker shouldReceive: @selector(futureToAccomplish:convertingResultsWith:)
+                                with: [AnimalsThatCanBeRemovedFromServiceRetrieved,
+                                       A_json_to_model_converter]
+                           andReturn: future];
+      [future shouldReceive: @selector(get:from:)
+                       with: ["some route", sut.network]];
     }];
 }
 
@@ -139,34 +159,32 @@ CorrectData = function(data) {
 {
   var animals = [ [[NamedObject alloc] initWithName: 'fred'] ];
   var date = '2001-12-01';
-  // TODO: Mock framework can't handle same method call w/ different arguments, 
-  // so use the real thing instead of documenting interaction as commented out below.
-  [sut.toNetworkConverter = [[ToNetworkConverter alloc] init]];
 
   [scenario 
    during: function() { 
-      [sut takeAnimals: animals outOfServiceOn: date];
+      [sut takeAnimals: ["some animals"] outOfServiceOn: "some date"];
     }
   behold: function() {
       [sut.uriMaker shouldReceive: @selector(POSTAnimalsOutOfServiceURI)
                         andReturn: 'uri'];
-      //      [sut.toNetworkConverter shouldReceive: @selector(convert:)
-      //                                       with: date
-      //                                  andReturn: date];
-      //      [sut.toNetworkConverter shouldReceive: @selector(convert:)
-      //                                       with: animals
-      //                                  andReturn: ['fred']];
+      [sut.toNetworkConverter shouldReceive: @selector(convert:)
+                                       with: "some date"
+                                  andReturn: "a converted date"];
+      [sut.toNetworkConverter shouldReceive: @selector(convert:)
+                                       with: [["some animals"]]
+                                  andReturn: ["some converted animals"]];
       [sut.uriMaker shouldReceive: @selector(POSTContentFrom:)
                              with: function(arg) { 
-          [self assert: date equals: arg['date']];
-          [self assert: ['fred'] equals: arg['animals']];
-          return YES;
-        }
+                                        [self assert: "a converted date" equals: arg['date']];
+                                        [self assert: ["some converted animals"] equals: arg['animals']];
+                                        return YES;
+                                   }
                         andReturn: 'data=content'];
-      // Not tested: forwarding to Future. 
+      [sut.futureMaker shouldReceive: @selector(spawnPostTo:withRoute:content:notificationName:)
+                                with: [sut.network, 'uri', "data=content", 
+                                          UniversallyIgnoredNews]];
     }];
 }
-
 
 // Note: some PersistentStore methods that do nothing but trampoline
 // over to Future are not tested, since they're no more complex than
