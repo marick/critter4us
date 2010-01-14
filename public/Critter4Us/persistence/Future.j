@@ -2,12 +2,53 @@
 @import "../util/CritterObject.j"
 @import "../util/Constants.j"
 
+@implementation NullConverter : CPObject
+
+- (id) convert: data
+{
+  return data;
+}
+
+@end
+
 @implementation Future : CritterObject
 {
   CPString result;
   CPString route, notificationName;
   CPURLConnection connection;
+  id converter;
 }
+
++ (Future) futureToAccomplish: notificationName convertingResultsWith: converter
+{
+  return [[Future alloc] initWithNotificationName: notificationName
+                                        converter: converter];
+}
+
+- (id) initWithNotificationName: aNotificationName
+                      converter: aConverter
+{
+  self = [super init];
+  notificationName = aNotificationName;
+  converter = aConverter;
+  result = [CPString string];
+  return self;
+}
+
+
+- (void) get: aRoute from: network
+{
+  route = aRoute;
+  [future sendAsynchronousGetTo: network];
+}
+
+
+
+/////////
+
+
+
+
 
 + (void) spawnGetTo: network
           withRoute: route
@@ -32,6 +73,7 @@
   route = aRoute;
   notificationName = aName;
   result = [CPString string];
+  converter = [[NullConverter alloc] init];
   return self;
 }
 
@@ -101,7 +143,7 @@
 
 - (id) convert: data
 {
-  return data;
+  return [converter convert: data];
 }
 
 - (CPString) visible: data
