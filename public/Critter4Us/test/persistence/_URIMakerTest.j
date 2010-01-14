@@ -37,12 +37,6 @@
         equals: [maker fetchReservationURI: 333]];
 }
 
--(void) test_can_make_uri_to_fetch_animals_that_can_be_taken_out_of_service_as_of_a_date
-{
-  [self assert: '/json/animals_that_can_be_taken_out_of_service?date=2009-12-30'
-        equals: [maker inServiceAnimalListWithDate: '2009-12-30']];
-}
-
 -(void) test_can_make_uri_to_fetch_animals_with_pending_reservations_on_a_date
 {
   [self assert: '/animals_with_pending_reservations?date=2009-12-30'

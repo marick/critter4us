@@ -1,7 +1,6 @@
 @import "../util/Constants.j"
 
 CourseSessionDataBlobRoute = @"course_session_data_blob";
-InServiceAnimalListBlogRoute = @"animals_that_can_be_taken_out_of_service";
 
 StoreReservationRoute = @"store_reservation";
 TakeAnimalsOutOfServiceRoute = "take_animals_out_of_service";
@@ -29,11 +28,6 @@ htmlURI = function(route)
   return jsonURI(CourseSessionDataBlobRoute)+"?date=" + date + "&time=" + time;
 }
 
-- (CPString) inServiceAnimalListWithDate: date
-{
-  return jsonURI(InServiceAnimalListBlogRoute)+"?date=" + date
-}
-
 - (CPString) pendingReservationAnimalListWithDate: date
 {
   return htmlURI(PendingAnimalsTableRoute+"?date=" + date)
@@ -59,8 +53,6 @@ htmlURI = function(route)
 {
   return jsonURI(FetchReservationRoute) + '/' + id
 }
-
-
 
 @end
 
