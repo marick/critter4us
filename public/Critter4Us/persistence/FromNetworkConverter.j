@@ -45,6 +45,10 @@
         var array = [self animals: jsHash[key] kindMap: jsHash['kindMap']];
         [retval setValue: array forKey: key];
         break;
+      case 'unused animals':
+        var array = [self unusedAnimals: jsHash[key]];
+        [retval setValue: array forKey: key];
+        break;
       case 'procedure':
         var procedure = [self procedure: jsHash[key]
                              exclusions: jsHash['allExclusions']
@@ -92,6 +96,15 @@
   return retval;
 }
 
+- (CPArray) unusedAnimals: array
+{
+  var retval = [];
+  for(i=0; i < [array count]; i++)
+  {
+    [retval addObject: [[NamedObject alloc] initWithName: array[i]]];
+  }
+  return retval;
+}
 
 - (Procedure) procedure: name exclusions: exclusions kindMap: kindMap
 {

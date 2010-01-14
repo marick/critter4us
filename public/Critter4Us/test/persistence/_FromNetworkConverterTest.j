@@ -73,6 +73,16 @@
         equals: [converted valueForKey: 'animals']];
 }
 
+- (void) test_that_unused_animals_are_converted_to_named_objects
+{
+  var input = {"unused animals":["betsy"]};
+  var converted = [FromNetworkConverter convert: input];
+
+  [self assert: [[[NamedObject alloc] initWithName: "betsy"]]
+        equals: [converted valueForKey: 'unused animals']];
+}
+
+
 - (void) testAProcedureCanBeCreatedWithoutExclusionsFromJustName
 {
   var input = {
