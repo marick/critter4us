@@ -9,8 +9,6 @@ TakeAnimalsOutOfServiceRoute = "take_animals_out_of_service";
 
 FetchReservationRoute = @"reservation";
 ModifyReservationRoute = @"modify_reservation";
-AllReservationsTableRoute = @"reservations";
-AllAnimalsTableRoute = @"animals"; 
 PendingAnimalsTableRoute = "animals_with_pending_reservations"
 
 jsonRoute = function(route)
@@ -26,6 +24,11 @@ htmlRoute = function(route)
 
 @implementation HTTPMaker : CPObject
 {
+}
+
+- (CPString) allReservationsTableRoute
+{
+  return htmlRoute("reservations");
 }
 
 - (CPString) reservationRouteWithDate: date time: time

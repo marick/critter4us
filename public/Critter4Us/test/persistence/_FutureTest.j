@@ -7,18 +7,20 @@
 
 - (void) setUp
 {
-  sut = [[Future alloc] initWithRoute: "some route" notificationName: "some notification"];
+  sut = [Future alloc] 
 
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-
-  [scenario sutWillBeGiven: ['network', 'notificationCenter']];
+  [scenario sutWillBeGiven: ['network', 'converter']];
+  [sut initWithNotificationName: "notification name"
+                      converter: sut.converter]
 }
 
-- (void) test_sending_request_registers_for_callbacks_and_becomes_busy
+
+- (void) test_getting_from_network_registers_for_callback_and_becomes_busy
 {
   [scenario
     during: function() { 
-      [sut sendAsynchronousGetTo: sut.network];
+      [sut get: "some route" from: sut.network];
     }
   behold: function() { 
       [sut.network shouldReceive: @selector(sendGetAsynchronouslyTo:delegate:)
@@ -27,7 +29,20 @@
     }];
 }
 
-- (void) test_receives_data_announces_it
+- (void) test_posting_to_network_registers_for_callback_and_becomes_busy
+{
+  [scenario
+    during: function() { 
+      [sut postContent: "some content" toRoute: "some route" on: sut.network];
+    }
+  behold: function() { 
+      [sut.network shouldReceive: @selector(POSTFormDataAsynchronouslyTo:withContent:delegate:)
+                            with: ['some route', 'some content', sut]];
+      [self listenersShouldReceiveNotification: BusyNews];
+    }];
+}
+
+- (void) test_receives_data_converts_and_announces_it
 {
   [scenario
     previously: function() { 
@@ -38,11 +53,15 @@
       [sut connectionDidFinishLoading: UnusedArgument];
     }
   behold: function() {
-      [self listenersShouldReceiveNotification: "some notification"
-                              containingObject: "foobar"];
+      [sut.converter shouldReceive: @selector(convert:)
+			      with: "foobar"
+			 andReturn: "converted foobar"];
+      [self listenersShouldReceiveNotification: "notification name"
+                              containingObject: "converted foobar"];
       [self listenersShouldReceiveNotification: AvailableNews]
     }];
 }
+
 
 
 // For some reason, Firefox peppers the app with an empty data callback and 
@@ -55,20 +74,6 @@
     }
   behold: function() {
       [self listenersShouldHearNo: "some notification"];
-    }];
-}
-
-
-- (void) test_sending_post_registers_for_callbacks_and_becomes_busy
-{
-  [scenario
-    during: function() { 
-      [sut sendAsynchronousPostTo: sut.network content: 'content'];
-    }
-  behold: function() { 
-      [sut.network shouldReceive: @selector(POSTFormDataAsynchronouslyTo:withContent:delegate:)
-                            with: ['some route', 'content', sut]];
-      [self listenersShouldReceiveNotification: BusyNews];
     }];
 }
 

@@ -83,32 +83,24 @@ var SharedPersistentStore = nil;
 
 - (CPString) pendingReservationTableAsHtml
 {
-  [futureMaker spawnGetTo: network
-                withRoute: AllReservationsTableRoute
-         notificationName: ReservationTableRetrievedNews];
-}
-
-- (CPString) animalTableAsHtml
-{
-  [futureMaker spawnGetTo: network
-           withRoute: AllAnimalsTableRoute
-    notificationName: AnimalTableRetrievedNews];
+  var future = [futureMaker futureToAccomplish: ReservationTableRetrievedNews];
+  [future get: [httpMaker allReservationsTableRoute]
+	 from: network];
 }
 
 - (void) fetchAnimalsInServiceOnDate: (CPString) aDateString
 {
   var route = [httpMaker animalsThatCanBeTakenOutOfServiceRoute: aDateString];
-  future = [futureMaker futureToAccomplish: AnimalsThatCanBeRemovedFromServiceRetrieved
-                      convertingResultsWith: [[JsonToModelObjectsConverter alloc] init]];
-  CPLog(future);
+  var future = [futureMaker futureToAccomplish: AnimalsThatCanBeRemovedFromServiceRetrieved
+			 convertingResultsWith: [[JsonToModelObjectsConverter alloc] init]];
   [future get: route from: network];
 }
 
 - (void) fetchAnimalsWithPendingReservationsOnDate: (CPString) aDateString
 {
-  [futureMaker spawnGetTo: network
-           withRoute: [httpMaker pendingReservationAnimalListWithDate: aDateString]
-    notificationName: TableOfAnimalsWithPendingReservationsNews];
+  var future = [futureMaker futureToAccomplish: TableOfAnimalsWithPendingReservationsNews];
+  [future get: [httpMaker pendingReservationAnimalListWithDate: aDateString]
+	 from: network];
 }
 
 - (void) takeAnimals: animals outOfServiceOn: (CPString) date

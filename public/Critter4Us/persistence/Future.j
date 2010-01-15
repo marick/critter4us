@@ -14,7 +14,7 @@
 @implementation Future : CritterObject
 {
   CPString result;
-  CPString route, notificationName;
+  CPString notificationName;
   CPURLConnection connection;
   id converter;
 }
@@ -41,80 +41,29 @@
   return self;
 }
 
-- (void) get: aRoute from: network
-{
-  route = aRoute;
-  [self sendAsynchronousGetTo: network];
-}
-
-- (void) postContent: content toRoute: aRoute on: network
-{
-  route = aRoute;
-  [self sendAsynchronousPostTo: network content: content];
-}
-
-
-
-
-/////////
-
-
-
-
-
-+ (void) spawnGetTo: network
-          withRoute: route
-   notificationName: notificationName
-{
-  var future = [[self alloc] initWithRoute: route notificationName: notificationName];
-  [future sendAsynchronousGetTo: network];
-}
-
-+ (void) spawnPostTo: network
-           withRoute: route
-             content: content
-    notificationName: notificationName
-{
-  var future = [[self alloc] initWithRoute: route notificationName: notificationName];
-  [future sendAsynchronousPostTo: network content: content]
-}
-
-- (id) initWithRoute: aRoute notificationName: aName
-{
-  self = [super init];
-  route = aRoute;
-  notificationName = aName;
-  result = [CPString string];
-  converter = [[NullConverter alloc] init];
-  return self;
-}
-
-- (CPString) route
-{
-  return route;
-}
 - (CPString) notificationName
 {
   return notificationName;
 }
 
-
--(void) sendAsynchronousGetTo: network
+- (void) get: route from: network
 {
   [NotificationCenter postNotificationName: BusyNews object: nil];
-  connection = [network sendGetAsynchronouslyTo: [self route]
+  connection = [network sendGetAsynchronouslyTo: route
                                        delegate: self];
   [self log: "GET on connection %@ to %@",
-        [connection hash], [self route]];
+        [connection hash], route];
 }
 
--(void) sendAsynchronousPostTo: network content: content
+- (void) postContent: content toRoute: route on: network
 {
   [NotificationCenter postNotificationName: BusyNews object: nil];
-  connection = [network POSTFormDataAsynchronouslyTo: [self route]
+  connection = [network POSTFormDataAsynchronouslyTo: route
                                          withContent: content
                                             delegate: self];
 }
+
+/////////
 
 
 -(void)connection:(CPURLConnection)methodConnection didFailWithError:(id)error
@@ -141,11 +90,9 @@
     [self log: "empty result suggests this is a spurious connection from Firefox"];
     return;
   }
-  // if (methodConnection != connection) return; // Firefox sends spurious notifications
   [NotificationCenter postNotificationName: [self notificationName]
                                     object: [self convert: result]];
   [NotificationCenter postNotificationName: AvailableNews object: nil];
-  [NotificationCenter removeObserver: self];
 }
 
 -(void)connectionDidReceiveAuthenticationChallenge:(CPURLConnection)methodConnection
@@ -179,28 +126,27 @@ ChattyFutureLog = "";
 
 @implementation ChattyFuture : Future
 {
-  CPMutableString result, route, notificationName;
 }
 
--(void) sendAsynchronousGetTo: network
+- (void) get: route from: network
 {
-  var msg = "Future getting " + [self route] + "; will post" + [self notificationName] + "\n";
+  var msg = "Future getting " + route + "; will post" + [self notificationName] + "\n";
   [self log: msg];
   //  alert(msg);
-  [super sendAsynchronousGetTo: network];
+  [super get: route from: network];
 }
 
--(void) sendAsynchronousPostTo: network content: content
+- (void) postContent: content toRoute: route on: network
 {
-  var msg = "Future posting " + [self route] + "with content" + content + "; will post" + [self notificationName] + "\n";
+  var msg = "Future posting " + route + "with content" + content + "; will post" + [self notificationName] + "\n";
   [self log: msg];
   //  alert(msg);
-  [super sendAsynchronousPostTo: network content: content];
+  [super postContent: content toRoute: route on: network];
 }
 
 -(void)connection:(CPURLConnection)methodConnection didReceiveData:(CPString)data
 {
-  var msg = "Class" + [self class] + "/Connection" + methodConnection + ": Future for route " + [self route] + " received " + data + " to add to " + result + "\n";
+  var msg = "Class" + [self class] + "/Connection" + methodConnection + ": Future for route " + route + " received " + data + " to add to " + result + "\n";
   [self log: msg];
   //  alert(msg);
   [super connection: methodConnection didReceiveData: data];
@@ -208,7 +154,7 @@ ChattyFutureLog = "";
 
 -(void)connectionDidFinishLoading:(CPURLConnection)methodConnection
 {
-  var msg = "Connection" + methodConnection + ": Future for route " + [self route] + " finished with " + result + "\n";
+  var msg = "Connection" + methodConnection + ": Future for route " + route + " finished with " + result + "\n";
   [self log: msg];
   alert(msg);
   [super connectionDidFinishLoading: methodConnection];
