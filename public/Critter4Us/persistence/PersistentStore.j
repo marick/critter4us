@@ -5,6 +5,7 @@
 @import "PrimitivesToModelObjectsConverter.j"
 @import "HTTPMaker.j"
 @import "Future.j"
+@import "NetworkContinuation.j"
 
 
 @import "JsonToModelObjectsConverter.j"
@@ -19,6 +20,7 @@ var SharedPersistentStore = nil;
   PrimitivesToModelObjectsConverterd primitivesConverter;
   HTTPMaker httpMaker;
   id futureMaker;
+  id continuationMaker
 
   HTTPMaker httpMaker;
 }
@@ -43,6 +45,7 @@ var SharedPersistentStore = nil;
   primitivesConverter = [[PrimitivesToModelObjectsConverter alloc] init];
   httpMaker = [[HTTPMaker alloc] init];
   futureMaker = Future;
+  continuationMaker = NetworkContinuation;
 
   httpMaker = [[HTTPMaker alloc] init];
 }
@@ -98,9 +101,9 @@ var SharedPersistentStore = nil;
 
 - (void) fetchAnimalsWithPendingReservationsOnDate: (CPString) aDateString
 {
-  var future = [futureMaker futureToAccomplish: TableOfAnimalsWithPendingReservationsNews];
-  [future get: [httpMaker pendingReservationAnimalListWithDate: aDateString]
-	 from: network];
+  var continuation = [continuationMaker continuationNotifying: TableOfAnimalsWithPendingReservationsNews]; 
+  [network get: [httpMaker pendingReservationAnimalListWithDate: aDateString]
+	   continuingWith: continuation];
 }
 
 - (void) takeAnimals: animals outOfServiceOn: (CPString) date

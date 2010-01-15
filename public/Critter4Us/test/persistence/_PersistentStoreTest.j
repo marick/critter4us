@@ -34,7 +34,7 @@ CorrectData = function(data) {
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasDownwardOutlets: ['network']];
   [scenario sutCreates: [ 'toNetworkConverter', 'primitivesConverter', 'httpMaker', 
-                          'futureMaker']];
+					      'futureMaker', 'continuationMaker']];
 
   [scenario sutCreates: [ 'future' ]]
   self.future = sut.future
@@ -193,6 +193,27 @@ CorrectData = function(data) {
                            with: ["data=content", 'route', sut.network]];
     }];
 }
+
+
+
+- (void) test_fetching_the_HTML_table_of_animals_with_pending_reservations_coordination
+{
+  [scenario 
+   during: function() { 
+      [sut fetchAnimalsWithPendingReservationsOnDate: "some date"];
+    }
+  behold: function() {
+      [sut.httpMaker shouldReceive: @selector(pendingReservationAnimalListWithDate:)
+			      with: "some date"
+			 andReturn: 'route'];
+      [sut.continuationMaker shouldReceive: @selector(continuationNotifying:)
+                                with: TableOfAnimalsWithPendingReservationsNews
+                           andReturn: "continuation"];
+      [sut.network shouldReceive: @selector(get:continuingWith:)
+                           with: ["route", 'continuation']];
+    }];
+}
+
 
 // Note: some PersistentStore methods that do nothing but trampoline
 // over to Future are not tested, since they're no more complex than
