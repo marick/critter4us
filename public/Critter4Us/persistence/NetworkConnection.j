@@ -1,50 +1,53 @@
-@import <Foundation/Foundation.j>
-@implementation NetworkConnection : CPObject
+@import "../util/CritterObject.j"
+@implementation NetworkConnection : CritterObject
 {
+  id connectionMaker;
 }
 
 
-- (CPString)GETJsonFromURL: (CPString) url
+- (id) init
 {
-  var request = [CPURLRequest requestWithURL: url];
-  var data = [CPURLConnection sendSynchronousRequest: request   
-	      returningResponse:nil error:nil]; 
-  return [data description];
+  self = [super init];
+  connectionMaker = CPURLConnection;
+  return self;
 }
 
-- (CPString)GETHtmlfromURL: (CPString) url
+
+- (void) get: route continuingWith: continuation
 {
-  var request = [CPURLRequest requestWithURL: url];
-  var data = [CPURLConnection sendSynchronousRequest: request   
-	      returningResponse:nil error:nil]; 
-  return [data description];
+  [NotificationCenter postNotificationName: BusyNews object: nil];
+  var connection = [self sendGetAsynchronouslyTo: route
+					delegate: continuation];
+  [self log: "GET on connection %@ to %@",
+        [connection hash], route];
 }
 
-- (CPString)POSTFormDataTo: (CPString) url withContent: content
+- (void) postContent: content toRoute: route continuingWith: continuation
 {
-  var request = [self postRequestForRoute: url content: content]
-  var data = [CPURLConnection sendSynchronousRequest: request   
-	      returningResponse:nil error:nil]; 
-  return [data description];
+  [NotificationCenter postNotificationName: BusyNews object: nil];
+  var connection = [self POSTFormDataAsynchronouslyTo: route
+					  withContent: content
+					     delegate: continuation];
+}
+
+
+
+- (CPURLConnection) sendGetAsynchronouslyTo: route delegate: delegate
+{
+  var request = [CPURLRequest requestWithURL: route];
+  urlConnection = [connectionMaker connectionWithRequest:request delegate:delegate];
+  [[Logger defaultLogger] log: "Opened and started connection %@", [urlConnection hash]];
+  //  [urlConnection start];
+  return urlConnection;
 }
 
 - (CPURLConnection) POSTFormDataAsynchronouslyTo: (CPString) url withContent: content delegate: delegate
 {
   var request = [self postRequestForRoute: url content: content]
-  urlConnection = [CPURLConnection connectionWithRequest:request delegate:delegate];
-  [urlConnection start];
+  urlConnection = [connectionMaker connectionWithRequest:request delegate:delegate];
+  // [urlConnection start];
   return urlConnection;
 }
-
-- (CPURLConnection) sendGetAsynchronouslyTo: route delegate: delegate
-{
-  var request = [CPURLRequest requestWithURL: route];
-  urlConnection = [CPURLConnection connectionWithRequest:request delegate:delegate];
-  [[Logger defaultLogger] log: "Opened, but not started, connection %@", [urlConnection hash]];
-  [urlConnection start];
-  return urlConnection;
-}
-
 
 - (CPURLRequest) postRequestForRoute: url content: content
 {
@@ -54,6 +57,35 @@
   [request setValue:"application/x-www-form-urlencoded"
            forHTTPHeaderField:@"Content-Type"];
   return request;
+}
+
+
+
+// These are old-fashioned and shall be replaced.
+
+
+- (CPString)GETJsonFromURL: (CPString) url
+{
+  var request = [CPURLRequest requestWithURL: url];
+  var data = [connectionMaker sendSynchronousRequest: request   
+	      returningResponse:nil error:nil]; 
+  return [data description];
+}
+
+- (CPString)GETHtmlfromURL: (CPString) url
+{
+  var request = [CPURLRequest requestWithURL: url];
+  var data = [connectionMaker sendSynchronousRequest: request   
+	      returningResponse:nil error:nil]; 
+  return [data description];
+}
+
+- (CPString)POSTFormDataTo: (CPString) url withContent: content
+{
+  var request = [self postRequestForRoute: url content: content]
+  var data = [connectionMaker sendSynchronousRequest: request   
+	      returningResponse:nil error:nil]; 
+  return [data description];
 }
 
 @end
