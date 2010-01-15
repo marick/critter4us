@@ -21,21 +21,10 @@
 {
 }
 
-- (void) notificationNamed: name calls: (SEL) selector
-{
-  [NotificationCenter addObserver: self selector: selector name: name object: nil];
-}
-
-
-- (void) stopObserving
-{
-  [[CPNotificationCenter defaultCenter] removeObserver: self];
-}
-
 - (void) noChange
 {
   // Used to answer the question "Did programmer forget to consider effect
-  // on this objecdt?" in the negative.
+  // on this object?" in the negative.
 }
 
 
