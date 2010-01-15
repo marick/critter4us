@@ -7,12 +7,12 @@
 
 - (CPString) finishNotificationName
 {
-  return ReservationTableRetrievedNews;
+  return AllReservationsHtmlNews;
 }
 
 - (CPString) fetchHTML
 {
-  [persistentStore pendingReservationTableAsHtml];
+  [persistentStore allReservationsHtml];
 }
 
 @end

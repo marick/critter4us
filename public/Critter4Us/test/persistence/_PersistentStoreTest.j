@@ -214,10 +214,21 @@ CorrectData = function(data) {
     }];
 }
 
-
-// Note: some PersistentStore methods that do nothing but trampoline
-// over to Future are not tested, since they're no more complex than
-// setters.
-
+- (void) test_fetching_the_HTML_table_of_all_reservations_coordination
+{
+  [scenario 
+   during: function() { 
+      [sut allReservationsHtml];
+    }
+  behold: function() {
+      [sut.httpMaker shouldReceive: @selector(route_getAllReservations_html)
+			 andReturn: 'route'];
+      [sut.continuationMaker shouldReceive: @selector(continuationNotifying:)
+                                with: AllReservationsHtmlNews
+                           andReturn: "continuation"];
+      [sut.network shouldReceive: @selector(get:continuingWith:)
+                           with: ["route", 'continuation']];
+    }];
+}
 
 @end

@@ -26,7 +26,7 @@ htmlRoute = function(route)
 {
 }
 
-- (CPString) allReservationsTableRoute
+- (CPString) route_getAllReservations_html
 {
   return htmlRoute("reservations");
 }

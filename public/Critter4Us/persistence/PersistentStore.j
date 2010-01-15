@@ -84,11 +84,11 @@ var SharedPersistentStore = nil;
                                     object: dict];
 }
 
-- (CPString) pendingReservationTableAsHtml
+- (CPString) allReservationsHtml
 {
-  var future = [futureMaker futureToAccomplish: ReservationTableRetrievedNews];
-  [future get: [httpMaker allReservationsTableRoute]
-	 from: network];
+  var continuation = [continuationMaker continuationNotifying: AllReservationsHtmlNews]; 
+  [network get: [httpMaker route_getAllReservations_html]
+	   continuingWith: continuation];
 }
 
 - (void) fetchAnimalsInServiceOnDate: (CPString) aDateString

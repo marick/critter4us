@@ -22,7 +22,7 @@
      [sut appear];
    }
    behold: function() {
-      [sut.persistentStore shouldReceive: @selector(pendingReservationTableAsHtml)];
+      [sut.persistentStore shouldReceive: @selector(allReservationsHtml)];
    }];
 }
 
@@ -31,7 +31,7 @@
 {
   [scenario
    during: function() {
-      [self sendNotification: ReservationTableRetrievedNews
+      [self sendNotification: AllReservationsHtmlNews
                   withObject: "a string"];
    }
    behold: function() {

@@ -18,7 +18,7 @@ ReservationStoredNews = "reservation has been stored";
 ReservationRetrievedNews = "reservation has been retrieved";
 BusyNews = "hold on user";
 AvailableNews = "your turn";
-ReservationTableRetrievedNews = "a reservation table has been retrieved";
+AllReservationsHtmlNews = "a reservation table has been retrieved";
 
 // TODO: I'm moving away from suffix "News", since it adds nothing. That the 
 // constant is "news" is clear from context.
