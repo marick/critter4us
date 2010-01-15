@@ -116,10 +116,9 @@ var SharedPersistentStore = nil;
   var route = [httpMaker POSTAnimalsOutOfServiceRoute];
   var content = [httpMaker POSTContentFrom: {'date':[toNetworkConverter convert: date],
                                             'animals': [toNetworkConverter convert: animals]}];
-  [futureMaker spawnPostTo: network
-            withRoute: route
-              content: content
-     notificationName: UniversallyIgnoredNews];
+
+  var future = [futureMaker futureToAccomplish: UniversallyIgnoredNews];
+  [future postContent: content toRoute: route on: network];
 }
 
 

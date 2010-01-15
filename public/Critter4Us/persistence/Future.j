@@ -25,6 +25,12 @@
                                         converter: converter];
 }
 
++ (Future) futureToAccomplish: notificationName
+{
+  return [[Future alloc] initWithNotificationName: notificationName
+                                        converter: [[NullConverter alloc] init]];
+}
+
 - (id) initWithNotificationName: aNotificationName
                       converter: aConverter
 {
@@ -35,12 +41,18 @@
   return self;
 }
 
-
 - (void) get: aRoute from: network
 {
   route = aRoute;
-  [future sendAsynchronousGetTo: network];
+  [self sendAsynchronousGetTo: network];
 }
+
+- (void) postContent: content toRoute: aRoute on: network
+{
+  route = aRoute;
+  [self sendAsynchronousPostTo: network content: content];
+}
+
 
 
 

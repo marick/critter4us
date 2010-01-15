@@ -48,11 +48,23 @@ CorrectData = function(data) {
   accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
 
 
-  A_json_to_model_converter = function(arg) {
-    return JsonToModelObjectsConverter === [arg class];
+  object_of_class = function(expected) {
+    return function(actual) {
+      return expected === [actual class];
+    }
   }
 
-
+  primitive_dictionary = function(expected) { 
+    return function(actual) {
+      // TODO: Should check in both directions? Are we checking equality or that
+      // what's expected is there?
+      for (var key in expected) 
+      {
+        [self assert: expected[key] equals: actual[key]];
+      }
+      return YES;
+    }
+  }
 }
 
 
@@ -145,7 +157,7 @@ CorrectData = function(data) {
                          andReturn: "some route"];
       [sut.futureMaker shouldReceive: @selector(futureToAccomplish:convertingResultsWith:)
                                 with: [AnimalsThatCanBeRemovedFromServiceRetrieved,
-                                       A_json_to_model_converter]
+                                       object_of_class(JsonToModelObjectsConverter)]
                            andReturn: future];
       [future shouldReceive: @selector(get:from:)
                        with: ["some route", sut.network]];
@@ -156,9 +168,6 @@ CorrectData = function(data) {
 
 - (void) test_how_persistentStore_coordinates_taking_animals_out_of_service
 {
-  var animals = [ [[NamedObject alloc] initWithName: 'fred'] ];
-  var date = '2001-12-01';
-
   [scenario 
    during: function() { 
       [sut takeAnimals: ["some animals"] outOfServiceOn: "some date"];
@@ -173,15 +182,15 @@ CorrectData = function(data) {
                                        with: [["some animals"]]
                                   andReturn: ["some converted animals"]];
       [sut.httpMaker shouldReceive: @selector(POSTContentFrom:)
-                             with: function(arg) { 
-                                        [self assert: "a converted date" equals: arg['date']];
-                                        [self assert: ["some converted animals"] equals: arg['animals']];
-                                        return YES;
-                                   }
-                        andReturn: 'data=content'];
-      [sut.futureMaker shouldReceive: @selector(spawnPostTo:withRoute:content:notificationName:)
-                                with: [sut.network, 'route', "data=content", 
-                                          UniversallyIgnoredNews]];
+                              with: primitive_dictionary({'date' : 'a converted date',
+                                                          'animals' : ["some converted animals" ] })
+                         andReturn: "data=content"];
+
+      [sut.futureMaker shouldReceive: @selector(futureToAccomplish:)
+                                with: UniversallyIgnoredNews
+                           andReturn: future];
+      [sut.future shouldReceive: @selector(postContent:toRoute:on:)
+                           with: ["data=content", 'route', sut.network]];
     }];
 }
 
