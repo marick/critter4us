@@ -152,15 +152,15 @@ CorrectData = function(data) {
       [sut fetchAnimalsInServiceOnDate: '2009-12-12'];
     }
   behold: function() {
-      [sut.httpMaker shouldReceive: @selector(animalsThatCanBeTakenOutOfServiceRoute:)
+      [sut.httpMaker shouldReceive: @selector(route_animalsThatCanBeTakenOutOfService_data:)
                               with: ['2009-12-12']
                          andReturn: "some route"];
-      [sut.futureMaker shouldReceive: @selector(futureToAccomplish:convertingResultsWith:)
+      [sut.continuationMaker shouldReceive: @selector(continuationNotifying:afterConvertingWith:)
                                 with: [AnimalsThatCanBeRemovedFromServiceRetrieved,
                                        object_of_class(JsonToModelObjectsConverter)]
-                           andReturn: future];
-      [future shouldReceive: @selector(get:from:)
-                       with: ["some route", sut.network]];
+                           andReturn: "a continuation"];
+      [sut.network shouldReceive: @selector(get:continuingWith:)
+			    with: ["some route", "a continuation"]];
     }];
 }
 

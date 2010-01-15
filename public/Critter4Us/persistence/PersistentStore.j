@@ -93,10 +93,10 @@ var SharedPersistentStore = nil;
 
 - (void) fetchAnimalsInServiceOnDate: (CPString) aDateString
 {
-  var route = [httpMaker animalsThatCanBeTakenOutOfServiceRoute: aDateString];
-  var future = [futureMaker futureToAccomplish: AnimalsThatCanBeRemovedFromServiceRetrieved
-			 convertingResultsWith: [[JsonToModelObjectsConverter alloc] init]];
-  [future get: route from: network];
+  var continuation = [continuationMaker continuationNotifying: AnimalsThatCanBeRemovedFromServiceRetrieved
+					  afterConvertingWith: [[JsonToModelObjectsConverter alloc] init]];
+  [network get: [httpMaker route_animalsThatCanBeTakenOutOfService_data: aDateString]
+	   continuingWith: continuation];
 }
 
 - (void) fetchAnimalsWithPendingReservationsOnDate: (CPString) aDateString

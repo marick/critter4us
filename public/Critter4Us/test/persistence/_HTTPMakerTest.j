@@ -46,7 +46,7 @@
 -(void) test_can_make_route_to_fetch_animals_that_can_be_taken_out_of_service_as_of_a_date
 {
   [self assert: '/json/animals_that_can_be_taken_out_of_service?date=2009-12-30'
-        equals: [maker animalsThatCanBeTakenOutOfServiceRoute: '2009-12-30']];
+        equals: [maker route_animalsThatCanBeTakenOutOfService_data: '2009-12-30']];
 }
 
 

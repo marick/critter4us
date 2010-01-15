@@ -31,6 +31,13 @@ htmlRoute = function(route)
   return htmlRoute("reservations");
 }
 
+- (CPString) route_animalsThatCanBeTakenOutOfService_data: date
+{
+  return jsonRoute("animals_that_can_be_taken_out_of_service")+"?date=" + date
+}
+
+
+
 - (CPString) reservationRouteWithDate: date time: time
 {
   return jsonRoute(CourseSessionDataBlobRoute)+"?date=" + date + "&time=" + time;
@@ -60,11 +67,6 @@ htmlRoute = function(route)
 - (CPString) fetchReservationRoute: id
 {
   return jsonRoute(FetchReservationRoute) + '/' + id
-}
-
-- (CPString) animalsThatCanBeTakenOutOfServiceRoute: date
-{
-  return jsonRoute("animals_that_can_be_taken_out_of_service")+"?date=" + date
 }
 
 @end
