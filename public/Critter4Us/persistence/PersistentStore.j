@@ -112,8 +112,8 @@ var SharedPersistentStore = nil;
   var content = [httpMaker POSTContentFrom: {'date':[toNetworkConverter convert: date],
                                             'animals': [toNetworkConverter convert: animals]}];
 
-  var future = [futureMaker futureToAccomplish: UniversallyIgnoredNews];
-  [future postContent: content toRoute: route on: network];
+  var continuation = [continuationMaker continuationNotifying: UniversallyIgnoredNews];
+  [network postContent: content toRoute: route continuingWith: continuation];
 }
 
 

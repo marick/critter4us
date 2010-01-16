@@ -175,6 +175,7 @@ CorrectData = function(data) {
   behold: function() {
       [sut.httpMaker shouldReceive: @selector(POSTAnimalsOutOfServiceRoute)
                         andReturn: 'route'];
+
       [sut.toNetworkConverter shouldReceive: @selector(convert:)
                                        with: "some date"
                                   andReturn: "a converted date"];
@@ -186,11 +187,11 @@ CorrectData = function(data) {
                                                           'animals' : ["some converted animals" ] })
                          andReturn: "data=content"];
 
-      [sut.futureMaker shouldReceive: @selector(futureToAccomplish:)
-                                with: UniversallyIgnoredNews
-                           andReturn: future];
-      [sut.future shouldReceive: @selector(postContent:toRoute:on:)
-                           with: ["data=content", 'route', sut.network]];
+      [sut.continuationMaker shouldReceive: @selector(continuationNotifying:)
+				    with: UniversallyIgnoredNews
+				 andReturn: "a continuation"];
+      [sut.network shouldReceive: @selector(postContent:toRoute:continuingWith:)
+			with: ["data=content", "route", "a continuation"]];
     }];
 }
 
