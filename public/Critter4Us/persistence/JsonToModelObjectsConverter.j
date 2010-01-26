@@ -4,6 +4,11 @@
 {
 }
 
++ (JsonToModelObjectsConverter) converter
+{
+  return [[self alloc] init];
+}
+
 + (CPDictionary) convert: json
 {
   return [[[JsonToModelObjectsConverter alloc] init] convert: json];

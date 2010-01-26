@@ -57,23 +57,23 @@ var SharedPersistentStore = nil;
 
 -(void) loadInfoRelevantToDate: date time: time 
 {
-  var url = [httpMaker reservationRouteWithDate: [toNetworkConverter convertDate: date]
-                                        time: [toNetworkConverter convertTime: time]];
-  var dict = [self dictionaryFromJSON: [network GETJsonFromURL: url]];
-  [NotificationCenter postNotificationName: AnimalAndProcedureNews
-                                    object: dict];
+  var route = [httpMaker reservationRouteWithDate: [toNetworkConverter convertDate: date]
+					     time: [toNetworkConverter convertTime: time]];
+  
+  var continuation = [continuationMaker continuationNotifying: AnimalAndProcedureNews
+					  afterConvertingWith: [JsonToModelObjectsConverter converter]];
+  [network get: route continuingWith: continuation];
 }
 
 - (void) makeReservation: dict
 {
+  var route = [httpMaker POSTReservationRoute];
   var jsData = [toNetworkConverter convert: dict];
-  var postContent = [httpMaker POSTContentFrom: jsData];
-  var url = [httpMaker POSTReservationRoute];
-  var json = [network POSTFormDataTo: url withContent: postContent];
-  var jsHash = [json objectFromJSON];
-  var id = jsHash['reservation'];
-  [NotificationCenter postNotificationName: ReservationStoredNews
-                                    object: id];
+  var content = [httpMaker POSTContentFrom: jsData];
+
+  var continuation = [continuationMaker continuationNotifying: ReservationStoredNews
+					  afterConvertingWith: [[JsonToModelObjectsConverter alloc] init]];
+  [network postContent: content toRoute: route continuingWith: continuation];
 }
 
 - (void) fetchReservation: reservationId

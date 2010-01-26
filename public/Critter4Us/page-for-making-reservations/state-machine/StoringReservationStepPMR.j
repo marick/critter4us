@@ -13,7 +13,7 @@
 
 -(void) finishReservation: aNotification
 {
-  var reservationID = [aNotification object];
+  var reservationID = [[aNotification object] valueForKey: 'reservation'];
   [reservationDataController offerOperationsOnJustFinishedReservation: reservationID];
   // No need for afterResigningInFavorOf because next event comes from user.
   [self resignInFavorOf: GatheringReservationDataStepPMR];

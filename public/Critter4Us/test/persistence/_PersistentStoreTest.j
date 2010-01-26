@@ -68,7 +68,7 @@ CorrectData = function(data) {       // TODO: delete this
 }
 
 
-- (void)test_how_persistent_stores_coordinates_when_retrieving_data
+- (void)test_how_persistent_stores_coordinates_when_retrieving_a_date_dependent_data_blob
 {
   [scenario 
    during: function() { 
@@ -84,16 +84,14 @@ CorrectData = function(data) {       // TODO: delete this
       [sut.httpMaker shouldReceive: @selector(reservationRouteWithDate:time:)
                              with: ['a network date', 'a network time']
                         andReturn: 'route'];
-      [sut.network shouldReceive: @selector(GETJsonFromURL:)
-                            with: 'route'
-                       andReturn: '{"a json":"string"}'];
-      
 
-      [sut.primitivesConverter shouldReceive: @selector(convert:)
-                                         with: CorrectData
-                                    andReturn: 'a big dictionary'];
-      [self listenersShouldReceiveNotification: AnimalAndProcedureNews
-                              containingObject: 'a big dictionary'];
+
+      [sut.continuationMaker shouldReceive: @selector(continuationNotifying:afterConvertingWith:)
+				      with: [AnimalAndProcedureNews,
+					     object_of_class(JsonToModelObjectsConverter)]
+				 andReturn: "a continuation"];
+      [sut.network shouldReceive: @selector(get:continuingWith:)
+			    with: ['route', 'a continuation']];
     }];
 }
 
@@ -106,19 +104,24 @@ CorrectData = function(data) {       // TODO: delete this
       [sut makeReservation: 'reservation data'];
     }
   behold: function() {
+      [sut.httpMaker shouldReceive: @selector(POSTReservationRoute)
+                        andReturn: 'route'];
+
       [sut.toNetworkConverter shouldReceive: @selector(convert:)
                                        with: 'reservation data'
                                   andReturn: {'a':'jshash'}];
-      [sut.httpMaker shouldReceive: @selector(POSTReservationRoute)
-                        andReturn: 'route'];
+
       [sut.httpMaker shouldReceive: @selector(POSTContentFrom:)
-                             with: function(arg) { return arg['a'] == 'jshash'}
+			      with: primitive_dictionary({'a':'jshash'})
                         andReturn: 'content'];
-      [sut.network shouldReceive: @selector(POSTFormDataTo:withContent:)
-                            with: ['route', 'content']
-                       andReturn: '{"reservation":"1"}'];
-      [self listenersShouldReceiveNotification: ReservationStoredNews
-                              containingObject: '1'];
+
+
+      [sut.continuationMaker shouldReceive: @selector(continuationNotifying:afterConvertingWith:)
+				      with: [ReservationStoredNews,
+					     object_of_class(JsonToModelObjectsConverter)]
+				 andReturn: "a continuation"];
+      [sut.network shouldReceive: @selector(postContent:toRoute:continuingWith:)
+			with: ["content", "route", "a continuation"]];
     }
    ];
 }

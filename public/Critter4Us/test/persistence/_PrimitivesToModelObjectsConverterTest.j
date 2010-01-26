@@ -30,6 +30,13 @@
   [self assert: "output" equals: [converted valueForKey: 'miscellaneous']];
 }
 
+-(void) test_converts_reservation_hash_to_dictionary
+{
+  var input = { 'reservation' : 5 };
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
+  [self assert: 5 equals: [converted valueForKey: 'reservation']];
+}
+
 -(void) testConvertsMorningsToTimeObjects
 {
   var input = { 'time' : 'morning' };

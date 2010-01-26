@@ -22,7 +22,8 @@
 {
   [scenario
     during: function() {
-      [self sendNotification: ReservationStoredNews withObject: 5];
+      [self sendNotification: ReservationStoredNews
+		  withObject: [CPDictionary dictionaryWithJSObject: {'reservation':5}]];
     }
   behold: function() {
       [sut.reservationDataController shouldReceive: @selector(offerOperationsOnJustFinishedReservation:)

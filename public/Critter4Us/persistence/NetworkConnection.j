@@ -61,7 +61,7 @@
 
 
 
-// These are old-fashioned and shall be replaced.
+// TODO: Following are old-fashioned and shall be replaced.
 
 
 - (CPString)GETJsonFromURL: (CPString) url
