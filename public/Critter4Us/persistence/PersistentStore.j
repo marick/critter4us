@@ -78,10 +78,10 @@ var SharedPersistentStore = nil;
 
 - (void) fetchReservation: reservationId
 {
-  var url = [httpMaker fetchReservationRoute: reservationId];
-  var dict = [self dictionaryFromJSON: [network GETJsonFromURL: url]];
-  [NotificationCenter postNotificationName: ReservationRetrievedNews
-                                    object: dict];
+  var continuation = [continuationMaker continuationNotifying: ReservationRetrievedNews
+					  afterConvertingWith: [[JsonToModelObjectsConverter alloc] init]];
+  [network get: [httpMaker fetchReservationRoute: reservationId]
+	   continuingWith: continuation];
 }
 
 - (CPString) allReservationsHtml
@@ -120,6 +120,7 @@ var SharedPersistentStore = nil;
 // util
 
 
+// TODO: This should be deletable.
 - (CPDictionary) dictionaryFromJSON: (CPString) json
 {
   if (! json)

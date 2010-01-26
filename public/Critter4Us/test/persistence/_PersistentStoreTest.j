@@ -6,7 +6,7 @@
 @import <Critter4Us/test/testutil/ScenarioTestCase.j>
 @import <Critter4Us/test/testutil/TestUtil.j>
 
-CorrectData = function(data) { 
+CorrectData = function(data) {       // TODO: delete this
   return data['a json'] == "string" 
 }
 
@@ -133,14 +133,12 @@ CorrectData = function(data) {
       [sut.httpMaker shouldReceive: @selector(fetchReservationRoute:)
                              with: ['id']
                         andReturn: 'route'];
-      [sut.network shouldReceive: @selector(GETJsonFromURL:)
-                            with: 'route'
-                       andReturn: '{"a json":"string"}'];
-      [sut.primitivesConverter shouldReceive: @selector(convert:)
-                                         with: CorrectData
-                                    andReturn: 'a big dictionary'];
-      [self listenersShouldReceiveNotification: ReservationRetrievedNews
-                              containingObject: 'a big dictionary'];
+      [sut.continuationMaker shouldReceive: @selector(continuationNotifying:afterConvertingWith:)
+				      with: [ReservationRetrievedNews,
+					     object_of_class(JsonToModelObjectsConverter)]
+				 andReturn: "a continuation"];
+      [sut.network shouldReceive: @selector(get:continuingWith:)
+			    with: ['route', 'a continuation']]
     }];
 }
 
