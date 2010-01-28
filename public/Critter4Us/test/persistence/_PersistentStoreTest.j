@@ -6,10 +6,6 @@
 @import <Critter4Us/test/testutil/ScenarioTestCase.j>
 @import <Critter4Us/test/testutil/TestUtil.j>
 
-CorrectData = function(data) {       // TODO: delete this
-  return data['a json'] == "string" 
-}
-
 @implementation _PersistentStoreTest : ScenarioTestCase
 {
   Animal betsy;
@@ -33,8 +29,8 @@ CorrectData = function(data) {       // TODO: delete this
   [sut awakeFromCib];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasDownwardOutlets: ['network']];
-  [scenario sutCreates: [ 'toNetworkConverter', 'primitivesConverter', 'httpMaker', 
-					      'futureMaker', 'continuationMaker']];
+  [scenario sutCreates: [ 'primitivizer', 'httpMaker', 
+			  'futureMaker', 'continuationMaker']];
 
   [scenario sutCreates: [ 'future' ]]
   self.future = sut.future
@@ -75,12 +71,12 @@ CorrectData = function(data) {       // TODO: delete this
       [sut loadInfoRelevantToDate: 'a date' time: 'a time'];
     }
   behold: function() {
-      [sut.toNetworkConverter shouldReceive: @selector(convert:)
-                                       with: 'a date'
-                                  andReturn: 'a network date'];
-      [sut.toNetworkConverter shouldReceive: @selector(convert:)
-                                       with: 'a time'
-                                  andReturn: 'a network time'];
+      [sut.primitivizer shouldReceive: @selector(convert:)
+				 with: 'a date'
+			    andReturn: 'a network date'];
+      [sut.primitivizer shouldReceive: @selector(convert:)
+				 with: 'a time'
+			    andReturn: 'a network time'];
       [sut.httpMaker shouldReceive: @selector(reservationRouteWithDate:time:)
                              with: ['a network date', 'a network time']
                         andReturn: 'route'];
@@ -107,13 +103,13 @@ CorrectData = function(data) {       // TODO: delete this
       [sut.httpMaker shouldReceive: @selector(POSTReservationRoute)
                         andReturn: 'route'];
 
-      [sut.toNetworkConverter shouldReceive: @selector(convert:)
-                                       with: 'reservation data'
-                                  andReturn: {'a':'jshash'}];
+      [sut.primitivizer shouldReceive: @selector(convert:)
+				 with: 'reservation data'
+			    andReturn: {'a':'jshash'}];
 
       [sut.httpMaker shouldReceive: @selector(POSTContentFrom:)
 			      with: primitive_dictionary({'a':'jshash'})
-                        andReturn: 'content'];
+			 andReturn: 'content'];
 
 
       [sut.continuationMaker shouldReceive: @selector(continuationNotifying:afterConvertingWith:)
@@ -177,12 +173,12 @@ CorrectData = function(data) {       // TODO: delete this
       [sut.httpMaker shouldReceive: @selector(POSTAnimalsOutOfServiceRoute)
                         andReturn: 'route'];
 
-      [sut.toNetworkConverter shouldReceive: @selector(convert:)
-                                       with: "some date"
-                                  andReturn: "a converted date"];
-      [sut.toNetworkConverter shouldReceive: @selector(convert:)
-                                       with: [["some animals"]]
-                                  andReturn: ["some converted animals"]];
+      [sut.primitivizer shouldReceive: @selector(convert:)
+				 with: "some date"
+			    andReturn: "a converted date"];
+      [sut.primitivizer shouldReceive: @selector(convert:)
+				 with: [["some animals"]]
+			    andReturn: ["some converted animals"]];
       [sut.httpMaker shouldReceive: @selector(POSTContentFrom:)
                               with: primitive_dictionary({'date' : 'a converted date',
                                                           'animals' : ["some converted animals" ] })

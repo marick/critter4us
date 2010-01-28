@@ -1,8 +1,7 @@
 @import <Foundation/Foundation.j>
 @import "../util/AwakeningObject.j"
 @import "NetworkConnection.j"
-@import "ToNetworkConverter.j"
-@import "PrimitivesToModelObjectsConverter.j"
+@import "ModelObjectsToPrimitivesConverter.j"
 @import "HTTPMaker.j"
 @import "Future.j"
 @import "NetworkContinuation.j"
@@ -16,8 +15,7 @@ var SharedPersistentStore = nil;
 @implementation PersistentStore : AwakeningObject
 {
   id network;
-  ToNetworkConverter toNetworkConverter;
-  PrimitivesToModelObjectsConverter primitivesConverter;
+  ModelObjectsToPrimitivesConverter primitivizer;
   HTTPMaker httpMaker;
   id futureMaker;
   id continuationMaker
@@ -41,8 +39,7 @@ var SharedPersistentStore = nil;
 {
   if (awakened) return;
   [super awakeFromCib]
-  toNetworkConverter = [[ToNetworkConverter alloc] init];
-  primitivesConverter = [[PrimitivesToModelObjectsConverter alloc] init];
+  primitivizer = [[ModelObjectsToPrimitivesConverter alloc] init];
   httpMaker = [[HTTPMaker alloc] init];
   futureMaker = Future;
   continuationMaker = NetworkContinuation;
@@ -57,8 +54,8 @@ var SharedPersistentStore = nil;
 
 -(void) loadInfoRelevantToDate: date time: time 
 {
-  var route = [httpMaker reservationRouteWithDate: [toNetworkConverter convert: date]
-					     time: [toNetworkConverter convert: time]];
+  var route = [httpMaker reservationRouteWithDate: [primitivizer convert: date]
+					     time: [primitivizer convert: time]];
   
   var continuation = [continuationMaker continuationNotifying: AnimalAndProcedureNews
 					  afterConvertingWith: [JsonToModelObjectsConverter converter]];
@@ -68,7 +65,7 @@ var SharedPersistentStore = nil;
 - (void) makeReservation: dict
 {
   var route = [httpMaker POSTReservationRoute];
-  var jsData = [toNetworkConverter convert: dict];
+  var jsData = [primitivizer convert: dict];
   var content = [httpMaker POSTContentFrom: jsData];
 
   var continuation = [continuationMaker continuationNotifying: ReservationStoredNews
@@ -109,8 +106,8 @@ var SharedPersistentStore = nil;
 - (void) takeAnimals: animals outOfServiceOn: (CPString) date
 {
   var route = [httpMaker POSTAnimalsOutOfServiceRoute];
-  var content = [httpMaker POSTContentFrom: {'date':[toNetworkConverter convert: date],
-                                            'animals': [toNetworkConverter convert: animals]}];
+  var content = [httpMaker POSTContentFrom: {'date':[primitivizer convert: date],
+                                            'animals': [primitivizer convert: animals]}];
 
   var continuation = [continuationMaker continuationNotifying: UniversallyIgnoredNews];
   [network postContent: content toRoute: route continuingWith: continuation];

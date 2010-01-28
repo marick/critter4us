@@ -2,9 +2,9 @@
 @import <Critter4Us/model/Animal.j>
 @import <Critter4Us/model/Procedure.j>
 @import <Critter4Us/model/Group.j>
-@import <Critter4Us/persistence/ToNetworkConverter.j>
+@import <Critter4Us/persistence/ModelObjectsToPrimitivesConverter.j>
 
-@implementation _ToNetworkConverterTest : OJTestCase
+@implementation _ModelObjectsToPrimitivesConverterTest : OJTestCase
 {
 }
 
@@ -13,35 +13,35 @@
 -(void) testTurnsNamedObjectsIntoNames
 {
   var capp = [[NamedObject alloc] initWithName: 'proc'];
-  [self assert: "proc" equals: [ToNetworkConverter convert: capp]];
+  [self assert: "proc" equals: [ModelObjectsToPrimitivesConverter convert: capp]];
 }
 
 -(void) testTurnsStringsIntoStrings
 {
   var capp = "proc"
-  [self assert: "proc" equals: [ToNetworkConverter convert: capp]];
+  [self assert: "proc" equals: [ModelObjectsToPrimitivesConverter convert: capp]];
 }
 
 -(void) testTurnsTimesIntoStrings
 {
   [self assert: "morning"
-        equals: [ToNetworkConverter convert: [Time morning]]];
+        equals: [ModelObjectsToPrimitivesConverter convert: [Time morning]]];
   [self assert: "afternoon"
-        equals: [ToNetworkConverter convert: [Time afternoon]]];
+        equals: [ModelObjectsToPrimitivesConverter convert: [Time afternoon]]];
   [self assert: "evening"
-        equals: [ToNetworkConverter convert: [Time evening]]];
+        equals: [ModelObjectsToPrimitivesConverter convert: [Time evening]]];
 }
 
 -(void) testConvertsEmptyArrayIntoEmptyArray
 {
   var capp = [ ];
-  [self assert: [] equals: [ToNetworkConverter convert: []]];
+  [self assert: [] equals: [ModelObjectsToPrimitivesConverter convert: []]];
 }
 
 -(void) testConvertsArraysRecursively
 {
   var capp = [ [[NamedObject alloc] initWithName: "1"], "2", [Time morning] ];
-  [self assert: ["1", "2", "morning"] equals: [ToNetworkConverter convert: capp]];
+  [self assert: ["1", "2", "morning"] equals: [ModelObjectsToPrimitivesConverter convert: capp]];
 }
 
 -(void) testConvertsGroupIntoHash
@@ -52,7 +52,7 @@
 
   var capp = [[Group alloc] initWithProcedures: [floating, accupuncture] animals: [betsy]];
   var expected = {'animals':['betsy'], 'procedures':['floating', 'accupuncture']};
-  var actual = [ToNetworkConverter convert: capp];
+  var actual = [ModelObjectsToPrimitivesConverter convert: capp];
   [self assert: expected['animals'] equals: actual['animals']];
   [self assert: expected['procedures'] equals: actual['procedures']];
 }
@@ -62,7 +62,7 @@
   var capp = [CPDictionary dictionary];
   [capp setValue: [Time morning] forKey: 'time'];
 
-  var actual = [ToNetworkConverter convert: capp];
+  var actual = [ModelObjectsToPrimitivesConverter convert: capp];
   
   [self assert: 'morning' equals: actual['time']];
 }
@@ -70,13 +70,13 @@
 
 - (void) test_independent_date_conversion_routine_is_a_no_op
 {
-  var converter = [[ToNetworkConverter alloc] init];
+  var converter = [[ModelObjectsToPrimitivesConverter alloc] init];
   [self assert: '2009-12-01' equals: [converter convert: '2009-12-01']];
 }
 
 - (void) test_independent_date_conversion_routine_converts_times_into_names
 {
-  var converter = [[ToNetworkConverter alloc] init];
+  var converter = [[ModelObjectsToPrimitivesConverter alloc] init];
   [self assert: "morning" equals: [converter convert: [Time morning]]];
   [self assert: "afternoon" equals: [converter convert: [Time afternoon]]];
 }

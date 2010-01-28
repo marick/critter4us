@@ -1,7 +1,7 @@
 @import "../model/NamedObject.j"
 @import "../util/Time.j"
 
-@implementation ToNetworkConverter : CPObject
+@implementation ModelObjectsToPrimitivesConverter : CPObject
 {
 }
 
