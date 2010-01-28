@@ -57,8 +57,8 @@ var SharedPersistentStore = nil;
 
 -(void) loadInfoRelevantToDate: date time: time 
 {
-  var route = [httpMaker reservationRouteWithDate: [toNetworkConverter convertDate: date]
-					     time: [toNetworkConverter convertTime: time]];
+  var route = [httpMaker reservationRouteWithDate: [toNetworkConverter convert: date]
+					     time: [toNetworkConverter convert: time]];
   
   var continuation = [continuationMaker continuationNotifying: AnimalAndProcedureNews
 					  afterConvertingWith: [JsonToModelObjectsConverter converter]];

@@ -61,19 +61,4 @@
   return jsData;
 }
 
-// TODO:
-// These two routines are really a hack because I haven't made the mock framework
-// match invocations with same names but different arguments.
-
-
-- (id) convertDate: (id) date
-{
-  return date;   // To hide our primitive obsession until there's a real Date object.
-}
-
-- (id) convertTime: (Time) time
-{
-  return [self convert: time];
-}
-
 @end

@@ -75,10 +75,10 @@ CorrectData = function(data) {       // TODO: delete this
       [sut loadInfoRelevantToDate: 'a date' time: 'a time'];
     }
   behold: function() {
-      [sut.toNetworkConverter shouldReceive: @selector(convertDate:)
+      [sut.toNetworkConverter shouldReceive: @selector(convert:)
                                        with: 'a date'
                                   andReturn: 'a network date'];
-      [sut.toNetworkConverter shouldReceive: @selector(convertTime:)
+      [sut.toNetworkConverter shouldReceive: @selector(convert:)
                                        with: 'a time'
                                   andReturn: 'a network time'];
       [sut.httpMaker shouldReceive: @selector(reservationRouteWithDate:time:)
