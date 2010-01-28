@@ -1,16 +1,6 @@
 @import "../util/Constants.j"
 
 
-// TODO: These manifest constants are stupid, given methods below.
-CourseSessionDataBlobRoute = @"course_session_data_blob";
-
-StoreReservationRoute = @"store_reservation";
-TakeAnimalsOutOfServiceRoute = "take_animals_out_of_service";
-
-FetchReservationRoute = @"reservation";
-ModifyReservationRoute = @"modify_reservation";
-PendingAnimalsTableRoute = "animals_with_pending_reservations"
-
 jsonRoute = function(route)
 {
   return "/json/" + route
@@ -40,17 +30,17 @@ htmlRoute = function(route)
 
 - (CPString) reservationRouteWithDate: date time: time
 {
-  return jsonRoute(CourseSessionDataBlobRoute)+"?date=" + date + "&time=" + time;
+  return jsonRoute("course_session_data_blob")+"?date=" + date + "&time=" + time;
 }
 
 - (CPString) pendingReservationAnimalListWithDate: date
 {
-  return htmlRoute(PendingAnimalsTableRoute+"?date=" + date)
+  return htmlRoute("animals_with_pending_reservations"+"?date=" + date)
 }
 
 - (CPString) POSTReservationRoute
 {
-  return jsonRoute(StoreReservationRoute);
+  return jsonRoute("store_reservation");
 }
 
 - (CPString) POSTContentFrom: (id) jsData
@@ -61,12 +51,12 @@ htmlRoute = function(route)
 
 - (CPString) POSTAnimalsOutOfServiceRoute
 {
-  return jsonRoute(TakeAnimalsOutOfServiceRoute);
+  return jsonRoute("take_animals_out_of_service");
 }
 
 - (CPString) fetchReservationRoute: id
 {
-  return jsonRoute(FetchReservationRoute) + '/' + id
+  return jsonRoute("reservation") + '/' + id
 }
 
 @end
@@ -95,7 +85,7 @@ htmlRoute = function(route)
 
 - (CPString) POSTReservationRoute
 {
-  return jsonRoute(ModifyReservationRoute);
+  return jsonRoute("modify_reservation");
 }
 
 - (CPString) POSTContentFrom: (id) jsData

@@ -93,12 +93,4 @@
   return data.replace(/</g, "&lt;"); // This suffices to log HTML
 }
 
-
-- (void) checkConnection: methodConnection  // TODO: delete?
-{
-  if (connection != methodConnection)
-    alert("Different connections: " + connection + " received " + methodConnection + "\nPlease report this problem.");
-}
-  
-
 @end

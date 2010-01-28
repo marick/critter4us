@@ -44,23 +44,6 @@
   accupuncture = [[Procedure alloc] initWithName: 'accupuncture'];
 
 
-  object_of_class = function(expected) {
-    return function(actual) {
-      return expected === [actual class];
-    }
-  }
-
-  primitive_dictionary = function(expected) { 
-    return function(actual) {
-      // TODO: Should check in both directions? Are we checking equality or that
-      // what's expected is there?
-      for (var key in expected) 
-      {
-        [self assert: expected[key] equals: actual[key]];
-      }
-      return YES;
-    }
-  }
 }
 
 
@@ -84,7 +67,7 @@
 
       [sut.continuationMaker shouldReceive: @selector(continuationNotifying:afterConvertingWith:)
 				      with: [AnimalAndProcedureNews,
-					     object_of_class(JsonToModelObjectsConverter)]
+    				             Some(JsonToModelObjectsConverter)]
 				 andReturn: "a continuation"];
       [sut.network shouldReceive: @selector(get:continuingWith:)
 			    with: ['route', 'a continuation']];
@@ -108,13 +91,13 @@
 			    andReturn: {'a':'jshash'}];
 
       [sut.httpMaker shouldReceive: @selector(POSTContentFrom:)
-			      with: primitive_dictionary({'a':'jshash'})
+			      with: Containing_at_least({'a':'jshash'})
 			 andReturn: 'content'];
 
 
       [sut.continuationMaker shouldReceive: @selector(continuationNotifying:afterConvertingWith:)
 				      with: [ReservationStoredNews,
-					     object_of_class(JsonToModelObjectsConverter)]
+  					     Some(JsonToModelObjectsConverter)]
 				 andReturn: "a continuation"];
       [sut.network shouldReceive: @selector(postContent:toRoute:continuingWith:)
 			with: ["content", "route", "a continuation"]];
@@ -134,7 +117,7 @@
                         andReturn: 'route'];
       [sut.continuationMaker shouldReceive: @selector(continuationNotifying:afterConvertingWith:)
 				      with: [ReservationRetrievedNews,
-					     object_of_class(JsonToModelObjectsConverter)]
+					      Some(JsonToModelObjectsConverter)]
 				 andReturn: "a continuation"];
       [sut.network shouldReceive: @selector(get:continuingWith:)
 			    with: ['route', 'a continuation']]
@@ -154,7 +137,7 @@
                          andReturn: "some route"];
       [sut.continuationMaker shouldReceive: @selector(continuationNotifying:afterConvertingWith:)
                                 with: [AnimalsThatCanBeRemovedFromServiceRetrieved,
-                                       object_of_class(JsonToModelObjectsConverter)]
+					Some(JsonToModelObjectsConverter)]
                            andReturn: "a continuation"];
       [sut.network shouldReceive: @selector(get:continuingWith:)
 			    with: ["some route", "a continuation"]];
@@ -180,8 +163,9 @@
 				 with: [["some animals"]]
 			    andReturn: ["some converted animals"]];
       [sut.httpMaker shouldReceive: @selector(POSTContentFrom:)
-                              with: primitive_dictionary({'date' : 'a converted date',
-                                                          'animals' : ["some converted animals" ] })
+                              with: Containing_at_least(
+					      {'date' : 'a converted date',
+  					       'animals' : ["some converted animals" ] })
                          andReturn: "data=content"];
 
       [sut.continuationMaker shouldReceive: @selector(continuationNotifying:)

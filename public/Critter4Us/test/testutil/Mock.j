@@ -1,3 +1,5 @@
+@import <Critter4Us/test/testutil/MockArgumentDescriptions.j>
+
 @implementation Expectation : CPObject
 {
   SEL selector;

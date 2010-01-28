@@ -154,16 +154,17 @@
 
 // 
 
-- (CPArray) combine: one with: another // TODO: move this
+- (CPArray) combine: someExclusions with: someMoreExclusions
 {
   retval = {};
-  var procedures = [[CPDictionary dictionaryWithJSObject: one] allKeys];
+  var procedures = [[CPDictionary dictionaryWithJSObject: someExclusions] allKeys];
   for (var i=0; i < [procedures count]; i++)
   {
     var procedureName = procedures[i];
-    var oneArray = one[procedureName] || [];
-    var anotherArray = another[procedureName] || [];
-    retval[procedureName] = [oneArray arrayByAddingObjectsFromArray: anotherArray];
+    var someExclusionsArray = someExclusions[procedureName] || [];
+    var someMoreExclusionsArray = someMoreExclusions[procedureName] || [];
+    retval[procedureName] =
+      [someExclusionsArray arrayByAddingObjectsFromArray: someMoreExclusionsArray];
   }
   return retval
 }
