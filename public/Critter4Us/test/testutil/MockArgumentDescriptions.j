@@ -12,7 +12,6 @@ Containing_at_least = function(expected) {
     {
       // Note that this equality test won't work for all objects.
       if (! [expected[key] isEqual: actual[key]]) return NO;
-      CPLog("OK")
     }
     return YES;
   }
