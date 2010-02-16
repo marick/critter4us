@@ -1,5 +1,5 @@
 @import "../util/AwakeningObject.j"
-@import "../util/Time.j"
+@import "../util/Timeslice.j"
 
 @implementation ReservationDataControllerPMR : AwakeningObject
 {
@@ -26,10 +26,11 @@
 
 - (void) beginReserving: sender
 {
-  [self sendNotification: ReservationDataAvailable
-               aboutDate: [dateField stringValue]
-                 andTime: [timeControl time]];
-};
+  timeslice = [[Timeslice alloc] initWithThinDate: [dateField stringValue]
+					 thinTime: [timeControl time]];
+  [NotificationCenter postNotificationName: UserHasChosenTimeslice
+				    object: timeslice]
+}
 
 - (void) prepareToFinishReservation
 {

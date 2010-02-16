@@ -2,6 +2,7 @@
 
 // Notification Names
 
+UserHasChosenTimeslice = "user has chosen timeslice";
 ReservationDataAvailable="Reservation data available";
 DifferentObjectsUsedNews = "Some difference in use";
 AnimalAndProcedureNews = "animals, objects, and exclusions";
