@@ -1,5 +1,5 @@
 @import <Foundation/Foundation.j>
-@import <Critter4Us/util/Time.j>
+@import "Time.j"
 
 
 @implementation Timeslice : CPObject

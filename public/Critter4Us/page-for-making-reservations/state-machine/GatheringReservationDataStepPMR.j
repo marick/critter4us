@@ -1,4 +1,5 @@
 @import "../../util/Step.j"
+@import "../../util/Timeslice.j"
 @import "../../persistence/HTTPMaker.j"
 @import "GatheringGroupDataStepPMR.j"
 @import "DateChangingGroupDataStepPMR.j"
@@ -9,8 +10,8 @@
 
 - (void) setUpNotifications
 {
-  [self notificationNamed: ReservationDataAvailable
-                    calls: @selector(reservationDataAvailable:)];
+  [self notificationNamed: UserHasChosenTimeslice
+                    calls: @selector(userHasChosenTimeslice:)];
   [self notificationNamed: ModifyReservationNews
                     calls: @selector(fetchReservationToEdit:)];
   [self notificationNamed: CopyReservationNews
@@ -28,13 +29,13 @@
   [NotificationCenter postNotificationName: AdvisoriesAreIrrelevantNews object: nil];
 }
 
-- (void) reservationDataAvailable: aNotification
+- (void) userHasChosenTimeslice: aNotification
 {
   [self afterResigningInFavorOf: GatheringGroupDataStepPMR
              causeNextEventWith: function() { 
-    [persistentStore makeHTTPWith: [[HTTPMaker alloc] init]];
-    [persistentStore loadInfoRelevantToDate: [[aNotification object] valueForKey: 'date']
-                                       time: [[aNotification object] valueForKey: 'time']];
+      [persistentStore makeHTTPWith: [[HTTPMaker alloc] init]];
+      var timeslice = [aNotification object];
+      [persistentStore loadInfoRelevantToDate: timeslice.thinDate time: timeslice.thinTime];
     }];
 }
 

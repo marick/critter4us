@@ -34,17 +34,15 @@
     }];
 }
 
-// EVENT: The user has selected date, time, ... all but animals and procedures
+// EVENT: The user has selected the timeslice for the reservation
 
-- (void) test_when_data_is_available_pass_it_to_persistent_store_and_resign
+- (void) test_when_timeslice_is_available_pass_it_to_persistent_store_and_resign
 {
   [scenario
     during: function() {
-      var dict = [CPDictionary dictionary];
-      [dict setValue: '2009-02-02' forKey: 'date'];
-      [dict setValue: [Time morning] forKey: 'time'];
-          
-      [self sendNotification: ReservationDataAvailable withObject: dict];
+      var timeslice = [[Timeslice alloc] initWithThinDate: '2009-02-02'
+						 thinTime: [Time morning]];
+      [self sendNotification: UserHasChosenTimeslice withObject: timeslice];
     }
   behold: function() {
       [sut.persistentStore shouldReceive: @selector(makeHTTPWith:)
