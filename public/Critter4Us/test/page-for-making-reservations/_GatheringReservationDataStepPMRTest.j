@@ -38,10 +38,10 @@
 
 - (void) test_when_timeslice_is_available_pass_it_to_persistent_store_and_resign
 {
+  var timeslice = [[Timeslice alloc] initWithThinDate: '2009-02-02'
+					     thinTime: [Time morning]];
   [scenario
     during: function() {
-      var timeslice = [[Timeslice alloc] initWithThinDate: '2009-02-02'
-						 thinTime: [Time morning]];
       [self sendNotification: UserHasChosenTimeslice withObject: timeslice];
     }
   behold: function() {
@@ -50,8 +50,8 @@
           [self assert: "HTTPMaker" equals: [arg className]];
           return YES;
         }];
-      [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:)
-                                    with: ['2009-02-02', [Time morning]]];
+      [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToTimeslice:)
+                                    with: timeslice];
       [sut.master shouldReceive: @selector(takeStep:)
                            with: GatheringGroupDataStepPMR];
     }];

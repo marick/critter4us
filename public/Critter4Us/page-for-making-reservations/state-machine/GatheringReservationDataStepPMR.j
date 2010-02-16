@@ -34,8 +34,7 @@
   [self afterResigningInFavorOf: GatheringGroupDataStepPMR
              causeNextEventWith: function() { 
       [persistentStore makeHTTPWith: [[HTTPMaker alloc] init]];
-      var timeslice = [aNotification object];
-      [persistentStore loadInfoRelevantToDate: timeslice.thinDate time: timeslice.thinTime];
+      [persistentStore loadInfoRelevantToTimeslice: [aNotification object]];
     }];
 }
 
