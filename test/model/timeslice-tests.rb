@@ -140,7 +140,7 @@ class TimesliceTests < FreshDatabaseTestCase
     end
   end
 
-  context "maps from animals to their pending reservations" do
+  context "maps from animals to their pending reservations (old)" do
     setup do
       @date = Date.new(2010, 10, 10)
       @brooke = brooke = Animal.random(:name => 'brooke')
@@ -148,21 +148,39 @@ class TimesliceTests < FreshDatabaseTestCase
         use brooke
         use Procedure.random
       end
-      @jake = Animal.random(:name => 'jake')
     end
 
     should "include animals used at timeslice" do
       @timeslice.move_to(@date, MORNING)
-      result = @timeslice.hashes_from_animals_to_pending_dates([@brooke, @jake])
-      assert { result.include?({@brooke => [@date]}) }
-      assert { result.include?({@jake => []}) }
+      result = @timeslice.hashes_from_animals_to_pending_dates([@brooke])
+      assert { result == [{@brooke => [@date]}] }
+    end
+  end
+end
+
+
+class MockishTimesliceTests < Test::Unit::TestCase
+
+  def setup
+    @timeslice = Timeslice.new
+  end
+
+  context "maps from animals to their pending reservations (mockishly)" do
+    setup do
+      @date = Date.new(2010, 10, 10)
+      @brooke = flexmock("brooke")
     end
 
-    should "not include animals used before timeslice" do
-      @timeslice.move_to(@date+1, MORNING)
-      result = @timeslice.hashes_from_animals_to_pending_dates([@brooke, @jake])
-      assert { result.include?({@brooke => []}) }
-      assert { result.include?({@jake => []}) }
+    should "include animals used at timeslice (version 2)" do
+      @timeslice.move_to(@date, MORNING)
+      during { 
+        @timeslice.hashes_from_animals_to_pending_dates([@brooke])
+      }.behold! {
+        @brooke.should_receive(:dates_used_after_beginning_of).once.
+                with(@date).
+                and_return(["dates brooke used"])
+      }
+      assert { @result == [ {@brooke => ["dates brooke used"]} ] }
     end
   end
 end
