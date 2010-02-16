@@ -47,6 +47,31 @@
 }
 
 
+- (void)test_how_persistent_stores_coordinates_desire_to_load_timeslice_blob
+{
+  [scenario 
+   during: function() { 
+      [sut loadInfoRelevantToTimeslice: "a timeslice"];
+    }
+  behold: function() {
+      [sut.primitivizer shouldReceive: @selector(convert:)
+				 with: 'a timeslice'
+			    andReturn: 'a primitive version of a timeslice'];
+      [sut.httpMaker shouldReceive: @selector(animalsAndProceduresAvailableAtTimeslice:)
+                             with: 'a primitive version of a timeslice'
+                        andReturn: 'route'];
+
+
+      [sut.continuationMaker shouldReceive: @selector(continuationNotifying:afterConvertingWith:)
+				      with: [AnimalAndProcedureNews,
+    				             Some(JsonToModelObjectsConverter)]
+				 andReturn: "a continuation"];
+      [sut.network shouldReceive: @selector(get:continuingWith:)
+			    with: ['route', 'a continuation']];
+    }];
+}
+
+// TODO: Delete this test when loadInfoRelevantToDate:time:
 - (void)test_how_persistent_stores_coordinates_when_retrieving_a_date_dependent_data_blob
 {
   [scenario 

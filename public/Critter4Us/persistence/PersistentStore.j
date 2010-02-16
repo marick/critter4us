@@ -62,6 +62,15 @@ var SharedPersistentStore = nil;
   [network get: route continuingWith: continuation];
 }
 
+-(void) loadInfoRelevantToTimeslice: timeslice 
+{
+  var route = [httpMaker animalsAndProceduresAvailableAtTimeslice: [primitivizer convert: timeslice]];
+  
+  var continuation = [continuationMaker continuationNotifying: AnimalAndProcedureNews
+					  afterConvertingWith: [JsonToModelObjectsConverter converter]];
+  [network get: route continuingWith: continuation];
+}
+
 - (void) makeReservation: dict
 {
   var route = [httpMaker POSTReservationRoute];
