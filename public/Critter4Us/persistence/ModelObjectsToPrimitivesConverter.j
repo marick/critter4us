@@ -27,6 +27,10 @@
     var animals = [self convert: [cpObject animals]];
     var procedures = [self convert: [cpObject procedures]];
     return {'animals': animals, 'procedures' : procedures};
+  case Timeslice:
+    var date = [self convert: cpObject.thinDate];
+    var time = [self convert: cpObject.thinTime];
+    return {'startDate': date, 'endDate': date, 'times': [time]}; 
   case Time:
     return [cpObject description];
   default:
