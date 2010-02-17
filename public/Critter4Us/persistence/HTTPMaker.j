@@ -33,6 +33,11 @@ htmlRoute = function(route)
   return jsonRoute("course_session_data_blob")+"?date=" + date + "&time=" + time;
 }
 
+- (CPString) animalsAndProceduresAvailableAtTimeslice: primitivizedTimeslice
+{
+  return jsonRoute("animals_and_procedures_blob")+"?timeslice=" + [CPString JSONFromObject: primitivizedTimeslice];
+}
+
 - (CPString) pendingReservationAnimalListWithDate: date
 {
   return htmlRoute("animals_with_pending_reservations"+"?date=" + date)
