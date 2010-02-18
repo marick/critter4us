@@ -10,8 +10,8 @@
 require File.expand_path('path-setting', File.dirname(__FILE__))
 require File.expand_path('app', File.dirname(__FILE__))
 
-require 'rack_hoptoad'
+# require 'rack_hoptoad'
 
-use Rack::HoptoadNotifier, '1068f0103e5db4628c91c12495cc3ec5'
+# use Rack::HoptoadNotifier, '1068f0103e5db4628c91c12495cc3ec5'
 
 run Controller
