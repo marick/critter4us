@@ -1,2 +1,3 @@
 erector --version 0.6.7
 rack_hoptoad
+sequel --version 3.5.0
