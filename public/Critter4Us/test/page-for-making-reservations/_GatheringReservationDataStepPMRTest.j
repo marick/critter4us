@@ -38,8 +38,8 @@
 
 - (void) test_when_timeslice_is_available_pass_it_to_persistent_store_and_resign
 {
-  var timeslice = [[Timeslice alloc] initWithThinDate: '2009-02-02'
-					     thinTime: [Time morning]];
+  var timeslice = [Timeslice degenerateDate: '2009-02-02'
+				       time: [Time morning]];
   [scenario
     during: function() {
       [self sendNotification: UserHasChosenTimeslice withObject: timeslice];

@@ -212,8 +212,8 @@
 
 - (void) test_selecting_a_new_date_and_time_starts_over
 {
-  var timeslice = [[Timeslice alloc] initWithThinDate: '2009-02-02'
-					     thinTime: [Time morning]];
+  var timeslice = [Timeslice degenerateDate: '2009-02-02'
+				       time: [Time morning]];
   [scenario
    during: function() {
       [self sendNotification: TimesliceForCurrentReservationChangedNews

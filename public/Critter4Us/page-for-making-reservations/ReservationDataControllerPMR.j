@@ -26,8 +26,8 @@
 
 - (void) beginReserving: sender
 {
-  timeslice = [[Timeslice alloc] initWithThinDate: [dateField stringValue]
-					 thinTime: [timeControl time]];
+  timeslice = [Timeslice degenerateDate: [dateField stringValue]
+				   time: [timeControl time]];
   [NotificationCenter postNotificationName: UserHasChosenTimeslice
 				    object: timeslice]
 }

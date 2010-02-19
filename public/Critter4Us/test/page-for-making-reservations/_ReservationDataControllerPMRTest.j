@@ -34,8 +34,8 @@
     }
   behold: function() {
       [self listenersWillReceiveNotification: UserHasChosenTimeslice
-			    containingObject: [[Timeslice alloc] initWithThinDate: '2009-12-10'
-									 thinTime: [Time afternoon]]];
+			    containingObject: [Timeslice degenerateDate: '2009-12-10'
+								   time: [Time afternoon]]];
     }];
 }
 

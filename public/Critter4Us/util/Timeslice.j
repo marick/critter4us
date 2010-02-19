@@ -4,32 +4,51 @@
 
 @implementation Timeslice : CPObject
 {
-  String thinDate;
-  Time thinTime;
+  CPString firstDate;
+  CPString lastDate;
+  CPSet times;
 }
 
-- (id) initWithThinDate: aString thinTime: aTime
++ (id) firstDate: firstString lastDate: lastString times: anArray
+{
+  return [[self alloc] initWithFirstDate: firstString 
+				lastDate: lastString
+				   times: anArray];
+}
+
++ (id) degenerateDate: aString time: aTime
+{
+  return [[self alloc] initWithFirstDate: aString 
+				lastDate: aString
+				     times: [aTime]];
+}
+
+
+- (id) initWithFirstDate: firstString lastDate: lastString times: anArray
 {
   self = [super init];
-  thinDate = aString;
-  thinTime = aTime;
+  firstDate = firstString;
+  lastDate = lastString;
+  times = [CPSet setWithArray: anArray];
   return self;
 }
+
  
 - (CPInteger) hash
 {
-  return [[thinDate, thinTime] hash];
+  return [[firstDate, lastDate, times] hash];
 }
 
 - (BOOL) isEqual: other
 { 
-  return [thinDate isEqual: other.thinDate] &&    
-         [thinTime isEqual: other.thinTime];
+  return [firstDate isEqual: other.firstDate] &&    
+         [lastDate isEqual: other.lastDate] &&    
+         [times isEqualToSet: other.times];
 }
 
 - (String) description 
 {
-  return "<" + [self class] + " " + thinDate + "/" + thinTime + ">";
+  return "<Timeslice: " + firstDate + " to " + lastDate + "/" + [times description] + ">";
 }
 
 @end

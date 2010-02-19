@@ -35,9 +35,10 @@
 
 - (void) test_turns_timeslices_into_dictionaries
 {
-  var timeslice = [[Timeslice alloc] initWithThinDate: "10-12-90"
-					     thinTime: [Time morning]];
-  var expected = {'startDate':'10-12-90', 'endDate':'10-12-90','times': ['morning']};
+  var timeslice = [Timeslice firstDate: "99-12-10" 
+			      lastDate: "99-12-12"
+				  times: [[Time morning]]];
+  var expected = {'firstDate':'99-12-10', 'lastDate':'99-12-12','times': ['morning']};
   var actual = [ModelObjectsToPrimitivesConverter convert: timeslice];
   [self assertTrue: [cpdict(expected) isEqualToDictionary: cpdict(actual)]];
 }
