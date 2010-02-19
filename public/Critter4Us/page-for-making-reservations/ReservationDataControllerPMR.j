@@ -98,7 +98,7 @@
   [timeControl setTime: time];
   [self noteTimeAndDate];
 
-  [self sendNotification: DateTimeForCurrentReservationChangedNews
+  [self sendNotification: TimesliceForCurrentReservationChangedNews
                aboutDate: date
                  andTime: time];
 }

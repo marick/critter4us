@@ -314,7 +314,7 @@
       [sut.dateTimeEditingControl shouldReceive:@selector(time)
                                       andReturn: [Time afternoon]];
       
-      [self listenersWillReceiveNotification: DateTimeForCurrentReservationChangedNews
+      [self listenersWillReceiveNotification: TimesliceForCurrentReservationChangedNews
                                 checkingWith: function(notification) {
           var dict = [notification object];
           [self assert: '2009-12-10' equals: [dict valueForKey: 'date']];
