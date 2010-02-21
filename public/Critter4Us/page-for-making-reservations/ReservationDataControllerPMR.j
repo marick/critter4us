@@ -26,8 +26,8 @@
 
 - (void) beginReserving: sender
 {
-  timeslice = [Timeslice degenerateDate: [dateField stringValue]
-				   time: [timeControl time]];
+  var timeslice = [Timeslice degenerateDate: [dateField stringValue]
+				       time: [timeControl time]];
   [NotificationCenter postNotificationName: UserHasChosenTimeslice
 				    object: timeslice]
 }
@@ -98,10 +98,13 @@
   [timeControl setTime: time];
   [self noteTimeAndDate];
 
-  [self sendNotification: TimesliceForCurrentReservationChangedNews
-               aboutDate: date
-                 andTime: time];
+  var timeslice = [Timeslice degenerateDate: date time: time];
+  [NotificationCenter postNotificationName: TimesliceForCurrentReservationChangedNews 
+				    object: timeslice];
 }
+
+
+
 
 - (void) copyPreviousReservation: sender
 {
@@ -129,15 +132,6 @@
   var note = "on the " + [[timeControl time] description] + 
     " of " + [dateField stringValue] + ".";
   [dateTimeSummary setStringValue: note];
-}
-
--(void) sendNotification: name aboutDate: date andTime: time
-{
-  var data = [CPDictionary dictionary];
-  [data setValue: date forKey: 'date'];
-  [data setValue: time forKey: 'time'];
-  
-  [NotificationCenter postNotificationName: name object: data];
 }
 
 - (CPDictionary) data
