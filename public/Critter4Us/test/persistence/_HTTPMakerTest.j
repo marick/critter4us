@@ -12,13 +12,6 @@
   maker = [[HTTPMaker alloc] init];
 }
 
-// TODO: Delete
--(void) test_can_make_route_to_fetch_animal_and_procedure_info_by_date
-{
-  [self assert: '/json/course_session_data_blob?date=2009-12-30&time=morning'
-        equals: [maker reservationRouteWithDate: '2009-12-30' time: 'morning']];
-}
-
 -(void) test_can_make_route_to_fetch_animal_and_procedure_info_by_timeslice
 {
   var primitivizedTimeslice = {'startDate':'10-12-90', 'endDate':'10-12-90','times': ['morning']};

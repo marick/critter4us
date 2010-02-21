@@ -71,36 +71,6 @@
     }];
 }
 
-// TODO: Delete this test when loadInfoRelevantToDate:time:
-- (void)test_how_persistent_stores_coordinates_when_retrieving_a_date_dependent_data_blob
-{
-  [scenario 
-   during: function() { 
-      [sut loadInfoRelevantToDate: 'a date' time: 'a time'];
-    }
-  behold: function() {
-      [sut.primitivizer shouldReceive: @selector(convert:)
-				 with: 'a date'
-			    andReturn: 'a network date'];
-      [sut.primitivizer shouldReceive: @selector(convert:)
-				 with: 'a time'
-			    andReturn: 'a network time'];
-      [sut.httpMaker shouldReceive: @selector(reservationRouteWithDate:time:)
-                             with: ['a network date', 'a network time']
-                        andReturn: 'route'];
-
-
-      [sut.continuationMaker shouldReceive: @selector(continuationNotifying:afterConvertingWith:)
-				      with: [AnimalAndProcedureNews,
-    				             Some(JsonToModelObjectsConverter)]
-				 andReturn: "a continuation"];
-      [sut.network shouldReceive: @selector(get:continuingWith:)
-			    with: ['route', 'a continuation']];
-    }];
-}
-
-
-
 -(void)test_how_persistent_store_coordinates_when_posting_a_reservation
 {
   [scenario 
