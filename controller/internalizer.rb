@@ -4,10 +4,12 @@ require 'json'
 class Internalizer
   def initialize 
     @date_parser = lambda { | val | Date.parse(val) }
+    @convert_unjsonified_val = lambda { | val | convert(JSON.parse(val)) }
     @converters = {
       :date => @date_parser, :firstDate => @date_parser, :lastDate => @date_parser,
       # Todo: change next key to "json_data"
-      :data => lambda { | val | self.convert(JSON.parse(val)) },
+      :data => @convert_unjsonified_val,
+      :timeslice => @convert_unjsonified_val,
       :groups => lambda { | val | val.collect { | group | symbol_keys(group) } },
       :times => lambda { | val | Set.new(val) },
     }

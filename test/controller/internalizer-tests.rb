@@ -19,6 +19,7 @@ class InternalizerTests < Test::Unit::TestCase
       "lastDate" => "2000-12-31",
       "groups" => [ {'animals' => ['josie', 'frank'],
                       'procedures' => ['venipuncture']}],
+      "timeslice" => {"firstDate" => "2008-08-08", 'etc' => '...'}.to_json
     }
     actual = Internalizer.new.convert(input)
     expected = {
@@ -29,7 +30,8 @@ class InternalizerTests < Test::Unit::TestCase
       :firstDate => Date.new(2000,1,1),
       :lastDate => Date.new(2000,12,31),
       :groups => [{:animals => ['josie', 'frank'],
-                    :procedures => ['venipuncture']}]
+                    :procedures => ['venipuncture']}],
+      :timeslice => {:firstDate => Date.new(2008, 8, 8), :etc => "..." },
     }
     assert { actual == expected }
   end
