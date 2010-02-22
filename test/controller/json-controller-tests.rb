@@ -23,15 +23,18 @@ class JsonGenerationTests < FreshDatabaseTestCase
   end
 
 
-  context "delivering a blob of course-session-specific data" do
+  context "delivering a blob of timeslice-specific animal and procedure data" do
 
     should "exclude animals that are currently in use" do 
       @app.override(mocks(:animal_source, :procedure_source,
                           :procedure_rules))
       @timeslice = @app.mock_timeslice = flexmock('timeslice')
       @excluder = @app.mock_excluder = flexmock('excluder')
+
+      timeslice_data = 
+        {:firstDate => '2009-01-01', :lastDate => '2009-01-01', :times => [MORNING]}
       during { 
-        get '/json/course_session_data_blob', {:date => '2009-01-01', :time => MORNING}
+        get '/json/animals_and_procedures_blob', 'timeslice' => timeslice_data.to_json
       }.behold! {
         @@stuff_that_always_happens.call
         @timeslice.should_receive(:move_to).once.with(Date.new(2009,1, 1), MORNING, nil)
@@ -49,9 +52,13 @@ class JsonGenerationTests < FreshDatabaseTestCase
                           :procedure_rules))
       @timeslice = @app.mock_timeslice = flexmock('timeslice')
       @excluder = @app.mock_excluder = flexmock('excluder')
+
+      timeslice_data = 
+        {:firstDate => '2009-01-01', :lastDate => '2009-01-01', :times => [MORNING]}
       during { 
-        get "/json/course_session_data_blob",
-            {:date => '2009-01-01', :time => MORNING, :ignoring => reservation.id}
+        get "/json/animals_and_procedures_blob", 
+            'timeslice' => timeslice_data.to_json,
+            'ignoring' => reservation.id
       }.behold! {
         @@stuff_that_always_happens.call
         @timeslice.should_receive(:move_to).once.with(Date.new(2009,1, 1), MORNING, reservation)

@@ -13,9 +13,10 @@ class Controller
     @excluder = @mock_excluder || Excluder.new(@timeslice)
   end
 
-  get '/json/course_session_data_blob' do
+  get '/json/animals_and_procedures_blob' do
     internal = internalize(params)
-    timeslice.move_to(internal[:date], internal[:time], ignored_reservation)
+    t = JSON.parse(params['timeslice'])
+    timeslice.move_to(Date.parse(t['firstDate']), t['times'][0], ignored_reservation)
     externalize(:animals => timeslice.animals_that_can_be_reserved,
                 :procedures => timeslice.procedures,
                 :kindMap => animal_source.kind_map,
