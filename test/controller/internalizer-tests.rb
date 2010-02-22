@@ -13,14 +13,21 @@ class InternalizerTests < Test::Unit::TestCase
     input = {
       "stringkey" => "value",
       "time" => MORNING,
+      "times" => [MORNING, AFTERNOON],
       "date" => "2009-12-01",
+      "firstDate" => "2000-01-01",
+      "lastDate" => "2000-12-31",
       "groups" => [ {'animals' => ['josie', 'frank'],
                       'procedures' => ['venipuncture']}],
     }
     actual = Internalizer.new.convert(input)
     expected = {
-      :stringkey => 'value', :time => MORNING,
+      :stringkey => 'value', 
+      :time => MORNING,
+      :times => Set.new([AFTERNOON, MORNING]),
       :date => Date.new(2009,12,1),
+      :firstDate => Date.new(2000,1,1),
+      :lastDate => Date.new(2000,12,31),
       :groups => [{:animals => ['josie', 'frank'],
                     :procedures => ['venipuncture']}]
     }

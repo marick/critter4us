@@ -2,11 +2,22 @@ require 'util/constants'
 require 'json'
 
 class Internalizer
+  def initialize 
+    @date_parser = lambda { | val | Date.parse(val) }
+    @converters = {
+      :date => @date_parser, :firstDate => @date_parser, :lastDate => @date_parser,
+      # Todo: change next key to "json_data"
+      :data => lambda { | val | self.convert(JSON.parse(val)) },
+      :groups => lambda { | val | val.collect { | group | symbol_keys(group) } },
+      :times => lambda { | val | Set.new(val) },
+    }
+  end
+
   def convert(hash)
     result = symbol_keys(hash)
-    convert_date(result) if result.has_key?(:date)
-    convert_groups(result) if result.has_key?(:groups)
-    convert_json_data(result) if result.has_key?(:data) # Todo: change key to "json_data"
+    @converters.each do | key, action | 
+      result[key] = action.call(result[key]) if result.has_key?(key)
+    end
     result
   end
 
@@ -17,19 +28,5 @@ class Internalizer
       retval[k.to_sym] = v
     end
     return retval
-  end
-
-  def convert_date(hash)
-    hash[:date] = Date.parse(hash[:date])
-  end
-
-  def convert_groups(hash)
-    hash[:groups] = hash[:groups].collect do | group | 
-      symbol_keys(group)
-    end
-  end
-
-  def convert_json_data(hash)
-    hash[:data] = convert(JSON.parse(hash[:data]))
   end
 end
