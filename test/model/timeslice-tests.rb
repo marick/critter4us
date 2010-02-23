@@ -3,17 +3,26 @@ require 'test/testutil/requires'
 require 'model/requires'
 require 'ostruct'
 
-class TimesliceTests < FreshDatabaseTestCase
+
+# TODO: these tests are a mess
+class TimesliceTests < Test::Unit::TestCase
 
   def setup
-    super
-    @timeslice = Timeslice.new
-    @timeslice.override(mocks(:animal_source, :procedure_source, :use_source))
-    @destination = []
+    mocks(:animal_source, :procedure_source, :use_source)
+  end
+
+  def make_timeslice(date = Date.new(2009, 9, 9), time = MORNING,
+                     reservation = Reservation.acts_as_empty)
+    timeslice = Timeslice.degenerate(date, time, reservation)
+    timeslice.override(:animal_source => @animal_source,
+                       :procedure_source => @procedure_source,
+                       :use_source => @use_source)
+    timeslice
   end
 
   context "procedures" do 
     setup do 
+      @timeslice = make_timeslice
       @procedure_source.should_receive(:all).once.
                         and_return([Procedure.new(:name => 'floating'),
                                     Procedure.new(:name => 'epidural'),
@@ -27,7 +36,8 @@ class TimesliceTests < FreshDatabaseTestCase
       @timeslice.procedures
     end
 
-    should "be lazy" do 
+    should "be cached" do 
+      @timeslice.procedures
       @timeslice.procedures
     end
 
@@ -46,9 +56,8 @@ class TimesliceTests < FreshDatabaseTestCase
 
     context "in service at the timeslice moment" do 
       should "be cached" do
-        @timeslice.move_to(@date, @time)
+        @timeslice = make_timeslice(@date, @time)
         during { 
-          @timeslice.animals_in_service
           @timeslice.animals_in_service
           @timeslice.animals_in_service
           @timeslice.animals_in_service
@@ -57,7 +66,7 @@ class TimesliceTests < FreshDatabaseTestCase
                          with(@date).
                          and_return([@fred])
         }
-          assert_equal([@fred], @result)
+        assert_equal([@fred], @result)
       end
     end
 
@@ -71,13 +80,13 @@ class TimesliceTests < FreshDatabaseTestCase
       end
 
       should "normally be all those in use" do 
-        @timeslice.move_to(@date, @time)
+        @timeslice = make_timeslice(@date, @time)
         assert_equal([@fred], @timeslice.animals_to_be_considered_in_use)
       end
 
       should "except that those from a given reservation will not be included" do 
         reservation = flexmock("reservation")
-        @timeslice.move_to(@date, @time, ignoring = reservation)
+        @timeslice = make_timeslice(@date, @time, ignoring = reservation)
         during { 
           @timeslice.animals_to_be_considered_in_use
         }.behold!{
@@ -91,7 +100,7 @@ class TimesliceTests < FreshDatabaseTestCase
       end
     
       should "be cached" do 
-        @timeslice.move_to(@date, @time)
+        @timeslice = make_timeslice(@date, @time)
         assert_equal([@fred], @timeslice.animals_to_be_considered_in_use)
         assert_equal([@fred], @timeslice.animals_to_be_considered_in_use)
         assert_equal([@fred], @timeslice.animals_to_be_considered_in_use)
@@ -114,13 +123,13 @@ class TimesliceTests < FreshDatabaseTestCase
       end
 
       should "be returned if they are available at the timeslice moment" do
-        @timeslice.move_to(@date, @time)
+        @timeslice = make_timeslice(@date, @time)
         assert_equal([@betsy], @timeslice.animals_that_can_be_reserved)
       end
 
       should "obey instructions to ignore a reservation" do
         reservation = flexmock("reservation")
-        @timeslice.move_to(@date, @time, ignoring = reservation)
+        @timeslice = make_timeslice(@date, @time, ignoring = reservation)
         during { 
           @timeslice.animals_that_can_be_reserved
         }.behold!{
@@ -131,7 +140,7 @@ class TimesliceTests < FreshDatabaseTestCase
       end
 
       should "cache results" do 
-        @timeslice.move_to(@date, @time)
+        @timeslice = make_timeslice(@date, @time)
         assert_equal([@betsy], @timeslice.animals_that_can_be_reserved)
         assert_equal([@betsy], @timeslice.animals_that_can_be_reserved)
         assert_equal([@betsy], @timeslice.animals_that_can_be_reserved)
@@ -151,7 +160,7 @@ class TimesliceTests < FreshDatabaseTestCase
     end
 
     should "include animals used at timeslice" do
-      @timeslice.move_to(@date, MORNING)
+      @timeslice = make_timeslice(@date, MORNING)
       result = @timeslice.hashes_from_animals_to_pending_dates([@brooke])
       assert { result == [{@brooke => [@date]}] }
     end
@@ -161,10 +170,6 @@ end
 
 class MockishTimesliceTests < Test::Unit::TestCase
 
-  def setup
-    @timeslice = Timeslice.new
-  end
-
   context "maps from animals to their pending reservations (mockishly)" do
     setup do
       @date = Date.new(2010, 10, 10)
@@ -172,7 +177,7 @@ class MockishTimesliceTests < Test::Unit::TestCase
     end
 
     should "include animals used at timeslice (version 2)" do
-      @timeslice.move_to(@date, MORNING)
+      @timeslice = Timeslice.degenerate(@date, MORNING, Reservation.acts_as_empty)
       during { 
         @timeslice.hashes_from_animals_to_pending_dates([@brooke])
       }.behold! {

@@ -5,9 +5,7 @@ class Timeslice
   include TestSupport
 
   def self.degenerate(date, time, ignored_reservation)
-    retval = self.new
-    retval.move_to(date, time, ignored_reservation)
-    retval
+    new(date, date, Set.new([time]), ignored_reservation)
   end
 
   def initialize(first_date, last_date, times, ignored_reservation)
@@ -35,7 +33,6 @@ class Timeslice
 
   def animals_in_service
     return @animals_in_service if @animals_in_service
-
     @animals_in_service = animal_source.all_in_service_on(@date)
   end
 
