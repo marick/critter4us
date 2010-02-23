@@ -75,14 +75,14 @@ class InternalizerTests < FreshDatabaseTestCase
 
   context "timeslice" do 
     setup do 
-      @params = {'firstDate' => '2009-12-12', 'lastDate' => '2009-12-12',
-                 'times' => ['morning']}
+      @data = {'firstDate' => '2009-12-12', 'lastDate' => '2009-12-12',
+               'times' => ['morning']}.to_json
       @internalizer = Internalizer.new
     end
 
-    should "be able to make a timeslice" do
+    should "be able to make a timeslice from JSON" do
       reservation = Reservation.random
-      timeslice = @internalizer.make_timeslice(@params, reservation)
+      timeslice = @internalizer.make_timeslice(@data, reservation)
       # Todo: only uses degenerate timeslices so far.
       assert_equal(Date.new(2009,12,12), timeslice.date)
       assert_equal(MORNING, timeslice.time)
@@ -90,12 +90,12 @@ class InternalizerTests < FreshDatabaseTestCase
     end
 
     should "be able to make a timeslice without an associated reservation" do 
-      timeslice = @internalizer.make_timeslice(@params)
+      timeslice = @internalizer.make_timeslice(@data)
       assert { timeslice.ignored_reservation.acts_as_empty? }
     end
 
     should "be able to make a reservation from a pure date" do 
-      timeslice = @internalizer.make_timeslice({'date' => '2008/09/08'})
+      timeslice = @internalizer.make_timeslice_from_date('2008/09/08')
       assert_equal(Date.new(2008,9,8), timeslice.date)
       assert_equal(MORNING, timeslice.time)  # TODO: Will eventually not be needed.
       assert { timeslice.ignored_reservation.acts_as_empty? }

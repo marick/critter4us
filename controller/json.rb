@@ -12,7 +12,7 @@ class Controller
 
   get '/json/animals_and_procedures_blob' do
     reservation_to_ignore = @internalizer.find_reservation(params, 'ignoring')
-    timeslice = @internalizer.make_timeslice(params, reservation_to_ignore)
+    timeslice = @internalizer.make_timeslice(params['timeslice'], reservation_to_ignore)
     externalize(:animals => timeslice.animals_that_can_be_reserved,
                 :procedures => timeslice.procedures,
                 :kindMap => animal_source.kind_map,
@@ -63,7 +63,8 @@ class Controller
   end
 
   get '/json/animals_that_can_be_taken_out_of_service' do
-    timeslice = @internalizer.make_timeslice(params)
+    # Note: this params list contains a single date, not full timeslice data
+    timeslice = @internalizer.make_timeslice_from_date(params['date'])
     animals = timeslice.animals_that_can_be_reserved
     hashes = timeslice.hashes_from_animals_to_pending_dates(animals)
     animals_without_uses = filter_unused_animals(hashes)

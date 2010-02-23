@@ -29,7 +29,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
       @app.override(mocks(:animal_source, :excluder, :internalizer))
       timeslice = flexmock(timeslice)
 
-      get_hash = {'contents' => 'irrelevant for this test'}
+      get_hash = {'timeslice' => {'contents' => 'irrelevant for this test'}.to_json}
       during { 
         get '/json/animals_and_procedures_blob', get_hash
       }.behold! {
@@ -37,7 +37,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
                       with(get_hash, 'ignoring').
                       and_return('a reservation to ignore')
         @internalizer.should_receive(:make_timeslice).once.
-                      with(get_hash, 'a reservation to ignore').
+                      with(get_hash['timeslice'], 'a reservation to ignore').
                       and_return(timeslice)
 
         timeslice.should_receive(:animals_that_can_be_reserved).once.
@@ -77,7 +77,8 @@ class JsonGenerationTests < FreshDatabaseTestCase
       during { 
         get '/json/animals_that_can_be_taken_out_of_service', get_hash
       }.behold! {
-        @internalizer.should_receive(:make_timeslice).once.with(get_hash).
+        @internalizer.should_receive(:make_timeslice_from_date).once.
+                      with(get_hash['date']).
                       and_return(timeslice)
         timeslice.should_receive(:animals_that_can_be_reserved).once.
                   and_return([brooke, jake])

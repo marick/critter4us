@@ -32,13 +32,15 @@ class Internalizer
     end
   end
 
-  def make_timeslice(params, one_reservation = Reservation.acts_as_empty)
-    internal = convert(params)
-    first_date = internal[:firstDate] || internal[:date]
-    last_date = internal[:lastDate] || internal[:date]
-    times = internal[:times] || [MORNING]
-    Timeslice.new(first_date, last_date, times,
+  def make_timeslice(json, one_reservation = Reservation.acts_as_empty)
+    internal = convert(JSON.parse(json))
+    Timeslice.new(internal[:firstDate], internal[:lastDate], internal[:times],
                   one_reservation)
+  end
+
+  def make_timeslice_from_date(raw_date, one_reservation = Reservation.acts_as_empty)
+    date = @date_parser.call(raw_date)
+    Timeslice.new(date, date, [MORNING], one_reservation)
   end
 
   # tested
