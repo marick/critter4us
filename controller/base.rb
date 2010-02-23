@@ -36,16 +36,14 @@ class Controller < Sinatra::Base
     end
   end
 
-  attr_writer :mock_timeslice
-  attr_writer :mock_excluder
-  attr_accessor :timeslice
-  attr_accessor :excluder
-
   def initialize(*args)
     super
     collaborators_start_as(:animal_source => Animal, 
                            :procedure_source => Procedure,
-                           :reservation_source => Reservation)
+                           :reservation_source => Reservation,
+                           :excluder => Excluder.new,
+                           :internalizer => Internalizer.new
+                           )
     self
   end
 end
