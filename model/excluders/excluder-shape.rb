@@ -1,9 +1,5 @@
 class ExcluderShape
 
-  def initialize(timeslice)
-    @timeslice = timeslice
-  end
-
   private
 
   def listhash_with_keys(keys, value = [])

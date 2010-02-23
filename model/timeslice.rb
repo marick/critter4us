@@ -4,8 +4,13 @@ require 'model/requires'
 class Timeslice
   include TestSupport
 
+  def self.degenerate(date, time, ignored_reservation)
+    retval = self.new
+    retval.move_to(date, time, ignored_reservation)
+    retval
+  end
+
   def initialize(*args)
-    super
     collaborators_start_as(:animal_source => Animal, 
                            :procedure_source => Procedure,
                            :use_source => Use)
