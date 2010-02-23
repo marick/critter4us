@@ -73,15 +73,32 @@ class InternalizerTests < FreshDatabaseTestCase
     end
   end
 
-  should "be able to make a timeslice" do
-    reservation = Reservation.random
-    timeslice = Internalizer.new.make_timeslice({'firstDate' => '2009-12-12',
-                                                  'lastDate' => '2009-12-12',
-                                                  'times' => ['morning']},
-                                                reservation)
-    # Todo: only uses degenerate timeslices so far.
-    assert_equal(Date.new(2009,12,12), timeslice.date)
-    assert_equal(MORNING, timeslice.time)
-    assert_equal(reservation, timeslice.ignored_reservation)
+  context "timeslice" do 
+    setup do 
+      @params = {'firstDate' => '2009-12-12', 'lastDate' => '2009-12-12',
+                 'times' => ['morning']}
+      @internalizer = Internalizer.new
+    end
+
+    should "be able to make a timeslice" do
+      reservation = Reservation.random
+      timeslice = @internalizer.make_timeslice(@params, reservation)
+      # Todo: only uses degenerate timeslices so far.
+      assert_equal(Date.new(2009,12,12), timeslice.date)
+      assert_equal(MORNING, timeslice.time)
+      assert_equal(reservation, timeslice.ignored_reservation)
+    end
+
+    should "be able to make a timeslice without an associated reservation" do 
+      timeslice = @internalizer.make_timeslice(@params)
+      assert { timeslice.ignored_reservation.acts_as_empty? }
+    end
+
+    should "be able to make a reservation from a pure date" do 
+      timeslice = @internalizer.make_timeslice({'date' => '2008/09/08'})
+      assert_equal(Date.new(2008,9,8), timeslice.date)
+      assert_equal(MORNING, timeslice.time)  # TODO: Will eventually not be needed.
+      assert { timeslice.ignored_reservation.acts_as_empty? }
+    end
   end
 end

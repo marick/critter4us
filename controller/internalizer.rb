@@ -32,9 +32,12 @@ class Internalizer
     end
   end
 
-  def make_timeslice(params, one_reservation)
+  def make_timeslice(params, one_reservation = Reservation.acts_as_empty)
     internal = convert(params)
-    Timeslice.new(internal[:firstDate], internal[:lastDate], internal[:times],
+    first_date = internal[:firstDate] || internal[:date]
+    last_date = internal[:lastDate] || internal[:date]
+    times = internal[:times] || [MORNING]
+    Timeslice.new(first_date, last_date, times,
                   one_reservation)
   end
 
