@@ -23,6 +23,21 @@ class Internalizer
     result
   end
 
+  def find_reservation(params, tag)
+    reservation_id = params[tag]
+    if reservation_id
+      Reservation[reservation_id.to_i]
+    else
+      Reservation.acts_as_empty
+    end
+  end
+
+  def make_timeslice(params, one_reservation)
+    internal = convert(params)
+    Timeslice.new(internal[:firstDate], internal[:lastDate], internal[:times],
+                  one_reservation)
+  end
+
   # tested
   def symbol_keys(hash)
     retval = {}

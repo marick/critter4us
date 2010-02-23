@@ -1,8 +1,10 @@
 $: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'controller/internalizer'
+require 'model/reservation'
+require 'model/timeslice'
 
-class InternalizerTests < Test::Unit::TestCase
+class InternalizerTests < FreshDatabaseTestCase
   should "turn hash keys into symbols" do
     input = { 'key' => 'value' } 
     expected = { :key => 'value' }
@@ -56,5 +58,30 @@ class InternalizerTests < Test::Unit::TestCase
     }
 
     assert_equal(expected, actual)
+  end
+
+  context "reservations" do
+    should "be able to fetch a reservation" do 
+      reservation = Reservation.random
+      fetched = Internalizer.new.find_reservation({'tag' => reservation.id.to_s}, 'tag')
+      assert_equal(reservation.id, fetched.id)
+    end
+
+    should "return a null object if no reservation named" do 
+      fetched = Internalizer.new.find_reservation({}, 'tag')
+      assert { fetched.acts_as_empty? }
+    end
+  end
+
+  should "be able to make a timeslice" do
+    reservation = Reservation.random
+    timeslice = Internalizer.new.make_timeslice({'firstDate' => '2009-12-12',
+                                                  'lastDate' => '2009-12-12',
+                                                  'times' => ['morning']},
+                                                reservation)
+    # Todo: only uses degenerate timeslices so far.
+    assert_equal(Date.new(2009,12,12), timeslice.date)
+    assert_equal(MORNING, timeslice.time)
+    assert_equal(reservation, timeslice.ignored_reservation)
   end
 end

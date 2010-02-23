@@ -10,10 +10,11 @@ class Timeslice
     retval
   end
 
-  def initialize(*args)
+  def initialize(first_date, last_date, times, ignored_reservation)
     collaborators_start_as(:animal_source => Animal, 
                            :procedure_source => Procedure,
                            :use_source => Use)
+    move_to(first_date, times.to_a[0], ignored_reservation)
     self
   end
 
