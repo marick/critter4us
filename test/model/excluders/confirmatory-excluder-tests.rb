@@ -36,9 +36,8 @@ class SevenAndOneDayExampleOfBlackoutPeriodTests < FreshDatabaseTestCase
   end
 
   def typical_use(date, time, ignored_reservation = Reservation.acts_as_empty)
-    timeslice = Timeslice.new
-    timeslice.move_to(date, time, ignored_reservation)
-    Excluder.new(timeslice).time_sensitive_exclusions
+    timeslice = Timeslice.degenerate(date, time, ignored_reservation)
+    Excluder.new.time_sensitive_exclusions(timeslice)
   end
 
   should "find excluded animals for tomorrow" do 
@@ -161,9 +160,9 @@ class DetailsAboutTimingTests < FreshDatabaseTestCase
   def run_attempt(attempt_date, attempt_time)
     # puts "attempt at #{[attempt_date, attempt_time].inspect}"
     @pairs = []
-    timeslice = Timeslice.new
-    timeslice.move_to(Date.new(2009, 12, attempt_date), attempt_time)
-    @map = Excluder.new(timeslice).time_sensitive_exclusions
+    timeslice = Timeslice.degenerate(Date.new(2009, 12, attempt_date), attempt_time,
+                                     Reservation.acts_as_empty)
+    @map = Excluder.new.time_sensitive_exclusions(timeslice)
   end
 
   def assert_reservation_success(is_ok)

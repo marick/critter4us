@@ -212,18 +212,16 @@
 
 - (void) test_selecting_a_new_date_and_time_starts_over
 {
-  var dict = [CPDictionary dictionary];
-  [dict setValue: '2009-02-02' forKey: 'date'];
-  [dict setValue: [Time morning] forKey: 'time'];
-
+  var timeslice = [Timeslice degenerateDate: '2009-02-02'
+				       time: [Time morning]];
   [scenario
    during: function() {
-      [self sendNotification: DateTimeForCurrentReservationChangedNews
-                  withObject: dict];
+      [self sendNotification: TimesliceForCurrentReservationChangedNews
+                  withObject: timeslice];
     }
    behold: function() {
-      [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToDate:time:)
-                                    with: ['2009-02-02', [Time morning]]];
+      [sut.persistentStore shouldReceive: @selector(loadInfoRelevantToTimeslice:)
+                                    with: timeslice];
 
     }];
 }

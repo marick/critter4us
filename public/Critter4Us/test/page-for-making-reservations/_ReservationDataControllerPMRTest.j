@@ -22,7 +22,7 @@
                                         ]];
 }
 
-- (void)testNotifiesListenersWhenReservingStarts
+- (void)test_notifies_listeners_that_user_wants_to_reserve_a_particular_Timeslice
 {
   [scenario
     previously: function() {
@@ -33,16 +33,10 @@
       [sut beginReserving: UnusedArgument];
     }
   behold: function() {
-
-      [self listenersWillReceiveNotification: ReservationDataAvailable
-                                checkingWith: function(notification) {
-          var dict = [notification object];
-          [self assert: '2009-12-10' equals: [dict valueForKey: 'date']];
-          [self assert: [Time afternoon] equals: [dict valueForKey: 'time']];
-          return YES;
-        }];
-    }
-   ]   
+      [self listenersWillReceiveNotification: UserHasChosenTimeslice
+			    containingObject: [Timeslice degenerateDate: '2009-12-10'
+								   time: [Time afternoon]]];
+    }];
 }
 
 
@@ -320,13 +314,9 @@
       [sut.dateTimeEditingControl shouldReceive:@selector(time)
                                       andReturn: [Time afternoon]];
       
-      [self listenersWillReceiveNotification: DateTimeForCurrentReservationChangedNews
-                                checkingWith: function(notification) {
-          var dict = [notification object];
-          [self assert: '2009-12-10' equals: [dict valueForKey: 'date']];
-          [self assert: [Time afternoon] equals: [dict valueForKey: 'time']];
-          return YES;
-        }];
+      [self listenersWillReceiveNotification: TimesliceForCurrentReservationChangedNews
+			    containingObject: [Timeslice degenerateDate: '2009-12-10'
+								   time: [Time afternoon]]];
     }
    ];
 }

@@ -23,83 +23,69 @@ class JsonGenerationTests < FreshDatabaseTestCase
   end
 
 
-  context "delivering a blob of course-session-specific data" do
+  context "delivering a blob of timeslice-specific animal and procedure data" do
 
     should "exclude animals that are currently in use" do 
-      @app.override(mocks(:animal_source, :procedure_source,
-                          :procedure_rules))
-      @timeslice = @app.mock_timeslice = flexmock('timeslice')
-      @excluder = @app.mock_excluder = flexmock('excluder')
-      during { 
-        get '/json/course_session_data_blob', {:date => '2009-01-01', :time => MORNING}
-      }.behold! {
-        @@stuff_that_always_happens.call
-        @timeslice.should_receive(:move_to).once.with(Date.new(2009,1, 1), MORNING, nil)
-      }
-      assert_json_response
-      assert_jsonification_of(@results_of_what_happens)
-    end
+      @app.override(mocks(:animal_source, :excluder, :internalizer))
+      timeslice = flexmock(timeslice)
 
-    should "exclude animals that are currently in use (but ignoring a reservation)" do 
-      reservation = Reservation.random(:date => Date.new(2009, 3, 3),
-                                       :time => MORNING,
-                                       :procedure => Procedure.random,
-                                       :animal => Animal.random)
-      @app.override(mocks(:animal_source, :procedure_source,
-                          :procedure_rules))
-      @timeslice = @app.mock_timeslice = flexmock('timeslice')
-      @excluder = @app.mock_excluder = flexmock('excluder')
+      get_hash = {'timeslice' => {'contents' => 'irrelevant for this test'}.to_json}
       during { 
-        get "/json/course_session_data_blob",
-            {:date => '2009-01-01', :time => MORNING, :ignoring => reservation.id}
+        get '/json/animals_and_procedures_blob', get_hash
       }.behold! {
-        @@stuff_that_always_happens.call
-        @timeslice.should_receive(:move_to).once.with(Date.new(2009,1, 1), MORNING, reservation)
-      }
-      assert_json_response
-      assert_jsonification_of(@results_of_what_happens)
-    end
+        @internalizer.should_receive(:find_reservation).once.
+                      with(get_hash, 'ignoring').
+                      and_return('a reservation to ignore')
+        @internalizer.should_receive(:make_timeslice).once.
+                      with(get_hash['timeslice'], 'a reservation to ignore').
+                      and_return(timeslice)
 
-    setup do
-      @@stuff_that_always_happens = lambda() { 
-        @timeslice.should_receive(:animals_that_can_be_reserved).once.and_return('some animals')
-        @timeslice.should_receive(:procedures).once.and_return('some sorted procedures')
-        @animal_source.should_receive(:kind_map).once.and_return('some kind map')
+        timeslice.should_receive(:animals_that_can_be_reserved).once.
+                  and_return('some animals')
+        timeslice.should_receive(:procedures).once.
+                   and_return('some sorted procedures')
+        @animal_source.should_receive(:kind_map).once.
+                       and_return('some kind map')
         @excluder.should_receive(:time_sensitive_exclusions).once.
+                  with(timeslice).
                   and_return('some time-sensitive exclusions')
         @excluder.should_receive(:timeless_exclusions).once.
+                  with(timeslice).
                   and_return('some time-independent exclusions')
-
       }
 
-      @results_of_what_happens = {
+      expected = {
          'animals' => 'some animals',
          'procedures' => 'some sorted procedures',
          'kindMap' => 'some kind map',
          'timeSensitiveExclusions' => 'some time-sensitive exclusions',
          'timelessExclusions' => 'some time-independent exclusions',
       }
-
+      assert_json_response
+      assert_jsonification_of(expected)
     end
   end
 
   context "producing lists of animals in service" do 
     should "return a list of animals with no pending reservations" do 
-      @app.override(mocks(:animal_source))
-      @timeslice = @app.mock_timeslice = flexmock("timeslice")
+      @app.override(mocks(:animal_source, :internalizer))
+      timeslice = flexmock("timeslice")
       brooke = Animal.random(:name => 'brooke')
       jake = Animal.random(:name => 'jake')
 
+      get_hash = {'date' => '2009-01-01'}
       during { 
-        get '/json/animals_that_can_be_taken_out_of_service', :date => '2009-01-01'
+        get '/json/animals_that_can_be_taken_out_of_service', get_hash
       }.behold! {
-        @timeslice.should_receive(:move_to).once.with(Date.new(2009,1,1), MORNING, nil)
-        @timeslice.should_receive(:animals_that_can_be_reserved).once.
-                   and_return([brooke, jake])
-        @timeslice.should_receive(:hashes_from_animals_to_pending_dates).once.
-                   with([brooke, jake]).
-                   and_return([{brooke => [Date.new(2009,1,1), Date.new(2010,1,1)]},
-                               {jake => []}])
+        @internalizer.should_receive(:make_timeslice_from_date).once.
+                      with(get_hash['date']).
+                      and_return(timeslice)
+        timeslice.should_receive(:animals_that_can_be_reserved).once.
+                  and_return([brooke, jake])
+        timeslice.should_receive(:hashes_from_animals_to_pending_dates).once.
+                  with([brooke, jake]).
+                  and_return([{brooke => [Date.new(2009,1,1), Date.new(2010,1,1)]},
+                              {jake => []}])
       }
       assert_json_response
       assert_jsonification_of('unused animals' => ['jake'])
@@ -215,100 +201,68 @@ class JsonGenerationTests < FreshDatabaseTestCase
     end
   end
 
-  context "retrieving a reservation" do
-    setup do
-      Animal.create(:name => 'twitter', :kind => 'sugar glider')
-      Animal.create(:name => 'jinx', :kind => 'red-eared slider')
-      Procedure.random_with_names('floating', 'venipuncture')
-      test_data = { 
-        :instructor => 'marge',
-        :course => 'vm333',
-        :date => Date.new(2001, 2, 4),
-        :time => MORNING,
-        :groups => [ {:procedures => ['floating'],
-                       :animals => ['twitter', 'jinx']},
-                     {:procedures => ['venipuncture'],
-                       :animals => ['jinx']}]
+
+  should "be able to retrieve a reservation and associated data" do 
+    
+    @app.override(mocks(:animal_source, :excluder, :internalizer))
+    reservation = flexmock("reservation")
+    timeslice = flexmock('timeslice')
+
+    get_hash = {'number' => 'some_number', 'ignoring' => 'may be present'}
+    during { 
+      # Although the number argument is described in the get_hash, and is 
+      # available in the params global in the controller, it has to 
+      # be passed here so that the route-matching works.
+      get '/json/reservation/some_number', get_hash
+    }.behold! {
+      @internalizer.should_receive(:find_reservation).once.
+                    with(get_hash, 'ignoring').
+                    and_return('a reservation to ignore')
+      @internalizer.should_receive(:find_reservation).once.
+                    with(get_hash, 'number').
+                    and_return(reservation)
+      reservation.should_receive(:timeslice).once.
+                  with('a reservation to ignore').
+                  and_return(timeslice)
+
+      reservation.should_receive(:instructor).once.and_return('instructor')
+      reservation.should_receive(:course).once.and_return('course')
+      reservation.should_receive(:date).once.and_return('date')
+      reservation.should_receive(:time).once.and_return('time')
+      reservation.should_receive(:groups).once.and_return('groups')
+      reservation.should_receive(:pk).once.and_return(5)
+
+      timeslice.should_receive(:procedures).once.
+                 and_return('some sorted procedures')
+      timeslice.should_receive(:animals_that_can_be_reserved).once.
+                and_return('some animals')
+      @animal_source.should_receive(:kind_map).once.
+                     and_return('some kind map')
+      @excluder.should_receive(:time_sensitive_exclusions).once.
+                with(timeslice).
+                and_return('some time-sensitive exclusions')
+      @excluder.should_receive(:timeless_exclusions).once.
+                with(timeslice).
+                and_return('some time-independent exclusions')
+    }
+
+    expected = {
+      'instructor' => 'instructor',
+      'course' => 'course',
+      'date' => 'date',
+      'time' => 'time',
+      'groups' => 'groups',
+      'id' => '5',
+      'animals' => 'some animals',
+      'procedures' => 'some sorted procedures',
+      'kindMap' => 'some kind map',
+      'timeSensitiveExclusions' => 'some time-sensitive exclusions',
+      'timelessExclusions' => 'some time-independent exclusions',
       }
-      @reservation = Reservation.create_with_groups(test_data)
-    end
-
-    context "has results that have nothing to do with exclusions" do
-      setup do 
-        get "/json/reservation/#{@reservation.pk}?ignoring=#{@reservation.pk}"
-        assert_json_response
-        @result = JSON[last_response.body]
-      end
-
-      should "retrieve atomic values" do
-        assert { 'marge' == @result['instructor'] }
-        assert { 'vm333' == @result['course'] }
-        assert { '2001-02-04' == @result['date'] }
-        assert { MORNING == @result['time'] }
-      end
-
-      should "retrieve groups" do
-        expected = [ {'procedures' => ['floating'],
-                       'animals' => ['jinx', 'twitter']},
-                     {'procedures' => ['venipuncture'],
-                       'animals' => ['jinx']}
-                   ];
-        assert { expected == @result['groups'] }
-      end
-
-      should "retrieve procedure information" do
-        assert { ['floating', 'venipuncture'] == @result['procedures'].sort }
-      end
-
-      should "return the reservation id as a string" do # { footnote 'string' }
-        assert { @reservation.pk.to_s == @result['id'] }
-      end
-    end
-
-
-    context "and ignoring exclusions associated with it" do
-
-      setup do 
-        get "/json/reservation/#{@reservation.pk}?ignoring=#{@reservation.pk}"
-        assert_json_response
-        @result = JSON[last_response.body]
-      end
-
-      should "retrieve exclusion information that does not include animals used in the reservation" do
-        expected = { 'floating' => [], 'venipuncture' => [] }
-        assert_equal(expected, @result['timeSensitiveExclusions'])
-      end
-
-      should "retrieve animal information" do
-        expected_animals = ['twitter', 'jinx']
-        expected_kind_map = {'twitter' => 'sugar glider', 'jinx' => 'red-eared slider'}
-        assert { expected_animals.sort == @result['animals'].sort }
-        assert { expected_kind_map == @result['kindMap'] }
-      end
-      
-    end
-
-    context "but not using reservation to ignore exclusions" do
-
-      setup do 
-        get "/json/reservation/#{@reservation.pk}?ignoring="
-        assert_json_response
-        @result = JSON[last_response.body]
-      end
-
-      should "retrieve exclusion information that does include animals used in the reservation" do
-        expected = {
-          'floating' => ['jinx', 'twitter'],
-          'venipuncture' => ['jinx', 'twitter'] # twitter excluded because it's same day.
-        }
-        assert { expected == @result['timeSensitiveExclusions'] }
-      end
-
-      should "retrieve no animals because all are in use" do
-        assert { [] == @result['animals'] } 
-      end
-    end
+    assert_json_response
+    assert_jsonification_of(expected)
   end
+
 end
 
 # {footnote 'string'}

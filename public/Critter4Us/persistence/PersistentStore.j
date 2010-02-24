@@ -52,10 +52,9 @@ var SharedPersistentStore = nil;
   httpMaker = aHTTPMaker;
 }
 
--(void) loadInfoRelevantToDate: date time: time 
+-(void) loadInfoRelevantToTimeslice: timeslice 
 {
-  var route = [httpMaker reservationRouteWithDate: [primitivizer convert: date]
-					     time: [primitivizer convert: time]];
+  var route = [httpMaker animalsAndProceduresAvailableAtTimeslice: [primitivizer convert: timeslice]];
   
   var continuation = [continuationMaker continuationNotifying: AnimalAndProcedureNews
 					  afterConvertingWith: [JsonToModelObjectsConverter converter]];

@@ -47,21 +47,18 @@
 }
 
 
-- (void)test_how_persistent_stores_coordinates_when_retrieving_a_date_dependent_data_blob
+- (void)test_how_persistent_stores_coordinates_desire_to_load_timeslice_blob
 {
   [scenario 
    during: function() { 
-      [sut loadInfoRelevantToDate: 'a date' time: 'a time'];
+      [sut loadInfoRelevantToTimeslice: "a timeslice"];
     }
   behold: function() {
       [sut.primitivizer shouldReceive: @selector(convert:)
-				 with: 'a date'
-			    andReturn: 'a network date'];
-      [sut.primitivizer shouldReceive: @selector(convert:)
-				 with: 'a time'
-			    andReturn: 'a network time'];
-      [sut.httpMaker shouldReceive: @selector(reservationRouteWithDate:time:)
-                             with: ['a network date', 'a network time']
+				 with: 'a timeslice'
+			    andReturn: 'a primitive version of a timeslice'];
+      [sut.httpMaker shouldReceive: @selector(animalsAndProceduresAvailableAtTimeslice:)
+                             with: 'a primitive version of a timeslice'
                         andReturn: 'route'];
 
 
@@ -73,8 +70,6 @@
 			    with: ['route', 'a continuation']];
     }];
 }
-
-
 
 -(void)test_how_persistent_store_coordinates_when_posting_a_reservation
 {

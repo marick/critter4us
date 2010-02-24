@@ -20,10 +20,12 @@
         equals: [maker fetchReservationRoute: 333]];
 }
 
--(void) test_when_building__fetch_by_date_time__route_exclude_reservation_being_edited
+-(void) test_when_building__fetch_by_timeslice__route_exclude_reservation_being_edited
 {
-  [self assert: '/json/course_session_data_blob?date=2009-12-30&time=morning&ignoring=19'
-        equals: [maker reservationRouteWithDate: '2009-12-30' time: 'morning']];
+  var primitivizedTimeslice = {'startDate':'10-12-90', 'endDate':'10-12-90','times': ['morning']};
+
+  [self assert: '/json/animals_and_procedures_blob?timeslice=' + [CPString JSONFromObject: primitivizedTimeslice] + '&ignoring=19'
+        equals: [maker animalsAndProceduresAvailableAtTimeslice: primitivizedTimeslice]];
 }
 
 -(void) test_chooses_to_modify_a_reservation_when_storing

@@ -252,4 +252,16 @@ class ReservationModelTests < FreshDatabaseTestCase
 
     assert { ['bovine', 'equine'] == reservation.procedure_description_kinds }
   end
+
+  should "allow reservation to return a timeslice" do
+    date = Date.new(2002, 2, 4)
+    time = MORNING
+    created = Reservation.random(:date => date, :time => time)
+    reservation_to_ignore = Reservation.acts_as_empty
+    derived_timeslice = created.timeslice(reservation_to_ignore)
+    expected = Timeslice.degenerate(date, time, reservation_to_ignore)
+    assert_equal(expected.date, derived_timeslice.date)
+    assert_equal(expected.time, derived_timeslice.time)
+    assert_equal(expected.ignored_reservation, derived_timeslice.ignored_reservation)
+  end
 end

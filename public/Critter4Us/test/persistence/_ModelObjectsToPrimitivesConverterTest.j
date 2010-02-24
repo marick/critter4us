@@ -1,4 +1,5 @@
 @import <Critter4Us/util/Time.j>
+@import <Critter4Us/util/Timeslice.j>
 @import <Critter4Us/model/Animal.j>
 @import <Critter4Us/model/Procedure.j>
 @import <Critter4Us/model/Group.j>
@@ -30,6 +31,16 @@
         equals: [ModelObjectsToPrimitivesConverter convert: [Time afternoon]]];
   [self assert: "evening"
         equals: [ModelObjectsToPrimitivesConverter convert: [Time evening]]];
+}
+
+- (void) test_turns_timeslices_into_dictionaries
+{
+  var timeslice = [Timeslice firstDate: "99-12-10" 
+			      lastDate: "99-12-12"
+				  times: [[Time morning]]];
+  var expected = {'firstDate':'99-12-10', 'lastDate':'99-12-12','times': ['morning']};
+  var actual = [ModelObjectsToPrimitivesConverter convert: timeslice];
+  [self assertTrue: [cpdict(expected) isEqualToDictionary: cpdict(actual)]];
 }
 
 -(void) testConvertsEmptyArrayIntoEmptyArray

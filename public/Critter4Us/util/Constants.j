@@ -2,14 +2,14 @@
 
 // Notification Names
 
-ReservationDataAvailable="Reservation data available";
+UserHasChosenTimeslice = "user has chosen timeslice";
 DifferentObjectsUsedNews = "Some difference in use";
 AnimalAndProcedureNews = "animals, objects, and exclusions";
 TimeToReserveNews = "time to reserve";
 SwitchToGroupNews = "switch to this group";
 ModifyReservationNews = "time to edit a reservation";
 CopyReservationNews = "time to copy a reservation";
-DateTimeForCurrentReservationChangedNews = 'date and time have changed'
+TimesliceForCurrentReservationChangedNews = 'date and time have changed'
 AdviceAboutAnimalsDroppedNews = "animals have been dropped due to time or date change";
 NewAdvisorPanelOnPageNews = "a new advisor panel has appeared";
 ClosedAdvisorPanelOnPageNews = "a panel on the current page has closed";

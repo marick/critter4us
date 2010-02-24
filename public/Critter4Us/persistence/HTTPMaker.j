@@ -28,9 +28,9 @@ htmlRoute = function(route)
 
 
 
-- (CPString) reservationRouteWithDate: date time: time
+- (CPString) animalsAndProceduresAvailableAtTimeslice: primitivizedTimeslice
 {
-  return jsonRoute("course_session_data_blob")+"?date=" + date + "&time=" + time;
+  return jsonRoute("animals_and_procedures_blob")+"?timeslice=" + [CPString JSONFromObject: primitivizedTimeslice];
 }
 
 - (CPString) pendingReservationAnimalListWithDate: date
@@ -93,9 +93,10 @@ htmlRoute = function(route)
   return [super POSTContentFrom: jsData] + '&reservationID=' + reservationBeingEdited;
 }
 
-- (CPString) reservationRouteWithDate: date time: time
+- (CPString) animalsAndProceduresAvailableAtTimeslice: primitivizedTimeslice
 {
-  return [super reservationRouteWithDate: date time: time] + '&ignoring=' + reservationBeingEdited;
+  return [super animalsAndProceduresAvailableAtTimeslice: primitivizedTimeslice] + 
+    '&ignoring=' + reservationBeingEdited;
 }
 
 

@@ -4,11 +4,15 @@ require 'model/requires'
 class Timeslice
   include TestSupport
 
-  def initialize(*args)
-    super
+  def self.degenerate(date, time, ignored_reservation)
+    new(date, date, Set.new([time]), ignored_reservation)
+  end
+
+  def initialize(first_date, last_date, times, ignored_reservation)
     collaborators_start_as(:animal_source => Animal, 
                            :procedure_source => Procedure,
                            :use_source => Use)
+    move_to(first_date, times.to_a[0], ignored_reservation)
     self
   end
 
@@ -29,7 +33,6 @@ class Timeslice
 
   def animals_in_service
     return @animals_in_service if @animals_in_service
-
     @animals_in_service = animal_source.all_in_service_on(@date)
   end
 

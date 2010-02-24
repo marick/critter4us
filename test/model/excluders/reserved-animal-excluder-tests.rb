@@ -8,7 +8,7 @@ class ReservedAnimalExcluderTest < Test::Unit::TestCase
   def setup
     super
     @timeslice = flexmock('timeslice')
-    @excluder = ReservedAnimalExcluder.new(@timeslice)
+    @excluder = ReservedAnimalExcluder.new
 
     @procedure = Procedure.new(:name => 'procedure')
     @other = Procedure.new(:name => 'other')
@@ -17,7 +17,7 @@ class ReservedAnimalExcluderTest < Test::Unit::TestCase
     @animals = [@betsy, @jake]
 
     during {
-      @excluder.as_map
+      @excluder.as_map(@timeslice)
     }.behold! {
       @timeslice.should_receive(:procedures).once.
                  and_return([@procedure, @other])

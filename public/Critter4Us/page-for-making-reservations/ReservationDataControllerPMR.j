@@ -1,5 +1,5 @@
 @import "../util/AwakeningObject.j"
-@import "../util/Time.j"
+@import "../util/Timeslice.j"
 
 @implementation ReservationDataControllerPMR : AwakeningObject
 {
@@ -26,10 +26,11 @@
 
 - (void) beginReserving: sender
 {
-  [self sendNotification: ReservationDataAvailable
-               aboutDate: [dateField stringValue]
-                 andTime: [timeControl time]];
-};
+  var timeslice = [Timeslice degenerateDate: [dateField stringValue]
+				       time: [timeControl time]];
+  [NotificationCenter postNotificationName: UserHasChosenTimeslice
+				    object: timeslice]
+}
 
 - (void) prepareToFinishReservation
 {
@@ -97,10 +98,13 @@
   [timeControl setTime: time];
   [self noteTimeAndDate];
 
-  [self sendNotification: DateTimeForCurrentReservationChangedNews
-               aboutDate: date
-                 andTime: time];
+  var timeslice = [Timeslice degenerateDate: date time: time];
+  [NotificationCenter postNotificationName: TimesliceForCurrentReservationChangedNews 
+				    object: timeslice];
 }
+
+
+
 
 - (void) copyPreviousReservation: sender
 {
@@ -128,15 +132,6 @@
   var note = "on the " + [[timeControl time] description] + 
     " of " + [dateField stringValue] + ".";
   [dateTimeSummary setStringValue: note];
-}
-
--(void) sendNotification: name aboutDate: date andTime: time
-{
-  var data = [CPDictionary dictionary];
-  [data setValue: date forKey: 'date'];
-  [data setValue: time forKey: 'time'];
-  
-  [NotificationCenter postNotificationName: name object: data];
 }
 
 - (CPDictionary) data

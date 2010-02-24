@@ -17,8 +17,8 @@
                     calls: @selector(usedObjectsHaveChanged:)];
   [self notificationNamed: SwitchToGroupNews
                     calls: @selector(switchToNewGroup:)];
-  [self notificationNamed: DateTimeForCurrentReservationChangedNews
-                    calls: @selector(fetchInfoForNewDateTime:)];
+  [self notificationNamed: TimesliceForCurrentReservationChangedNews
+                    calls: @selector(fetchInfoForNewTimeslice:)];
   [self notificationNamed: ModifyReservationNews
                     calls: @selector(finishFirst:)];
   [self notificationNamed: CopyReservationNews
@@ -132,10 +132,9 @@
     }];
 }
 
--(void) fetchInfoForNewDateTime: aNotification
+-(void) fetchInfoForNewTimeslice: aNotification
 {
-  [persistentStore loadInfoRelevantToDate: [[aNotification object] valueForKey: 'date']
-                                     time: [[aNotification object] valueForKey: 'time']]
+  [persistentStore loadInfoRelevantToTimeslice: [aNotification object]];
 }
 
 - (void) finishFirst: aNotification

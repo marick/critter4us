@@ -10,11 +10,10 @@ class ProcedureBlackoutPeriodExcluderTests < FreshDatabaseTestCase
     @time = AFTERNOON
   end
   
-  def typical_use(ignored_reservation = nil)
-    timeslice = Timeslice.new
-    timeslice.move_to(@date, @time, ignored_reservation)
-    excluder = ProcedureBlackoutPeriodExcluder.new(timeslice)
-    excluder.as_map
+  def typical_use(ignored_reservation = Reservation.acts_as_empty)
+    timeslice = Timeslice.degenerate(@date, @time, ignored_reservation)
+    excluder = ProcedureBlackoutPeriodExcluder.new
+    excluder.as_map(timeslice)
   end 
 
   context "procedures with zero-day intervals" do

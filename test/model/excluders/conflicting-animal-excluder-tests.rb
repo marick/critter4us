@@ -16,10 +16,10 @@ class ConflictingAnimalExcluderTests < FreshDatabaseTestCase
   end
 
   should "exclude animals incompatible with a particular procedure" do
-    excluder = ConflictingAnimalExcluder.new(@timeslice)
+    excluder = ConflictingAnimalExcluder.new
 
     during { 
-      excluder.as_map
+      excluder.as_map(@timeslice)
     }.behold! {
       @timeslice.should_receive(:procedures).at_least.once.
                  and_return([@horse_only_procedure])
