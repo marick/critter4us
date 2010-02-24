@@ -109,6 +109,11 @@ class Reservation < Sequel::Model
     animals.collect { | animal | animal.procedure_description_kind }.uniq.sort
   end
 
+  def timeslice(ignored_reservation)
+    Timeslice.degenerate(date, time, ignored_reservation)
+  end
+    
+
   # Self-description and test
 
   def self.random(overrides = {}, &block)
