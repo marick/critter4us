@@ -4,7 +4,7 @@ require 'model/requires'
 
 class ReservationModelTests < FreshDatabaseTestCase
 
-  context "different times" do 
+  context "setting of time fields directly" do 
     setup do 
       @constant = {
         :instructor => 'marge',
@@ -24,6 +24,7 @@ class ReservationModelTests < FreshDatabaseTestCase
       assert { reservation.morning } 
       assert { reservation.afternoon } 
       assert { reservation.evening } 
+      assert { reservation.times == Set.new([MORNING, AFTERNOON, EVENING]) }
     end
 
     should "allow all to be un-set" do
@@ -32,6 +33,7 @@ class ReservationModelTests < FreshDatabaseTestCase
       deny { reservation.morning } 
       deny { reservation.afternoon } 
       deny { reservation.evening } 
+      assert { reservation.times == Set.new([]) }
     end
 
     should "treat missing as false" do
@@ -39,6 +41,37 @@ class ReservationModelTests < FreshDatabaseTestCase
       deny { reservation.morning } 
       deny { reservation.afternoon } 
       deny { reservation.evening } 
+      assert { reservation.times == Set.new([]) }
+    end
+  end
+
+  context "setting of time fields with a set" do
+    setup do 
+      @constant = {
+        :instructor => 'marge',
+        :course => 'vm333',
+        :first_date => Date.new(2001, 1, 1),
+        :last_date => Date.new(2001, 1, 1),
+        :groups => []
+      }
+    end
+
+    should "allow all to be set" do
+      test_data = @constant.merge(:times => Set.new([MORNING, AFTERNOON, EVENING]))
+      reservation = Reservation.create_with_groups(test_data)
+      assert { reservation.morning } 
+      assert { reservation.afternoon } 
+      assert { reservation.evening } 
+      assert { reservation.times == Set.new([MORNING, AFTERNOON, EVENING]) }
+    end
+
+    should "allow all to be un-set" do
+      test_data = @constant.merge(:times => Set.new([]))
+      reservation = Reservation.create_with_groups(test_data)
+      deny { reservation.morning } 
+      deny { reservation.afternoon } 
+      deny { reservation.evening } 
+      assert { reservation.times == Set.new([]) }
     end
   end
   

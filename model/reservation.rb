@@ -60,8 +60,17 @@ class Reservation < Sequel::Model
     def partition_reservation_data(data)
       data = data.dup
       data_for_each_group = data.delete(:groups)
+      make_time_sets_into_booleans(data)
       make_unspecified_time_segments_explicit(data)
       [data, data_for_each_group]
+    end
+
+    def make_time_sets_into_booleans(data)
+      times = data.delete(:times)
+      return unless times
+      data[:morning] = times.include?(MORNING)
+      data[:afternoon] = times.include?(AFTERNOON)
+      data[:evening] = times.include?(EVENING)
     end
 
     def make_unspecified_time_segments_explicit(data)
@@ -112,11 +121,15 @@ class Reservation < Sequel::Model
     animals.collect { | animal | animal.procedure_description_kind }.uniq.sort
   end
 
+  def times
+    retval = Set.new 
+    retval << MORNING if morning
+    retval << AFTERNOON if afternoon
+    retval << EVENING if evening
+    retval
+  end
+
   def timeslice(ignored_reservation)
-    times = Set.new 
-    times << MORNING if morning
-    times << AFTERNOON if afternoon
-    times << EVENING if evening
     Timeslice.new(first_date, last_date, times, ignored_reservation)
   end
 
@@ -139,9 +152,12 @@ class Reservation < Sequel::Model
       :afternoon => false,
       :evening => false,
     }
-    # TODO: Migrate all uses of Reservation.random to new, non-block form.
     convert_old_time_descriptions_to_new(overrides)
+    unless overrides[:morning] || overrides[:afternoon] || overrides[:evening]
+      overrides[:morning] = true
+    end
 
+    # TODO: Migrate all uses of Reservation.random to new, non-block form.
     return old_random(defaults.merge(overrides), &block) if block
 
     animal = overrides.delete(:animal)
