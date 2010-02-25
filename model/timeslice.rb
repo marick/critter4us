@@ -1,46 +1,42 @@
 require 'util/requires'
 require 'model/requires'
 
-class Timeslice
+Timeslice = Struct.new(:first_date, :last_date, :times, :ignored_reservation) do
   include TestSupport
 
   def self.degenerate(date, time, ignored_reservation)
     new(date, date, Set.new([time]), ignored_reservation)
   end
 
-  def initialize(first_date, last_date, times, ignored_reservation)
+  def faked_date_TODO_replace_me
+    first_date
+  end
+
+  def faked_time_TODO_replace_me
+    times.to_a.first
+  end
+
+  def initialize(*args)
+    super
     collaborators_start_as(:animal_source => Animal, 
                            :procedure_source => Procedure,
                            :use_source => Use)
-    move_to(first_date, times.to_a[0], ignored_reservation)
-    self
-  end
-
-  attr_reader :date, :time, :ignored_reservation
-
-
-  def move_to(date, time, ignoring = nil)
-    @date = date
-    @time = time
-    @ignored_reservation = ignoring || Reservation.acts_as_empty
-
     @animals_in_service = nil
     @animals_that_can_be_reserved = nil
     @animals_to_be_considered_in_use = nil
     @procedures = nil
   end
 
-
   def animals_in_service
     return @animals_in_service if @animals_in_service
-    @animals_in_service = animal_source.all_in_service_on(@date)
+    @animals_in_service = animal_source.all_in_service_on(faked_date_TODO_replace_me)
   end
 
   def animals_to_be_considered_in_use
     return @animals_to_be_considered_in_use if @animals_to_be_considered_in_use
 
-    in_use = use_source.animals_in_use_at(@date, @time)
-    @animals_to_be_considered_in_use = in_use - @ignored_reservation.animals
+    in_use = use_source.animals_in_use_at(faked_date_TODO_replace_me, faked_time_TODO_replace_me)
+    @animals_to_be_considered_in_use = in_use - ignored_reservation.animals
   end
 
   def animals_that_can_be_reserved
@@ -58,7 +54,7 @@ class Timeslice
 
   def hashes_from_animals_to_pending_dates(animals)
     animals.collect do | animal | 
-      { animal => animal.dates_used_after_beginning_of(@date) } 
+      { animal => animal.dates_used_after_beginning_of(faked_date_TODO_replace_me) } 
     end
   end
 end
