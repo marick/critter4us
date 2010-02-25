@@ -25,6 +25,8 @@ class Externalizer
       value.name
     when Group then
       convert_group(value)
+    when Set then
+      value.to_a.sort
     else
       value
     end

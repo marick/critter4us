@@ -41,6 +41,14 @@ class ExternalizerTests < FreshDatabaseTestCase
     assert_equal(expected, actual)
   end
 
+  should "convert sets into arrays" do
+    input = {:times => Set.new([MORNING, EVENING]) }
+    expected = {'times' => ['evening', 'morning']}.to_json
+
+    actual = @externalizer.convert(input)
+    assert_equal(expected, actual)
+  end
+
   context "operates on group structures" do
 
     setup do 
