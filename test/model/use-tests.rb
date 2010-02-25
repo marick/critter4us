@@ -22,7 +22,7 @@ class UseTests < FreshDatabaseTestCase
       use Procedure.random(:name => 'wrong date')
     end
 
-    result = Use.at(Date.new(2009, 9, 9), MORNING) 
+    result = Use.faked_at_TODO_replace_me(Date.new(2009, 9, 9), MORNING) 
     assert { result.length == 1 }
     assert { result[0].animal == matching_animal }
     assert { result[0].procedure == matching_procedure }

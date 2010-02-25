@@ -9,18 +9,24 @@ class Use < Sequel::Model
     group.reservation
   end
 
-  def self.at(date, time)
-    reservations = Reservation.filter(:date => date, :time => time).all
+  def self.faked_at_TODO_replace_me(date, time)
+    reservations = case time
+                   when MORNING 
+                     Reservation.filter(:first_date => date, :morning => true).all
+                   when AFTERNOON
+                     Reservation.filter(:first_date => date, :afternoon => true).all
+                   when EVENING
+                     Reservation.filter(:first_date => date, :evening => true).all
+                   else
+                     raise "Whats up?"
+                   end
+                     
     reservations.collect { | r |
       r.uses
     }.flatten
   end
 
   def self.animals_in_use_at(date, time)
-    at(date, time).collect { | u | u.animal }
+    faked_at_TODO_replace_me(date, time).collect { | u | u.animal }
   end
-
 end
-
-
-

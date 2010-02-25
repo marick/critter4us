@@ -13,7 +13,7 @@ class ReservationListView < Erector::Widget
         table(TableStyle) do 
           sorted_reservations.each do | r | 
             tr do
-              td(:style => 'width: 7em;') { text r.date.to_s }
+              td(:style => 'width: 7em;') { text r.faked_date_TODO_replace_me.to_s }
               td { text time_of_day(r) }
               td { a "#{r.instructor}@illinois.edu",
                 :href=>"mailto:#{r.instructor}@illinois.edu" }
@@ -47,10 +47,10 @@ class ReservationListView < Erector::Widget
 
   def sorted_reservations  # TODO: name should say it's most recent first 
     @reservations.sort { |a, b|
-      if a.date != b.date
-        -(a.date <=> b.date) 
+      if a.faked_date_TODO_replace_me != b.faked_date_TODO_replace_me
+        -(a.faked_date_TODO_replace_me <=> b.faked_date_TODO_replace_me) 
       else
-        -(COMPARABLE_TIME(a.time) <=> COMPARABLE_TIME(b.time))
+        -(COMPARABLE_TIME(a.faked_time_TODO_replace_me) <=> COMPARABLE_TIME(b.faked_time_TODO_replace_me))
       end
     }
   end

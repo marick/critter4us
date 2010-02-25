@@ -9,8 +9,8 @@ class ProcedureBlackoutPeriodExcluder < ExcluderShape
       filter(:animals__id => :uses__animal_id).
       filter(:groups__id => :uses__group_id).
       filter(:reservations__id => :groups__reservation_id).
-      filter(:reservations__date - :procedures__days_delay + 1 <= timeslice.date).
-      filter(:reservations__date + :procedures__days_delay > timeslice.date)
+      filter(:reservations__first_date - :procedures__days_delay + 1 <= timeslice.faked_date_TODO_replace_me).
+      filter(:reservations__first_date + :procedures__days_delay > timeslice.faked_date_TODO_replace_me)
 
     unless timeslice.ignored_reservation.acts_as_empty?
       query = query.exclude(:reservations__id => timeslice.ignored_reservation.id)

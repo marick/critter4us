@@ -10,7 +10,7 @@ class ReservationDatesCell < Erector::Widget
 
   def linky(reservation)
     erector { 
-        a(reservation.date.to_s, 
+        a(reservation.faked_date_TODO_replace_me.to_s, 
           :href => "reservation/#{reservation.id}",
           :target => "_blank")
     }
