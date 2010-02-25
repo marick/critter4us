@@ -135,8 +135,9 @@
       var dict = scenario.result;
       [self assert: "some course" equals: [dict valueForKey: 'course']];
       [self assert: "some instructor" equals: [dict valueForKey: 'instructor']];
-      [self assert: "some date" equals: [dict valueForKey:'date']];
-      [self assert: [Time evening] equals: [dict valueForKey:'time']];
+      [self assert: "some date" equals: [dict valueForKey:'firstDate']];
+      [self assert: "some date" equals: [dict valueForKey:'lastDate']];
+      [self assert: [[Time evening]] equals: [dict valueForKey:'times']];
     }];
 }
 
@@ -214,8 +215,9 @@
 {
   var data = {'course' : 'the course',
               'instructor' : 'the instructor',
-              'date' : 'the date',
-              'time' : [Time morning]};
+              'firstDate' : 'the date',
+	      'lastDate' : 'the date',
+              'times' : [[Time morning]]};
   [scenario
     during: function() {
       [sut setNewValuesFrom: [CPDictionary dictionaryWithJSObject: data]];
@@ -232,7 +234,7 @@
 
 -(void)testBeToldValuesToEdit__withAfternoon
 {
-  var data = {'time' : [Time afternoon]};
+  var data = {'times' : [[Time afternoon]]};
   [scenario
     testAction: function() {
       [sut setNewValuesFrom: [CPDictionary dictionaryWithJSObject: data]];

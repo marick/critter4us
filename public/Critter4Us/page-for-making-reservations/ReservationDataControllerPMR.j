@@ -71,8 +71,8 @@
 {
   [courseField setStringValue: [dictionary valueForKey: 'course']];
   [instructorField setStringValue: [dictionary valueForKey: 'instructor']];
-  [dateField setStringValue: [dictionary valueForKey: 'date']];
-  [timeControl setTime: [dictionary valueForKey: 'time']];
+  [dateField setStringValue: [dictionary valueForKey: 'firstDate']];
+  [timeControl setTime: [dictionary valueForKey: 'times'][0]];
   [self noteTimeAndDate];
 }
 
@@ -139,8 +139,9 @@
   var dict = [CPDictionary dictionary];
   [dict setValue: [courseField stringValue] forKey: 'course'];
   [dict setValue: [instructorField stringValue] forKey: 'instructor'];
-  [dict setValue: [dateField stringValue] forKey: 'date'];
-  [dict setValue: [timeControl time] forKey: 'time'];
+  [dict setValue: [dateField stringValue] forKey: 'firstDate'];
+  [dict setValue: [dateField stringValue] forKey: 'lastDate'];
+  [dict setValue: [[timeControl time]] forKey: 'times'];
   return dict;
 }
 

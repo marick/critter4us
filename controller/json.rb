@@ -51,8 +51,9 @@ class Controller
     timeslice = reservation_to_fetch.timeslice(reservation_to_ignore)
     externalize(:instructor => reservation_to_fetch.instructor,
                 :course => reservation_to_fetch.course,
-                :date => reservation_to_fetch.date,
-                :time => reservation_to_fetch.time,
+                :firstDate => reservation_to_fetch.first_date,
+                :lastDate => reservation_to_fetch.last_date,
+                :times => reservation_to_fetch.times,
                 :groups => reservation_to_fetch.groups,
                 :procedures => timeslice.procedures,
                 :animals => timeslice.animals_that_can_be_reserved,

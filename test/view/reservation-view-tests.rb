@@ -10,8 +10,9 @@ class ReservationViewTests < FreshDatabaseTestCase
     expected_morning = "morning"
     expected_instructor = "d-morin"
     expected_course = "vm333"
-    reservation = Reservation.random(:date => expected_date,
-                                     :time => MORNING,
+    reservation = Reservation.random(:first_date => expected_date,
+                                     :last_date => expected_date,
+                                     :morning => true,
                                      :instructor => expected_instructor,
                                      :course => expected_course)
     actual = ReservationView.new(:reservation => reservation).to_s
@@ -48,8 +49,11 @@ class ReservationViewTests < FreshDatabaseTestCase
       @test_data = {
         :instructor => 'marge',
         :course => 'vm333',
-        :date => Date.new(2001, 2, 4),
-        :time => AFTERNOON,
+        :first_date => Date.new(2001, 2, 4),
+        :last_date => Date.new(2001, 2, 4),
+        :morning => false,
+        :afternoon => true,
+        :evening => false,
         :groups => [ {:procedures => ['floating', 'venipuncture'],
                        :animals => ['betsy']},
                      {:procedures => ['venipuncture', 'milking'],

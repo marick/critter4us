@@ -123,8 +123,9 @@ class JsonGenerationTests < FreshDatabaseTestCase
       Procedure.random_with_names('lick', 'slop')
 
       @data = {
-        'date' => '2009-02-03',
-        'time' => MORNING,
+        'firstDate' => '2009-02-03',
+        'lastDate' => '2009-02-03',
+        'times' => [MORNING],
         'instructor' => 'morin',
         'course' => 'vm333',
         'groups' => [ {'procedures' => ['lick', 'slop'],
@@ -134,8 +135,11 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
     should "create the required uses" do
       post '/json/store_reservation', :data => @data.to_json
-      r = Reservation[:date => Date.new(2009, 02, 03)]
-      assert { r.time == MORNING }
+      r = Reservation[:first_date => Date.new(2009, 02, 03)]
+      assert { r.last_date == Date.new(2009, 02, 03) }
+      assert { r.morning == true }
+      assert { r.afternoon == false }
+      assert { r.evening == false }
       assert { r.instructor == @data['instructor'] }
       assert { r.course == @data['course'] }
       assert { r.groups.size == 1 }
@@ -150,7 +154,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
     should "return the reservation number as a string" do # {footnote 'string'}
       post '/json/store_reservation', :data => @data.to_json
       assert_json_response
-      r = Reservation[:date => Date.new(2009, 02, 03)]
+      r = Reservation[:first_date => Date.new(2009, 02, 03)]
       assert_jsonification_of({'reservation' => r.pk.to_s})
     end
   end
@@ -166,8 +170,11 @@ class JsonGenerationTests < FreshDatabaseTestCase
       old_reservation_data = { 
         :instructor => 'marge',
         :course => 'vm333',
-        :date => Date.new(2001, 2, 4),
-        :time => MORNING,
+        :first_date => Date.new(2001, 2, 4),
+        :last_date =>  Date.new(2001, 2, 4),
+        :morning => true,
+        :afternoon => true,
+        :evening => true,
         :groups => [ {:procedures => ['floating'],
                        :animals => ['twitter']}]
       }
@@ -177,8 +184,9 @@ class JsonGenerationTests < FreshDatabaseTestCase
       incoming_modification_data = {
         'instructor' => 'morin',
         'course' => 'cs101',
-        'date' => '2012-12-12',
-        'time' => 'afternoon',
+        'firstDate' => '2011-11-11',
+        'lastDate' => '2012-12-12',
+        'times' => ['afternoon'],
         'groups' => [ ]
       }.to_json
 
@@ -191,6 +199,9 @@ class JsonGenerationTests < FreshDatabaseTestCase
     should "perform the update" do 
       # Spot check since the reservation does most of the work. 
       assert { @new_reservation.instructor == 'morin' }
+      assert { @new_reservation.first_date == Date.new(2011, 11, 11) }
+      assert { @new_reservation.last_date == Date.new(2012, 12, 12) }
+      assert { @new_reservation.times == Set.new([AFTERNOON]) }
       assert { [] == @new_reservation.groups }
     end
 
@@ -227,8 +238,9 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
       reservation.should_receive(:instructor).once.and_return('instructor')
       reservation.should_receive(:course).once.and_return('course')
-      reservation.should_receive(:date).once.and_return('date')
-      reservation.should_receive(:time).once.and_return('time')
+      reservation.should_receive(:first_date).once.and_return(Date.new(2001,1,1))
+      reservation.should_receive(:last_date).once.and_return(Date.new(2002,2,2))
+      reservation.should_receive(:times).once.and_return(Set.new([MORNING]))
       reservation.should_receive(:groups).once.and_return('groups')
       reservation.should_receive(:pk).once.and_return(5)
 
@@ -249,8 +261,9 @@ class JsonGenerationTests < FreshDatabaseTestCase
     expected = {
       'instructor' => 'instructor',
       'course' => 'course',
-      'date' => 'date',
-      'time' => 'time',
+      'firstDate' => '2001-01-01',
+      'lastDate' => '2002-02-02',
+      'times' => ['morning'],
       'groups' => 'groups',
       'id' => '5',
       'animals' => 'some animals',

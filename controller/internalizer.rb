@@ -13,12 +13,17 @@ class Internalizer
       :groups => lambda { | val | val.collect { | group | symbol_keys(group) } },
       :times => lambda { | val | Set.new(val) },
     }
+    @renamings = { :firstDate => :first_date, :lastDate => :last_date }
   end
+
 
   def convert(hash)
     result = symbol_keys(hash)
     @converters.each do | key, action | 
       result[key] = action.call(result[key]) if result.has_key?(key)
+    end
+    @renamings.each do | old_key, new_key | 
+      result[new_key] = result.delete(old_key) if result.has_key?(old_key)
     end
     result
   end
@@ -34,13 +39,13 @@ class Internalizer
 
   def make_timeslice(json, one_reservation = Reservation.acts_as_empty)
     internal = convert(JSON.parse(json))
-    Timeslice.new(internal[:firstDate], internal[:lastDate], internal[:times],
+    Timeslice.new(internal[:first_date], internal[:last_date], internal[:times],
                   one_reservation)
   end
 
   def make_timeslice_from_date(raw_date, one_reservation = Reservation.acts_as_empty)
     date = @date_parser.call(raw_date)
-    Timeslice.new(date, date, [MORNING], one_reservation)
+    Timeslice.new(date, date, Set.new([MORNING, AFTERNOON, EVENING]), one_reservation)
   end
 
   # tested
