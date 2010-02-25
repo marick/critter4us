@@ -3,41 +3,74 @@ require 'test/testutil/requires'
 require 'model/requires'
 
 class ReservationModelTests < FreshDatabaseTestCase
-  should "create a single use of an animal and procedure" do
-    Procedure.random(:name => 'procedure')
-    Animal.random(:name => 'animal')
-    
-    test_data = {
-      :instructor => 'marge',
-      :course => 'vm333',
-      :date => Date.new(2001, 2, 4),
-      :time => MORNING,
-      :groups => [
-                  {:procedures => ['procedure'],
-                    :animals => ['animal']}
-                ]
-    }
-    actual_reservation = Reservation.create_with_groups(test_data)
-    assert { actual_reservation.groups.size == 1 }
 
-    actual_group = actual_reservation.groups[0]
-    assert { actual_group.reservation == actual_reservation } 
-    assert { actual_group.uses.size == 1 }
+  context "different times" do 
+    setup do 
+      @constant = {
+        :instructor => 'marge',
+        :course => 'vm333',
+        :first_date => Date.new(2001, 1, 1),
+        :last_date => Date.new(2001, 1, 1),
+        :groups => [
+                    {:procedures => ['procedure'],
+                      :animals => ['animal']}
+                   ]
+      }
+    end
 
-    actual_use = actual_group.uses[0]
-    assert { actual_use.group == actual_group }
+    should "allow all to be set" do
+      test_data = @constant.merge(:morning => true, :afternoon => true, :evening => true)
+      reservation = Reservation.create_with_groups(test_data)
+      assert { reservation.morning } 
+      assert { reservation.afternoon } 
+      assert { reservation.evening } 
+    end
 
-    assert { actual_use.animal.name == 'animal' }
-    assert { actual_use.procedure.name == 'procedure' }
+    should "allow all to be un-set" do
+      test_data = @constant.merge(:morning => false, :afternoon => false, :evening => false)
+      reservation = Reservation.create_with_groups(test_data)
+      deny { reservation.morning } 
+      deny { reservation.afternoon } 
+      deny { reservation.evening } 
+    end
 
-    # TODO: these group-erasing methods should be put in own test.
+    should "treat missing as false" do
+      reservation = Reservation.create_with_groups(@constant)
+      deny { reservation.morning } 
+      deny { reservation.afternoon } 
+      deny { reservation.evening } 
+    end
+  end
+  
+  context "a single group" do 
+    should "create a single use of an animal and procedure" do
+      Procedure.random(:name => 'procedure')
+      Animal.random(:name => 'animal')
+      
+      test_data = {
+        :instructor => 'marge',
+        :course => 'vm333',
+        :first_date => Date.new(2001, 1, 1),
+        :last_date => Date.new(2001, 1, 1),
+        :morning => true,
+        :groups => [
+                    {:procedures => ['procedure'],
+                      :animals => ['animal']}
+                   ]
+      }
+      actual_reservation = Reservation.create_with_groups(test_data)
+      assert { actual_reservation.groups.size == 1 }
 
-    assert { actual_reservation.uses.size == 1 }
-    assert { actual_reservation.uses[0].id == actual_group.uses[0].id } 
-    assert { actual_use.reservation == actual_reservation }
+      actual_group = actual_reservation.groups[0]
+      assert { actual_group.reservation == actual_reservation } 
+      assert { actual_group.uses.size == 1 }
 
-    assert { actual_reservation.animal_names == ['animal'] }
-    assert { actual_reservation.procedure_names == ['procedure'] }
+      actual_use = actual_group.uses[0]
+      assert { actual_use.group == actual_group }
+
+      assert { actual_use.animal.name == 'animal' }
+      assert { actual_use.procedure.name == 'procedure' }
+    end
   end
 
   context "multiple animals and procedures in one group" do 
@@ -50,8 +83,9 @@ class ReservationModelTests < FreshDatabaseTestCase
       test_data = {
         :instructor => 'marge',
         :course => 'vm333',
-        :date => Date.new(2001, 2, 4),
-        :time => AFTERNOON,
+        :first_date => Date.new(2001, 2, 4),
+        :first_date => Date.new(2001, 2, 4),
+        :afternoon => true,
         :groups => [ {:procedures => ['p1', 'p2'],
                        :animals => ['a1', 'a2']} ]
       }
@@ -59,7 +93,6 @@ class ReservationModelTests < FreshDatabaseTestCase
     end
 
     should "create the cross-product of procedures and animals" do
-      assert { @reservation.time == AFTERNOON }
       assert { Use.all.size == 4 }
       assert { Use[:procedure_id => @p1.id, :animal_id => @a1.id] } 
       assert { Use[:procedure_id => @p1.id, :animal_id => @a2.id] } 
@@ -96,8 +129,9 @@ class ReservationModelTests < FreshDatabaseTestCase
       test_data = {
         :instructor => 'marge',
         :course => 'vm333',
-        :date => Date.new(2001, 2, 4),
-        :time => EVENING,
+        :first_date => Date.new(2001, 2, 4),
+        :last_date => Date.new(2001, 2, 4),
+        :evening => true,
         :groups => [ {:procedures => ['p1', 'p2'],
                        :animals => ['a1']},
                      {:procedures => ['p3'],
@@ -142,8 +176,9 @@ class ReservationModelTests < FreshDatabaseTestCase
     setup do 
       @reservation = Reservation.random(:instructor => 'marge',
                                       :course => 'vm333',
-                                      :date => Date.new(2001, 01, 02),
-                                      :time => MORNING) do 
+                                      :first_date => Date.new(2001, 1, 1),
+                                      :last_date => Date.new(2001, 2, 2),
+                                      :morning => true) do 
         use Animal.random(:name => 'animal')
         use Procedure.random(:name => 'procedure')
       end
@@ -158,8 +193,9 @@ class ReservationModelTests < FreshDatabaseTestCase
       @new_data = {
         :instructor => 'not marge',
         :course => 'not vm333',
-        :date => Date.new(2012, 12, 12),
-        :time => EVENING,
+        :first_date => Date.new(2012, 11, 11),
+        :last_date => Date.new(2012, 12, 12),
+        :evening => true,
         :groups => [ {:procedures => ['venipuncture'],
                        :animals => ['betsy']},
                      {:procedures => ['floating'],
@@ -197,8 +233,11 @@ class ReservationModelTests < FreshDatabaseTestCase
       new_reservation = Reservation[@reservation.pk]
       assert { new_reservation.instructor == @new_data[:instructor] }
       assert { new_reservation.course == @new_data[:course] }
-      assert { new_reservation.date == @new_data[:date]}
-      assert { new_reservation.time == @new_data[:time]}
+      assert { new_reservation.first_date == @new_data[:first_date]}
+      assert { new_reservation.last_date == @new_data[:last_date]}
+      assert { new_reservation.evening }
+      deny { new_reservation.afternoon }
+      deny { new_reservation.morning }
     end
 
   end
@@ -239,8 +278,9 @@ class ReservationModelTests < FreshDatabaseTestCase
     test_data = {
       :instructor => 'marge',
       :course => 'vm333',
-      :date => Date.new(2001, 2, 4),
-      :time => MORNING,
+      :first_date => Date.new(2001, 2, 4),
+      :first_date => Date.new(2001, 2, 5),
+      :morning => true,
       :groups => [
                   {:procedures => ['procedure'],
                     :animals => ['flicka', 'jake']},
@@ -253,15 +293,28 @@ class ReservationModelTests < FreshDatabaseTestCase
     assert { ['bovine', 'equine'] == reservation.procedure_description_kinds }
   end
 
+    
+  should "know about own uses" do 
+    animal = Animal.random
+    procedure = Procedure.random
+    reservation = Reservation.random(:animal => animal, :procedure => procedure)
+
+    assert { reservation.uses == reservation.groups[0].uses }
+  end
+
   should "allow reservation to return a timeslice" do
-    date = Date.new(2002, 2, 4)
-    time = MORNING
-    created = Reservation.random(:date => date, :time => time)
+    first_date = Date.new(2002, 2, 4)
+    last_date = Date.new(2002, 2, 5)
+    created = Reservation.random(:first_date => first_date,
+                                 :last_date => last_date,
+                                 :morning => true,
+                                 :afternoon => true,
+                                 :evening => false)
     reservation_to_ignore = Reservation.acts_as_empty
     derived_timeslice = created.timeslice(reservation_to_ignore)
-    expected = Timeslice.degenerate(date, time, reservation_to_ignore)
-    assert_equal(expected.date, derived_timeslice.date)
-    assert_equal(expected.time, derived_timeslice.time)
-    assert_equal(expected.ignored_reservation, derived_timeslice.ignored_reservation)
+    assert_equal(first_date, derived_timeslice.first_date)
+    assert_equal(last_date, derived_timeslice.last_date)
+    assert_equal(Set.new([MORNING, AFTERNOON]), derived_timeslice.times)
+    assert_equal(reservation_to_ignore, derived_timeslice.ignored_reservation)
   end
 end
