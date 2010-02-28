@@ -1,3 +1,4 @@
+require 'model/time-set.rb'
 require 'model/animal'
 require 'model/authorizer'
 require 'model/group'

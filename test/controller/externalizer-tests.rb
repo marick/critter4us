@@ -42,7 +42,7 @@ class ExternalizerTests < FreshDatabaseTestCase
   end
 
   should "convert sets into arrays" do
-    input = {:times => Set.new([MORNING, EVENING]) }
+    input = {:times => TimeSet.new(MORNING, EVENING) }
     expected = {'times' => ['evening', 'morning']}.to_json
 
     actual = @externalizer.convert(input)

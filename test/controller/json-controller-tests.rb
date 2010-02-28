@@ -201,7 +201,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
       assert { @new_reservation.instructor == 'morin' }
       assert { @new_reservation.first_date == Date.new(2011, 11, 11) }
       assert { @new_reservation.last_date == Date.new(2012, 12, 12) }
-      assert { @new_reservation.times == Set.new([AFTERNOON]) }
+      assert { @new_reservation.times == TimeSet.new(AFTERNOON) }
       assert { [] == @new_reservation.groups }
     end
 
@@ -240,7 +240,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
       reservation.should_receive(:course).once.and_return('course')
       reservation.should_receive(:first_date).once.and_return(Date.new(2001,1,1))
       reservation.should_receive(:last_date).once.and_return(Date.new(2002,2,2))
-      reservation.should_receive(:times).once.and_return(Set.new([MORNING]))
+      reservation.should_receive(:times).once.and_return(TimeSet.new(MORNING))
       reservation.should_receive(:groups).once.and_return('groups')
       reservation.should_receive(:pk).once.and_return(5)
 

@@ -122,7 +122,7 @@ class Reservation < Sequel::Model
   end
 
   def times
-    retval = Set.new 
+    retval = TimeSet.new 
     retval << MORNING if morning
     retval << AFTERNOON if afternoon
     retval << EVENING if evening

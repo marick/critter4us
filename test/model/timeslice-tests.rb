@@ -10,15 +10,15 @@ class TimesliceTests < Test::Unit::TestCase
     mocks(:animal_source, :procedure_source, :use_source)
     @earlier_date = Date.new(2009, 9, 9)
     @later_date = Date.new(2009, 10, 10)
-    @one_time = Set.new([MORNING])
-    @two_times = Set.new([MORNING, EVENING])
+    @one_time = TimeSet.new(MORNING)
+    @two_times = TimeSet.new(MORNING, EVENING)
     @fred = flexmock(:name => 'fred')
     @betsy = flexmock(:name => 'betsy')
   end
 
   def make_timeslice(first_date = Date.new(2009, 9, 9), 
                          last_date = Date.new(2009, 9, 9),
-                         times = Set.new([MORNING]),
+                         times = TimeSet.new(MORNING),
                          reservation = Reservation.acts_as_empty)
     timeslice = Timeslice.new(first_date, last_date, times, reservation)
     timeslice.override(:animal_source => @animal_source,

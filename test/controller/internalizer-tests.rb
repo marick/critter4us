@@ -28,7 +28,7 @@ class InternalizerTests < FreshDatabaseTestCase
     expected = {
       :stringkey => 'value', 
       :time => MORNING,
-      :times => Set.new([AFTERNOON, MORNING]),
+      :times => TimeSet.new(AFTERNOON, MORNING),
       :date => Date.new(2009,12,1),
       :first_date => Date.new(2000,1,1),
       :last_date => Date.new(2000,12,31),
@@ -36,7 +36,7 @@ class InternalizerTests < FreshDatabaseTestCase
                     :procedures => ['venipuncture']}],
       :timeslice => {:first_date => Date.new(2008, 8, 8),
                      :last_date => Date.new(2009, 9, 9),
-                     :times => Set.new([EVENING]) 
+                     :times => TimeSet.new(EVENING) 
           },
     }
     assert { actual == expected }
@@ -89,7 +89,7 @@ class InternalizerTests < FreshDatabaseTestCase
       timeslice = @internalizer.make_timeslice(@data, reservation)
       assert_equal(Date.new(2009,12,12), timeslice.first_date)
       assert_equal(Date.new(2009,12,12), timeslice.last_date)
-      assert_equal(Set.new([MORNING]), timeslice.times)
+      assert_equal(TimeSet.new(MORNING), timeslice.times)
       assert_equal(reservation, timeslice.ignored_reservation)
     end
 
@@ -103,7 +103,7 @@ class InternalizerTests < FreshDatabaseTestCase
       assert_equal(Date.new(2008,9,8), timeslice.first_date)
       assert_equal(Date.new(2008,9,8), timeslice.last_date)
       # TODO: what should this value really be?
-      assert_equal(Set.new([MORNING, AFTERNOON, EVENING]), timeslice.times)
+      assert_equal(TimeSet.new(MORNING, AFTERNOON, EVENING), timeslice.times)
       assert { timeslice.ignored_reservation.acts_as_empty? }
     end
   end

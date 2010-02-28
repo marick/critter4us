@@ -5,7 +5,7 @@ Timeslice = Struct.new(:first_date, :last_date, :times, :ignored_reservation) do
   include TestSupport
 
   def self.degenerate(date, time, ignored_reservation)
-    new(date, date, Set.new([time]), ignored_reservation)
+    new(date, date, TimeSet.new(time), ignored_reservation)
   end
 
   def faked_date_TODO_replace_me

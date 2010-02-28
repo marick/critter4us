@@ -24,7 +24,7 @@ class ReservationModelTests < FreshDatabaseTestCase
       assert { reservation.morning } 
       assert { reservation.afternoon } 
       assert { reservation.evening } 
-      assert { reservation.times == Set.new([MORNING, AFTERNOON, EVENING]) }
+      assert { reservation.times == TimeSet.new(MORNING, AFTERNOON, EVENING) }
     end
 
     should "allow all to be un-set" do
@@ -33,7 +33,7 @@ class ReservationModelTests < FreshDatabaseTestCase
       deny { reservation.morning } 
       deny { reservation.afternoon } 
       deny { reservation.evening } 
-      assert { reservation.times == Set.new([]) }
+      assert { reservation.times == TimeSet.new }
     end
 
     should "treat missing as false" do
@@ -41,7 +41,7 @@ class ReservationModelTests < FreshDatabaseTestCase
       deny { reservation.morning } 
       deny { reservation.afternoon } 
       deny { reservation.evening } 
-      assert { reservation.times == Set.new([]) }
+      assert { reservation.times == TimeSet.new }
     end
   end
 
@@ -57,21 +57,21 @@ class ReservationModelTests < FreshDatabaseTestCase
     end
 
     should "allow all to be set" do
-      test_data = @constant.merge(:times => Set.new([MORNING, AFTERNOON, EVENING]))
+      test_data = @constant.merge(:times => TimeSet.new(MORNING, AFTERNOON, EVENING))
       reservation = Reservation.create_with_groups(test_data)
       assert { reservation.morning } 
       assert { reservation.afternoon } 
       assert { reservation.evening } 
-      assert { reservation.times == Set.new([MORNING, AFTERNOON, EVENING]) }
+      assert { reservation.times == TimeSet.new(MORNING, AFTERNOON, EVENING) }
     end
 
     should "allow all to be un-set" do
-      test_data = @constant.merge(:times => Set.new([]))
+      test_data = @constant.merge(:times => TimeSet.new)
       reservation = Reservation.create_with_groups(test_data)
       deny { reservation.morning } 
       deny { reservation.afternoon } 
       deny { reservation.evening } 
-      assert { reservation.times == Set.new([]) }
+      assert { reservation.times == TimeSet.new }
     end
   end
   
@@ -347,7 +347,7 @@ class ReservationModelTests < FreshDatabaseTestCase
     derived_timeslice = created.timeslice(reservation_to_ignore)
     assert_equal(first_date, derived_timeslice.first_date)
     assert_equal(last_date, derived_timeslice.last_date)
-    assert_equal(Set.new([MORNING, AFTERNOON]), derived_timeslice.times)
+    assert_equal(TimeSet.new(MORNING, AFTERNOON), derived_timeslice.times)
     assert_equal(reservation_to_ignore, derived_timeslice.ignored_reservation)
   end
 end

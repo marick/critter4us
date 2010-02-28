@@ -11,7 +11,7 @@ class Internalizer
       :data => @convert_unjsonified_val,
       :timeslice => @convert_unjsonified_val,
       :groups => lambda { | val | val.collect { | group | symbol_keys(group) } },
-      :times => lambda { | val | Set.new(val) },
+      :times => lambda { | val | TimeSet.new(val) },
     }
     @renamings = { :firstDate => :first_date, :lastDate => :last_date }
   end
@@ -45,7 +45,7 @@ class Internalizer
 
   def make_timeslice_from_date(raw_date, one_reservation = Reservation.acts_as_empty)
     date = @date_parser.call(raw_date)
-    Timeslice.new(date, date, Set.new([MORNING, AFTERNOON, EVENING]), one_reservation)
+    Timeslice.new(date, date, TimeSet.new(MORNING, AFTERNOON, EVENING), one_reservation)
   end
 
   # tested
