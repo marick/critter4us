@@ -9,7 +9,9 @@ class Use < Sequel::Model
     group.reservation
   end
 
-  def self.faked_at_TODO_replace_me(date, time)
+  def self.overlapping(timeslice)
+    date = timeslice.first_date
+    time = timeslice.times.to_a[0]
     reservations = case time
                    when MORNING 
                      Reservation.filter(:first_date => date, :morning => true).all
@@ -26,7 +28,7 @@ class Use < Sequel::Model
     }.flatten
   end
 
-  def self.animals_in_use_at(date, time)
-    faked_at_TODO_replace_me(date, time).collect { | u | u.animal }
+  def self.animals_in_use_during(timeslice)
+    overlapping(timeslice).collect { | u | u.animal }
   end
 end

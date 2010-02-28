@@ -3,7 +3,7 @@ require 'test/testutil/requires'
 require 'model/requires'
 
 class UseTests < FreshDatabaseTestCase
-  should "be able to select uses happening at a particular moment" do
+  should "be able to select uses overlapping a timeslice" do
     matching_animal =  Animal.random(:name => "inuse")
     matching_procedure = Procedure.random(:name => 'inuse')
     Reservation.random(:date => Date.new(2009, 9, 9),
@@ -22,7 +22,8 @@ class UseTests < FreshDatabaseTestCase
       use Procedure.random(:name => 'wrong date')
     end
 
-    result = Use.faked_at_TODO_replace_me(Date.new(2009, 9, 9), MORNING) 
+    result = Use.overlapping(Timeslice.degenerate(Date.new(2009, 9, 9), MORNING,
+                                                  Reservation.acts_as_empty))
     assert { result.length == 1 }
     assert { result[0].animal == matching_animal }
     assert { result[0].procedure == matching_procedure }
@@ -52,7 +53,8 @@ class UseTests < FreshDatabaseTestCase
         use Procedure.random
       end
 
-      assert_equal([@fred], Use.animals_in_use_at(@date, @time))
+      assert_equal([@fred], Use.animals_in_use_during(Timeslice.degenerate(@date, @time,
+                                                                           Reservation.acts_as_empty)))
     end
   end
 
