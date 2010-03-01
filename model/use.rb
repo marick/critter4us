@@ -5,24 +5,15 @@ class Use < Sequel::Model
   many_to_one :animal
   many_to_one :group
 
+  @reservation_source = Reservation
+  def self.override_reservation_source(val); @reservation_source = val; end
+
   def reservation
     group.reservation
   end
 
   def self.overlapping(timeslice)
-    date = timeslice.first_date
-    time = timeslice.times.to_a[0]
-    reservations = case time
-                   when MORNING 
-                     Reservation.filter(:first_date => date, :morning => true).all
-                   when AFTERNOON
-                     Reservation.filter(:first_date => date, :afternoon => true).all
-                   when EVENING
-                     Reservation.filter(:first_date => date, :evening => true).all
-                   else
-                     raise "Whats up?"
-                   end
-                     
+    reservations = @reservation_source.overlapping(timeslice)
     reservations.collect { | r |
       r.uses
     }.flatten

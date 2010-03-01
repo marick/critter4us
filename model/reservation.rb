@@ -107,6 +107,21 @@ class Reservation < Sequel::Model
     o
   end
 
+  def self.overlapping(timeslice)
+    date = timeslice.first_date
+    time = timeslice.times.to_a[0]
+    reservations = case time
+                   when MORNING 
+                     Reservation.filter(:first_date => date, :morning => true).all
+                   when AFTERNOON
+                     Reservation.filter(:first_date => date, :afternoon => true).all
+                   when EVENING
+                     Reservation.filter(:first_date => date, :evening => true).all
+                   else
+                     raise "Whats up?"
+                   end
+  end
+
   def uses
     groups.collect{ | group | group.uses }.flatten
   end

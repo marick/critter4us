@@ -2,62 +2,40 @@ $: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'model/requires'
 
-class UseTests < FreshDatabaseTestCase
-  should "be able to select uses overlapping a timeslice" do
-    matching_animal =  Animal.random(:name => "inuse")
-    matching_procedure = Procedure.random(:name => 'inuse')
-    Reservation.random(:date => Date.new(2009, 9, 9),
-                       :time => MORNING) do
-      use matching_animal
-      use matching_procedure
-    end
-    Reservation.random(:date => Date.new(2009, 9, 9),
-                       :time => AFTERNOON) do
-      use Animal.random(:name => "afternoon")
-      use Procedure.random(:name => 'afternoon')
-    end
-    Reservation.random(:date => Date.new(2009, 9, 10),
-                       :time => MORNING) do
-      use Animal.random(:name => "wrong date")
-      use Procedure.random(:name => 'wrong date')
-    end
-
-    result = Use.overlapping(Timeslice.degenerate(Date.new(2009, 9, 9), MORNING,
-                                                  Reservation.acts_as_empty))
-    assert { result.length == 1 }
-    assert { result[0].animal == matching_animal }
-    assert { result[0].procedure == matching_procedure }
+class UseTests < Test::Unit::TestCase
+  def setup
+    @reservation_source = flexmock("reservation source")
+    Use.override_reservation_source(@reservation_source)
   end
 
-
-  context "returning animals in use" do
-    setup do 
-      @date = Date.new(2010, 10, 10)
-      @time = MORNING
-      @fred = Animal.random(:name => "fred")
-      @unused = Animal.random(:name => "will not appear")
-    end
-
-    should "include animals in use at the exact moment" do 
-      fred = @fred; unused = @unused
-      Reservation.random(:date => @date, :time => @time) do
-        use fred
-        use Procedure.random
-      end
-      Reservation.random(:date => @date, :time => EVENING) do
-        use unused
-        use Procedure.random
-      end
-      Reservation.random(:date => @date+1, :time => @time) do 
-        use unused
-        use Procedure.random
-      end
-
-      assert_equal([@fred], Use.animals_in_use_during(Timeslice.degenerate(@date, @time,
-                                                                           Reservation.acts_as_empty)))
-    end
+  should "ask reservation source for data to find uses" do
+    some_reservation = flexmock("some reservation")
+    during {
+      Use.overlapping("a timeslice")
+    }.behold! {
+      @reservation_source.should_receive(:overlapping).once.
+                          with("a timeslice").
+                          and_return([some_reservation])
+      some_reservation.should_receive(:uses).once.
+                             and_return(["some uses"])
+    }
+    assert { @result == ["some uses"] }
   end
 
-
-
+  should "ask reservation source for data to find animals" do
+    some_reservation = flexmock("some reservation")
+    some_use = flexmock('some use')
+    during {
+      Use.animals_in_use_during("a timeslice")
+    }.behold! {
+      @reservation_source.should_receive(:overlapping).once.
+                          with("a timeslice").
+                          and_return([some_reservation])
+      some_reservation.should_receive(:uses).once.
+                             and_return([some_use])
+      some_use.should_receive(:animal).once.
+               and_return("some animal")
+    }
+    assert { @result == ["some animal"] }
+  end
 end

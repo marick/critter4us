@@ -350,4 +350,20 @@ class ReservationModelTests < FreshDatabaseTestCase
     assert_equal(TimeSet.new(MORNING, AFTERNOON), derived_timeslice.times)
     assert_equal(reservation_to_ignore, derived_timeslice.ignored_reservation)
   end
+
+  should "be able to select reservations overlapping a timeslice" do
+    matching_date = Date.new(2009, 9, 9)
+    mismatching_date = Date.new(2009, 9, 10)
+    match = Reservation.random(:first_date => matching_date, :last_date => matching_date,
+                               :morning => true)
+    Reservation.random(:first_date => matching_date, :last_date => matching_date,
+                       :afternoon => true)
+    Reservation.random(:first_date => mismatching_date, :last_date => mismatching_date,
+                       :morning => true)
+
+    result = Reservation.overlapping(Timeslice.degenerate(Date.new(2009, 9, 9), MORNING,
+                                                  Reservation.acts_as_empty))
+    assert_equal([match], result)
+  end
+
 end
