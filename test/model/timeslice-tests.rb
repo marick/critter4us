@@ -55,13 +55,8 @@ class TimesliceTests < Test::Unit::TestCase
   end
 
   context "animals" do 
-    setup do 
-      @date = Date.new(2010, 10, 10)
-      @time = MORNING
-    end
-
     context "in service during the timeslice" do 
-      should "be those in service on the last date" do
+      should "be those in service on its last date" do
         @timeslice = make_timeslice(@earlier_date, @later_date)
         during { 
           @timeslice.animals_in_service
@@ -179,6 +174,3 @@ class TimesliceTests < Test::Unit::TestCase
     end
   end
 end
-
-
-
