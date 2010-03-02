@@ -3,6 +3,7 @@ require 'util/constants'
 require 'ostruct'
 require 'set'
 require 'model/reservation-maker'
+require 'model/reservation-updater'
 
 class Reservation < Sequel::Model
 
@@ -13,7 +14,6 @@ class Reservation < Sequel::Model
   end
 
   def self.create_with_groups(data)
-    puts "TODO: delete reservation maker call in reservation.rb"
     ReservationMaker.build_from(data)
   end
 
@@ -95,7 +95,6 @@ class Reservation < Sequel::Model
   end
 
   def with_updated_groups(data)
-    puts "TODO: delete reservation updater call in reservation.rb"
     ReservationUpdater.update(self, data)
     self
   end

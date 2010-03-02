@@ -1,5 +1,4 @@
 require 'util/extensions'
-require 'model/excluders/excluder.rb'
 
 
 class Controller
@@ -11,19 +10,26 @@ class Controller
   end
 
   get '/json/animals_and_procedures_blob' do
-    reservation_to_ignore = @internalizer.find_reservation(params, 'ignoring')
-    timeslice = @internalizer.make_timeslice(params['timeslice'], reservation_to_ignore)
-    externalize(:animals => timeslice.animals_that_can_be_reserved,
-                :procedures => timeslice.procedures,
-                :kindMap => animal_source.kind_map,
-                :timeSensitiveExclusions => excluder.time_sensitive_exclusions(timeslice),
-                :timelessExclusions => excluder.timeless_exclusions(timeslice))
+    availability = @availability_source.new(@internalizer.make_timeslice(params['timeslice']),
+                                            @internalizer.find_reservation(params['ignoring']))
+    externalize(availability.animals_and_procedures_and_exclusions)
   end
+    
+    # reservation_to_ignore = @internalizer.find_reservation(params, 'ignoring')
+    # timeslice = @internalizer.make_timeslice(params['timeslice'])
+    # availability = @availability_source.new(timeslice, reservation_to_ignore)
+    # animals = availability.animals_that_can_be_reserved
+    # externalize(:animals => sorted_names(animals),
+    #             :procedures => sorted_names(Procedures.all),
+    #             :kindMap => kind_map(animals),
+    #             :timeSensitiveExclusions => availability.time_sensitive_exclusions,
+    #             :timelessExclusions => availability.timeless_exclusions)
+# end
 
   post '/json/store_reservation' do
     reservation_data = @internalizer.convert(params)[:data]
     new_reservation = reservation_source.create_with_groups(reservation_data)
-    externalize(reservation_hash(new_reservation))
+    externalize(reservation_id(new_reservation))
   end
 
   post '/json/modify_reservation' do
@@ -31,11 +37,7 @@ class Controller
     id = internal[:reservationID]
     reservation_data = internal[:data]
     updated_reservation = reservation_source[id].with_updated_groups(reservation_data)
-    externalize(reservation_hash(updated_reservation))
-  end
-
-  def reservation_hash(reservation) 
-    {"reservation" => reservation.pk.to_s}
+    externalize(reservation_id(updated_reservation))
   end
 
   post '/json/take_animals_out_of_service' do
@@ -48,36 +50,44 @@ class Controller
   get '/json/reservation/:number' do
     reservation_to_fetch = @internalizer.find_reservation(params, 'number')
     reservation_to_ignore = @internalizer.find_reservation(params, 'ignoring')
-    timeslice = reservation_to_fetch.timeslice(reservation_to_ignore)
-    externalize(:instructor => reservation_to_fetch.instructor,
-                :course => reservation_to_fetch.course,
-                :firstDate => reservation_to_fetch.first_date,
-                :lastDate => reservation_to_fetch.last_date,
-                :times => reservation_to_fetch.times,
-                :groups => reservation_to_fetch.groups,
-                :procedures => timeslice.procedures,
-                :animals => timeslice.animals_that_can_be_reserved,
-                :kindMap => animal_source.kind_map,
-                :timeSensitiveExclusions => excluder.time_sensitive_exclusions(timeslice),
-                :timelessExclusions => excluder.timeless_exclusions(timeslice),
-                :id => reservation_to_fetch.pk.to_s)
+    availability = @availability_source.new(reservation_to_fetch.timeslice,
+                                            reservation_to_ignore)
+    externalize(reservation_hash(reservation_to_fetch).merge(
+                availability.animals_and_procedures_and_exclusions))
   end
 
   get '/json/animals_that_can_be_taken_out_of_service' do
     # Note: this params list contains a single date, not full timeslice data
     timeslice = @internalizer.make_timeslice_from_date(params['date'])
-    animals = timeslice.animals_that_can_be_reserved
-    hashes = timeslice.hashes_from_animals_to_pending_dates(animals)
-    animals_without_uses = filter_unused_animals(hashes)
-    externalize('unused animals' => animals_without_uses)
+    availability = @availability_source.new(timeslice)
+#    animals = timeslice.animals_that_can_be_reserved
+#    hashes = timeslice.hashes_from_animals_to_pending_dates(animals)
+#    animals_without_uses = filter_unused_animals(hashes)
+    externalize('unused animals' => availability.animals_without_uses)
   end
 
   private
 
-  def externalize(hash)
-    Externalizer.new.convert(hash)
+  def reservation_id(reservation) 
+    {"reservation" => reservation.pk.to_s}
   end
 
+  def reservation_hash(reservation)
+    {:instructor => reservation.instructor,
+      :course => reservation.course,
+      :firstDate => reservation.first_date,
+      :lastDate => reservation.last_date,
+      :times => reservation.times,
+      :groups => reservation.groups,
+      :id => reservation.pk.to_s
+    }
+  end
+
+  def externalize(hash)
+    @externalizer.convert(hash)
+  end
+
+  # TODO: MOVE
   def filter_unused_animals(hashes)
     hashes.find_all { | hash |
       hash.only_value.empty?

@@ -26,52 +26,70 @@ class JsonGenerationTests < FreshDatabaseTestCase
   context "delivering a blob of timeslice-specific animal and procedure data" do
 
     should "exclude animals that are currently in use" do 
-      @app.override(mocks(:animal_source, :excluder, :internalizer))
-      timeslice = flexmock(timeslice)
+      @app.override(mocks(:internalizer, :availability_source, :externalizer))
+      availability = flexmock("availability")
 
-      get_hash = {'timeslice' => {'contents' => 'irrelevant for this test'}.to_json}
       during { 
-        get '/json/animals_and_procedures_blob', get_hash
+        params = { 'timeslice' => "timeslice hash",
+                   'ignoring' => 'reservation id' }
+        get '/json/animals_and_procedures_blob', params
+            
       }.behold! {
-        @internalizer.should_receive(:find_reservation).once.
-                      with(get_hash, 'ignoring').
-                      and_return('a reservation to ignore')
         @internalizer.should_receive(:make_timeslice).once.
-                      with(get_hash['timeslice'], 'a reservation to ignore').
-                      and_return(timeslice)
-
-        timeslice.should_receive(:animals_that_can_be_reserved).once.
-                  and_return('some animals')
-        timeslice.should_receive(:procedures).once.
-                   and_return('some sorted procedures')
-        @animal_source.should_receive(:kind_map).once.
-                       and_return('some kind map')
-        @excluder.should_receive(:time_sensitive_exclusions).once.
-                  with(timeslice).
-                  and_return('some time-sensitive exclusions')
-        @excluder.should_receive(:timeless_exclusions).once.
-                  with(timeslice).
-                  and_return('some time-independent exclusions')
-      }
-
-      expected = {
-         'animals' => 'some animals',
-         'procedures' => 'some sorted procedures',
-         'kindMap' => 'some kind map',
-         'timeSensitiveExclusions' => 'some time-sensitive exclusions',
-         'timelessExclusions' => 'some time-independent exclusions',
+                      with("timeslice hash").
+                      and_return("timeslice")
+        @internalizer.should_receive(:find_reservation).once.
+                      with("reservation id").
+                      and_return("reservation")
+        @availability_source.should_receive(:new).once.
+                             with("timeslice", "reservation").
+                             and_return(availability)
+        availability.should_receive(:animals_and_procedures_and_exclusions).once.
+                     and_return("result hash")
+        @externalizer.should_receive(:convert).once.
+                      with("result hash").
+                      and_return({'some' => 'hash'}.to_json)
       }
       assert_json_response
-      assert_jsonification_of(expected)
+      assert_jsonification_of({'some' => 'hash'})
+
+      #   @internalizer.should_receive(:find_reservation).once.
+      #                 with(get_hash, 'ignoring').
+      #                 and_return('a reservation to ignore')
+      #   @availability_source.should_receive(:new).
+      #                        with("a timeslice", "a reservation to ignore").
+      #                        and_return(availability)
+
+        
+      #   timeslice.should_receive(:animals_that_can_be_reserved).once.
+      #             and_return('some animals')
+      #   timeslice.should_receive(:procedures).once.
+      #              and_return('some sorted procedures')
+      #   @animal_source.should_receive(:kind_map).once.
+      #                  and_return('some kind map')
+      #   @excluder.should_receive(:time_sensitive_exclusions).once.
+      #             with(timeslice).
+      #             and_return('some time-sensitive exclusions')
+      #   @excluder.should_receive(:timeless_exclusions).once.
+      #             with(timeslice).
+      #             and_return('some time-independent exclusions')
+      # }
+
+      # expected = {
+      #    'animals' => 'some animals',
+      #    'procedures' => 'some sorted procedures',
+      #    'kindMap' => 'some kind map',
+      #    'timeSensitiveExclusions' => 'some time-sensitive exclusions',
+      #    'timelessExclusions' => 'some time-independent exclusions',
+      # }
+      # assert_jsonification_of(expected)
     end
   end
 
   context "producing lists of animals in service" do 
     should "return a list of animals with no pending reservations" do 
-      @app.override(mocks(:animal_source, :internalizer))
-      timeslice = flexmock("timeslice")
-      brooke = Animal.random(:name => 'brooke')
-      jake = Animal.random(:name => 'jake')
+      @app.override(mocks(:availability_source, :internalizer))
+      availability = flexmock('availability')
 
       get_hash = {'date' => '2009-01-01'}
       during { 
@@ -79,14 +97,14 @@ class JsonGenerationTests < FreshDatabaseTestCase
       }.behold! {
         @internalizer.should_receive(:make_timeslice_from_date).once.
                       with(get_hash['date']).
-                      and_return(timeslice)
-        timeslice.should_receive(:animals_that_can_be_reserved).once.
-                  and_return([brooke, jake])
-        timeslice.should_receive(:hashes_from_animals_to_pending_dates).once.
-                  with([brooke, jake]).
-                  and_return([{brooke => [Date.new(2009,1,1), Date.new(2010,1,1)]},
-                              {jake => []}])
+                      and_return("a timeslice")
+        @availability_source.should_receive(:new).once.
+                             with("a timeslice").
+                             and_return(availability)
+        availability.should_receive(:animals_without_uses).once.
+                             and_return([Animal.random(:name => 'jake')])
       }
+
       assert_json_response
       assert_jsonification_of('unused animals' => ['jake'])
     end
@@ -213,9 +231,9 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
   should "be able to retrieve a reservation and associated data" do 
     
-    @app.override(mocks(:animal_source, :excluder, :internalizer))
+    @app.override(mocks(:availability_source, :excluder, :internalizer))
     reservation = flexmock("reservation")
-    timeslice = flexmock('timeslice')
+    availability = flexmock('availability')
 
     get_hash = {'number' => 'some_number', 'ignoring' => 'may be present'}
     during { 
@@ -231,8 +249,10 @@ class JsonGenerationTests < FreshDatabaseTestCase
                     with(get_hash, 'number').
                     and_return(reservation)
       reservation.should_receive(:timeslice).once.
-                  with('a reservation to ignore').
-                  and_return(timeslice)
+                  and_return("a timeslice")
+      @availability_source.should_receive(:new).once.
+                  with("a timeslice", "a reservation to ignore").
+                  and_return(availability)
 
       reservation.should_receive(:instructor).once.and_return('instructor')
       reservation.should_receive(:course).once.and_return('course')
@@ -242,18 +262,8 @@ class JsonGenerationTests < FreshDatabaseTestCase
       reservation.should_receive(:groups).once.and_return('groups')
       reservation.should_receive(:pk).once.and_return(5)
 
-      timeslice.should_receive(:procedures).once.
-                 and_return('some sorted procedures')
-      timeslice.should_receive(:animals_that_can_be_reserved).once.
-                and_return('some animals')
-      @animal_source.should_receive(:kind_map).once.
-                     and_return('some kind map')
-      @excluder.should_receive(:time_sensitive_exclusions).once.
-                with(timeslice).
-                and_return('some time-sensitive exclusions')
-      @excluder.should_receive(:timeless_exclusions).once.
-                with(timeslice).
-                and_return('some time-independent exclusions')
+      availability.should_receive(:animals_and_procedures_and_exclusions).once.
+                   and_return({"availability" => "result"})
     }
 
     expected = {
@@ -264,11 +274,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
       'times' => ['morning'],
       'groups' => 'groups',
       'id' => '5',
-      'animals' => 'some animals',
-      'procedures' => 'some sorted procedures',
-      'kindMap' => 'some kind map',
-      'timeSensitiveExclusions' => 'some time-sensitive exclusions',
-      'timelessExclusions' => 'some time-independent exclusions',
+      'availability' => "result",
       }
     assert_json_response
     assert_jsonification_of(expected)

@@ -41,8 +41,8 @@ class Controller < Sinatra::Base
     collaborators_start_as(:animal_source => Animal, 
                            :procedure_source => Procedure,
                            :reservation_source => Reservation,
-                           :excluder => Excluder.new,
-                           :internalizer => Internalizer.new
+                           :internalizer => Internalizer.new,
+                           :externalizer => Externalizer.new
                            )
     self
   end
