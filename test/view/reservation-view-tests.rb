@@ -5,7 +5,7 @@ require 'view/requires'
 require 'assert2/xhtml'
 
 class ReservationViewTests < FreshDatabaseTestCase
-  should "include session information in output" do
+  should_eventually "include session information in output" do
     expected_date = '2009-09-03'
     expected_morning = "morning"
     expected_instructor = "d-morin"
@@ -22,7 +22,7 @@ class ReservationViewTests < FreshDatabaseTestCase
     assert { actual.include?(expected_course) }
   end
 
-  should  "know how to display time of day" do
+  should_eventually  "know how to display time of day" do
     morning = Reservation.random(:time => MORNING)
     morning_view = ReservationView.new(:reservation => morning)
     
@@ -67,19 +67,19 @@ class ReservationViewTests < FreshDatabaseTestCase
       
     end
 
-    should "be able to display different groups" do 
+    should_eventually "be able to display different groups" do 
       text = ReservationView.new(:reservation => @reservation).to_s
       assert { text =~ /betsy.*floating.*venipuncture/m }
       assert { text =~ /betsy.*jake.*milking.*venipuncture/m }
     end
 
-    should "use a ProcedurePartial to create a in-page link to a description" do 
+    should_eventually "use a ProcedurePartial to create a in-page link to a description" do 
       text = ReservationView.new(:reservation => @reservation).to_pretty
       expected_link = ProcedurePartial.for(@venipuncture, @jake, @betsy).linkified_procedure_name
       assert_match( /#{Regexp.escape(expected_link)}/, text )
     end
 
-    should "use a ReservationViewPrelude to create generic text" do 
+    should_eventually "use a ReservationViewPrelude to create generic text" do 
       text = ReservationView.new(:reservation => @reservation).to_pretty
       expected_text = ReservationViewPrelude.new(:procedure_description_kinds => ['bovine', 'equine']).to_pretty
       assert { text.include? expected_text } 

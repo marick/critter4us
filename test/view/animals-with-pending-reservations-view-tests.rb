@@ -47,7 +47,7 @@ class AnimalsWithPendingReservationsViewTests < FreshDatabaseTestCase
                                                    :date => @proposed_date)
   end
 
-  should "show animals with pending reservations" do 
+  should_eventually "show animals with pending reservations" do 
     html = @view.to_s
     assert { html.include? 'far future' }
     assert { html.include? 'Near future' }
@@ -55,7 +55,7 @@ class AnimalsWithPendingReservationsViewTests < FreshDatabaseTestCase
     deny { html.include? 'reserved in past' }
   end
 
-  should "sort animals by name" do
+  should_eventually "sort animals by name" do
     html = @view.to_s
     assert { html.index("far future") < html.index("Near future") }
   end

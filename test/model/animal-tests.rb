@@ -67,10 +67,10 @@ class AnimalTests < FreshDatabaseTestCase
     context "an animal's pending reservations" do 
       setup do 
         @animal = animal = Animal.random
-        @reservation = Reservation.random(:date => Date.new(2009, 12, 3)) do 
-          use animal
-          use Procedure.random
-        end
+        @reservation = Reservation.random(:first_date => Date.new(2009, 12, 3),
+                                          :last_date => Date.new(2009, 12, 3),
+                                          :animal => animal,
+                                          :procedure => Procedure.random)
       end
 
       should "be returned" do
@@ -87,15 +87,18 @@ class AnimalTests < FreshDatabaseTestCase
 
       context "multiple reservations" do
         setup do
-          @third = Reservation.random(:date => Date.new(2010, 12, 3)) do 
-            use @animal; use Procedure.random
-          end
-          @first = Reservation.random(:date => Date.new(2020, 12, 3)) do 
-            use @animal; use Procedure.random
-          end
-          @second = Reservation.random(:date => Date.new(2011, 12, 3)) do 
-            use @animal; use Procedure.random
-          end
+          @third = Reservation.random(:first_date => Date.new(2010, 12, 3),
+                                      :last_date => Date.new(2010, 12, 3),
+                                      :animal => @animal,
+                                      :procedure => Procedure.random)
+          @first = Reservation.random(:first_date => Date.new(2020, 12, 3),
+                                      :last_date => Date.new(2020, 12, 3),
+                                      :animal => @animal,
+                                      :procedure => Procedure.random)
+          @second = Reservation.random(:first_date => Date.new(2011, 12, 3),
+                                       :last_date => Date.new(2011, 12, 3),
+                                       :animal => @animal,
+                                       :procedure => Procedure.random)
         end
 
         should "return reservations in descending date order" do
@@ -122,6 +125,7 @@ class AnimalTests < FreshDatabaseTestCase
         end
 
         should ", and one date" do
+          puts Reservation.all.inspect
           assert_equal([Date.new(2009,12,03)],
                        @animal.dates_used_after_beginning_of(Date.new(2009,12,3)))
         end

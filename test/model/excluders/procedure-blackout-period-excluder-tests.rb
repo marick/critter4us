@@ -18,7 +18,7 @@ class ProcedureBlackoutPeriodExcluderTests < FreshDatabaseTestCase
 
   context "procedures with zero-day intervals" do
     # This does NOT apply to such intervals
-    should "mean no overlap for an animal that's used on a different day" do
+    should_eventually "mean no overlap for an animal that's used on a different day" do
       Reservation.random(:date => @date+1,
                          :time => @time) do
         use Animal.random
@@ -27,7 +27,7 @@ class ProcedureBlackoutPeriodExcluderTests < FreshDatabaseTestCase
       assert_equal([], typical_use[Procedure[:name=>'proc']])
     end
 
-    should "mean no overlap for an animal that's used earlier today" do
+    should_eventually "mean no overlap for an animal that's used earlier today" do
       Reservation.random(:date => @date,
                          :time => MORNING) do
         use Animal.random
@@ -36,7 +36,7 @@ class ProcedureBlackoutPeriodExcluderTests < FreshDatabaseTestCase
       assert_equal([], typical_use[Procedure[:name=>'proc']])
     end
 
-    should "mean no overlap for an animal that's used at SAME TIME" do
+    should_eventually "mean no overlap for an animal that's used at SAME TIME" do
       # Must be handled by different code.
       Reservation.random(:date => @date,
                          :time => AFTERNOON) do
@@ -58,13 +58,13 @@ class ProcedureBlackoutPeriodExcluderTests < FreshDatabaseTestCase
                                           :procedure => @proc)
       end
 
-      should "exclude animals within that interval" do
+      should_eventually "exclude animals within that interval" do
         assert_equal([@recent], typical_use[Procedure[:name=>'proc']])
       end
 
       # This could happen if a reservation is being edited and the date/time
       # is being changed. 
-      should "not exclude animals in reservation to be ignored" do
+      should_eventually "not exclude animals in reservation to be ignored" do
         assert_equal([], typical_use(@reservation)[Procedure[:name=>'proc']])
       end
     end
@@ -79,13 +79,13 @@ class ProcedureBlackoutPeriodExcluderTests < FreshDatabaseTestCase
                                           :procedure => @proc)
       end
 
-      should "exclude animals within that interval" do
+      should_eventually "exclude animals within that interval" do
         assert_equal([@near_future], typical_use[Procedure[:name=>'proc']])
       end
 
       # This could happen if a reservation is being edited and the date/time
       # is being changed. 
-      should "not exclude animals in reservation to be ignored" do
+      should_eventually "not exclude animals in reservation to be ignored" do
         assert_equal([], typical_use(@reservation)[Procedure[:name=>'proc']])
       end
     end

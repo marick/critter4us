@@ -2,7 +2,7 @@ require 'pp'
 require 'util/constants'
 require 'ostruct'
 require 'set'
-require 'reservation-structure-changer'
+require 'model/reservation-maker'
 
 class Reservation < Sequel::Model
 
@@ -13,7 +13,8 @@ class Reservation < Sequel::Model
   end
 
   def self.create_with_groups(data)
-    ReservationStructureChanger.build_from(data)
+    puts "TODO: delete reservation maker call in reservation.rb"
+    ReservationMaker.build_from(data)
   end
 
   def self.acts_as_empty
@@ -55,11 +56,7 @@ class Reservation < Sequel::Model
   end
 
   def times
-    retval = TimeSet.new 
-    retval << MORNING if morning
-    retval << AFTERNOON if afternoon
-    retval << EVENING if evening
-    retval
+    TimeSet.from_bits(time_bits)
   end
 
   def timeslice(ignored_reservation)
@@ -81,21 +78,12 @@ class Reservation < Sequel::Model
       :last_date => Date.new(2009, 7, 23),
       :course => 'vm333',
       :instructor => 'morin',
-      :morning => false,
-      :afternoon => false,
-      :evening => false,
+      :times => TimeSet.new
     }
-    convert_old_time_descriptions_to_new(overrides)
-    unless overrides[:morning] || overrides[:afternoon] || overrides[:evening]
-      overrides[:morning] = true
-    end
-
-    # TODO: Migrate all uses of Reservation.random to new, non-block form.
-    return old_random(defaults.merge(overrides), &block) if block
 
     animal = overrides.delete(:animal)
     procedure = overrides.delete(:procedure)
-    reservation = create(defaults.merge(overrides))
+    reservation = ReservationMaker.build_from(defaults.merge(overrides))
 
     if animal
       group = Group.create(:reservation => reservation)
@@ -104,49 +92,11 @@ class Reservation < Sequel::Model
                  :procedure => procedure)
     end
     reservation
-    
-  end
-
-  def self.convert_old_time_descriptions_to_new(data)
-    if data.has_key?(:date)
-      data[:first_date] = data[:last_date] = data.delete(:date)
-    end
-    if data.has_key?(:time)
-      single_time = data.delete(:time)
-      case single_time
-      when MORNING then data[:morning] = true
-      when AFTERNOON then data[:afternoon] = true
-      when EVENING then data[:evening] = true
-      end
-    end
-  end
-
-  def self.old_random(values, &block)
-    reservation = create(values)
-
-    class_eval(&block)
-
-    group = Group.create(:reservation => reservation)
-    Use.create(:group => group, 
-               :animal => @animal_created_in_block,
-               :procedure => @procedure_created_in_block)
-    reservation
-  end
-
-  def self.use(thing)
-    if thing.is_a?(Animal)
-      @animal_created_in_block = thing
-    else
-      @procedure_created_in_block = thing
-    end
   end
 
   def with_updated_groups(data)
-    changer = ReservationStructureChanger.new(data)
-    changer.use_reservation(self);
-    changer.destroy_groups
-    changer.update_direct_data
-    changer.add_groups
+    puts "TODO: delete reservation updater call in reservation.rb"
+    ReservationUpdater.update(self, data)
     self
   end
 
@@ -155,7 +105,6 @@ class Reservation < Sequel::Model
   def x_names(x)
     x_objects(x).collect { | thing | thing.name }.sort.uniq
   end
-
 
   def x_objects(x)
     uses.collect { | use | 

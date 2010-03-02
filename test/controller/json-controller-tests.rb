@@ -137,9 +137,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
       post '/json/store_reservation', :data => @data.to_json
       r = Reservation[:first_date => Date.new(2009, 02, 03)]
       assert { r.last_date == Date.new(2009, 02, 03) }
-      assert { r.morning == true }
-      assert { r.afternoon == false }
-      assert { r.evening == false }
+      assert { r.times == TimeSet.new(MORNING) }
       assert { r.instructor == @data['instructor'] }
       assert { r.course == @data['course'] }
       assert { r.groups.size == 1 }

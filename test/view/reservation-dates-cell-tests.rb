@@ -12,11 +12,11 @@ class ReservationDatesCellWidgetTests < FreshDatabaseTestCase
     @html = ReservationDatesCell.new(:reservations => [@reservation]).to_s
   end
   
-  should "include dates in its output" do 
+  should_eventually "include dates in its output" do 
     assert { @html.include? "2019-12-13" }
   end
 
-  should "include a link to the reservation" do 
+  should_eventually "include a link to the reservation" do 
     reservation = @reservation
     assert_xhtml(@html) do
         a('2019-12-13', :href => %r{reservation/#{reservation.pk}})
