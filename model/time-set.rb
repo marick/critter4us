@@ -14,4 +14,10 @@ class TimeSet < Set
   def initialize(*args)
     super(args.flatten.compact)
   end
+
+  def bits
+    (include?(MORNING) ? "1" : "0") + 
+    (include?(AFTERNOON) ? "1" : "0") + 
+    (include?(EVENING) ? "1" : "0")
+  end
 end
