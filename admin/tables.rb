@@ -12,6 +12,8 @@ end
 
 
 def empty_tables
+  DB[:excluded_because_of_blackout_period].delete
+  DB[:excluded_because_in_use].delete
   DB[:exclusion_rules].delete
   DB[:procedure_descriptions].delete
   DB[:uses].delete
