@@ -7,3 +7,8 @@ class Hash
     to_a[0][1]
   end
 end
+
+class Date
+  def inspect; to_s; end
+end
+
