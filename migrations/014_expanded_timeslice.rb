@@ -49,6 +49,12 @@ class ExpandedTimeslice014 < Sequel::Migration
       foreign_key :procedure_id, :procedures
     end
 
+    DB.create_table :excluded_because_of_animal do 
+      primary_key :id
+      foreign_key :animal_id, :animals
+      foreign_key :procedure_id, :procedures
+    end
+
     # ==== filling new tables
 
     Reservation.each do | reservation |
@@ -75,6 +81,19 @@ class ExpandedTimeslice014 < Sequel::Migration
                        :procedure_id => procedure.id)
       end
     end
+
+    DB[:exclusion_rules].all do | row | 
+      rule_class = Rule.const_get(row[:rule])
+      procedure = Procedure[row[:procedure_id]]
+      rule = rule_class.new(procedure)
+      Animal.each do | animal | 
+        if rule.animal_excluded?(animal)
+          puts "No #{procedure.name} for #{animal.procedure_description_kind} #{animal.name} (#{rule.class})."
+          DB[:excluded_because_of_animal].insert(:animal_id => animal.id,
+                                                 :procedure_id => procedure.id)
+        end
+      end
+    end
   end
 
   def down
@@ -84,6 +103,7 @@ class ExpandedTimeslice014 < Sequel::Migration
     # DB.drop_table :timeslices
     DB.drop_table :excluded_because_in_use
     DB.drop_table :excluded_because_of_blackout_period
+    DB.drop_table :excluded_because_of_animal
     DB.add_column :reservations, :morning, :boolean # dummy so it can be deleted.
   end
 end
