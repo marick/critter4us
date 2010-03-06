@@ -1,6 +1,5 @@
 require 'util/extensions'
 
-
 class Controller
 
   before do
@@ -11,20 +10,14 @@ class Controller
 
   get '/json/animals_and_procedures_blob' do
     availability = @availability_source.new(@internalizer.make_timeslice(params['timeslice']),
-                                            @internalizer.find_reservation(params['ignoring']))
-    externalize(availability.animals_and_procedures_and_exclusions)
+                                            @internalizer.integer_or_nil(params['ignoring']))
+
+    externalize(:animals => availability.animals_that_can_be_reserved,
+                :procedures => availability.procedures_that_can_be_assigned,
+                :kindMap => availability.kind_map,
+                :timeSensitiveExclusions => availability.exclusions_due_to_reservations,
+                :timelessExclusions => availability.exclusions_due_to_animal)
   end
-    
-    # reservation_to_ignore = @internalizer.find_reservation(params, 'ignoring')
-    # timeslice = @internalizer.make_timeslice(params['timeslice'])
-    # availability = @availability_source.new(timeslice, reservation_to_ignore)
-    # animals = availability.animals_that_can_be_reserved
-    # externalize(:animals => sorted_names(animals),
-    #             :procedures => sorted_names(Procedures.all),
-    #             :kindMap => kind_map(animals),
-    #             :timeSensitiveExclusions => availability.time_sensitive_exclusions,
-    #             :timelessExclusions => availability.timeless_exclusions)
-# end
 
   post '/json/store_reservation' do
     reservation_data = @internalizer.convert(params)[:data]

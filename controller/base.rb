@@ -42,7 +42,8 @@ class Controller < Sinatra::Base
                            :procedure_source => Procedure,
                            :reservation_source => Reservation,
                            :internalizer => Internalizer.new,
-                           :externalizer => Externalizer.new
+                           :externalizer => Externalizer.new,
+                           :availability_source => Availability
                            )
     self
   end

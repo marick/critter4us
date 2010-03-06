@@ -38,51 +38,35 @@ class JsonGenerationTests < FreshDatabaseTestCase
         @internalizer.should_receive(:make_timeslice).once.
                       with("timeslice hash").
                       and_return("timeslice")
-        @internalizer.should_receive(:find_reservation).once.
+        @internalizer.should_receive(:integer_or_nil).once.
                       with("reservation id").
                       and_return("reservation")
         @availability_source.should_receive(:new).once.
                              with("timeslice", "reservation").
                              and_return(availability)
-        availability.should_receive(:animals_and_procedures_and_exclusions).once.
-                     and_return("result hash")
+
+        availability.should_receive(:animals_that_can_be_reserved).once.
+                      and_return("[animal name...]")
+        availability.should_receive(:procedures_that_can_be_assigned).once.
+                     and_return("[procedure name...]")
+        availability.should_receive(:kind_map).once.
+                     and_return("{animal name => kind...}")
+        availability.should_receive(:exclusions_due_to_reservations).once.
+                     and_return("{procedure => [name...]...}")
+        availability.should_receive(:exclusions_due_to_animal).once.
+                     and_return("another {procedure => [name...]...}")
+
         @externalizer.should_receive(:convert).once.
-                      with("result hash").
+                      with({ :animals => "[animal name...]",
+                             :procedures => "[procedure name...]",
+                             :kindMap => "{animal name => kind...}",
+                             :timeSensitiveExclusions => "{procedure => [name...]...}",
+                             :timelessExclusions => "another {procedure => [name...]...}"}).
                       and_return({'some' => 'hash'}.to_json)
       }
       assert_json_response
       assert_jsonification_of({'some' => 'hash'})
 
-      #   @internalizer.should_receive(:find_reservation).once.
-      #                 with(get_hash, 'ignoring').
-      #                 and_return('a reservation to ignore')
-      #   @availability_source.should_receive(:new).
-      #                        with("a timeslice", "a reservation to ignore").
-      #                        and_return(availability)
-
-        
-      #   timeslice.should_receive(:animals_that_can_be_reserved).once.
-      #             and_return('some animals')
-      #   timeslice.should_receive(:procedures).once.
-      #              and_return('some sorted procedures')
-      #   @animal_source.should_receive(:kind_map).once.
-      #                  and_return('some kind map')
-      #   @excluder.should_receive(:time_sensitive_exclusions).once.
-      #             with(timeslice).
-      #             and_return('some time-sensitive exclusions')
-      #   @excluder.should_receive(:timeless_exclusions).once.
-      #             with(timeslice).
-      #             and_return('some time-independent exclusions')
-      # }
-
-      # expected = {
-      #    'animals' => 'some animals',
-      #    'procedures' => 'some sorted procedures',
-      #    'kindMap' => 'some kind map',
-      #    'timeSensitiveExclusions' => 'some time-sensitive exclusions',
-      #    'timelessExclusions' => 'some time-independent exclusions',
-      # }
-      # assert_jsonification_of(expected)
     end
   end
 
