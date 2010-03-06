@@ -4,6 +4,10 @@ class QueryMaker
     :animals__name.as(:animal_name)
   end
 
+  def animal_kind__literal
+    :animals__kind.as(:animal_kind)
+  end
+
   def procedure_name__literal
     :procedures__name.as(:procedure_name)
   end
