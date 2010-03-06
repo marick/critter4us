@@ -8,6 +8,10 @@ Timeslice = Struct.new(:first_date, :last_date, :times, :ignored_reservation) do
     new(date, date, TimeSet.new(time), ignored_reservation)
   end
 
+  def time_bits
+    times.bits
+  end
+
   def faked_date_TODO_replace_me
     first_date
   end
