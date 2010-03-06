@@ -38,5 +38,11 @@ class ReshaperTests < Test::Unit::TestCase
   end
 
 
+  should "convert tuple-pairs to hashes" do 
+    assert_equal({'one' => 1, 'two' => 2},
+                 @reshaper.pairs_to_hash([{:word => 'one', :value => 1},
+                                          {:word => 'two', :value => 2}],
+                                         :word, :value))
+  end
 
 end

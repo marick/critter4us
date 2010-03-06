@@ -7,6 +7,12 @@ class Reshaper
     alphasort(tuple_array.collect { | hash | hash[key] })
   end
 
+  def pairs_to_hash(pair_array, which_key, which_value)
+    pair_array.inject({}) do | accumulator, hash | 
+      accumulator.merge(hash[which_key] => hash[which_value])
+    end
+  end
+
   def alphasort(array)
     array.uniq.sort { | a, b | a.downcase <=> b.downcase }
   end

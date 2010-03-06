@@ -10,7 +10,7 @@ class AvailabilityTests < FreshDatabaseTestCase
     @reservation = Reservation.random
     @timeslice = Timeslice.new(@date, @date, TimeSet.new(MORNING))
     @availability = Availability.new(@timeslice)
-    @availability_with_reservation = Availability.new(@timeslice, @reservation)
+    @availability_with_reservation = Availability.new(@timeslice, @reservation.id)
     @reshaper = Reshaper.new
   end
 
@@ -151,5 +151,27 @@ class AvailabilityTests < FreshDatabaseTestCase
                    @availability.exclusions_due_to_animal)
     end
   end
+
+  context "a kind map for animals" do 
+    setup do 
+      Animal.random(:name => "animal", :kind => "bovine")
+    end
+
+    should "is an animal-to-kind hash" do 
+      assert_equal({'animal' => 'bovine'},
+                   @availability.kind_map)
+    end
+
+    should "not include animals already in use" do
+      in_use = Animal.random(:name => "in use")
+      insert_tuple(:excluded_because_in_use,
+                   :animal_id => in_use.id,
+                   :first_date => @date, :last_date => @date,
+                   :time_bits => "100")
+      assert_equal({'animal' => 'bovine'},
+                   @availability.kind_map)
+    end
+  end
+
 end
 

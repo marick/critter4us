@@ -4,15 +4,23 @@ require 'model/requires'
 class Availability
   include TestSupport
 
-  def initialize(timeslice, reservation_to_ignore = nil)
+  def initialize(timeslice, reservation_id_to_ignore = nil)
     @timeslice = timeslice
-    @reservation_to_ignore = reservation_to_ignore
+    @reservation_id_to_ignore = reservation_id_to_ignore
     collaborators_start_as(:query => QueryMaker.new,
                            :reshaper => Reshaper.new)
   end
 
   def animals_that_can_be_reserved
     all_animals - animals_prohibited_for_this_timeslice
+  end
+
+  def kind_map
+    relevant_animals = animals_that_can_be_reserved
+    relevant_tuples = tuples__all_animals.find_all do | tuple | 
+      relevant_animals.include?(tuple[:animal_name])
+    end
+    @reshaper.pairs_to_hash(relevant_tuples, :animal_name, :animal_kind)
   end
 
   def procedures_that_can_be_assigned
@@ -48,7 +56,7 @@ class Availability
   # Tuples
 
   def tuples__all_animals
-    @query.to_select_appropriate(:animal_name) do | q | 
+    @query.to_select_appropriate(:animal_name, :animal_kind) do | q | 
       q.begin_with(:animals)
     end
   end
@@ -89,7 +97,7 @@ class Availability
   end
 
   def without_reservation_tuples(tuples)
-    return tuples unless @reservation_to_ignore
-    tuples.reject { | tuple | tuple[:reservation_id] == @reservation_to_ignore.id }
+    return tuples unless @reservation_id_to_ignore
+    tuples.reject { | tuple | tuple[:reservation_id] == @reservation_id_to_ignore }
   end
 end
