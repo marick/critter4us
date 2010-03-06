@@ -108,12 +108,18 @@ class InternalizerTests < FreshDatabaseTestCase
     end
   end
 
-  context "reservation" do
-    setup do 
-      @data = {'firstDate' => '2009-12-12', 'lastDate' => '2009-12-12',
-               'times' => ['morning']}.to_json
-      @internalizer = Internalizer.new
+  context "integer_or_nil" do
+    should "convert a string to an integer" do 
+      assert_equal(32, Internalizer.new.integer_or_nil("32"))
+    end
+    should "leave nil alone" do 
+      assert_equal(nil, Internalizer.new.integer_or_nil(nil))
+    end
+
+    should "convert an empty string to nil" do 
+      assert_equal(nil, Internalizer.new.integer_or_nil(''))
     end
   end
+
   
 end

@@ -16,7 +16,6 @@ class Internalizer
     @renamings = { :firstDate => :first_date, :lastDate => :last_date }
   end
 
-
   def convert(hash)
     result = symbol_keys(hash)
     @converters.each do | key, action | 
@@ -29,9 +28,9 @@ class Internalizer
   end
 
   def find_reservation(params, tag)
-    reservation_id = params[tag]
+    reservation_id = integer_or_nil(params[tag])
     if reservation_id
-      Reservation[reservation_id.to_i]
+      Reservation[reservation_id]
     else
       Reservation.acts_as_empty
     end
@@ -48,7 +47,14 @@ class Internalizer
     Timeslice.new(date, date, TimeSet.new(MORNING, AFTERNOON, EVENING), one_reservation)
   end
 
+  def integer_or_nil(value)
+    value = nil if value == ""
+    return nil if value.nil?
+    value.to_i
+  end
+
   # tested
+
   def symbol_keys(hash)
     retval = {}
     hash.each do | k, v | 
