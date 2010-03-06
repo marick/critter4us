@@ -124,5 +124,32 @@ class AvailabilityTests < FreshDatabaseTestCase
                     @availability_with_reservation.exclusions_due_to_reservations)
     end
   end
+
+  context "exclusions due to animal kinds" do
+    setup do 
+      @procedure = Procedure.random(:name => "p")
+      DB[:excluded_because_of_animal].insert(
+                   :animal_id => Animal.random(:name => "animal").id,
+                   :procedure_id => @procedure.id)
+    end
+
+    should "exclude procedures and animals that don't go together" do 
+      assert_equal({'p' => ['animal']},
+                   @availability.exclusions_due_to_animal)
+    end
+
+    should "not include animals already in use" do
+      in_use = Animal.random(:name => "in use")
+      DB[:excluded_because_of_animal].insert(
+                   :animal_id => in_use.id,
+                   :procedure_id => @procedure.id)
+      insert_tuple(:excluded_because_in_use,
+                   :animal_id => in_use.id,
+                   :first_date => @date, :last_date => @date,
+                   :time_bits => "100")
+      assert_equal({'p' => ['animal']},
+                   @availability.exclusions_due_to_animal)
+    end
+  end
 end
 

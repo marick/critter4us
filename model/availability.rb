@@ -26,6 +26,16 @@ class Availability
     map
   end
 
+  def exclusions_due_to_animal
+    map = KeyToValuelistMap.new(procedures_that_can_be_assigned)
+    relevant_animals = animals_that_can_be_reserved
+    relevant_tuples = tuples__animals_with_procedure_conflicts.find_all do | tuple | 
+      relevant_animals.include?(tuple[:animal_name])
+    end
+    map.add_specific_pairs(relevant_tuples, :procedure_name, :animal_name)
+    map
+  end
+
   def all_animals
     @reshaper.one_value_sorted_array(tuples__all_animals, :animal_name)
   end
@@ -53,6 +63,12 @@ class Availability
     @query.to_select_appropriate(:animal_name) do | q | 
       q.begin_with(:animals)
       q.restrict_to_tuples_with_animals_out_of_service(@timeslice)
+    end
+  end
+
+  def tuples__animals_with_procedure_conflicts
+    tuples = @query.to_select_appropriate(:procedure_name, :animal_name) do | q | 
+      q.begin_with(:excluded_because_of_animal, :animals, :procedures)
     end
   end
 
