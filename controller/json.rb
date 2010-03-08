@@ -38,7 +38,7 @@ class Controller
 
   get '/json/reservation/:number' do
     reservation_to_fetch = @internalizer.find_reservation(params, 'number')
-    reservation_to_ignore = @internalizer.find_reservation(params, 'ignoring')
+    reservation_to_ignore = @internalizer.integer_or_nil(params['ignoring'])
     availability = @availability_source.new(reservation_to_fetch.timeslice,
                                             reservation_to_ignore)
     externalize(reservation_to_fetch.to_hash.merge(

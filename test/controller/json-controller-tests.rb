@@ -214,11 +214,11 @@ class JsonGenerationTests < FreshDatabaseTestCase
       get '/json/reservation/some_number', get_hash
     }.behold! {
       @internalizer.should_receive(:find_reservation).once.
-                    with(get_hash, 'ignoring').
-                    and_return('a reservation to ignore')
-      @internalizer.should_receive(:find_reservation).once.
                     with(get_hash, 'number').
                     and_return(reservation)
+      @internalizer.should_receive(:integer_or_nil).once.
+                    with('may be present').
+                    and_return("a reservation to ignore")
       reservation.should_receive(:timeslice).once.
                   and_return("a timeslice")
       @availability_source.should_receive(:new).once.
