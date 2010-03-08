@@ -226,5 +226,30 @@ class AvailabilityTests < FreshDatabaseTestCase
     end
   end
 
+  should "combine various methods in animals_and_procedures_and_exclusions" do 
+    availability = flexmock(@availability, "partial availability mock")
+    during { 
+      availability.animals_and_procedures_and_exclusions
+    }.behold! {
+      availability.should_receive(:animals_that_can_be_reserved).once.
+                   and_return("[animal name...]")
+      availability.should_receive(:procedures_that_can_be_assigned).once.
+                   and_return("[procedure name...]")
+      availability.should_receive(:kind_map).once.
+                   and_return("{animal name => kind...}")
+      availability.should_receive(:exclusions_due_to_reservations).once.
+                   and_return("{procedure => [name...]...}")
+      availability.should_receive(:exclusions_due_to_animal).once.
+                   and_return("another {procedure => [name...]...}")
+    }
+    assert_equal({ :animals => "[animal name...]",
+                   :procedures => "[procedure name...]",
+                   :kindMap => "{animal name => kind...}",
+                   :timeSensitiveExclusions => "{procedure => [name...]...}",
+                   :timelessExclusions => "another {procedure => [name...]...}"
+                 },
+                 @result)
+    
+  end
 end
 

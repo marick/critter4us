@@ -45,23 +45,10 @@ class JsonGenerationTests < FreshDatabaseTestCase
                              with("timeslice", "reservation").
                              and_return(availability)
 
-        availability.should_receive(:animals_that_can_be_reserved).once.
-                      and_return("[animal name...]")
-        availability.should_receive(:procedures_that_can_be_assigned).once.
-                     and_return("[procedure name...]")
-        availability.should_receive(:kind_map).once.
-                     and_return("{animal name => kind...}")
-        availability.should_receive(:exclusions_due_to_reservations).once.
-                     and_return("{procedure => [name...]...}")
-        availability.should_receive(:exclusions_due_to_animal).once.
-                     and_return("another {procedure => [name...]...}")
-
+        availability.should_receive(:animals_and_procedures_and_exclusions).
+                     and_return( {'some' => 'hash' } )
         @externalizer.should_receive(:convert).once.
-                      with({ :animals => "[animal name...]",
-                             :procedures => "[procedure name...]",
-                             :kindMap => "{animal name => kind...}",
-                             :timeSensitiveExclusions => "{procedure => [name...]...}",
-                             :timelessExclusions => "another {procedure => [name...]...}"}).
+                      with( {'some' => 'hash' }).
                       and_return({'some' => 'hash'}.to_json)
       }
       assert_json_response

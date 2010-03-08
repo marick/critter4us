@@ -12,11 +12,7 @@ class Controller
     availability = @availability_source.new(@internalizer.make_timeslice(params['timeslice']),
                                             @internalizer.integer_or_nil(params['ignoring']))
 
-    externalize(:animals => availability.animals_that_can_be_reserved,
-                :procedures => availability.procedures_that_can_be_assigned,
-                :kindMap => availability.kind_map,
-                :timeSensitiveExclusions => availability.exclusions_due_to_reservations,
-                :timelessExclusions => availability.exclusions_due_to_animal)
+    externalize(availability.animals_and_procedures_and_exclusions)
   end
 
   post '/json/store_reservation' do

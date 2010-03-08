@@ -15,6 +15,15 @@ class Availability
                            :reshaper => Reshaper.new)
   end
 
+  def animals_and_procedures_and_exclusions
+    { :animals => animals_that_can_be_reserved,
+      :procedures => procedures_that_can_be_assigned,
+      :kindMap => kind_map,
+      :timeSensitiveExclusions => exclusions_due_to_reservations,
+      :timelessExclusions => exclusions_due_to_animal
+    }
+  end
+
   def animals_that_can_be_reserved
     all_animals - animals_prohibited_for_this_timeslice
   end
