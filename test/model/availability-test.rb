@@ -157,13 +157,26 @@ class AvailabilityTests < FreshDatabaseTestCase
       Animal.random(:name => "animal", :kind => "bovine")
     end
 
-    should "is an animal-to-kind hash" do 
+    should "be an animal-to-kind hash" do 
       assert_equal({'animal' => 'bovine'},
                    @availability.kind_map)
     end
 
-    should "not include animals already in use" do
-      in_use = Animal.random(:name => "in use")
+    should "include animals already in use" do
+      # Because animals already in use are displayed when a reservation is being edited.
+      in_use = Animal.random(:name => "in use", :kind => 'equine')
+      insert_tuple(:excluded_because_in_use,
+                   :animal_id => in_use.id,
+                   :first_date => @date, :last_date => @date,
+                   :time_bits => "100")
+      assert_equal({'animal' => 'bovine',
+                    'in use' => 'equine'},
+                   @availability.kind_map)
+    end
+
+    should "not include animals out of service" do
+      in_use = Animal.random(:name => "in use", 
+                             :date_removed_from_service => @timeslice.first_date - 30)
       insert_tuple(:excluded_because_in_use,
                    :animal_id => in_use.id,
                    :first_date => @date, :last_date => @date,
@@ -231,15 +244,15 @@ class AvailabilityTests < FreshDatabaseTestCase
     during { 
       availability.animals_and_procedures_and_exclusions
     }.behold! {
-      availability.should_receive(:animals_that_can_be_reserved).once.
+      availability.should_receive(:animals_that_can_be_reserved).at_least.once.
                    and_return("[animal name...]")
-      availability.should_receive(:procedures_that_can_be_assigned).once.
+      availability.should_receive(:procedures_that_can_be_assigned).at_least.once.
                    and_return("[procedure name...]")
-      availability.should_receive(:kind_map).once.
+      availability.should_receive(:kind_map).at_least.once.
                    and_return("{animal name => kind...}")
-      availability.should_receive(:exclusions_due_to_reservations).once.
+      availability.should_receive(:exclusions_due_to_reservations).at_least.once.
                    and_return("{procedure => [name...]...}")
-      availability.should_receive(:exclusions_due_to_animal).once.
+      availability.should_receive(:exclusions_due_to_animal).at_least.once.
                    and_return("another {procedure => [name...]...}")
     }
     assert_equal({ :animals => "[animal name...]",

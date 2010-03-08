@@ -29,7 +29,7 @@ class Availability
   end
 
   def kind_map
-    relevant_animals = animals_that_can_be_reserved
+    relevant_animals = all_animals - animals_already_out_of_service
     relevant_tuples = tuples__all_animals.find_all do | tuple | 
       relevant_animals.include?(tuple[:animal_name])
     end
@@ -74,6 +74,10 @@ class Availability
   def animals_prohibited_for_this_timeslice
     tuples = tuples__animals_out_of_service + tuples__animals_in_use
     @reshaper.one_value_sorted_array(tuples, :animal_name)
+  end
+
+  def animals_already_out_of_service
+    @reshaper.one_value_sorted_array(tuples__animals_out_of_service, :animal_name)
   end
 
   # Tuples
