@@ -41,7 +41,7 @@ class Controller
     reservation_to_ignore = @internalizer.find_reservation(params, 'ignoring')
     availability = @availability_source.new(reservation_to_fetch.timeslice,
                                             reservation_to_ignore)
-    externalize(reservation_hash(reservation_to_fetch).merge(
+    externalize(reservation_to_fetch.to_hash.merge(
                 availability.animals_and_procedures_and_exclusions))
   end
 
@@ -57,17 +57,6 @@ class Controller
 
   def reservation_id(reservation) 
     {"reservation" => reservation.pk.to_s}
-  end
-
-  def reservation_hash(reservation)
-    {:instructor => reservation.instructor,
-      :course => reservation.course,
-      :firstDate => reservation.first_date,
-      :lastDate => reservation.last_date,
-      :times => reservation.times,
-      :groups => reservation.groups,
-      :id => reservation.pk.to_s
-    }
   end
 
   def externalize(hash)

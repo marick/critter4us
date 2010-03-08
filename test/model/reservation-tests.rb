@@ -76,4 +76,28 @@ class ReservationTests < FreshDatabaseTestCase
     assert_equal(TimeSet.new(MORNING, AFTERNOON), derived_timeslice.times)
     assert_equal(reservation_to_ignore, derived_timeslice.ignored_reservation)
   end
+
+  should "be able to render itself as a hash" do 
+    test_data = {
+      :instructor => 'marge',
+      :course => 'vm333',
+      :first_date => Date.new(2001, 2, 4),
+      :last_date => Date.new(2001, 2, 5),
+      :times => TimeSet.new(MORNING),
+      :groups => [
+                  {:procedures => ['procedure'],
+                    :animals => ['flicka', 'jake']},
+                ]
+    }
+    reservation = ReservationMaker.build_from(test_data)
+    hash = reservation.to_hash
+    assert_equal(reservation.instructor, hash[:instructor])
+    assert_equal(reservation.course, hash[:course])
+    assert_equal(reservation.first_date, hash[:firstDate])
+    assert_equal(reservation.last_date, hash[:lastDate])
+    assert_equal(reservation.times, hash[:times])
+    assert_equal(reservation.groups, hash[:groups])
+    assert_equal(reservation.id.to_s, hash[:id])
+  end
+
 end

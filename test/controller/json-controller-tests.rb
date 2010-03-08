@@ -225,28 +225,15 @@ class JsonGenerationTests < FreshDatabaseTestCase
                   with("a timeslice", "a reservation to ignore").
                   and_return(availability)
 
-      reservation.should_receive(:instructor).once.and_return('instructor')
-      reservation.should_receive(:course).once.and_return('course')
-      reservation.should_receive(:first_date).once.and_return(Date.new(2001,1,1))
-      reservation.should_receive(:last_date).once.and_return(Date.new(2002,2,2))
-      reservation.should_receive(:times).once.and_return(TimeSet.new(MORNING))
-      reservation.should_receive(:groups).once.and_return('groups')
-      reservation.should_receive(:pk).once.and_return(5)
-
       availability.should_receive(:animals_and_procedures_and_exclusions).once.
-                   and_return({"availability" => "result"})
+                   and_return({"availability" => "a result"})
+      reservation.should_receive(:to_hash).once.
+                   and_return({"reservation" => "r result"})
     }
 
-    expected = {
-      'instructor' => 'instructor',
-      'course' => 'course',
-      'firstDate' => '2001-01-01',
-      'lastDate' => '2002-02-02',
-      'times' => ['morning'],
-      'groups' => 'groups',
-      'id' => '5',
-      'availability' => "result",
-      }
+    expected = { 'reservation' => 'r result',
+                 'availability' => "a result"
+    }
     assert_json_response
     assert_jsonification_of(expected)
   end

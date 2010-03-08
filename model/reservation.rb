@@ -59,7 +59,7 @@ class Reservation < Sequel::Model
     TimeSet.from_bits(time_bits)
   end
 
-  def timeslice(ignored_reservation)
+  def timeslice(ignored_reservation = nil)
     Timeslice.new(first_date, last_date, times, ignored_reservation)
   end
 
@@ -97,6 +97,17 @@ class Reservation < Sequel::Model
   def with_updated_groups(data)
     ReservationUpdater.update(self, data)
     self
+  end
+
+  def to_hash
+    {:instructor => instructor,
+      :course => course,
+      :firstDate => first_date,
+      :lastDate => last_date,
+      :times => times,
+      :groups => groups,
+      :id => pk.to_s
+    }
   end
 
   private
