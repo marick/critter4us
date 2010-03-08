@@ -81,11 +81,11 @@ class JsonGenerationTests < FreshDatabaseTestCase
       }.behold! {
         @internalizer.should_receive(:make_timeslice_from_date).once.
                       with(get_hash['date']).
-                      and_return("a timeslice")
+                      and_return("timeslice")
         @availability_source.should_receive(:new).once.
-                             with("a timeslice").
+                             with("timeslice").
                              and_return(availability)
-        availability.should_receive(:animals_without_uses).once.
+        availability.should_receive(:animals_that_can_be_removed_from_service).once.
                              and_return([Animal.random(:name => 'jake')])
       }
 

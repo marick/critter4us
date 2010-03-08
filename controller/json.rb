@@ -53,10 +53,8 @@ class Controller
     # Note: this params list contains a single date, not full timeslice data
     timeslice = @internalizer.make_timeslice_from_date(params['date'])
     availability = @availability_source.new(timeslice)
-#    animals = timeslice.animals_that_can_be_reserved
-#    hashes = timeslice.hashes_from_animals_to_pending_dates(animals)
-#    animals_without_uses = filter_unused_animals(hashes)
-    externalize('unused animals' => availability.animals_without_uses)
+    animals = availability.animals_that_can_be_removed_from_service
+    externalize('unused animals' => animals)
   end
 
   private

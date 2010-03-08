@@ -222,4 +222,55 @@ class QueryMakerTests < FreshDatabaseTestCase
                    @my_run.call)
     end
   end
+
+  should "return animals never taken out of service" do 
+    Animal.random(:name => "never out")
+    Animal.random(:name => "out", :date_removed_from_service => Date.new(2020, 12, 12))
+    tuples = @query.to_select_appropriate(:animal_name) do | q | 
+      q.begin_with(:animals)
+      q.restrict_to_tuples_with_animals_not_removed_from_service
+    end
+    assert_equal([{:animal_name => "never out"}],
+                 tuples)
+  end
+
+  context "knowing about animals reserved on or after a date" do
+    setup do 
+      @date = Date.new(2001, 1, 1)
+    end
+
+    should "not include animals in use only before that date" do 
+      insert_tuple(:excluded_because_in_use,
+                   :animal_id => Animal.random(:name => "a").id,
+                   :first_date => @date - 3, :last_date => @date - 1)
+      tuples = @query.to_select_appropriate(:animal_name) do | q | 
+        q.begin_with(:animals, :excluded_because_in_use)
+        q.restrict_to_tuples_in_use_on_or_after(@date)
+      end
+      assert_equal([], tuples)
+    end
+
+    should "include animals in use on that date" do 
+      insert_tuple(:excluded_because_in_use,
+                   :animal_id => Animal.random(:name => "a").id,
+                   :first_date => @date - 3, :last_date => @date)
+      tuples = @query.to_select_appropriate(:animal_name) do | q | 
+        q.begin_with(:animals, :excluded_because_in_use)
+        q.restrict_to_tuples_in_use_on_or_after(@date)
+      end
+      assert_equal([{:animal_name => "a"}], tuples)
+    end
+
+    should "include animals in use far after that date" do 
+      insert_tuple(:excluded_because_in_use,
+                   :animal_id => Animal.random(:name => "a").id,
+                   :first_date => @date - 3, :last_date => @date)
+      tuples = @query.to_select_appropriate(:animal_name) do | q | 
+        q.begin_with(:animals, :excluded_because_in_use)
+        q.restrict_to_tuples_in_use_on_or_after(@date)
+      end
+      assert_equal([{:animal_name => "a"}], tuples)
+    end
+  end
+
 end

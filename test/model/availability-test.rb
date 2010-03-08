@@ -173,5 +173,58 @@ class AvailabilityTests < FreshDatabaseTestCase
     end
   end
 
+  context "animals that can be taken out of service" do 
+    should "include animals that have never been reserved" do 
+      Animal.random(:name => "animal")
+      assert_equal(["animal"], 
+                    @availability.animals_that_can_be_removed_from_service)
+    end
+
+    should "include animals that have been reserved prior to beginning of timeslice" do 
+      insert_tuple(:excluded_because_in_use,
+                   :animal_id => Animal.random(:name => "in use").id,
+                   :first_date => @date-2, :last_date => @date-1)
+      assert_equal(["in use"], 
+                    @availability.animals_that_can_be_removed_from_service)
+    end
+
+    should "reject animals reserved in an overlapping timeslice" do 
+      insert_tuple(:excluded_because_in_use,
+                   :animal_id => Animal.random(:name => "in use").id,
+                   :first_date => @date-2, :last_date => @date,
+                   :time_bits => "001") # not intersecting
+      assert_equal([], 
+                    @availability.animals_that_can_be_removed_from_service)
+    end
+
+    should "reject animals reserved in later timeslice" do 
+      insert_tuple(:excluded_because_in_use,
+                   :animal_id => Animal.random(:name => "in use").id,
+                   :first_date => @date+100, :last_date => @date+101)
+      assert_equal([], 
+                    @availability.animals_that_can_be_removed_from_service)
+    end
+
+    should "even if earlier reserved..." do 
+      insert_tuple(:excluded_because_in_use,
+                   :animal_id => Animal.random(:name => "in use").id,
+                   :first_date => @date-1, :last_date => @date-1)
+      insert_tuple(:excluded_because_in_use,
+                   :animal_id => Animal.random(:name => "in use").id,
+                   :first_date => @date+100, :last_date => @date+101)
+      assert_equal([], 
+                    @availability.animals_that_can_be_removed_from_service)
+    end
+
+
+    should "reject animals taken out of service already" do
+      Animal.random(:name => "animal", :date_removed_from_service => @date)
+      # including at a later date.
+      Animal.random(:name => "animal", :date_removed_from_service => @date+1)
+      assert_equal([], 
+                    @availability.animals_that_can_be_removed_from_service)
+    end
+  end
+
 end
 
