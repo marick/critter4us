@@ -102,9 +102,7 @@ class InternalizerTests < FreshDatabaseTestCase
       timeslice = @internalizer.make_timeslice_from_date('2008/09/08')
       assert_equal(Date.new(2008,9,8), timeslice.first_date)
       assert_equal(Date.new(2008,9,8), timeslice.last_date)
-      # TODO: what should this value really be?
       assert_equal(TimeSet.new(MORNING, AFTERNOON, EVENING), timeslice.times)
-      assert { timeslice.ignored_reservation.acts_as_empty? }
     end
   end
 

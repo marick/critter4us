@@ -62,18 +62,17 @@ class JsonGenerationTests < FreshDatabaseTestCase
       @app.override(mocks(:availability_source, :internalizer))
       availability = flexmock('availability')
 
-      get_hash = {'date' => '2009-01-01'}
       during { 
-        get '/json/animals_that_can_be_taken_out_of_service', get_hash
+        get '/json/animals_that_can_be_taken_out_of_service', 'date' => '2009-01-01'
       }.behold! {
         @internalizer.should_receive(:make_timeslice_from_date).once.
-                      with(get_hash['date']).
+                      with('2009-01-01').
                       and_return("timeslice")
         @availability_source.should_receive(:new).once.
                              with("timeslice").
                              and_return(availability)
         availability.should_receive(:animals_that_can_be_removed_from_service).once.
-                             and_return([Animal.random(:name => 'jake')])
+                     and_return([Animal.random(:name => 'jake')])
       }
 
       assert_json_response
