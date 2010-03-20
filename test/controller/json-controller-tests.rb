@@ -72,11 +72,11 @@ class JsonGenerationTests < FreshDatabaseTestCase
                              with("timeslice").
                              and_return(availability)
         availability.should_receive(:animals_that_can_be_removed_from_service).once.
-                     and_return([Animal.random(:name => 'jake')])
+                     and_return(['a list of animal names'])
       }
 
       assert_json_response
-      assert_jsonification_of('unused animals' => ['jake'])
+      assert_jsonification_of('unused animals' => ['a list of animal names'])
     end
   end
 
