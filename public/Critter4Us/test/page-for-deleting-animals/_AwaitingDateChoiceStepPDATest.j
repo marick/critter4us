@@ -10,7 +10,7 @@
   sut = [AwaitingDateChoiceStepPDA alloc];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutWillBeGiven: ['master']];
-  [scenario sutHasDownwardOutlets: ['backgroundController', 'animalsController']]
+  [scenario sutHasUpwardOutlets: ['backgroundController', 'animalsController']]
   [scenario sutHasDownwardOutlets: ['persistentStore']]
   [sut initWithMaster: sut.master];
 }
