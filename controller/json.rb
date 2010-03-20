@@ -46,11 +46,10 @@ class Controller
   end
 
   get '/json/animals_that_can_be_taken_out_of_service' do
-    # Note: this params list contains a single date, not full timeslice data
     timeslice = @internalizer.make_timeslice_from_date(params['date'])
     availability = @availability_source.new(timeslice)
-    animals = availability.animals_that_can_be_removed_from_service
-    externalize('unused animals' => animals)
+    animal_names = availability.animals_that_can_be_removed_from_service
+    externalize('unused animals' => animal_names)
   end
 
   private
