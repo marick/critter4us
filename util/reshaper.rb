@@ -1,10 +1,8 @@
-class Reshaper
-  def singleton_tuple_to_sorted_array(tuple_array)
-    alphasort(tuple_array.collect { | hash | hash.only_value})
-  end
+require 'ostruct'
 
-  def one_value_sorted_array(tuple_array, key)
-    alphasort(tuple_array.collect { | hash | hash[key] })
+class Reshaper
+  def tuples_to_presentable_array(tuple_array, key = tuple_array[0].only_key)
+    presentable(tuple_array.collect { | hash | hash[key] })
   end
 
   def pairs_to_hash(pair_array, which_key, which_value)
@@ -13,15 +11,14 @@ class Reshaper
     end
   end
 
-  def alphasort(array)
-    array.uniq.sort { | a, b | a.downcase <=> b.downcase }
-  end
-
-  def alphasort_valuelist(hash)
-    hash.each do | key, values | 
-      hash[key] = alphasort(values)
+  def presentable(array)
+    result = array.uniq.sort { | a, b | a.downcase <=> b.downcase }
+    def result.legacy
+      @_legacy = OpenStruct.new unless @_legacy
+      @_legacy
     end
+    result.legacy.presentable = true
+    result.freeze
+    result
   end
-    
-
 end
