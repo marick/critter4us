@@ -80,6 +80,10 @@ class QueryMaker
     end
   end
 
+  def restrict_to_tuples_with_animals_ever_out_of_service
+    @query = @query.filter("animals.date_removed_from_service IS NOT NULL")
+  end
+
   def restrict_to_tuples_with_animals_out_of_service(timeslice)
     @query = @query.filter("(animals.date_removed_from_service <= DATE ?)",
                      timeslice.last_date.to_s)

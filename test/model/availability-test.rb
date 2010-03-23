@@ -51,30 +51,16 @@ class AvailabilityTests < FreshDatabaseTestCase
   end
 
   should "retrieve procedures" do 
+    @availability.override(mocks(:tuple_cache))
     Procedure.random(:name => "procedure")
-    assert_equal(["procedure"],
-                 @availability.procedures_that_can_be_assigned)
-  end
-
-  context "procedure/animal tuples not reservable during this timeslice" do 
-    setup do 
-      insert_tuple(:excluded_because_of_blackout_period,
-                   :animal_id => Animal.random(:name => "unusable").id,
-                   :first_date => @date-12, :last_date => @date+13, :time_bits => "100",
-                   :procedure_id => Procedure.random(:name => "procedure").id,
-                   :reservation_id => @reservation.id)
-    end
-
-    should "produce blacked-out tuples" do 
-      assert_equal([{:procedure_name => "procedure", :animal_name => "unusable",
-                      :reservation_id => @reservation.id }],
-                   @availability.tuples__animals_blacked_out)
-    end
-
-    should "not be included if they match the reservation given to availability" do
-      assert_equal([], 
-                   @availability_with_reservation.tuples__animals_blacked_out)
-    end
+    during {
+      @availability.procedures_that_can_be_assigned
+    }.behold! {
+      @tuple_cache.should_receive(:all_procedures).once.
+                   and_return([{:procedure_name => 'X'}, {:procedure_name => 'a'}])
+    }
+    assert_equal(["a", 'X'], @result)
+    assert { @result.legacy.presentable }
   end
 
   context "exclusions due to reservations" do 
@@ -174,68 +160,38 @@ class AvailabilityTests < FreshDatabaseTestCase
                    @availability.kind_map)
     end
 
-    should "not include animals out of service" do
-      in_use = Animal.random(:name => "in use", 
-                             :date_removed_from_service => @timeslice.first_date - 30)
-      insert_tuple(:excluded_because_in_use,
-                   :animal_id => in_use.id,
-                   :first_date => @date, :last_date => @date,
-                   :time_bits => "100")
-      assert_equal({'animal' => 'bovine'},
+    should "not include animals out of service in past" do
+      gone = Animal.random(:name => "gone", :kind => 'equine',
+                           :date_removed_from_service => @timeslice.first_date)
+      still_here = Animal.random(:name => "still here", :kind => 'caprine',
+                                 :date_removed_from_service => @timeslice.first_date+1)
+      assert_equal({'animal' => 'bovine', 'still here' => 'caprine'},
                    @availability.kind_map)
     end
   end
 
+
+
   context "animals that can be taken out of service" do 
-    should "include animals that have never been reserved" do 
-      Animal.random(:name => "animal")
-      assert_equal(["animal"], 
-                    @availability.animals_that_can_be_removed_from_service)
-    end
-
-    should "include animals that have been reserved prior to beginning of timeslice" do 
-      insert_tuple(:excluded_because_in_use,
-                   :animal_id => Animal.random(:name => "in use").id,
-                   :first_date => @date-2, :last_date => @date-1)
-      assert_equal(["in use"], 
-                    @availability.animals_that_can_be_removed_from_service)
-    end
-
-    should "reject animals reserved in an overlapping timeslice" do 
-      insert_tuple(:excluded_because_in_use,
-                   :animal_id => Animal.random(:name => "in use").id,
-                   :first_date => @date-2, :last_date => @date,
-                   :time_bits => "001") # not intersecting
-      assert_equal([], 
-                    @availability.animals_that_can_be_removed_from_service)
-    end
-
-    should "reject animals reserved in later timeslice" do 
-      insert_tuple(:excluded_because_in_use,
-                   :animal_id => Animal.random(:name => "in use").id,
-                   :first_date => @date+100, :last_date => @date+101)
-      assert_equal([], 
-                    @availability.animals_that_can_be_removed_from_service)
-    end
-
-    should "even if earlier reserved..." do 
-      insert_tuple(:excluded_because_in_use,
-                   :animal_id => Animal.random(:name => "in use").id,
-                   :first_date => @date-1, :last_date => @date-1)
-      insert_tuple(:excluded_because_in_use,
-                   :animal_id => Animal.random(:name => "in use").id,
-                   :first_date => @date+100, :last_date => @date+101)
-      assert_equal([], 
-                    @availability.animals_that_can_be_removed_from_service)
-    end
-
-
-    should "reject animals taken out of service already" do
-      Animal.random(:name => "animal", :date_removed_from_service => @date)
-      # including at a later date.
-      Animal.random(:name => "animal", :date_removed_from_service => @date+1)
-      assert_equal([], 
-                    @availability.animals_that_can_be_removed_from_service)
+    should "use tuple cache to produce a presentable list of animals" do
+      @availability.override(mocks(:tuple_cache))
+      during { 
+        @availability.animals_that_can_be_removed_from_service
+      }.behold! {
+        @tuple_cache.should_receive(:all_animals).once.
+                     and_return([{:animal_name => 'out-of-service jake'},
+                                 {:animal_name => 'working betsy'},
+                                 {:animal_name => 'some...'},
+                                 {:animal_name => '...other...'},
+                                 {:animal_name => '...animals'}])
+        @tuple_cache.should_receive(:animals_still_working_hard_on).once.
+                     with(@timeslice.first_date).
+                     and_return([{:animal_name => 'working betsy'}])
+        @tuple_cache.should_receive(:animals_ever_taken_out_of_service).once.
+                     and_return([{:animal_name => 'out-of-service jake'}])
+      }
+      assert_equal(["...animals", "...other...", "some..."], @result)
+      assert { @result.legacy.presentable }
     end
   end
 
