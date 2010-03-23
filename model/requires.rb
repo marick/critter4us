@@ -9,5 +9,6 @@ require 'model/procedure-description'
 require 'model/timeslice'
 require 'model/rules'
 require 'model/query-maker'
+require 'model/tuple-cache'
 require 'model/availability'
 
