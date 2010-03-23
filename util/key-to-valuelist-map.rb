@@ -8,16 +8,38 @@ class KeyToValuelistMap < Hash
   end
 
   def add_specific_pairs(tuple_array, which_key, which_value)
-    tuple_array.each do | tuple | 
-      self[tuple[which_key]] << tuple[which_value]
+    presentably do 
+      tuple_array.each do | tuple | 
+        self[tuple[which_key]] << tuple[which_value]
+      end
     end
-    @reshaper.alphasort_valuelist(self)
   end
 
   def spread_values_among_keys(values)
-    keys.each do | key | 
-      self[key] += values
+    presentably do 
+      keys.each do | key | 
+        self[key] += values
+      end
     end
-    @reshaper.alphasort_valuelist(self)
   end
+
+  def presentably
+    prepare_valuelists_for_modification
+    yield
+    make_presentable
+  end
+
+  def prepare_valuelists_for_modification
+    self.each do | key, values | 
+      self[key] = values.dup
+    end
+  end
+
+  def make_presentable
+    self.each do | key, values | 
+      self[key] = @reshaper.presentable(values)
+    end
+  end
+    
+
 end
