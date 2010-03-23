@@ -94,7 +94,7 @@ class QueryMakerTests < FreshDatabaseTestCase
                                                                      Date.new(2009,1,20)))
     end
     assert_equal(["out"],
-                 @reshaper.singleton_tuple_to_sorted_array(result))
+                 @reshaper.tuples_to_presentable_array(result))
   end
 
   context "restricting animals ever used during desired timeslice (including time bits)" do
@@ -126,7 +126,7 @@ class QueryMakerTests < FreshDatabaseTestCase
         q.restrict_to_tuples_with_animals_in_use_during(timeslice)
       end
       assert_equal(["exact match", "overlapping time bits"], 
-                   @reshaper.singleton_tuple_to_sorted_array(result))
+                   @reshaper.tuples_to_presentable_array(result))
     end
 
     should "work when timeslice moment is a range" do
@@ -164,7 +164,7 @@ class QueryMakerTests < FreshDatabaseTestCase
         q.restrict_to_tuples_with_animals_in_use_during(timeslice)
       end
       assert_equal(["back touches", "exact match", "front touches"],
-                   @reshaper.singleton_tuple_to_sorted_array(result))
+                   @reshaper.tuples_to_presentable_array(result))
     end
   end
 
