@@ -154,24 +154,6 @@ class TupleCacheTests < FreshDatabaseTestCase
       DB[:excluded_because_of_animal].delete
       assert { @tuple_cache.animals_with_procedure_conflicts.count > 0 }
     end
-
-  end
-
-
-  context "all procedures" do
-    setup do 
-      Procedure.random(:name => 'normal')
-      @actual = @tuple_cache.all_procedures
-    end
-
-    should "be knowable" do
-      assert { procedure_named?(@actual, 'normal') }
-    end
-
-    should "be cached" do
-      DB[:procedures].delete
-      assert { @tuple_cache.all_procedures.count > 0 }
-    end
   end
 
   context "which animals are in a blackout period" do 
