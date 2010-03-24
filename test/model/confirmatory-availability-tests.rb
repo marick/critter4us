@@ -1,8 +1,9 @@
-$: << '../../..' unless $in_rake
+$: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'model/requires'
-require 'model/excluders/requires'
 
+
+# TODO: Needs fixing to be compatible with caching of exclusions in new database tables.
 
 class SevenAndOneDayExampleOfBlackoutPeriodTests < FreshDatabaseTestCase
   def setup
@@ -36,50 +37,51 @@ class SevenAndOneDayExampleOfBlackoutPeriodTests < FreshDatabaseTestCase
   end
 
   def typical_use(date, time, ignored_reservation = Reservation.acts_as_empty)
-    timeslice = Timeslice.degenerate(date, time, ignored_reservation)
-    Excluder.new.time_sensitive_exclusions(timeslice)
+    timeslice = Timeslice.degenerate(date, time)
+    Availability.new(timeslice, ignored_reservation).exclusions_due_to_reservations
   end
 
   should_eventually "find excluded animals for tomorrow" do 
     hash = typical_use(Date.new(2009, 9, 8), MORNING)
-    assert_equal([@veinie], hash[@venipuncture])
-    assert_equal([], hash[@physical_exam])
+    pp hash
+    assert_equal(['veinie'], hash['venipuncture'])
+    assert_equal([], hash['physical exam'])
   end
 
   should_eventually "find excluded animals for next Sunday" do 
     hash = typical_use(Date.new(2009, 9, 13), MORNING)
-    assert_equal([@veinie], hash[@venipuncture])
-    assert_equal([], hash[@physical_exam])
+    assert_equal(['veinie'], hash['venipuncture'])
+    assert_equal([], hash['physical exam'])
   end
 
   should_eventually "find excluded animals for next Monday" do 
     hash = typical_use(Date.new(2009, 9, 14), MORNING)
-    assert_equal([], hash[@venipuncture])
-    assert_equal([], hash[@physical_exam])
+    assert_equal([], hash['venipuncture'])
+    assert_equal([], hash['physical exam'])
   end
 
   should_eventually "find excluded animals for today" do 
     hash = typical_use(Date.new(2009, 9, 7), MORNING)
-    assert_equal([@staggers, @veinie], hash[@venipuncture])
-    assert_equal([@veinie], hash[@physical_exam])
+    assert_equal([@staggers, 'veinie'], hash['venipuncture'])
+    assert_equal(['veinie'], hash['physical exam'])
   end
 
   should_eventually "find excluded animals when last week's reservation is to be moved to today" do
     hash = typical_use(Date.new(2009, 9, 7), MORNING, @nine1)
-    assert_equal([@veinie], hash[@venipuncture])
-    assert_equal([@veinie], hash[@physical_exam])
+    assert_equal(['veinie'], hash['venipuncture'])
+    assert_equal(['veinie'], hash['physical exam'])
   end
 
   should_eventually "find excluded animals when earliest reservation is moved up two days" do
     hash = typical_use(Date.new(2009, 9, 2), MORNING, @eight31)
-    assert_equal([@staggers, @veinie], hash[@venipuncture])
-    assert_equal([], hash[@physical_exam])
+    assert_equal([@staggers, 'veinie'], hash['venipuncture'])
+    assert_equal([], hash['physical exam'])
   end
 
   should_eventually "find excluded animals when moving today's reservation to tomorrow" do
     hash = typical_use(Date.new(2009, 8, 7), MORNING,  @nine7)
-    assert_equal([], hash[@venipuncture])
-    assert_equal([], hash[@physical_exam])
+    assert_equal([], hash['venipuncture'])
+    assert_equal([], hash['physical exam'])
   end
 end
 

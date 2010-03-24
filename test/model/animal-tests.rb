@@ -125,7 +125,6 @@ class AnimalTests < FreshDatabaseTestCase
         end
 
         should ", and one date" do
-          puts Reservation.all.inspect
           assert_equal([Date.new(2009,12,03)],
                        @animal.dates_used_after_beginning_of(Date.new(2009,12,3)))
         end
