@@ -2,6 +2,11 @@ $: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'model/requires'
 
+# Many of these tests test directly facts that are also tested by
+# QueryMaker tests. If you change a test in this file, put into mock
+# format and double-check that the facts are tested in the other
+# class's tests.
+
 class TupleCacheTests < FreshDatabaseTestCase
   def setup
     super
