@@ -59,17 +59,17 @@ class Reservation < Sequel::Model
     TimeSet.from_bits(time_bits)
   end
 
-  def timeslice(ignored_reservation = nil)
-    Timeslice.new(first_date, last_date, times, ignored_reservation)
+  def timeslice
+    Timeslice.new(first_date, last_date, times)
   end
 
   # Self-description and test
   def faked_time_TODO_replace_me
-    timeslice(Reservation.acts_as_empty).faked_time_TODO_replace_me
+    timeslice.faked_time_TODO_replace_me
   end
 
   def faked_date_TODO_replace_me
-    timeslice(Reservation.acts_as_empty).faked_date_TODO_replace_me
+    timeslice.faked_date_TODO_replace_me
   end
 
   def self.random(overrides = {}, &block)

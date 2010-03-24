@@ -86,16 +86,10 @@ class InternalizerTests < FreshDatabaseTestCase
 
     should "be able to make a timeslice from JSON" do
       reservation = Reservation.random
-      timeslice = @internalizer.make_timeslice(@data, reservation)
+      timeslice = @internalizer.make_timeslice(@data)
       assert_equal(Date.new(2009,12,12), timeslice.first_date)
       assert_equal(Date.new(2009,12,12), timeslice.last_date)
       assert_equal(TimeSet.new(MORNING), timeslice.times)
-      assert_equal(reservation, timeslice.ignored_reservation)
-    end
-
-    should "be able to make a timeslice without an associated reservation" do 
-      timeslice = @internalizer.make_timeslice(@data)
-      assert { timeslice.ignored_reservation.acts_as_empty? }
     end
 
     should "be able to make a timeslice from a pure date" do 

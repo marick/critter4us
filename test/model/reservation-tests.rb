@@ -70,11 +70,10 @@ class ReservationTests < FreshDatabaseTestCase
                                  :last_date => last_date,
                                  :times => TimeSet.new(MORNING, AFTERNOON))
     reservation_to_ignore = Reservation.acts_as_empty
-    derived_timeslice = created.timeslice(reservation_to_ignore)
+    derived_timeslice = created.timeslice
     assert_equal(first_date, derived_timeslice.first_date)
     assert_equal(last_date, derived_timeslice.last_date)
     assert_equal(TimeSet.new(MORNING, AFTERNOON), derived_timeslice.times)
-    assert_equal(reservation_to_ignore, derived_timeslice.ignored_reservation)
   end
 
   should "be able to render itself as a hash" do 
