@@ -43,7 +43,8 @@ class Controller < Sinatra::Base
                            :reservation_source => Reservation,
                            :internalizer => Internalizer.new,
                            :externalizer => Externalizer.new,
-                           :availability_source => Availability
+                           :availability_source => Availability,
+                           :tuple_publisher => TuplePublisher.new
                            )
     self
   end

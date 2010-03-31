@@ -105,7 +105,6 @@ class JsonGenerationTests < FreshDatabaseTestCase
   end
 
   context "adding a reservation" do 
-
     setup do
       Animal.random_with_names('twitter', 'jinx')
       Procedure.random_with_names('lick', 'slop')
@@ -119,26 +118,34 @@ class JsonGenerationTests < FreshDatabaseTestCase
         'groups' => [ {'procedures' => ['lick', 'slop'],
                         'animals' => ['twitter', 'jinx']} ]
       }
+      @jsonified_data = @data.to_json
     end
 
-    should "create the required uses" do
-      post '/json/store_reservation', :data => @data.to_json
-      r = Reservation[:first_date => Date.new(2009, 02, 03)]
-      assert { r.last_date == Date.new(2009, 02, 03) }
-      assert { r.times == TimeSet.new(MORNING) }
-      assert { r.instructor == @data['instructor'] }
-      assert { r.course == @data['course'] }
-      assert { r.groups.size == 1 }
-      assert { r.uses.size == 4 }
-      assert do 
-        r.uses.find do | u | 
-          u.animal.name == 'twitter' && u.procedure.name == 'slop'
-        end
-      end
+
+    should "coordinate creation of reservation" do 
+      @app.override(mocks(:internalizer, :reservation_source, :tuple_publisher))
+      reservation = flexmock(reservation)
+
+      during { 
+        post '/json/store_reservation', :data => @jsonified_data
+      }.behold! {
+        @internalizer.should_receive(:convert).once.
+                      with('data' => @jsonified_data).
+                      and_return(:data => @data)
+        @reservation_source.should_receive(:create_with_groups).once.
+                            with(@data).
+                            and_return(reservation)
+        @tuple_publisher.should_receive(:add_reservation).once.
+                         with(reservation)
+        reservation.should_receive(:pk).once.and_return(12)
+      }
+
+      assert_json_response
+      assert_jsonification_of('reservation' => '12')
     end
 
     should "return the reservation number as a string" do # {footnote 'string'}
-      post '/json/store_reservation', :data => @data.to_json
+      post '/json/store_reservation', :data => @jsonified_data
       assert_json_response
       r = Reservation[:first_date => Date.new(2009, 02, 03)]
       assert_jsonification_of({'reservation' => r.pk.to_s})
