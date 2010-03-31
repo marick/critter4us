@@ -8,7 +8,7 @@ class TuplePublisherTests < FreshDatabaseTestCase
     @tuple_publisher = TuplePublisher.new
   end
 
-  context "adding a new reservation" do 
+  context "noting creation of a new reservation" do 
     setup do 
       @common_data = { 
         :first_date => Date.new(2009, 1, 1),
@@ -20,7 +20,7 @@ class TuplePublisherTests < FreshDatabaseTestCase
     should "add to the cache of animals in use" do
       r = Reservation.random(@common_data.merge(:animal => Animal.random(:name => "animal"),
                                                 :procedure => Procedure.random))
-      @tuple_publisher.add_reservation(r)
+      @tuple_publisher.note_reservation_exclusions(r)
 
       actual = DB[:excluded_because_in_use].first
       assert_equal(r.first_date, actual[:first_date])
@@ -37,7 +37,7 @@ class TuplePublisherTests < FreshDatabaseTestCase
       procedure = Procedure.random(:name => "proc", :days_delay => 2)
       r = Reservation.random(@common_data.merge(:animal => animal, :procedure => procedure))
 
-      @tuple_publisher.add_reservation(r)
+      @tuple_publisher.note_reservation_exclusions(r)
       actual = DB[:excluded_because_of_blackout_period].first
 
       assert_equal(r.first_date - 1, actual[:first_date])
@@ -53,7 +53,7 @@ class TuplePublisherTests < FreshDatabaseTestCase
       procedure = Procedure.random(:name => "proc", :days_delay => 0)
       r = Reservation.random(@common_data.merge(:animal => animal, :procedure => procedure))
 
-      @tuple_publisher.add_reservation(r)
+      @tuple_publisher.note_reservation_exclusions(r)
       assert(DB[:excluded_because_of_blackout_period].all.empty?)
     end
   end

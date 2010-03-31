@@ -3,7 +3,7 @@ require 'model/query-maker'
 class TuplePublisher
   include TestSupport
 
-  def add_reservation(reservation)
+  def note_reservation_exclusions(reservation)
     reservation.uses.each do | use | 
       animal = use.animal
       procedure = use.procedure

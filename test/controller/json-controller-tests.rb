@@ -135,7 +135,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
         @reservation_source.should_receive(:create_with_groups).once.
                             with(@data).
                             and_return(reservation)
-        @tuple_publisher.should_receive(:add_reservation).once.
+        @tuple_publisher.should_receive(:note_reservation_exclusions).once.
                          with(reservation)
         reservation.should_receive(:pk).once.and_return(12)
       }
