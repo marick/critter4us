@@ -61,6 +61,7 @@ class TupleCache
       end
   end
 
+  puts "================== Animals in use should be cached"
   def animals_in_use(timeslice)
     @query.to_select_appropriate(:animal_name, :reservation_id) do | q | 
       q.begin_with(:animals, :excluded_because_in_use)

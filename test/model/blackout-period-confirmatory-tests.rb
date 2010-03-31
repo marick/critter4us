@@ -15,9 +15,12 @@ class SevenAndOneDayExampleOfBlackoutPeriodTests < FreshDatabaseTestCase
     @bossie = Animal.random(:name => 'bossie')
     @staggers = Animal.random(:name => 'staggers')
 
-    @eight31 = Reservation.random(:date => Date.new(2009, 8, 31)) # Previous Monday
-    @nine1 = Reservation.random(:date => Date.new(2009, 9, 1))  # Previous Tuesday
-    @nine7 = Reservation.random(:date => Date.new(2009, 9, 7))  # Today, Monday
+    @eight31 = Reservation.random(:first_date => Date.new(2009, 8, 31),
+                                  :last_date => Date.new(2009, 8, 31)) # Previous Monday
+    @nine1 = Reservation.random(:first_date => Date.new(2009, 9, 1),
+                                :last_date => Date.new(2009, 9, 1))  # Previous Tuesday
+    @nine7 = Reservation.random(:first_date => Date.new(2009, 9, 7),
+                                :last_date => Date.new(2009, 9, 7))  # Today, Monday
 
     
     only_eight31_group = Group.create(:reservation => @eight31)
@@ -34,51 +37,54 @@ class SevenAndOneDayExampleOfBlackoutPeriodTests < FreshDatabaseTestCase
     Use.create(:animal => @veinie, :procedure => @physical_exam,
                :group => only_nine7_group)
 
+    tuple_publisher = TuplePublisher.new
+    tuple_publisher.note_reservation_exclusions(@eight31)
+    tuple_publisher.note_reservation_exclusions(@nine1)
+    tuple_publisher.note_reservation_exclusions(@nine7)
   end
 
   def typical_use(date, time, ignored_reservation = Reservation.acts_as_empty)
     timeslice = Timeslice.degenerate(date, time)
-    Availability.new(timeslice, ignored_reservation).exclusions_due_to_reservations
+    Availability.new(timeslice, ignored_reservation.id).exclusions_due_to_reservations
   end
 
-  should_eventually "find excluded animals for tomorrow" do 
+  should "find excluded animals for tomorrow" do 
     hash = typical_use(Date.new(2009, 9, 8), MORNING)
-    pp hash
     assert_equal(['veinie'], hash['venipuncture'])
     assert_equal([], hash['physical exam'])
   end
 
-  should_eventually "find excluded animals for next Sunday" do 
+  should "find excluded animals for next Sunday" do 
     hash = typical_use(Date.new(2009, 9, 13), MORNING)
     assert_equal(['veinie'], hash['venipuncture'])
     assert_equal([], hash['physical exam'])
   end
 
-  should_eventually "find excluded animals for next Monday" do 
+  should "find excluded animals for next Monday" do 
     hash = typical_use(Date.new(2009, 9, 14), MORNING)
     assert_equal([], hash['venipuncture'])
     assert_equal([], hash['physical exam'])
   end
 
-  should_eventually "find excluded animals for today" do 
+  should "find excluded animals for today" do 
     hash = typical_use(Date.new(2009, 9, 7), MORNING)
-    assert_equal([@staggers, 'veinie'], hash['venipuncture'])
+    assert_equal(['staggers', 'veinie'], hash['venipuncture'])
     assert_equal(['veinie'], hash['physical exam'])
   end
 
-  should_eventually "find excluded animals when last week's reservation is to be moved to today" do
+  should "find excluded animals when last week's reservation is to be moved to today" do
     hash = typical_use(Date.new(2009, 9, 7), MORNING, @nine1)
     assert_equal(['veinie'], hash['venipuncture'])
     assert_equal(['veinie'], hash['physical exam'])
   end
 
-  should_eventually "find excluded animals when earliest reservation is moved up two days" do
+  should "find excluded animals when earliest reservation is moved up two days" do
     hash = typical_use(Date.new(2009, 9, 2), MORNING, @eight31)
-    assert_equal([@staggers, 'veinie'], hash['venipuncture'])
+    assert_equal(['staggers', 'veinie'], hash['venipuncture'])
     assert_equal([], hash['physical exam'])
   end
 
-  should_eventually "find excluded animals when moving today's reservation to tomorrow" do
+  should "find excluded animals when moving today's reservation to tomorrow" do
     hash = typical_use(Date.new(2009, 8, 7), MORNING,  @nine7)
     assert_equal([], hash['venipuncture'])
     assert_equal([], hash['physical exam'])
@@ -142,8 +148,8 @@ class DetailsAboutTimingTests < FreshDatabaseTestCase
   end
 
   BoundaryCases.each_with_index do | row, index |
-    puts "Skipping test #{row}, #{index}"
-    # boundary_test(row, index)
+    # puts "Skipping test #{row}, #{index}"
+    boundary_test(row, index)
   end
 
   def excluded?(is_ok)
@@ -152,27 +158,30 @@ class DetailsAboutTimingTests < FreshDatabaseTestCase
 
   def prior_reservation(delay, date, time)
     @animal = Animal.random(:name => "bossie")
-    @procedure = Procedure.random(:name => 'only', :days_delay => delay)
-    @reservation = Reservation.random(:date => Date.new(2009, 12, date),
-                                      :time => time)
+    @procedure = Procedure.random(:name => 'procedure', :days_delay => delay)
+    @reservation = Reservation.random(:first_date => Date.new(2009, 12, date),
+                                      :last_date => Date.new(2009, 12, date),
+                                      :times => TimeSet.new(time))
     group = Group.create(:reservation => @reservation)
     @use = Use.create(:animal => @animal, :procedure => @procedure, :group => group)
+    tuple_publisher = TuplePublisher.new
+    tuple_publisher.note_reservation_exclusions(@reservation)
   end
 
 
   def run_attempt(attempt_date, attempt_time)
     # puts "attempt at #{[attempt_date, attempt_time].inspect}"
     @pairs = []
-    timeslice = Timeslice.degenerate(Date.new(2009, 12, attempt_date), attempt_time,
-                                     Reservation.acts_as_empty)
-    @map = Excluder.new.time_sensitive_exclusions(timeslice)
+    timeslice = Timeslice.degenerate(Date.new(2009, 12, attempt_date), attempt_time)
+    availability = Availability.new(timeslice, nil)
+    @map = availability.exclusions_due_to_reservations
   end
 
   def assert_reservation_success(is_ok)
     if excluded?(is_ok)
-      assert_equal([@animal], @map[@procedure])
+      assert_equal([@animal.name], @map[@procedure.name])
     else
-      assert_equal([], @map[@procedure])
+      assert_equal([], @map[@procedure.name])
     end
   end
 end
