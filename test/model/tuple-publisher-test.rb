@@ -6,17 +6,15 @@ class TuplePublisherTests < FreshDatabaseTestCase
   def setup
     super
     @tuple_publisher = TuplePublisher.new
+
+    @common_data = { 
+      :first_date => Date.new(2009, 1, 1),
+      :last_date => Date.new(2009, 1, 2),
+      :times => TimeSet.new(MORNING)
+    }
   end
 
   context "noting creation of a new reservation" do 
-    setup do 
-      @common_data = { 
-        :first_date => Date.new(2009, 1, 1),
-        :last_date => Date.new(2009, 1, 2),
-        :times => TimeSet.new(MORNING)
-      }
-    end
-
     should "add to the cache of animals in use" do
       r = Reservation.random(@common_data.merge(:animal => Animal.random(:name => "animal"),
                                                 :procedure => Procedure.random))
@@ -55,6 +53,29 @@ class TuplePublisherTests < FreshDatabaseTestCase
 
       @tuple_publisher.note_reservation_exclusions(r)
       assert(DB[:excluded_because_of_blackout_period].all.empty?)
+    end
+  end
+
+  context "deleting reservations" do
+    setup do 
+      r = Reservation.random(@common_data.merge(:animal => Animal.random(:name => "animal"),
+                                                :procedure => Procedure.random))
+      @id = r.id
+      @tuple_publisher.note_reservation_exclusions(r)
+      assert { DB[:excluded_because_of_blackout_period].count > 0 }
+      assert { DB[:excluded_because_in_use].count > 0 }
+    end
+
+    should "delete match" do 
+      @tuple_publisher.remove_reservation_exclusions(@id)
+      assert { DB[:excluded_because_of_blackout_period].count == 0 }
+      assert { DB[:excluded_because_in_use].count == 0 }
+    end
+
+    should "not delete mismatches" do 
+      @tuple_publisher.remove_reservation_exclusions(@id+1)
+      assert { DB[:excluded_because_of_blackout_period].count > 0 }
+      assert { DB[:excluded_because_in_use].count > 0 }
     end
   end
 

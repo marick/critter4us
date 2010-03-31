@@ -48,20 +48,27 @@ class HtmlControllerTests < FreshDatabaseTestCase
   end
 
   context "deleting reservations" do
-    setup do 
+    should "coordinate deletion of reservations" do
+      @app.override(mocks(:reservation_source, :tuple_publisher))
+
+      during { 
+        delete "/reservation/12"
+      }.behold! {
+        @reservation_source.should_receive(:erase).once.
+                            with(12)
+        @tuple_publisher.should_receive(:remove_reservation_exclusions).once.
+                         with(12)
+      }
+    end
+
+    should "redirect to reservations page" do
       @reservation = Reservation.random(:instructor => 'marge') do 
         use Animal.random
         use Procedure.random
       end
       assert { Reservation[:instructor => 'marge'] }
       delete "/reservation/#{@reservation.id}"
-    end
-
-    should "be able to delete reservations" do
-      deny { Reservation[:instructor => 'marge'] }
-    end
-
-    should "redirect to reservations page" do
+      
       follow_redirect!
       assert last_response.ok?        
       assert_equal "http://example.org/reservations", last_request.url

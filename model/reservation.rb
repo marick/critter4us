@@ -17,6 +17,10 @@ class Reservation < Sequel::Model
     ReservationMaker.build_from(data)
   end
 
+  def self.erase(id)
+    self.filter(:id => id).destroy
+  end
+
   def self.acts_as_empty
     o = OpenStruct.new(:animals => [])
     # Need an id field, and this is the way to prevent the "Object#id

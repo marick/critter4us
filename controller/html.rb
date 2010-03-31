@@ -12,8 +12,9 @@ class Controller
   end
 
   delete '/reservation/:number' do
-    number = params[:number]
-    reservation_source[number].destroy
+    number = params[:number].to_i
+    reservation_source.erase(number)
+    tuple_publisher.remove_reservation_exclusions(number)
     redirect '/reservations'
   end
 

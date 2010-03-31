@@ -4,6 +4,16 @@ require 'model/requires'
 
 class ReservationTests < FreshDatabaseTestCase
 
+  should "have a class-removal method" do 
+    reservation = Reservation.random(:instructor => 'marge',
+                                     :animal => Animal.random(:name => 'animal'),
+                                     :procedure => Procedure.random(:name => 'procedure'))
+    Reservation.erase(reservation.id)
+    assert_equal(0, Reservation.count)
+    assert_equal(0, Group.count)
+    assert_equal(0, Use.count)
+  end
+
   should "delete both self and associated uses and groups" do
     reservation = Reservation.random(:instructor => 'marge',
                                      :animal => Animal.random(:name => 'animal'),

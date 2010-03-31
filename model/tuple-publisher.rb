@@ -25,4 +25,10 @@ class TuplePublisher
              :procedure_id => procedure.id)
     end
   end
+
+  def remove_reservation_exclusions(id)
+    DB[:excluded_because_in_use].filter(:reservation_id => id).delete
+    DB[:excluded_because_of_blackout_period].filter(:reservation_id => id).delete
+  end
+
 end
