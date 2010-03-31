@@ -1,51 +1,53 @@
 $: << '../..' unless $in_rake
 require 'test/testutil/requires'
 require 'model/requires'
+require 'controller/base'
 
 
 # TODO: Needs fixing to be compatible with caching of exclusions in new database tables.
 
 class SevenAndOneDayExampleOfBlackoutPeriodTests < FreshDatabaseTestCase
-  def setup
-    super
-    @venipuncture = Procedure.random(:name => 'venipuncture', :days_delay => 7)
-    @physical_exam = Procedure.random(:name => 'physical exam', :days_delay => 1)
+  include Rack::Test::Methods
+  attr_reader :app
+
+  def make_reservation(date, animals, procedures)
+    data = {
+      'firstDate' => date,
+      'lastDate' => date,
+      'times' => [MORNING],
+      'instructor' => 'morin',
+      'course' => 'vm333',
+      'groups' => [ {'procedures' => procedures,
+                      'animals' => animals} ]
+      }.to_json
     
-    @veinie = Animal.random(:name => 'veinie')
-    @bossie = Animal.random(:name => 'bossie')
-    @staggers = Animal.random(:name => 'staggers')
-
-    @eight31 = Reservation.random(:first_date => Date.new(2009, 8, 31),
-                                  :last_date => Date.new(2009, 8, 31)) # Previous Monday
-    @nine1 = Reservation.random(:first_date => Date.new(2009, 9, 1),
-                                :last_date => Date.new(2009, 9, 1))  # Previous Tuesday
-    @nine7 = Reservation.random(:first_date => Date.new(2009, 9, 7),
-                                :last_date => Date.new(2009, 9, 7))  # Today, Monday
-
-    
-    only_eight31_group = Group.create(:reservation => @eight31)
-    only_nine1_group = Group.create(:reservation => @nine1)
-    only_nine7_group = Group.create(:reservation => @nine7)
-
-    
-    Use.create(:animal => @bossie, :procedure => @venipuncture,
-               :group => only_eight31_group);
-    Use.create(:animal => @staggers, :procedure => @venipuncture,
-               :group => only_nine1_group);
-    Use.create(:animal => @veinie, :procedure => @venipuncture,
-               :group => only_nine7_group);
-    Use.create(:animal => @veinie, :procedure => @physical_exam,
-               :group => only_nine7_group)
-
-    tuple_publisher = TuplePublisher.new
-    tuple_publisher.note_reservation_exclusions(@eight31)
-    tuple_publisher.note_reservation_exclusions(@nine1)
-    tuple_publisher.note_reservation_exclusions(@nine7)
+    response = post '/json/store_reservation', :data => data
+    JSON[response.body]['reservation'].to_i
   end
 
-  def typical_use(date, time, ignored_reservation = Reservation.acts_as_empty)
+  def setup
+    super
+    @app = Controller.new
+    @app.authorizer = AuthorizeEverything.new
+
+    Procedure.random(:name => 'venipuncture', :days_delay => 7)
+    Procedure.random(:name => 'physical exam', :days_delay => 1)
+    
+    Animal.random(:name => 'veinie')
+    Animal.random(:name => 'bossie')
+    Animal.random(:name => 'staggers')
+
+    # Previous Monday
+    @eight31 = make_reservation('2009-08-31', %w{bossie}, %w{venipuncture})
+    # Previous Tuesday
+    @nine1 = make_reservation('2009-09-01', %w{staggers}, %w{venipuncture})
+    # Today, Monday
+    @nine7 = make_reservation('2009-09-07', %w{veinie}, ['venipuncture', 'physical exam'])
+  end
+
+  def typical_use(date, time, ignored_reservation_id = nil)
     timeslice = Timeslice.degenerate(date, time)
-    Availability.new(timeslice, ignored_reservation.id).exclusions_due_to_reservations
+    Availability.new(timeslice, ignored_reservation_id).exclusions_due_to_reservations
   end
 
   should "find excluded animals for tomorrow" do 
@@ -85,7 +87,7 @@ class SevenAndOneDayExampleOfBlackoutPeriodTests < FreshDatabaseTestCase
   end
 
   should "find excluded animals when moving today's reservation to tomorrow" do
-    hash = typical_use(Date.new(2009, 8, 7), MORNING,  @nine7)
+    hash = typical_use(Date.new(2009, 9, 8), MORNING,  @nine7)
     assert_equal([], hash['venipuncture'])
     assert_equal([], hash['physical exam'])
   end
@@ -93,8 +95,10 @@ end
 
 
 class DetailsAboutTimingTests < FreshDatabaseTestCase
+  include Rack::Test::Methods
+  attr_reader :app
 
-    BoundaryCases = [
+  BoundaryCases = [
       # Reservation attempt for date after previously-made reservation
       # DELAY       USED-ON        TRY-AGAIN          OK?
 [          0,       1, MORNING,     1, MORNING,        :NO ],        
@@ -157,21 +161,27 @@ class DetailsAboutTimingTests < FreshDatabaseTestCase
   end
 
   def prior_reservation(delay, date, time)
-    @animal = Animal.random(:name => "bossie")
-    @procedure = Procedure.random(:name => 'procedure', :days_delay => delay)
-    @reservation = Reservation.random(:first_date => Date.new(2009, 12, date),
-                                      :last_date => Date.new(2009, 12, date),
-                                      :times => TimeSet.new(time))
-    group = Group.create(:reservation => @reservation)
-    @use = Use.create(:animal => @animal, :procedure => @procedure, :group => group)
-    tuple_publisher = TuplePublisher.new
-    tuple_publisher.note_reservation_exclusions(@reservation)
+    @app = Controller.new
+    @app.authorizer = AuthorizeEverything.new
+    
+    animal = Animal.random(:name => "bossie")
+    procedure = Procedure.random(:name => 'procedure', :days_delay => delay)
+
+    data = {
+      'firstDate' => "2009-12-#{date}",
+      'lastDate' => "2009-12-#{date}",
+      'times' => [time],
+      'instructor' => 'morin',
+      'course' => 'vm333',
+      'groups' => [ {'procedures' => ['procedure'],
+                      'animals' => ['bossie']} ]
+      }.to_json
+
+    post '/json/store_reservation', :data => data
   end
 
 
   def run_attempt(attempt_date, attempt_time)
-    # puts "attempt at #{[attempt_date, attempt_time].inspect}"
-    @pairs = []
     timeslice = Timeslice.degenerate(Date.new(2009, 12, attempt_date), attempt_time)
     availability = Availability.new(timeslice, nil)
     @map = availability.exclusions_due_to_reservations
@@ -179,9 +189,9 @@ class DetailsAboutTimingTests < FreshDatabaseTestCase
 
   def assert_reservation_success(is_ok)
     if excluded?(is_ok)
-      assert_equal([@animal.name], @map[@procedure.name])
+      assert_equal(['bossie'], @map['procedure'])
     else
-      assert_equal([], @map[@procedure.name])
+      assert_equal([], @map['procedure'])
     end
   end
 end
