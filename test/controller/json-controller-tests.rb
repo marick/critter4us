@@ -124,7 +124,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
     should "coordinate creation of reservation" do 
       @app.override(mocks(:internalizer, :reservation_source, :tuple_publisher))
-      reservation = flexmock(reservation)
+      reservation = flexmock("reservation", :id => 12)
 
       during { 
         post '/json/store_reservation', :data => @jsonified_data
@@ -137,7 +137,6 @@ class JsonGenerationTests < FreshDatabaseTestCase
                             and_return(reservation)
         @tuple_publisher.should_receive(:note_reservation_exclusions).once.
                          with(reservation)
-        reservation.should_receive(:pk).once.and_return(12)
       }
 
       assert_json_response
@@ -148,12 +147,14 @@ class JsonGenerationTests < FreshDatabaseTestCase
       post '/json/store_reservation', :data => @jsonified_data
       assert_json_response
       r = Reservation[:first_date => Date.new(2009, 02, 03)]
-      assert_jsonification_of({'reservation' => r.pk.to_s})
+      assert_jsonification_of({'reservation' => r.id.to_s})
     end
   end
 
   context "modifying a reservation" do 
     setup do 
+      @app.override(mocks(:tuple_publisher))
+
       Animal.create(:name => 'twitter', :kind => 'sugar glider')
       Animal.create(:name => 'jinx', :kind => 'red-eared slider')
       Animal.create(:name => 'inchy', :kind => 'chinchilla')
@@ -172,7 +173,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
                        :animals => ['twitter']}]
       }
       old_reservation = Reservation.create_with_groups(old_reservation_data)
-      @id_to_modify = old_reservation.pk.to_s
+      @id_to_modify = old_reservation.id
 
       incoming_modification_data = {
         'instructor' => 'morin',
@@ -183,8 +184,15 @@ class JsonGenerationTests < FreshDatabaseTestCase
         'groups' => [ ]
       }.to_json
 
-      post '/json/modify_reservation', :reservationID => @id_to_modify,
-                                       :data => incoming_modification_data
+      during {
+        post '/json/modify_reservation', :reservationID => @id_to_modify.to_s,
+                                         :data => incoming_modification_data
+      }.behold! { 
+        @tuple_publisher.should_receive(:remove_reservation_exclusions).once.
+                         with(old_reservation.id)
+        @tuple_publisher.should_receive(:note_reservation_exclusions).once.
+                         with(old_reservation)
+      }
 
       @new_reservation = Reservation[@id_to_modify]
     end
@@ -200,8 +208,8 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
     should "return the unchanged id" do 
       assert_json_response
-      assert_jsonification_of({'reservation' => @new_reservation.pk.to_s})
-      assert_equal @id_to_modify, @new_reservation.pk.to_s 
+      assert_jsonification_of({'reservation' => @new_reservation.id.to_s})
+      assert_equal @id_to_modify, @new_reservation.id
     end
   end
 

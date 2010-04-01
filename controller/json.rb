@@ -27,6 +27,8 @@ class Controller
     id = internal[:reservationID]
     reservation_data = internal[:data]
     updated_reservation = reservation_source[id].with_updated_groups(reservation_data)
+    @tuple_publisher.remove_reservation_exclusions(updated_reservation.id)
+    @tuple_publisher.note_reservation_exclusions(updated_reservation)
     externalize(reservation_id(updated_reservation))
   end
 
@@ -56,7 +58,7 @@ class Controller
   private
 
   def reservation_id(reservation) 
-    {"reservation" => reservation.pk.to_s}
+    {"reservation" => reservation.id.to_s}
   end
 
   def externalize(hash)
