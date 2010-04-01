@@ -21,6 +21,7 @@ class ReservationUpdater < ReservationBase
     @reservation.groups.each do | g |
       g.destroy
     end
+    @reservation.remove_all_groups
   end
 
   def update_direct_data

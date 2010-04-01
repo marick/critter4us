@@ -98,9 +98,8 @@ class Reservation < Sequel::Model
     reservation
   end
 
-  def with_updated_groups(data)
+  def update_with_groups(data)
     ReservationUpdater.update(self, data)
-    self
   end
 
   def to_hash

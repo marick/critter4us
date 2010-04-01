@@ -26,7 +26,8 @@ class Controller
     internal = @internalizer.convert(params)
     id = internal[:reservationID]
     reservation_data = internal[:data]
-    updated_reservation = reservation_source[id].with_updated_groups(reservation_data)
+    updated_reservation = reservation_source[id]
+    updated_reservation.update_with_groups(reservation_data)
     @tuple_publisher.remove_reservation_exclusions(updated_reservation.id)
     @tuple_publisher.note_reservation_exclusions(updated_reservation)
     externalize(reservation_id(updated_reservation))

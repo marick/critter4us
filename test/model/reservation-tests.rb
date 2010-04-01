@@ -109,4 +109,73 @@ class ReservationTests < FreshDatabaseTestCase
     assert_equal(reservation.id.to_s, hash[:id])
   end
 
+  context "updating" do 
+    setup do 
+      @twitter = Animal.random(:name => 'twitter', :kind => 'sugar glider')
+      @jinx = Animal.random(:name => 'jinx', :kind => 'red-eared slider')
+      @inchy = Animal.random(:name => 'inchy', :kind => 'chinchilla')
+      @floating = Procedure.random(:name => 'floating')
+      @venipuncture = Procedure.random(:name => 'venipuncture')
+      @stroke = Procedure.random(:name => 'stroke')
+
+      old_reservation_data = { 
+        :instructor => 'marge',
+        :course => 'vm333',
+        :first_date => Date.new(2001, 2, 4),
+        :last_date =>  Date.new(2001, 2, 4),
+        :times => TimeSet.new(EVENING),
+        :groups => [ {:procedures => ['floating'],
+                       :animals => ['twitter']}]
+      }
+      @reservation = Reservation.create_with_groups(old_reservation_data)
+
+      incoming_modification_data = {
+        :instructor => 'morin',
+        :course => 'cs101',
+        :first_date => Date.new(2011, 11, 11),
+        :last_date => Date.new(2012, 12, 12),
+        :times => TimeSet.new(MORNING, AFTERNOON),
+        :groups => [ { :procedures => ['venipuncture', 'stroke'],
+                       :animals => ['inchy']},
+                     { :procedures => ['floating'], 
+                       :animals => ['twitter', 'jinx'] } ]
+      }
+
+      @reservation.update_with_groups(incoming_modification_data)
+    end
+
+    should "update non-group data" do
+      assert { @reservation.instructor == 'morin' }
+      assert { @reservation.course == 'cs101' }
+      assert { @reservation.first_date == Date.new(2011, 11, 11) }
+      assert { @reservation.last_date == Date.new(2012, 12, 12) }
+      assert { @reservation.times == TimeSet.new(MORNING, AFTERNOON) }
+    end
+
+    should "have appropriate group-like counts" do 
+      assert { @reservation.groups.count == 2 }
+      assert { @reservation.uses.count == 4 }
+      assert { @reservation.animal_names.count == 3 }
+      assert { @reservation.procedure_names.count == 3 }
+    end
+
+    should "have appropriate group structures" do
+      iv = Use.filter(:animal_id => @inchy.id, :procedure_id => @venipuncture.id).first
+      assert { iv.group.reservation == @reservation }
+      is = Use.filter(:animal_id => @inchy.id, :procedure_id => @stroke.id).first
+      assert { is.group.reservation == @reservation }
+      assert { is.group == iv.group }
+
+      tf = Use.filter(:animal_id => @twitter.id, :procedure_id => @floating.id).first
+      assert { tf.group.reservation == @reservation }
+      jf = Use.filter(:animal_id => @jinx.id, :procedure_id => @floating.id).first
+      assert { jf.group.reservation == @reservation }
+      assert { tf.group == jf.group }
+    end
+
+    should "make changes on disk" do 
+      new_fetch = Reservation[@reservation.id]
+      assert { new_fetch == @reservation }
+    end
+  end
 end

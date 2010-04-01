@@ -152,65 +152,34 @@ class JsonGenerationTests < FreshDatabaseTestCase
   end
 
   context "modifying a reservation" do 
-    setup do 
-      @app.override(mocks(:tuple_publisher))
-
-      Animal.create(:name => 'twitter', :kind => 'sugar glider')
-      Animal.create(:name => 'jinx', :kind => 'red-eared slider')
-      Animal.create(:name => 'inchy', :kind => 'chinchilla')
-      Procedure.random_with_names('floating', 'venipuncture', 'stroke')
-
-
-      old_reservation_data = { 
-        :instructor => 'marge',
-        :course => 'vm333',
-        :first_date => Date.new(2001, 2, 4),
-        :last_date =>  Date.new(2001, 2, 4),
-        :morning => true,
-        :afternoon => true,
-        :evening => true,
-        :groups => [ {:procedures => ['floating'],
-                       :animals => ['twitter']}]
-      }
-      old_reservation = Reservation.create_with_groups(old_reservation_data)
-      @id_to_modify = old_reservation.id
-
-      incoming_modification_data = {
-        'instructor' => 'morin',
-        'course' => 'cs101',
-        'firstDate' => '2011-11-11',
-        'lastDate' => '2012-12-12',
-        'times' => ['afternoon'],
-        'groups' => [ ]
-      }.to_json
+    should "coordinate other objects" do 
+      @app.override(mocks(:internalizer, :reservation_source, :tuple_publisher))
+      @reservation = flexmock("reservation", :id => 12)
 
       during {
-        post '/json/modify_reservation', :reservationID => @id_to_modify.to_s,
-                                         :data => incoming_modification_data
+        post '/json/modify_reservation', :reservationID => "12",
+                                         :data => "json reservation data"
       }.behold! { 
+        @internalizer.should_receive(:convert).once.
+                      with("reservationID" => "12", "data" => "json reservation data").
+                      and_return(:reservationID => 12, :data => "reservation data")
+        @reservation_source.should_receive(:[]).once.
+                            with(12).
+                            and_return(@reservation)
+        @reservation.should_receive(:update_with_groups).once.
+                     with("reservation data")
         @tuple_publisher.should_receive(:remove_reservation_exclusions).once.
-                         with(old_reservation.id)
+                         with(@reservation.id)
         @tuple_publisher.should_receive(:note_reservation_exclusions).once.
-                         with(old_reservation)
+                         with(@reservation)
       }
 
-      @new_reservation = Reservation[@id_to_modify]
-    end
-
-    should "perform the update" do 
-      # Spot check since the reservation does most of the work. 
-      assert { @new_reservation.instructor == 'morin' }
-      assert { @new_reservation.first_date == Date.new(2011, 11, 11) }
-      assert { @new_reservation.last_date == Date.new(2012, 12, 12) }
-      assert { @new_reservation.times == TimeSet.new(AFTERNOON) }
-      assert { [] == @new_reservation.groups }
-    end
-
-    should "return the unchanged id" do 
       assert_json_response
-      assert_jsonification_of({'reservation' => @new_reservation.id.to_s})
-      assert_equal @id_to_modify, @new_reservation.id
+      assert_jsonification_of({'reservation' => '12'})
     end
+      
+
+
   end
 
 

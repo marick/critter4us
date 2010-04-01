@@ -1,34 +1,10 @@
 $: << '../..' unless $in_rake
 require 'test/testutil/requires'
-require 'model/requires'
-require 'controller/base'
 
-
-# TODO: Needs fixing to be compatible with caching of exclusions in new database tables.
-
-class SevenAndOneDayExampleOfBlackoutPeriodTests < FreshDatabaseTestCase
-  include Rack::Test::Methods
-  attr_reader :app
-
-  def make_reservation(date, animals, procedures)
-    data = {
-      'firstDate' => date,
-      'lastDate' => date,
-      'times' => [MORNING],
-      'instructor' => 'morin',
-      'course' => 'vm333',
-      'groups' => [ {'procedures' => procedures,
-                      'animals' => animals} ]
-      }.to_json
-    
-    response = post '/json/store_reservation', :data => data
-    JSON[response.body]['reservation'].to_i
-  end
+class SevenAndOneDayExampleOfBlackoutPeriodTests < EndToEndTestCase
 
   def setup
     super
-    @app = Controller.new
-    @app.authorizer = AuthorizeEverything.new
 
     Procedure.random(:name => 'venipuncture', :days_delay => 7)
     Procedure.random(:name => 'physical exam', :days_delay => 1)
