@@ -25,7 +25,11 @@ end
 
 module ReservationHelper
   def time_of_day(reservation)
-    reservation.faked_time_TODO_replace_me
+    result = []
+    result << MORNING if reservation.uses_morning?
+    result << AFTERNOON if reservation.uses_afternoon?
+    result << EVENING if reservation.uses_evening?
+    result.join(', ')
   end
 
   def long_form(reservation)

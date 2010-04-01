@@ -18,36 +18,36 @@ class AnimalsWithPendingReservationsViewTests < FreshDatabaseTestCase
     Animal.random(:name => 'not reserved')
 
     # An animal with a reservation in the past is also of no interest.
-    Reservation.random(:date => Date.new(2008, 1, 1)) do
-      use Animal.random(:name => 'reserved in past')
-      use Procedure.random
-    end
+    Reservation.random(:first_date => Date.new(2008, 1, 1),
+                       :last_date => Date.new(2008, 1, 1),
+                       :animal => Animal.random(:name => 'reserved in past'),
+                       :procedure => Procedure.random)
 
     # Here are two animals with reservations in the future. They're
     # the only ones of interest.
-    @far_future_reservation = Reservation.random(:date => Date.new(2019, 12, 13)) do
-      use Animal.random(:name => 'far future')
-      use Procedure.random
-    end
+    @far_future_reservation = Reservation.random(:first_date => Date.new(2019, 12, 13),
+                                                 :last_date => Date.new(2019, 12, 13),
+                                                 :animal =>  Animal.random(:name => 'far future'),
+                                                 :procedure => Procedure.random)
 
     near_future = Animal.random(:name => 'Near future')
-    @near_future_reservation = Reservation.random(:date => Date.new(2010, 1, 1)) do
-      use near_future
-      use Procedure.random
-    end
+    @near_future_reservation = Reservation.random(:first_date => Date.new(2010, 1, 1),
+                                                  :last_date => Date.new(2010, 1, 1),
+                                                  :animal => near_future,
+                                                  :procedure => Procedure.random)
 
     # Because this reservation is in the past, it should not 
     # show up in the table.
-    Reservation.random(:date => Date.new(2008, 1, 1)) do
-      use near_future
-      use Procedure.random
-    end
+    Reservation.random(:first_date => Date.new(2008, 1, 1),
+                       :last_date => Date.new(2008, 1, 1),
+                       :animal => near_future,
+                       :procedure => Procedure.random)
 
     @view = AnimalsWithPendingReservationsView.new(:animal_source => Animal,
                                                    :date => @proposed_date)
   end
 
-  should_eventually "show animals with pending reservations" do 
+  should "show animals with pending reservations" do 
     html = @view.to_s
     assert { html.include? 'far future' }
     assert { html.include? 'Near future' }
@@ -55,7 +55,7 @@ class AnimalsWithPendingReservationsViewTests < FreshDatabaseTestCase
     deny { html.include? 'reserved in past' }
   end
 
-  should_eventually "sort animals by name" do
+  should "sort animals by name" do
     html = @view.to_s
     assert { html.index("far future") < html.index("Near future") }
   end
