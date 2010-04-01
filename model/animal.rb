@@ -35,16 +35,16 @@ class Animal < Sequel::Model
   end
 
   def dates_used_after_beginning_of(date)
-    reservations_pending_as_of(date).collect { | r | r.faked_date_TODO_replace_me }
+    reservations_pending_as_of(date).collect { | r | r.last_date }
   end
 
   def reservations_pending_as_of(date)
     uses.find_all { | u | 
-      u.reservation.faked_date_TODO_replace_me >= date
+      u.reservation.last_date >= date
     }.collect { | u | 
       u.reservation 
     }.uniq.sort { |a, b |
-      -(a.faked_date_TODO_replace_me <=> b.faked_date_TODO_replace_me)
+      -(a.last_date <=> b.last_date)
     }
   end
 

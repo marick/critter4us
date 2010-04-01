@@ -67,7 +67,7 @@ class AnimalTests < FreshDatabaseTestCase
     context "an animal's pending reservations" do 
       setup do 
         @animal = animal = Animal.random
-        @reservation = Reservation.random(:first_date => Date.new(2009, 12, 3),
+        @reservation = Reservation.random(:first_date => Date.new(2009, 12, 2),
                                           :last_date => Date.new(2009, 12, 3),
                                           :animal => animal,
                                           :procedure => Procedure.random)
@@ -77,6 +77,10 @@ class AnimalTests < FreshDatabaseTestCase
         assert_equal([], @animal.reservations_pending_as_of(Date.new(2009,12,4)))
         assert_equal([@reservation],
                      @animal.reservations_pending_as_of(Date.new(2009,12,3)))
+        assert_equal([@reservation],
+                     @animal.reservations_pending_as_of(Date.new(2009,12,2)))
+        assert_equal([@reservation],
+                     @animal.reservations_pending_as_of(Date.new(2009,12,1)))
       end
 
       should ", alternately, be returned in the form of dates" do
