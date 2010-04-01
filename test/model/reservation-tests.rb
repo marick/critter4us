@@ -4,6 +4,13 @@ require 'model/requires'
 
 class ReservationTests < FreshDatabaseTestCase
 
+  should "answer if reservation uses particular times of day" do 
+    reservation = Reservation.random(:times => TimeSet.new(MORNING, AFTERNOON))
+    assert { reservation.uses_morning? } 
+    assert { reservation.uses_afternoon? } 
+    deny { reservation.uses_evening? } 
+  end
+
   should "have a class-removal method" do 
     reservation = Reservation.random(:instructor => 'marge',
                                      :animal => Animal.random(:name => 'animal'),

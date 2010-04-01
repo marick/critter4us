@@ -63,6 +63,10 @@ class Reservation < Sequel::Model
     TimeSet.from_bits(time_bits)
   end
 
+  def uses_morning?; times.include?(MORNING); end
+  def uses_afternoon?; times.include?(AFTERNOON); end
+  def uses_evening?; times.include?(EVENING); end
+
   def timeslice
     Timeslice.new(first_date, last_date, times)
   end
