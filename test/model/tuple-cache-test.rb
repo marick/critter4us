@@ -3,17 +3,19 @@ require 'test/testutil/requires'
 require 'model/requires'
 
 # TODO: Many of these tests test directly facts that are also tested
-# by QueryMaker tests. If you change a test in this file, put into
-# mock format and double-check that the facts are tested in the other
-# class's tests.
+# by QueryMaker tests. For simplicity, the tests should not check edge
+# cases. If you modify tests that do, move them into the QueryMaker
+# tests.
+
 
 class TupleCacheTests < FreshDatabaseTestCase
   def setup
     super
 
     @date = Date.new(2008,1,2)
+    @timeset = TimeSet.new(MORNING)
     @reservation = Reservation.random
-    @timeslice = Timeslice.new(@date, @date, TimeSet.new(MORNING))
+    @timeslice = Timeslice.new(@date, @date, @timeset)
     @tuple_cache = TupleCache.new
   end
 
@@ -28,6 +30,28 @@ class TupleCacheTests < FreshDatabaseTestCase
 
   def procedure_named?(array, name)
     matching_key_value?(array, :procedure_name, name)
+  end
+
+  context "finding which animals are in use" do
+    setup do
+      insert_tuple(:excluded_because_in_use,
+                   :animal_id => Animal.random(:name => "betsy").id,
+                   :first_date => @timeslice.first_date, :last_date => @timeslice.last_date,
+                   :time_bits => @timeslice.time_bits,
+                   :reservation_id => @reservation.id)
+      @actual = @tuple_cache.animals_in_use(@timeslice)
+    end
+
+    should "be discoverable" do
+      assert_equal('betsy', @actual[0][:animal_name])
+      assert_equal(@reservation.id, @actual[0][:reservation_id])
+    end
+
+    should "be cached" do
+      DB[:excluded_because_in_use].delete
+      assert { @tuple_cache.animals_in_use(@timeslice).count > 0 }
+    end
+
   end
 
 
