@@ -1,3 +1,5 @@
+require 'assert2/xhtml'
+
 class EndToEndTestCase
 
   def make_reservation(date, animals, procedures)

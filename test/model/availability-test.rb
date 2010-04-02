@@ -193,7 +193,7 @@ class AvailabilityTests < FreshDatabaseTestCase
         @tuple_cache.should_receive(:animals_still_working_hard_on).once.
                      with(@timeslice.first_date).
                      and_return([{:animal_name => 'working betsy'}])
-        @tuple_cache.should_receive(:animals_ever_taken_out_of_service).once.
+        @tuple_cache.should_receive(:animals_ever_out_of_service).once.
                      and_return([{:animal_name => 'out-of-service jake'}])
       }
       assert_equal(["...animals", "...other...", "some..."], @result)

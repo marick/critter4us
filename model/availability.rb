@@ -70,13 +70,13 @@ class Availability
   def animals_that_can_be_removed_from_service
     date = @timeslice.first_date
     raw_data = [@tuple_cache.animals_still_working_hard_on(date),
-                @tuple_cache.animals_ever_taken_out_of_service,
+                @tuple_cache.animals_ever_out_of_service,
                 @tuple_cache.all_animals]
-    animals_still_working_hard, animals_ever_taken_out_of_service, all_animals = 
+    animals_still_working_hard, animals_ever_out_of_service, all_animals = 
       raw_data.collect { | tuples | 
          @reshaper.tuples_to_presentable_array(tuples, :animal_name) 
       }
-    @reshaper.presentable(all_animals - animals_still_working_hard - animals_ever_taken_out_of_service)
+    @reshaper.presentable(all_animals - animals_still_working_hard - animals_ever_out_of_service)
   end
 
   def animals_prohibited_for_this_timeslice
