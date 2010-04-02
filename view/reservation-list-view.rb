@@ -45,12 +45,12 @@ class ReservationListView < Erector::Widget
     end
   end
 
-  def sorted_reservations  # TODO: name should say it's most recent first 
+  def sorted_reservations
     @reservations.sort { |a, b|
-      if a.faked_date_TODO_replace_me != b.faked_date_TODO_replace_me
-        -(a.faked_date_TODO_replace_me <=> b.faked_date_TODO_replace_me) 
+      if a.first_date != b.first_date
+        -(a.first_date <=> b.first_date) 
       else
-        -(COMPARABLE_TIME(a.faked_time_TODO_replace_me) <=> COMPARABLE_TIME(b.faked_time_TODO_replace_me))
+        -(a.times <=> b.times)
       end
     }
   end

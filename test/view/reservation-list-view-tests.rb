@@ -7,17 +7,24 @@ require 'assert2/xhtml'
 class ReservationViewTests < FreshDatabaseTestCase
   include ViewHelper
 
-  should_eventually "sort reservations" do
-    earlier = Reservation.random(:date => Date.new(2008, 8, 8))
-    afternoon = Reservation.random(:date => Date.new(2009, 9, 9),
-                                   :time => AFTERNOON)
-    morning = Reservation.random(:date => Date.new(2009, 9, 9),
-                                 :time => MORNING)
-    evening = Reservation.random(:date => Date.new(2009, 9, 9),
-                                 :time => EVENING)
+  should "sort reservations" do
+    earlier = Reservation.random(:first_date => Date.new(2008, 8, 8),
+                                 :last_date => Date.new(2010, 10, 10))
+
+    afternoon = Reservation.random(:first_date => Date.new(2009, 9, 9),
+                                   :last_date => Date.new(2009, 9, 19),
+                                   :times => TimeSet.new(AFTERNOON))
+
+    morning = Reservation.random(:first_date => Date.new(2009, 9, 9),
+                                 :last_date => Date.new(2009, 9, 12),
+                                 :times => TimeSet.new(MORNING))
+
+    evening = Reservation.random(:first_date => Date.new(2009, 9, 9),
+                                 :last_date => Date.new(2009, 9, 9),
+                                 :times => TimeSet.new(EVENING))
 
     view = ReservationListView.new(:reservations => [afternoon, earlier, evening, morning])
-    assert { [evening, afternoon, morning, earlier] == view.sorted_reservations }
+    assert_equal([evening, afternoon, morning, earlier], view.sorted_reservations)
   end
 
   should_eventually "display contents from each reservation" do
