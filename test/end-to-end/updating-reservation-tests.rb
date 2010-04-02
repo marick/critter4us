@@ -24,16 +24,16 @@ class UpdatingReservationTests < EndToEndTestCase
                       'animals' => %w{bossie} } ]
     }.to_json
     
-    @response = post('/json/modify_reservation', :reservationID => @id.to_s, :data => data)
+    post('/json/modify_reservation', :reservationID => @id.to_s, :data => data)
   end
 
   should "not change id" do
-    assert_equal(reservation_id(@response), @id)
+    assert_equal(reservation_id(last_response), @id)
   end
 
   should "update the reservation for further requests" do 
-    response = get("/json/reservation/#{@id}")
-    actual = JSON(response.body)
+    get("/json/reservation/#{@id}")
+    actual = JSON(last_response.body)
 
     assert_equal([ {'animals' => %w{bossie}, 'procedures' => %w{physical} } ], 
                    actual["groups"])
@@ -44,14 +44,13 @@ class UpdatingReservationTests < EndToEndTestCase
                  actual['timeSensitiveExclusions'])
   end
 
-
   should "update exclusions for other dates" do 
-    response = get("/json/animals_and_procedures_blob",
+    get("/json/animals_and_procedures_blob",
                    :timeslice => {
                      'firstDate' => '2000-10-10',
                      'lastDate' => '2000-10-11',
                      'times' => ['morning']}.to_json)
-    actual = JSON(response.body)
+    actual = JSON(last_response.body)
 
     # Bossie can't be used for physical because she's in the blackout period.
     # However, she can be used for venipuncture because the request is for a different
@@ -59,5 +58,4 @@ class UpdatingReservationTests < EndToEndTestCase
     assert_equal({'physical' => ['bossie'], 'venipuncture' => []},
                  actual['timeSensitiveExclusions'])
   end
-
 end

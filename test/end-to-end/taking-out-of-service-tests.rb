@@ -17,23 +17,23 @@ class TakingOutOfServiceTestCase < EndToEndTestCase
   end
 
   def get_animals_that_can_be_taken_out_of_service
-    response = get('/json/animals_that_can_be_taken_out_of_service',
+    get('/json/animals_that_can_be_taken_out_of_service',
                    :date => '2009-01-02')
 
-    assert_equal(['bossie'], unjsonify(response)['unused animals'])
+    assert_equal(['bossie'], unjsonify(last_response)['unused animals'])
   end
 
   def get_animals_with_pending_reservations
-    response = get('/animals_with_pending_reservations', :date => '2009-01-02')
-    assert_match(/staggers/, response.body)
-    assert_match(/veinie/, response.body)
-    assert_xhtml(response.body) do 
+    get('/animals_with_pending_reservations', :date => '2009-01-02')
+    assert_match(/staggers/, last_response.body)
+    assert_match(/veinie/, last_response.body)
+    assert_xhtml(last_response.body) do 
       a('2010-12-12')
     end
   end  
 
   def post_take_animals_out_of_service
-    response = post('/json/take_animals_out_of_service', 
+    post('/json/take_animals_out_of_service', 
                     {:data => {
                         :animals => ['bossie'],
                         :date => '2009-06-06'
@@ -41,23 +41,23 @@ class TakingOutOfServiceTestCase < EndToEndTestCase
   end
 
   def check_if_animal_in_service_before_out_of_service_date
-    response = get('/json/animals_and_procedures_blob',
+    get('/json/animals_and_procedures_blob',
                    :timeslice => {
                      :firstDate => '2009-02-02', 
                      :lastDate => '2009-02-02',
                      :times => ['morning']
                    }.to_json)
-    assert_equal(["bossie", "staggers", "veinie"], unjsonify(response)['animals'])
+    assert_equal(["bossie", "staggers", "veinie"], unjsonify(last_response)['animals'])
   end
 
   def check_if_animal_out_of_service_afterwards
-    response = get('/json/animals_and_procedures_blob',
+    get('/json/animals_and_procedures_blob',
                    :timeslice => {
                      :firstDate => '2009-06-01', 
                      :lastDate => '2009-06-06',
                      :times => ['morning', 'evening']
                    }.to_json)
-    assert_equal(["staggers", "veinie"], unjsonify(response)['animals'])
+    assert_equal(["staggers", "veinie"], unjsonify(last_response)['animals'])
   end
   
 
