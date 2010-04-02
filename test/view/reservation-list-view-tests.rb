@@ -46,7 +46,7 @@ class ReservationViewTests < FreshDatabaseTestCase
     output = ReservationListView.new(:reservations => [reservation]).to_s
     assert { r[reservation.instructor] =~ output }
     assert { r[reservation.course] =~ output }
-    assert { r[reservation.faked_date_TODO_replace_me.to_s] =~ output }
+    assert { r[reservation.date_text] =~ output }
     assert { r['afternoon'] =~ output }
     assert { r[reservation.uses[0].animal.name] =~ output }
     assert { r[reservation.uses[0].procedure.name] =~ output }

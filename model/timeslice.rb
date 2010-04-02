@@ -12,11 +12,11 @@ Timeslice = Struct.new(:first_date, :last_date, :times) do
     times.bits
   end
 
-  def faked_date_TODO_replace_me
-    first_date
-  end
-
-  def faked_time_TODO_replace_me
-    times.to_a.first
+  def date_text
+    if (first_date != last_date)
+      "#{first_date.to_s} to #{last_date.to_s}"
+    else
+      first_date.to_s
+    end
   end
 end

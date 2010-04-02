@@ -33,7 +33,7 @@ module ReservationHelper
   end
 
   def long_form(reservation)
-    text "Reservation for the #{time_of_day(reservation)} of #{reservation.faked_date_TODO_replace_me},"
+    text "Reservation for the #{time_of_day(reservation)} of #{reservation.date_text},"
     text " made by "
     a "#{reservation.instructor}@illinois.edu",
     :href=>"mailto:#{reservation.instructor}@illinois.edu"

@@ -9,13 +9,8 @@ class ReservationDatesCell < Erector::Widget
   end
 
   def linky(reservation)
-    as_shown = if (reservation.first_date != reservation.last_date)
-                 "#{reservation.first_date.to_s} to #{reservation.last_date.to_s}"
-               else
-                 reservation.first_date.to_s
-               end
     erector { 
-        a(as_shown, 
+        a(reservation.date_text, 
           :href => "reservation/#{reservation.id}",
           :target => "_blank")
     }

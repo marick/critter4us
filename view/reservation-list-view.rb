@@ -13,7 +13,7 @@ class ReservationListView < Erector::Widget
         table(TableStyle) do 
           sorted_reservations.each do | r | 
             tr do
-              td(:style => 'width: 7em;') { text r.faked_date_TODO_replace_me.to_s }
+              td(:style => 'width: 7em;') { text r.date_text }
               td { text time_of_day(r) }
               td { a "#{r.instructor}@illinois.edu",
                 :href=>"mailto:#{r.instructor}@illinois.edu" }

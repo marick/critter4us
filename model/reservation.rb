@@ -71,15 +71,11 @@ class Reservation < Sequel::Model
     Timeslice.new(first_date, last_date, times)
   end
 
+  def date_text
+    timeslice.date_text
+  end
+
   # Self-description and test
-  def faked_time_TODO_replace_me
-    timeslice.faked_time_TODO_replace_me
-  end
-
-  def faked_date_TODO_replace_me
-    timeslice.faked_date_TODO_replace_me
-  end
-
   def self.random(overrides = {}, &block)
     defaults = {
       :first_date => Date.new(2009, 7, 23),
