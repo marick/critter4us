@@ -11,6 +11,7 @@ class Reservation < Sequel::Model
 
   def before_destroy
     groups.each { | group | group.destroy }
+    TuplePublisher.new.remove_reservation_exclusions(self.id)
   end
 
   def self.create_with_groups(data)

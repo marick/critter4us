@@ -47,6 +47,20 @@ class ReservationTests < FreshDatabaseTestCase
     assert { Reservation[:instructor => 'saveme'] }
   end
 
+  should "remove entries from cache tables" do
+    reservation = Reservation.random(:instructor => 'marge',
+                                     :animal => Animal.random(:name => 'animal'),
+                                     :procedure => Procedure.random(:name => 'procedure',
+                                                                    :days_delay => 30))
+    TuplePublisher.new.note_reservation_exclusions(reservation)
+    assert { DB[:excluded_because_in_use].count > 0 }
+    assert { DB[:excluded_because_of_blackout_period].count > 0 }
+
+    reservation.destroy
+    assert { DB[:excluded_because_in_use].count == 0 }
+    assert { DB[:excluded_because_of_blackout_period].count == 0 }
+  end
+
   should "produce a sorted, uniquified list of kinds in use that are relevant to procedure descriptions" do
     Procedure.random(:name => 'procedure')
     flicka = Animal.random(:name => 'flicka', :kind => 'mare', :procedure_description_kind => 'equine')
