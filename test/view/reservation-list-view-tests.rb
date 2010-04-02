@@ -27,7 +27,7 @@ class ReservationViewTests < FreshDatabaseTestCase
     assert_equal([evening, afternoon, morning, earlier], view.sorted_reservations)
   end
 
-  should_eventually "display contents from each reservation" do
+  should "display contents from each reservation" do
     first = Reservation.random(:course => 'v=m=1')
     second = Reservation.random(:course => 'v=m=2')
 
@@ -36,11 +36,10 @@ class ReservationViewTests < FreshDatabaseTestCase
     assert { /v=m=2/ =~ output }
   end
 
-  should_eventually "display entirety of reservation" do
-    reservation = Reservation.random(:time => AFTERNOON) do
-      use Animal.random
-      use Procedure.random
-    end
+  should "display entirety of reservation" do
+    reservation = Reservation.random(:times => TimeSet.new(AFTERNOON),
+                                     :animal => Animal.random,
+                                     :procedure => Procedure.random)
 
     r = lambda { | string | Regexp.new(Regexp.escape(string)) }
 
@@ -53,14 +52,14 @@ class ReservationViewTests < FreshDatabaseTestCase
     assert { r[reservation.uses[0].procedure.name] =~ output }
   end
 
-  should_eventually "contain well-formed delete button" do
+  should "contain well-formed delete button" do
     reservation = Reservation.random(:course => 'v=m=1')
 
     output = ReservationListView.new(:reservations => [reservation]).to_s
     assert { output.include? delete_button("reservation/#{reservation.id}") } 
   end
 
-  should_eventually "contain well-formed edit button" do
+  should "contain well-formed edit button" do
     reservation = Reservation.random
 
     output = ReservationListView.new(:reservations => [reservation]).to_s
@@ -72,7 +71,7 @@ class ReservationViewTests < FreshDatabaseTestCase
     end
   end
 
-  should_eventually "contain well-formed copy button" do
+  should "contain well-formed copy button" do
     reservation = Reservation.random
 
     output = ReservationListView.new(:reservations => [reservation]).to_s
@@ -84,7 +83,7 @@ class ReservationViewTests < FreshDatabaseTestCase
     end
   end
 
-  should_eventually "contain a link to the reservation view" do
+  should "contain a link to the reservation view" do
     reservation = Reservation.random
 
     output = ReservationListView.new(:reservations => [reservation]).to_s
