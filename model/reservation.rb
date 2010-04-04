@@ -79,11 +79,11 @@ class Reservation < Sequel::Model
   # Self-description and test
   def self.random(overrides = {}, &block)
     defaults = {
-      :first_date => Date.new(2009, 7, 23),
-      :last_date => Date.new(2009, 7, 23),
+      :timeslice => Timeslice.new(Date.new(2009, 7, 23),
+                                  Date.new(2009, 7, 23),
+                                  TimeSet.new),
       :course => 'vm333',
       :instructor => 'morin',
-      :times => TimeSet.new
     }
 
     animal = overrides.delete(:animal)
@@ -103,12 +103,15 @@ class Reservation < Sequel::Model
     ReservationUpdater.update(self, data)
   end
 
+  # TODO: This should be in externalizer.
   def to_hash
     {:instructor => instructor,
       :course => course,
-      :firstDate => first_date,
-      :lastDate => last_date,
-      :times => times,
+      :timeslice => { 
+        :firstDate => first_date,
+        :lastDate => last_date,
+        :times => times.to_a
+      },
       :groups => groups,
       :id => pk.to_s
     }

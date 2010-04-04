@@ -10,9 +10,9 @@ class ReservationViewTests < FreshDatabaseTestCase
     expected_morning = "morning"
     expected_instructor = "d-morin"
     expected_course = "vm333"
-    reservation = Reservation.random(:first_date => expected_date,
-                                     :last_date => expected_date,
-                                     :times => TimeSet.new(MORNING),
+    reservation = Reservation.random(:timeslice => Timeslice.new(expected_date,
+                                                                 expected_date,
+                                                                 TimeSet.new(MORNING)),
                                      :instructor => expected_instructor,
                                      :course => expected_course)
     actual = ReservationView.new(:reservation => reservation).to_s
@@ -23,16 +23,16 @@ class ReservationViewTests < FreshDatabaseTestCase
   end
 
   should  "know how to display time of day" do
-    morning = Reservation.random(:times => TimeSet.new(MORNING))
+    morning = Reservation.random(:timeslice => Timeslice.random(:times => [MORNING]))
     morning_view = ReservationView.new(:reservation => morning)
     
-    afternoon = Reservation.random(:times => TimeSet.new(MORNING, AFTERNOON))
+    afternoon = Reservation.random(:timeslice => Timeslice.random(:times => [MORNING, AFTERNOON]))
     afternoon_view = ReservationView.new(:reservation => afternoon)
 
-    evening = Reservation.random(:times => TimeSet.new(MORNING, AFTERNOON, EVENING))
+    evening = Reservation.random(:timeslice => Timeslice.random(:times => [MORNING, AFTERNOON, EVENING]))
     evening_view = ReservationView.new(:reservation => evening)
 
-    assert { 'morning' == morning_view.time_of_day(morning) }
+    assert_equal('morning', morning_view.time_of_day(morning))
     assert { 'morning, afternoon' == afternoon_view.time_of_day(afternoon) }
     assert { 'morning, afternoon, evening' == evening_view.time_of_day(evening) }
   end
@@ -49,9 +49,9 @@ class ReservationViewTests < FreshDatabaseTestCase
       @test_data = {
         :instructor => 'marge',
         :course => 'vm333',
-        :first_date => Date.new(2001, 2, 4),
-        :last_date => Date.new(2001, 2, 4),
-        :times => ['afternoon'],
+        :timeslice => Timeslice.new(Date.new(2001, 2, 4),
+                                    Date.new(2001, 2, 4),
+                                    TimeSet.new(AFTERNOON)),
         :groups => [ {:procedures => ['floating', 'venipuncture'],
                        :animals => ['betsy']},
                      {:procedures => ['venipuncture', 'milking'],

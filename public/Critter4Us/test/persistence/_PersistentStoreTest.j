@@ -85,7 +85,7 @@
 				 with: 'reservation data'
 			    andReturn: {'a':'jshash'}];
 
-      [sut.httpMaker shouldReceive: @selector(POSTContentFrom:)
+      [sut.httpMaker shouldReceive: @selector(reservationPOSTContentFrom:)
 			      with: Containing_at_least({'a':'jshash'})
 			 andReturn: 'content'];
 
@@ -157,7 +157,7 @@
       [sut.primitivizer shouldReceive: @selector(convert:)
 				 with: [["some animals"]]
 			    andReturn: ["some converted animals"]];
-      [sut.httpMaker shouldReceive: @selector(POSTContentFrom:)
+      [sut.httpMaker shouldReceive: @selector(genericPOSTContentFrom:)
                               with: Containing_at_least(
 					      {'date' : 'a converted date',
   					       'animals' : ["some converted animals" ] })

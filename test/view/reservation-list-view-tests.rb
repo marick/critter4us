@@ -4,24 +4,25 @@ require 'model/requires'
 require 'view/requires'
 require 'assert2/xhtml'
 
-class ReservationViewTests < FreshDatabaseTestCase
+class ReservationListViewTests < FreshDatabaseTestCase
   include ViewHelper
 
   should "sort reservations" do
-    earlier = Reservation.random(:first_date => Date.new(2008, 8, 8),
-                                 :last_date => Date.new(2010, 10, 10))
+    earlier = Reservation.random(:timeslice => Timeslice.new(Date.new(2008, 8, 8),
+                                                             Date.new(2010, 10, 10),
+                                                             TimeSet.new))
 
-    afternoon = Reservation.random(:first_date => Date.new(2009, 9, 9),
-                                   :last_date => Date.new(2009, 9, 19),
-                                   :times => TimeSet.new(AFTERNOON))
+    afternoon = Reservation.random(:timeslice => Timeslice.new(Date.new(2009, 9, 9),
+                                                               Date.new(2009, 9, 19),
+                                                               TimeSet.new(AFTERNOON)))
 
-    morning = Reservation.random(:first_date => Date.new(2009, 9, 9),
-                                 :last_date => Date.new(2009, 9, 12),
-                                 :times => TimeSet.new(MORNING))
+    morning = Reservation.random(:timeslice => Timeslice.new(Date.new(2009, 9, 9),
+                                                             Date.new(2009, 9, 12),
+                                                             TimeSet.new(MORNING)))
 
-    evening = Reservation.random(:first_date => Date.new(2009, 9, 9),
-                                 :last_date => Date.new(2009, 9, 9),
-                                 :times => TimeSet.new(EVENING))
+    evening = Reservation.random(:timeslice => Timeslice.new(Date.new(2009, 9, 9),
+                                                             Date.new(2009, 9, 9),
+                                                             TimeSet.new(EVENING)))
 
     view = ReservationListView.new(:reservations => [afternoon, earlier, evening, morning])
     assert_equal([evening, afternoon, morning, earlier], view.sorted_reservations)
@@ -37,7 +38,7 @@ class ReservationViewTests < FreshDatabaseTestCase
   end
 
   should "display entirety of reservation" do
-    reservation = Reservation.random(:times => TimeSet.new(AFTERNOON),
+    reservation = Reservation.random(:timeslice => Timeslice.random(:times => [AFTERNOON]),
                                      :animal => Animal.random,
                                      :procedure => Procedure.random)
 

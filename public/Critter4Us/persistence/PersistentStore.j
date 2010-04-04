@@ -63,9 +63,10 @@ var SharedPersistentStore = nil;
 
 - (void) makeReservation: dict
 {
+  [self log: "Make reservation %s", [dict description]];
   var route = [httpMaker POSTReservationRoute];
   var jsData = [primitivizer convert: dict];
-  var content = [httpMaker POSTContentFrom: jsData];
+  var content = [httpMaker reservationPOSTContentFrom: jsData];
 
   var continuation = [continuationMaker continuationNotifying: ReservationStoredNews
 					  afterConvertingWith: [JsonToModelObjectsConverter converter]];
@@ -105,8 +106,8 @@ var SharedPersistentStore = nil;
 - (void) takeAnimals: animals outOfServiceOn: (CPString) date
 {
   var route = [httpMaker POSTAnimalsOutOfServiceRoute];
-  var content = [httpMaker POSTContentFrom: {'date':[primitivizer convert: date],
-                                            'animals': [primitivizer convert: animals]}];
+  var content = [httpMaker genericPOSTContentFrom: {'date':[primitivizer convert: date],
+						    'animals': [primitivizer convert: animals]}];
 
   var continuation = [continuationMaker continuationNotifying: UniversallyIgnoredNews];
   [network postContent: content toRoute: route continuingWith: continuation];

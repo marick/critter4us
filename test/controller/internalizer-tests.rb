@@ -22,9 +22,11 @@ class InternalizerTests < FreshDatabaseTestCase
       "groups" => [ {'animals' => ['josie', 'frank'],
                       'procedures' => ['venipuncture']}],
       "timeslice" => {"firstDate" => "2008-08-08", "lastDate" => "2009-09-09", 
-                      "times" => ["evening"] }.to_json,
+                      "times" => ["evening"] }
     }
+
     actual = Internalizer.new.convert(input)
+
     expected = {
       :stringkey => 'value', 
       :time => MORNING,
@@ -34,12 +36,11 @@ class InternalizerTests < FreshDatabaseTestCase
       :last_date => Date.new(2000,12,31),
       :groups => [{:animals => ['josie', 'frank'],
                     :procedures => ['venipuncture']}],
-      :timeslice => {:first_date => Date.new(2008, 8, 8),
-                     :last_date => Date.new(2009, 9, 9),
-                     :times => TimeSet.new(EVENING) 
-          },
+      :timeslice => Timeslice.new(Date.new(2008, 8, 8),
+                                  Date.new(2009, 9, 9),
+                                  TimeSet.new(EVENING))
     }
-    assert { actual == expected }
+    assert_equal(expected, actual)
   end
 
   should "interpret a 'data' key as pointing to json data to translate" do
@@ -58,6 +59,40 @@ class InternalizerTests < FreshDatabaseTestCase
       :data => {
         :date => Date.new(2009, 12, 12),
         :second => 'second'
+      }
+    }
+
+    assert_equal(expected, actual)
+  end
+
+  should "convert reservation data" do 
+    params = {
+      'reservation_data' => {
+        'timeslice' => {
+          'firstDate' => '2008-08-08', 
+          'lastDate' => '2009-09-09', 
+          'times' => ['morning']
+        },
+        'instructor' => 'morin',
+        'course' => 'vm333',
+        'groups' => [ { 'procedures' => ['p1', 'p2'],
+                        'animals' => ['a1', 'a2']
+                      } ]
+      }.to_json
+    }
+
+    actual = Internalizer.new.convert(params)
+
+    expected = {
+      :reservation_data => {
+        :timeslice => Timeslice.new(Date.new(2008,8,8),
+                                    Date.new(2009,9,9),
+                                    TimeSet.new(MORNING)),
+        :instructor => 'morin',
+        :course => 'vm333',
+        :groups => [ { :procedures => ['p1', 'p2'],
+                       :animals => ['a1', 'a2']
+                      } ]
       }
     }
 

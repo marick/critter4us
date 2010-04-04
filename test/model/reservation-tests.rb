@@ -5,7 +5,9 @@ require 'model/requires'
 class ReservationTests < FreshDatabaseTestCase
 
   should "answer if reservation uses particular times of day" do 
-    reservation = Reservation.random(:times => TimeSet.new(MORNING, AFTERNOON))
+    reservation = Reservation.random(:timeslice => Timeslice.new(Date.new(2001,1,1),
+                                                                 Date.new(2001,1,1),
+                                                                 TimeSet.new(MORNING, AFTERNOON)))
     assert { reservation.uses_morning? } 
     assert { reservation.uses_afternoon? } 
     deny { reservation.uses_evening? } 
@@ -70,9 +72,9 @@ class ReservationTests < FreshDatabaseTestCase
     test_data = {
       :instructor => 'marge',
       :course => 'vm333',
-      :first_date => Date.new(2001, 2, 4),
-      :first_date => Date.new(2001, 2, 5),
-      :times => TimeSet.new(MORNING),
+      :timeslice => Timeslice.new(Date.new(2001, 2, 4),
+                                  Date.new(2001, 2, 5),
+                                  TimeSet.new(MORNING)),
       :groups => [
                   {:procedures => ['procedure'],
                     :animals => ['flicka', 'jake']},
@@ -97,9 +99,8 @@ class ReservationTests < FreshDatabaseTestCase
   should "allow reservation to return a timeslice" do
     first_date = Date.new(2002, 2, 4)
     last_date = Date.new(2002, 2, 5)
-    created = Reservation.random(:first_date => first_date,
-                                 :last_date => last_date,
-                                 :times => TimeSet.new(MORNING, AFTERNOON))
+    created = Reservation.random(:timeslice => Timeslice.new(first_date, last_date,
+                                                             TimeSet.new(MORNING, AFTERNOON)))
     reservation_to_ignore = Reservation.acts_as_empty
     derived_timeslice = created.timeslice
     assert_equal(first_date, derived_timeslice.first_date)
@@ -111,9 +112,9 @@ class ReservationTests < FreshDatabaseTestCase
     test_data = {
       :instructor => 'marge',
       :course => 'vm333',
-      :first_date => Date.new(2001, 2, 4),
-      :last_date => Date.new(2001, 2, 5),
-      :times => TimeSet.new(MORNING),
+      :timeslice => Timeslice.new(Date.new(2001, 2, 4),
+                                  Date.new(2001, 2, 5),
+                                  TimeSet.new(MORNING)),
       :groups => [
                   {:procedures => ['procedure'],
                     :animals => ['flicka', 'jake']},
@@ -123,9 +124,10 @@ class ReservationTests < FreshDatabaseTestCase
     hash = reservation.to_hash
     assert_equal(reservation.instructor, hash[:instructor])
     assert_equal(reservation.course, hash[:course])
-    assert_equal(reservation.first_date, hash[:firstDate])
-    assert_equal(reservation.last_date, hash[:lastDate])
-    assert_equal(reservation.times, hash[:times])
+    assert_equal({ :firstDate => Date.new(2001, 2, 4),
+                   :lastDate => Date.new(2001, 2, 5),
+                   :times => ['morning']},
+                 hash[:timeslice])
     assert_equal(reservation.groups, hash[:groups])
     assert_equal(reservation.id.to_s, hash[:id])
   end
@@ -142,9 +144,9 @@ class ReservationTests < FreshDatabaseTestCase
       old_reservation_data = { 
         :instructor => 'marge',
         :course => 'vm333',
-        :first_date => Date.new(2001, 2, 4),
-        :last_date =>  Date.new(2001, 2, 4),
-        :times => TimeSet.new(EVENING),
+        :timeslice => Timeslice.new(Date.new(2001, 2, 4),
+                                    Date.new(2001, 2, 4),
+                                    TimeSet.new(EVENING)),
         :groups => [ {:procedures => ['floating'],
                        :animals => ['twitter']}]
       }
@@ -153,9 +155,9 @@ class ReservationTests < FreshDatabaseTestCase
       incoming_modification_data = {
         :instructor => 'morin',
         :course => 'cs101',
-        :first_date => Date.new(2011, 11, 11),
-        :last_date => Date.new(2012, 12, 12),
-        :times => TimeSet.new(MORNING, AFTERNOON),
+        :timeslice => Timeslice.new(Date.new(2011, 11, 11),
+                                    Date.new(2012, 12, 12),
+                                    TimeSet.new(MORNING, AFTERNOON)),
         :groups => [ { :procedures => ['venipuncture', 'stroke'],
                        :animals => ['inchy']},
                      { :procedures => ['floating'], 

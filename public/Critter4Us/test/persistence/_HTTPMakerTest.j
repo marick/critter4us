@@ -25,11 +25,18 @@
         equals: [maker POSTReservationRoute]];
 }
 
--(void) test_can_create_content_for_posting_a_reservation
+-(void) test_can_create_content_for_posting_generic_data
 {
   var data = {'aaa':'bbb'};
   [self assert: "data=%7B%22aaa%22%3A%22bbb%22%7D"
-        equals: [maker POSTContentFrom: data]];
+        equals: [maker genericPOSTContentFrom: data]];
+}
+
+-(void) test_can_create_content_for_posting_a_reservation
+{
+  var data = {'aaa':'bbb'};
+  [self assert: "reservation_data=%7B%22aaa%22%3A%22bbb%22%7D"
+        equals: [maker reservationPOSTContentFrom: data]];
 }
 
 -(void) test_can_make_route_to_fetch_reservation_by_id

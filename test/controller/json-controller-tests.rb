@@ -109,16 +109,18 @@ class JsonGenerationTests < FreshDatabaseTestCase
       Animal.random_with_names('twitter', 'jinx')
       Procedure.random_with_names('lick', 'slop')
 
-      @data = {
-        'firstDate' => '2009-02-03',
-        'lastDate' => '2009-02-03',
-        'times' => [MORNING],
+      @reservation_data = {
+        'timeslice' => {
+          'firstDate' => '2009-02-03',
+          'lastDate' => '2009-02-03',
+          'times' => [MORNING]
+        },
         'instructor' => 'morin',
         'course' => 'vm333',
         'groups' => [ {'procedures' => ['lick', 'slop'],
                         'animals' => ['twitter', 'jinx']} ]
       }
-      @jsonified_data = @data.to_json
+      @jsonified_data = @reservation_data.to_json
     end
 
 
@@ -127,13 +129,13 @@ class JsonGenerationTests < FreshDatabaseTestCase
       reservation = flexmock("reservation", :id => 12)
 
       during { 
-        post '/json/store_reservation', :data => @jsonified_data
+        post '/json/store_reservation', :reservation_data => @jsonified_data
       }.behold! {
         @internalizer.should_receive(:convert).once.
-                      with('data' => @jsonified_data).
-                      and_return(:data => @data)
+                      with('reservation_data' => @jsonified_data).
+                      and_return(:reservation_data => @reservation_data)
         @reservation_source.should_receive(:create_with_groups).once.
-                            with(@data).
+                            with(@reservation_data).
                             and_return(reservation)
         @tuple_publisher.should_receive(:note_reservation_exclusions).once.
                          with(reservation)
@@ -144,7 +146,7 @@ class JsonGenerationTests < FreshDatabaseTestCase
     end
 
     should "return the reservation number as a string" do # {footnote 'string'}
-      post '/json/store_reservation', :data => @jsonified_data
+      post '/json/store_reservation', :reservation_data => @jsonified_data
       assert_json_response
       r = Reservation[:first_date => Date.new(2009, 02, 03)]
       assert_jsonification_of({'reservation' => r.id.to_s})
@@ -158,11 +160,11 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
       during {
         post '/json/modify_reservation', :reservationID => "12",
-                                         :data => "json reservation data"
+                                         :reservation_data => "json reservation data"
       }.behold! { 
         @internalizer.should_receive(:convert).once.
-                      with("reservationID" => "12", "data" => "json reservation data").
-                      and_return(:reservationID => 12, :data => "reservation data")
+                      with("reservationID" => "12", "reservation_data" => "json reservation data").
+                      and_return(:reservationID => 12, :reservation_data => "reservation data")
         @reservation_source.should_receive(:[]).once.
                             with(12).
                             and_return(@reservation)

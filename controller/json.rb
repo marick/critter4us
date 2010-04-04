@@ -16,7 +16,7 @@ class Controller
   end
 
   post '/json/store_reservation' do
-    reservation_data = @internalizer.convert(params)[:data]
+    reservation_data = @internalizer.convert(params)[:reservation_data]
     new_reservation = reservation_source.create_with_groups(reservation_data)
     @tuple_publisher.note_reservation_exclusions(new_reservation)
     externalize(reservation_id(new_reservation))
@@ -25,7 +25,7 @@ class Controller
   post '/json/modify_reservation' do
     internal = @internalizer.convert(params)
     id = internal[:reservationID]
-    reservation_data = internal[:data]
+    reservation_data = internal[:reservation_data]
     updated_reservation = reservation_source[id]
     updated_reservation.update_with_groups(reservation_data)
     @tuple_publisher.remove_reservation_exclusions(updated_reservation.id)

@@ -4,57 +4,29 @@ require 'model/requires'
 
 class ReservationMakerTests < FreshDatabaseTestCase
 
-  context "setting of time fields directly" do 
-    setup do 
-      @constant = {
-        :instructor => 'marge',
-        :course => 'vm333',
-        :first_date => Date.new(2001, 1, 1),
-        :last_date => Date.new(2001, 1, 1),
-        :groups => [
-                    {:procedures => ['procedure'],
-                      :animals => ['animal']}
-                   ]
-      }
-    end
-
-    should "allow all to be set" do
-      test_data = @constant.merge(:morning => true, :afternoon => true, :evening => true)
-      reservation = ReservationMaker.build_from(test_data)
-      assert { reservation.times == TimeSet.new(MORNING, AFTERNOON, EVENING) }
-    end
-
-    should "allow all to be un-set" do
-      test_data = @constant.merge(:morning => false, :afternoon => false, :evening => false)
-      reservation = ReservationMaker.build_from(test_data)
-      assert { reservation.times == TimeSet.new }
-    end
-
-    should "treat missing as false" do
-      reservation = ReservationMaker.build_from(@constant)
-      assert { reservation.times == TimeSet.new }
-    end
-  end
-
   context "setting of time fields with a set" do
     setup do 
       @constant = {
         :instructor => 'marge',
         :course => 'vm333',
-        :first_date => Date.new(2001, 1, 1),
-        :last_date => Date.new(2001, 1, 1),
         :groups => []
       }
     end
 
     should "allow all to be set" do
-      test_data = @constant.merge(:times => TimeSet.new(MORNING, AFTERNOON, EVENING))
+      test_data = @constant.merge(:timeslice => 
+                                  Timeslice.new(Date.new(2001, 1, 1),
+                                                Date.new(2001, 1, 1),
+                                                TimeSet.new(MORNING, AFTERNOON, EVENING)))
       reservation = ReservationMaker.build_from(test_data)
       assert { reservation.times == TimeSet.new(MORNING, AFTERNOON, EVENING) }
     end
 
     should "allow all to be un-set" do
-      test_data = @constant.merge(:times => TimeSet.new)
+      test_data = @constant.merge(:timeslice => 
+                                  Timeslice.new(Date.new(2001, 1, 1),
+                                                Date.new(2001, 1, 1),
+                                                TimeSet.new))
       reservation = ReservationMaker.build_from(test_data)
       assert { reservation.times == TimeSet.new }
     end
@@ -68,9 +40,8 @@ class ReservationMakerTests < FreshDatabaseTestCase
       test_data = {
         :instructor => 'marge',
         :course => 'vm333',
-        :first_date => Date.new(2001, 1, 1),
-        :last_date => Date.new(2001, 1, 1),
-        :times => TimeSet.new(MORNING),
+        :timeslice => Timeslice.new(Date.new(2001, 1, 1), Date.new(2001, 1, 1),
+                                    TimeSet.new(MORNING)),
         :groups => [
                     {:procedures => ['procedure'],
                       :animals => ['animal']}
@@ -101,9 +72,9 @@ class ReservationMakerTests < FreshDatabaseTestCase
       test_data = {
         :instructor => 'marge',
         :course => 'vm333',
-        :first_date => Date.new(2001, 2, 4),
-        :first_date => Date.new(2001, 2, 4),
-        :times => TimeSet.new(AFTERNOON),
+        :timeslice => Timeslice.new(Date.new(2001, 2, 4),
+                                    Date.new(2001, 2, 4),
+                                    TimeSet.new(AFTERNOON)),
         :groups => [ {:procedures => ['p1', 'p2'],
                        :animals => ['a1', 'a2']} ]
       }
@@ -147,9 +118,8 @@ class ReservationMakerTests < FreshDatabaseTestCase
       test_data = {
         :instructor => 'marge',
         :course => 'vm333',
-        :first_date => Date.new(2001, 2, 4),
-        :last_date => Date.new(2001, 2, 4),
-        :times => TimeSet.new(EVENING),
+        :timeslice => Timeslice.new(Date.new(2001, 2, 4), Date.new(2001, 2, 4),
+                                    TimeSet.new(EVENING)),
         :groups => [ {:procedures => ['p1', 'p2'],
                        :animals => ['a1']},
                      {:procedures => ['p3'],

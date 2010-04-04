@@ -26,6 +26,10 @@ class ReservationBase
   def partition_reservation_data(data)
     data = data.dup
     data_for_each_group = data.delete(:groups) || []
+    timeslice = data.delete(:timeslice)
+    data[:first_date] = timeslice.first_date
+    data[:last_date] = timeslice.last_date
+    data[:times] = timeslice.times
     make_timeset_into_hash(data)
     make_hash_into_bitstring(data)
     [data, data_for_each_group]
@@ -57,6 +61,3 @@ class ReservationBase
 
 
 end
-
-
-

@@ -9,9 +9,13 @@ class Internalizer
       :date => @date_parser, :firstDate => @date_parser, :lastDate => @date_parser,
       # Todo: change next key to "json_data"
       :data => @convert_unjsonified_val,
-      :timeslice => @convert_unjsonified_val,
+      :timeslice => lambda { | hash | 
+        better = convert(hash)
+        Timeslice.new(better[:first_date], better[:last_date], better[:times])
+      },
       :groups => lambda { | val | val.collect { | group | symbol_keys(group) } },
       :times => lambda { | val | TimeSet.new(val) },
+      :reservation_data => lambda { | val | convert_reservation_data(val) }
     }
     @renamings = { :firstDate => :first_date, :lastDate => :last_date }
   end
@@ -34,6 +38,10 @@ class Internalizer
     else
       Reservation.acts_as_empty
     end
+  end
+
+  def convert_reservation_data(json)
+    convert(JSON[json])
   end
 
   def make_timeslice(json)

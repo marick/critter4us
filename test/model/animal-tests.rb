@@ -67,8 +67,9 @@ class AnimalTests < FreshDatabaseTestCase
     context "an animal's pending reservations" do 
       setup do 
         @animal = animal = Animal.random
-        @reservation = Reservation.random(:first_date => Date.new(2009, 12, 2),
-                                          :last_date => Date.new(2009, 12, 3),
+        @reservation = Reservation.random(:timeslice => Timeslice.new(Date.new(2009, 12, 2),
+                                                                      Date.new(2009, 12, 3),
+                                                                      TimeSet.new),
                                           :animal => animal,
                                           :procedure => Procedure.random)
       end
@@ -91,16 +92,19 @@ class AnimalTests < FreshDatabaseTestCase
 
       context "multiple reservations" do
         setup do
-          @third = Reservation.random(:first_date => Date.new(2010, 12, 3),
-                                      :last_date => Date.new(2010, 12, 3),
+          @third = Reservation.random(:timeslice => Timeslice.new(Date.new(2010, 12, 3),
+                                                                  Date.new(2010, 12, 3),
+                                                                  TimeSet.new),
                                       :animal => @animal,
                                       :procedure => Procedure.random)
-          @first = Reservation.random(:first_date => Date.new(2020, 12, 3),
-                                      :last_date => Date.new(2020, 12, 3),
+          @first = Reservation.random(:timeslice => Timeslice.new(Date.new(2020, 12, 3),
+                                                                  Date.new(2020, 12, 3),
+                                                                  TimeSet.new),
                                       :animal => @animal,
                                       :procedure => Procedure.random)
-          @second = Reservation.random(:first_date => Date.new(2011, 12, 3),
-                                       :last_date => Date.new(2011, 12, 3),
+          @second = Reservation.random(:timeslice => Timeslice.new(Date.new(2011, 12, 3),
+                                                                   Date.new(2011, 12, 3),
+                                                                   TimeSet.new),
                                        :animal => @animal,
                                        :procedure => Procedure.random)
         end

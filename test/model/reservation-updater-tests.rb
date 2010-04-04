@@ -9,9 +9,9 @@ class ReservationUpdaterTests < FreshDatabaseTestCase
     setup do 
       @reservation = Reservation.random(:instructor => 'marge',
                                         :course => 'vm333',
-                                        :first_date => Date.new(2001, 1, 1),
-                                        :last_date => Date.new(2001, 2, 2),
-                                        :times => TimeSet.new(MORNING),
+                                        :timeslice => Timeslice.new(Date.new(2001, 1, 1),
+                                                                    Date.new(2001, 2, 2),
+                                                                    TimeSet.new(MORNING)),
                                         :animal => Animal.random(:name => 'animal'),
                                         :procedure => Procedure.random(:name => 'procedure'))
       @betsy = Animal.random(:name => 'betsy')
@@ -25,9 +25,9 @@ class ReservationUpdaterTests < FreshDatabaseTestCase
       @new_data = {
         :instructor => 'not marge',
         :course => 'not vm333',
-        :first_date => Date.new(2012, 11, 11),
-        :last_date => Date.new(2012, 12, 12),
-        :times => TimeSet.new(EVENING),
+        :timeslice => Timeslice.new(Date.new(2012, 11, 11),
+                                    Date.new(2012, 12, 12),
+                                    TimeSet.new(EVENING)),
         :groups => [ {:procedures => ['venipuncture'],
                        :animals => ['betsy']},
                      {:procedures => ['floating'],
@@ -60,8 +60,8 @@ class ReservationUpdaterTests < FreshDatabaseTestCase
       new_reservation = Reservation[@reservation.pk]
       assert { new_reservation.instructor == @new_data[:instructor] }
       assert { new_reservation.course == @new_data[:course] }
-      assert { new_reservation.first_date == @new_data[:first_date]}
-      assert { new_reservation.last_date == @new_data[:last_date]}
+      assert { new_reservation.first_date == @new_data[:timeslice][:first_date]}
+      assert { new_reservation.last_date == @new_data[:timeslice][:last_date]}
       assert { new_reservation.times == TimeSet.new(EVENING) }
     end
   end

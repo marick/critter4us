@@ -144,16 +144,18 @@ class DetailsAboutTimingTests < FreshDatabaseTestCase
     procedure = Procedure.random(:name => 'procedure', :days_delay => delay)
 
     data = {
-      'firstDate' => "2009-12-#{date}",
-      'lastDate' => "2009-12-#{date}",
-      'times' => [time],
+      'timeslice' => {
+        'firstDate' => "2009-12-#{date}",
+        'lastDate' => "2009-12-#{date}",
+        'times' => [time]
+      },
       'instructor' => 'morin',
       'course' => 'vm333',
       'groups' => [ {'procedures' => ['procedure'],
                       'animals' => ['bossie']} ]
       }.to_json
 
-    post '/json/store_reservation', :data => data
+    post '/json/store_reservation', :reservation_data => data
   end
 
 

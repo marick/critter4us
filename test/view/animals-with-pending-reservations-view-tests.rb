@@ -18,28 +18,30 @@ class AnimalsWithPendingReservationsViewTests < FreshDatabaseTestCase
     Animal.random(:name => 'not reserved')
 
     # An animal with a reservation in the past is also of no interest.
-    Reservation.random(:first_date => Date.new(2008, 1, 1),
-                       :last_date => Date.new(2008, 1, 1),
+    Reservation.random(:timeslice => Timeslice.random(:first_date => "2008-01-01",
+                                                      :last_date => "2008-01-01"),
                        :animal => Animal.random(:name => 'reserved in past'),
                        :procedure => Procedure.random)
 
     # Here are two animals with reservations in the future. They're
     # the only ones of interest.
-    @far_future_reservation = Reservation.random(:first_date => Date.new(2019, 12, 13),
-                                                 :last_date => Date.new(2019, 12, 13),
+    @far_future_reservation = Reservation.random(:timeslice => 
+                                                 Timeslice.random(:first_date => '2019-12-13',
+                                                                  :last_date => '2019-12-13'),
                                                  :animal =>  Animal.random(:name => 'far future'),
                                                  :procedure => Procedure.random)
 
     near_future = Animal.random(:name => 'Near future')
-    @near_future_reservation = Reservation.random(:first_date => Date.new(2010, 1, 1),
-                                                  :last_date => Date.new(2010, 1, 1),
+    @near_future_reservation = Reservation.random(:timeslice =>
+                                                  Timeslice.random(:first_date => '2010-01-01',
+                                                                   :last_date => '2010-01-01'),
                                                   :animal => near_future,
                                                   :procedure => Procedure.random)
 
     # Because this reservation is in the past, it should not 
     # show up in the table.
-    Reservation.random(:first_date => Date.new(2008, 1, 1),
-                       :last_date => Date.new(2008, 1, 1),
+    Reservation.random(:timeslice => Timeslice.random(:first_date => '2008-01-01',
+                                                      :last_date => '2008-01-01'),
                        :animal => near_future,
                        :procedure => Procedure.random)
 

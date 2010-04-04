@@ -37,8 +37,16 @@
 -(void) test_identifies_reservation_to_overwrite_when_modifying
 {
   var data = {'aaa':'bbb'};
-  [self assert: "data=%7B%22aaa%22%3A%22bbb%22%7D&reservationID=19"
-        equals: [maker POSTContentFrom: data]];
+  [self assert: "reservation_data=%7B%22aaa%22%3A%22bbb%22%7D&reservationID=19"
+        equals: [maker reservationPOSTContentFrom: data]];
+}
+
+
+-(void) test_generic_post_data_does_not_include_reservation_id
+{
+  var data = {'aaa':'bbb'};
+  [self assert: "data=%7B%22aaa%22%3A%22bbb%22%7D"
+        equals: [maker genericPOSTContentFrom: data]];
 }
 
 

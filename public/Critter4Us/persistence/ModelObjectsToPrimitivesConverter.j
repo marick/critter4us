@@ -30,7 +30,7 @@
   case Timeslice:
     var firstDate = [self convert: cpObject.firstDate];
     var lastDate = [self convert: cpObject.lastDate];
-    var times = [self convert: [cpObject.times allObjects]];
+    var times = [self convert: cpObject.times];
     return {'firstDate': firstDate, 'lastDate': lastDate, 'times': times}; 
   case Time:
     return [cpObject description];

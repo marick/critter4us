@@ -15,16 +15,18 @@ class UpdatingReservationTests < EndToEndTestCase
     @id = make_reservation('2009-08-31', %w{veinie staggers}, %w{venipuncture})
 
     data = {
-      'firstDate' => '2000-10-10',
-      'lastDate' => '2000-10-11',
-      'times' => [AFTERNOON],
+      'timeslice' => {
+        'firstDate' => '2000-10-10',
+        'lastDate' => '2000-10-11',
+        'times' => [AFTERNOON]
+      },
       'instructor' => 'not morin',
       'course' => 'not vm333',
       'groups' => [ {'procedures' => %w{physical},
                       'animals' => %w{bossie} } ]
     }.to_json
     
-    post('/json/modify_reservation', :reservationID => @id.to_s, :data => data)
+    post('/json/modify_reservation', :reservationID => @id.to_s, :reservation_data => data)
   end
 
   should "not change id" do
@@ -38,8 +40,10 @@ class UpdatingReservationTests < EndToEndTestCase
     assert_equal([ {'animals' => %w{bossie}, 'procedures' => %w{physical} } ], 
                    actual["groups"])
     assert_equal('not vm333', actual['course'])
-    assert_equal(['afternoon'], actual['times'])
-    assert_equal("2000-10-10", actual['firstDate'])
+    assert_equal({ 'firstDate' => '2000-10-10',
+                   'lastDate' => '2000-10-11',
+                   'times' => ['afternoon']
+                 }, actual['timeslice'])
     assert_equal({'physical' => ['bossie'], 'venipuncture' => ['bossie']},
                  actual['timeSensitiveExclusions'])
   end

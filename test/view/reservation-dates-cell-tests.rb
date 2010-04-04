@@ -9,8 +9,9 @@ class ReservationDatesCellWidgetTests < FreshDatabaseTestCase
 
   context "single-day reservations" do 
     setup do 
-      @reservation = Reservation.random(:first_date => Date.new(2010, 1, 1),
-                                                   :last_date => Date.new(2010, 1, 1))
+      @reservation = Reservation.random(:timeslice =>
+                                        Timeslice.random(:first_date => '2010-01-01',
+                                                         :last_date => '2010-01-01'))
       @html = ReservationDatesCell.new(:reservations => [@reservation]).to_s
     end
     
@@ -29,8 +30,9 @@ class ReservationDatesCellWidgetTests < FreshDatabaseTestCase
 
   context "multi-day reservations" do 
     setup do 
-      @reservation = Reservation.random(:first_date => Date.new(2019, 12, 13),
-                                                  :last_date => Date.new(2019, 12, 14))
+      @reservation = Reservation.random(:timeslice => 
+                                        Timeslice.random(:first_date => '2019-12-13',
+                                                         :last_date => '2019-12-14'))
       @html = ReservationDatesCell.new(:reservations => [@reservation]).to_s
     end
     

@@ -43,10 +43,20 @@ htmlRoute = function(route)
   return jsonRoute("store_reservation");
 }
 
-- (CPString) POSTContentFrom: (id) jsData
+- (CPString) reservationPOSTContentFrom: jsData
+{
+  return [self POSTContentFrom: jsData keyword: 'reservation_data'];
+}
+
+- (CPString) genericPOSTContentFrom: jsData
+{
+  return [self POSTContentFrom: jsData keyword: 'data'];
+}
+
+- (CPString) POSTContentFrom: (id) jsData keyword: keyword
 {
   var json = [CPString JSONFromObject: jsData];
-  return 'data=' + encodeURIComponent(json);
+  return keyword + '=' + encodeURIComponent(json);
 }
 
 - (CPString) POSTAnimalsOutOfServiceRoute
@@ -88,9 +98,9 @@ htmlRoute = function(route)
   return jsonRoute("modify_reservation");
 }
 
-- (CPString) POSTContentFrom: (id) jsData
+- (CPString) reservationPOSTContentFrom: (id) jsData
 {
-  return [super POSTContentFrom: jsData] + '&reservationID=' + reservationBeingEdited;
+  return [super reservationPOSTContentFrom: jsData] + '&reservationID=' + reservationBeingEdited;
 }
 
 - (CPString) animalsAndProceduresAvailableAtTimeslice: primitivizedTimeslice
