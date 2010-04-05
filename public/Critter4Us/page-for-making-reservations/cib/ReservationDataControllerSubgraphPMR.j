@@ -13,7 +13,8 @@
 
   CPTextField instructorField;
   CPTextField courseField;
-  CPTextField dateField;
+  CPTextField firstDateField;
+  CPTextField lastDateField;
   CPRadio afternoonButton; 
 
   CPButton dateTimeButton;
@@ -44,20 +45,16 @@
 {  
   // TODO: get rid of at least some of thest manifest constants.
 
-  var instructionLabel = [[CPTextField alloc] initWithFrame:CGRectMake(10, 30, 400, 30)];
-  [instructionLabel setStringValue: "Fill in the information, then click the button."];
-  [pageView addSubview: instructionLabel];
-
-
+  var y = 40
   var x = 10;
   var width = 45
-  var courseLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 75, width, 30)];
+  var courseLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, y+5, width, 30)];
   [courseLabel setStringValue: "Course: "];
   [pageView addSubview:courseLabel];
   x += width;
 
   width = 100;
-  courseField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
+  courseField = [[CPTextField alloc] initWithFrame:CGRectMake(x, y, width, 30)];
   [courseField setEditable:YES];
   [courseField setBezeled:YES];
   [pageView addSubview:courseField];
@@ -66,36 +63,42 @@
 
   x += 10;
   width = 90;
-  var instructorLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 75, width, 30)];
+  var instructorLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, y+5, width, 30)];
   [instructorLabel setStringValue: "Instructor NetID: "];
   [pageView addSubview:instructorLabel];
   x += width;
 
   width = 100;
-  instructorField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
+  instructorField = [[CPTextField alloc] initWithFrame:CGRectMake(x, y, width, 30)];
   [instructorField setEditable:YES];
   [instructorField setBezeled:YES];
   [pageView addSubview:instructorField];
   controller.instructorField = instructorField;
   x += width;
 
-  var dateGatheringView = [[CPView alloc] initWithFrame:CGRectMake(x, 40, 330, 100)];
+  var dateGatheringView = [[CPView alloc] initWithFrame:CGRectMake(x, y-30, 370, 100)];
   [self addDateGatheringControlsTo: dateGatheringView];
   [pageView addSubview:dateGatheringView];
   [dateGatheringView setHidden: NO];
   controller.dateGatheringView = dateGatheringView;
 
-  var dateDisplayingView = [[CPView alloc] initWithFrame:CGRectMake(x, 40, 400, 100)];
+  var majorModificationView = [[CPView alloc]
+				initWithFrame:CGRectMake([pageView bounds].size.width - 300,
+							 y, 300, 70)]
+  [self addMajorModificationControlsTo: majorModificationView];
+  [pageView addSubview:majorModificationView];
+  [majorModificationView setHidden: YES];
+  controller.majorModificationView = majorModificationView;
+
+  var dateDisplayingView = [[CPView alloc] initWithFrame:CGRectMake(x, y-30, 450, 100)];
   [self addDateDisplayingControlsTo: dateDisplayingView];
   [pageView addSubview:dateDisplayingView];
   [dateDisplayingView setHidden: YES];
   controller.dateDisplayingView = dateDisplayingView;
 
-  x += 345;
-  var placeForLink = x;
-  width = 160;
+  var placeForLink = x + 280;
 
-  var reserveButton = [[CPButton alloc] initWithFrame:CGRectMake(320, 410, width, 30)];
+  var reserveButton = [[CPButton alloc] initWithFrame:CGRectMake(320, 410, 160, 30)];
   [reserveButton setTitle: "Finish this Reservation"];
   [reserveButton setHidden: YES];
   [pageView addSubview:reserveButton];
@@ -103,17 +106,8 @@
   [reserveButton setTarget: controller];
   [reserveButton setAction: @selector(makeReservation:)];
 
-  width = 80;
-  x = [pageView bounds].size.width - width - 35
-  var restartButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 70, width, 30)];
-  [restartButton setTitle: "Start Over"];
-  [restartButton setHidden: YES];
-  [pageView addSubview:restartButton];
-  controller.restartButton = restartButton;
-  [restartButton setTarget: controller];
-  [restartButton setAction: @selector(abandonReservation:)];
 
-  var resultsView = [[CPView alloc] initWithFrame: CGRectMake(placeForLink,60,500,200)];
+  var resultsView = [[CPView alloc] initWithFrame: CGRectMake(placeForLink,95,500,200)];
   [resultsView setHidden: YES];
   [pageView addSubview: resultsView];
   controller.previousResultsView = resultsView;
@@ -122,7 +116,7 @@
   [resultsView addSubview: webView];
   controller.linkToPreviousResults = webView;
 
-  var copyButton = [[CPButton alloc] initWithFrame: CGRectMake(50, 40, 200, 30)];
+  var copyButton = [[CPButton alloc] initWithFrame: CGRectMake(5, 40, 200, 30)];
   [copyButton setTitle: "Copy this Reservation"];
   [copyButton setTarget: controller];
   [copyButton setAction: @selector(copyPreviousReservation:)];
@@ -132,11 +126,11 @@
   // Temporary for testing
   [instructorField setStringValue: "morin"];
   [courseField setStringValue: "VM333"];
-  [dateField setStringValue: "2009-09-23"];
+  [firstDateField setStringValue: [Timeslice today]];
 
   // TODO: do this with notifications.
-  [courseField setNextKeyView: dateField];
-  [dateField setNextKeyView: afternoonButton];
+  [courseField setNextKeyView: firstDateField];
+  [firstDateField setNextKeyView: afternoonButton];
 
   // Doesn't work.
   //  [theWindow setDefaultButton: goButton];
@@ -144,25 +138,57 @@
 }
 
   
+- (void) addMajorModificationControlsTo: aView
+{
+  x = [aView bounds].size.width - 80 - 20
+  var restartButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 0, 80, 30)];
+  [restartButton setTitle: "Start Over"];
+  [restartButton setHidden: NO];
+  [aView addSubview:restartButton];
+  [restartButton setTarget: controller];
+  [restartButton setAction: @selector(abandonReservation:)];
+
+
+  x -= 80
+  dateTimeButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 35, 160, 30)];
+  [dateTimeButton setTitle: "Change Date or Time"];
+  [dateTimeButton setHidden: NO];
+  [aView addSubview:dateTimeButton];
+  [dateTimeButton setTarget: controller];
+  [dateTimeButton setAction: @selector(startDestructivelyEditingTimeslice:)];
+}
     
 - (void) addDateGatheringControlsTo: aView
 {
   //  [aView setBackgroundColor: [CPColor redColor]];
   
   x = 10;
-  width = 20;
-  var onLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 35, width, 30)];
-  [onLabel setStringValue: "on: "];
-  [aView addSubview:onLabel];
+  width = 60;
+  var firstDateLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 20, width, 30)];
+  [firstDateLabel setStringValue: "first date: "];
+  [aView addSubview:firstDateLabel];
+
+  var lastDateLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 55, width, 30)];
+  [lastDateLabel setStringValue: "final date: "];
+  [aView addSubview:lastDateLabel];
+
   x += width;
 
   width = 100;
-  dateField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 30, width, 30)];
-  [dateField setEditable:YES];
-  [dateField setBezeled:YES];
-  [dateField setStringValue: "2009-"];
-  [aView addSubview:dateField];
-  controller.dateField = dateField;
+  firstDateField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 15, width, 30)];
+  [firstDateField setEditable:YES];
+  [firstDateField setBezeled:YES];
+  [firstDateField setStringValue: "2010-"];
+  [aView addSubview:firstDateField];
+  controller.firstDateField = firstDateField;
+
+  lastDateField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 50, width, 30)];
+  [lastDateField setEditable:YES];
+  [lastDateField setBezeled:YES];
+  [lastDateField setStringValue: ""];
+  [aView addSubview:lastDateField];
+  controller.lastDateField = lastDateField;
+
   x += width;
 
   
@@ -187,16 +213,10 @@
 {
   //  [aView setBackgroundColor: [CPColor redColor]];
 
-  var aLabel = [[CPTextField alloc] initWithFrame:CGRectMake(10, 35, 200, 30)];
+  var aLabel = [[CPTextField alloc] initWithFrame:CGRectMake(10, 35, 500, 30)];
   [aView addSubview:aLabel];
   [aLabel setStringValue: "on the morning of 2009-08-10"];
   controller.dateTimeSummary = aLabel;
-
-  dateTimeButton = [[CPButton alloc] initWithFrame:CGRectMake(200, 30, 160, 30)];
-  [dateTimeButton setTitle: "Change Date or Time"];
-  [aView addSubview:dateTimeButton];
-  [dateTimeButton setTarget: controller];
-  [dateTimeButton setAction: @selector(startDestructivelyEditingDateTime:)];
 }
 
 

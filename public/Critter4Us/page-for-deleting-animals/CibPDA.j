@@ -235,8 +235,7 @@
     dateEntryField = [[CPTextField alloc] initWithFrame:CGRectMake(330, 25, 100, 30)];
     [dateEntryField setEditable:YES];
     [dateEntryField setBezeled:YES];
-    var date = new Date();
-    [dateEntryField setStringValue: [CPString stringWithFormat: "%d-%d-%d", date.getFullYear(), date.getMonth()+1, date.getDate()]];
+    [dateEntryField setStringValue: [Timeslice today]];
   }
   return dateEntryField;
 }
