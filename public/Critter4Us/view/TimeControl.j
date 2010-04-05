@@ -15,26 +15,32 @@
   return self;
 }
 
-- (Time) time
+- (CPArray) times
 {
+  var retval = []
   if ([morningButton state] == CPOnState)
-    return [Time morning];
+    [retval addObject: [Time morning]];
   if ([afternoonButton state] == CPOnState)
-    return [Time afternoon];
+    [retval addObject: [Time afternoon]];
   if ([eveningButton state] == CPOnState)
-    return [Time evening];
+    [retval addObject: [Time evening]];
+  return retval;
 }
 
-- (void) setTime: time
+- (void) setTimes: source
 {
-  if ([time isEqual: [Time morning]])
+  [morningButton setState: CPOffState];
+  [afternoonButton setState: CPOffState];
+  [eveningButton setState: CPOffState];
+  
+  if ([source containsObject: [Time morning]])
     [morningButton setState: CPOnState];
-  if ([time isEqual: [Time afternoon]])
+  if ([source containsObject: [Time afternoon]])
     [afternoonButton setState: CPOnState];
-  if ([time isEqual: [Time evening]])
+  if ([source containsObject: [Time evening]])
     [eveningButton setState: CPOnState];
 
-  //  CPLog("morning: " + [morningButton state] + " afternoon: " + [afternoonButton state] + " evening: " + [eveningButton state]);
+  // CPLog("morning: " + [morningButton state] + " afternoon: " + [afternoonButton state] + " evening: " + [eveningButton state]);
 }
 
 
@@ -42,14 +48,13 @@
 {
   var x = 10;
   var width = 90;
-  morningButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 9, width, 20)];
-  [morningButton setState:CPOnState];
+  morningButton = [[CPCheckBox alloc] initWithFrame: CGRectMake(x, 9, width, 20)];
   [morningButton setTitle:"morning"];
   
-  afternoonButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 29, width, 20) radioGroup:[morningButton radioGroup]];
+  afternoonButton = [[CPCheckBox alloc] initWithFrame: CGRectMake(x, 29, width, 20)];
   [afternoonButton setTitle:"afternoon"];
 
-  eveningButton = [[CPRadio alloc] initWithFrame: CGRectMake(x, 49, width, 20) radioGroup:[morningButton radioGroup]];
+  eveningButton = [[CPCheckBox alloc] initWithFrame: CGRectMake(x, 49, width, 20)];
   [eveningButton setTitle:"evening"];
 
   [self addSubview: morningButton];

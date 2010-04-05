@@ -11,58 +11,35 @@
   sut = [[TimeControl alloc] initAtX: 0 y: 0];
 }
 
-- (void) test_pressing_one_button_turns_others_off
-{
-  [sut.morningButton setState: CPOnState];
-  [sut.afternoonButton setState: CPOffState];
-  [sut.eveningButton setState: CPOffState];
-
-  [sut.afternoonButton setState: CPOnState];
-  [self assert: CPOffState equals: [sut.morningButton state]];
-  [self assert: CPOnState equals: [sut.afternoonButton state]];
-  [self assert: CPOffState equals: [sut.eveningButton state]];
-
-  [sut.eveningButton setState: CPOnState];
-  [self assert: CPOffState equals: [sut.morningButton state]];
-  [self assert: CPOffState equals: [sut.afternoonButton state]];
-  [self assert: CPOnState equals: [sut.eveningButton state]];
-
-  [sut.morningButton setState: CPOnState];
-  [self assert: CPOnState equals: [sut.morningButton state]];
-  [self assert: CPOffState equals: [sut.afternoonButton state]];
-  [self assert: CPOffState equals: [sut.eveningButton state]];
-}
 
 - (void) test_can_read_buttons_and_produce_time
 {
   [sut.morningButton setState: CPOnState];
-  [self assert: [Time morning] equals: [sut time]];
+  [self assert: [[Time morning]] equals: [sut times]];
 
   [sut.afternoonButton setState: CPOnState];
-  [self assert: [Time afternoon] equals: [sut time]];
+  [self assert: [[Time morning], [Time afternoon]] equals: [sut times]];
 
   [sut.eveningButton setState: CPOnState];
-  [self assert: [Time evening] equals: [sut time]];
+  [self assert: [[Time morning], [Time afternoon], [Time evening]] equals: [sut times]];
 }
 
 - (void) test_can_set_time_to_set_buttons
 {
-  [sut.morningButton setState: CPOnState];
-
-  [sut setTime: [Time afternoon]];
+  [sut setTimes: [CPArray arrayWithObject: [Time afternoon]]];
   [self assert: CPOffState equals: [sut.morningButton state]];
   [self assert: CPOnState equals: [sut.afternoonButton state]];
   [self assert: CPOffState equals: [sut.eveningButton state]];
 
-  [sut setTime: [Time evening]];
+  [sut setTimes: [CPSet setWithObject: [Time evening]]];
   [self assert: CPOffState equals: [sut.morningButton state]];
   [self assert: CPOffState equals: [sut.afternoonButton state]];
   [self assert: CPOnState equals: [sut.eveningButton state]];
 
-  [sut setTime: [Time morning]];
+  [sut setTimes: [ [Time morning], [Time evening], [Time afternoon] ] ];
   [self assert: CPOnState equals: [sut.morningButton state]];
-  [self assert: CPOffState equals: [sut.afternoonButton state]];
-  [self assert: CPOffState equals: [sut.eveningButton state]];
+  [self assert: CPOnState equals: [sut.afternoonButton state]];
+  [self assert: CPOnState equals: [sut.eveningButton state]];
 }
 
 @end
