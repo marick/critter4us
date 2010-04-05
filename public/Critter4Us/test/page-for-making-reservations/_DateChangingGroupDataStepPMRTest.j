@@ -37,7 +37,7 @@
   behold: function() {
       [sut.reservationDataController shouldReceive: @selector(setNewValuesFrom:)
                                               with: dict];
-      [sut.reservationDataController shouldReceive: @selector(startDestructivelyEditingDateTime:)];
+      [sut.reservationDataController shouldReceive: @selector(startDestructivelyEditingTimeslice:)];
       [sut.animalController shouldReceive: @selector(allPossibleObjects:)
                                      with: [['animals...']]];
       [sut.procedureController shouldReceive: @selector(allPossibleObjects:)

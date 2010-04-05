@@ -8,7 +8,7 @@
 {
   var dict = [aNotification object];
   [self allButRecalculatingGroups: dict];
-  [reservationDataController startDestructivelyEditingDateTime: self];
+  [reservationDataController startDestructivelyEditingTimeslice: self];
 }
 
 

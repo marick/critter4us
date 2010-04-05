@@ -1,16 +1,20 @@
 @import "../util/AwakeningObject.j"
 @import "../util/Timeslice.j"
+@import "../util/TimesliceSummarizer.j"
+
+
+// This controller does way too many things!
 
 @implementation ReservationDataControllerPMR : AwakeningObject
 {
   CPTextField courseField;
   CPTextField instructorField;
-  CPTextField dateField;
+  CPTextField firstDateField;
+  CPTextField lastDateField;
   TimeControl timeControl;
 
   CPButton beginButton;
   CPButton reserveButton;
-  CPButton restartButton;
 
   CPView previousResultsView;
   CPWebView linkToPreviousResults;
@@ -18,6 +22,7 @@
 
   CPView dateGatheringView;
   CPView dateDisplayingView;
+  CPView majorModificationView;
   CPTextField dateTimeSummary;
 
   PanelController dateTimeEditingPanelController;
@@ -26,10 +31,8 @@
 
 - (void) beginReserving: sender
 {
-  var timeslice = [Timeslice degenerateDate: [dateField stringValue]
-				       time: [timeControl time]];
   [NotificationCenter postNotificationName: UserHasChosenTimeslice
-				    object: timeslice]
+				    object: [self timeslice]];
 }
 
 - (void) prepareToFinishReservation
@@ -71,36 +74,33 @@
 {
   [courseField setStringValue: [dictionary valueForKey: 'course']];
   [instructorField setStringValue: [dictionary valueForKey: 'instructor']];
-  [dateField setStringValue: [dictionary valueForKey: 'firstDate']];
-  [timeControl setTime: [dictionary valueForKey: 'times'][0]];
+  var timeslice = [dictionary valueForKey: 'timeslice'];
+  [firstDateField setStringValue: timeslice.firstDate];
+  [lastDateField setStringValue: timeslice.lastDate];
+  [timeControl setTimes: timeslice.times];
   [self noteTimeAndDate];
 }
 
-- (void) startDestructivelyEditingDateTime: sender
+- (void) startDestructivelyEditingTimeslice: sender
 {
   [dateTimeEditingPanelController appear];
-  [dateTimeEditingControl setDate: [dateField stringValue]
-                             time: [timeControl time]];
+  [dateTimeEditingControl setTimeslice: [self timeslice]];
 }
 
-- (void) forgetEditingDateTime: sender
+- (void) forgetEditingTimeslice: sender
 {
   [dateTimeEditingPanelController disappear];
 }
 
 
-- (void) newDateTimeValuesReady: sender
+- (void) newTimesliceReady: sender
 {
   [dateTimeEditingPanelController disappear];
-  var date = [dateTimeEditingControl date];
-  var time = [dateTimeEditingControl time];
-  [dateField setStringValue: date];
-  [timeControl setTime: time];
+  var newTimeslice = [dateTimeEditingControl timeslice];
+  [self setTimeslice: newTimeslice];
   [self noteTimeAndDate];
-
-  var timeslice = [Timeslice degenerateDate: date time: time];
   [NotificationCenter postNotificationName: TimesliceForCurrentReservationChangedNews 
-				    object: timeslice];
+				    object: newTimeslice];
 }
 
 
@@ -117,7 +117,7 @@
 
 - (void) showGroupEditButtons: value
 {
-  [restartButton setHidden: !value];
+  [majorModificationView setHidden: !value];
   [reserveButton setHidden: !value];
 }
 
@@ -129,9 +129,8 @@
 
 - (void) noteTimeAndDate
 {
-  var note = "on the " + [[timeControl time] description] + 
-    " of " + [dateField stringValue] + ".";
-  [dateTimeSummary setStringValue: note];
+  var summarizer = [[TimesliceSummarizer alloc] init];
+  [dateTimeSummary setStringValue: [summarizer summarize: [self timeslice]]+"."];
 }
 
 - (CPDictionary) data
@@ -139,12 +138,29 @@
   var dict = [CPDictionary dictionary];
   [dict setValue: [courseField stringValue] forKey: 'course'];
   [dict setValue: [instructorField stringValue] forKey: 'instructor'];
-  [dict setValue: [dateField stringValue] forKey: 'firstDate'];
-  [dict setValue: [dateField stringValue] forKey: 'lastDate'];
-  [dict setValue: [[timeControl time]] forKey: 'times'];
+
+
+  var timeslice = [Timeslice firstDate: [firstDateField stringValue]
+			      lastDate: [lastDateField stringValue]
+				 times: [timeControl times]];
+  [dict setValue: timeslice forKey: 'timeslice'];
   return dict;
 }
 
+- (void) setTimeslice: (Timeslice) timeslice
+{
+  [firstDateField setStringValue: timeslice.firstDate];
+  [lastDateField setStringValue: timeslice.lastDate];
+  [timeControl setTimes: timeslice.times];
+}
+
+- (Timeslice) timeslice
+{
+  var retval = [Timeslice firstDate: [firstDateField stringValue]
+			   lastDate: [lastDateField stringValue]
+			      times: [timeControl times]];
+  return retval;
+}
 @end
 
 

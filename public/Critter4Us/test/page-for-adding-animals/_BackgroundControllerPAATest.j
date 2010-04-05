@@ -27,7 +27,6 @@
     
      var clara = function(actual) {
        var dict = [actual object];
-       CPLog([dict description]);
        [self assert: [dict valueForKey: 'name'] equals: 'Clara'];
        [self assert: [dict valueForKey: 'kind'] equals: 'cow'];
        [self assert: [dict valueForKey: 'species'] equals: 'bovine'];

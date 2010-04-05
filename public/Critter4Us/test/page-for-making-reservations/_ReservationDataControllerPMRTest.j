@@ -1,5 +1,6 @@
 @import <Critter4Us/page-for-making-reservations/ReservationDataControllerPMR.j>
 @import <Critter4Us/test/testutil/ScenarioTestCase.j>
+@import <Critter4Us/view/TimeControl.j>
 
 @implementation _ReservationDataControllerPMRTest : ScenarioTestCase
 {
@@ -10,83 +11,93 @@
   sut = [[ReservationDataControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasUpwardCollaborators: ['courseField', 'instructorField',
-                                        'dateField', 'timeControl',
-                                        'beginButton', 'restartButton',
+					'firstDateField', 'lastDateField', 'timeControl',
+                                        'beginButton', 
                                         'reserveButton',
                                         'previousResultsView', 'copyButton',
                                         'linkToPreviousResults',
-                                        'dateGatheringView', 'dateDisplayingView',
+    				        'majorModificationView', 'dateGatheringView', 'dateDisplayingView',
                                         'dateTimeSummary',
                                         'dateTimeEditingPanelController',
                                         'dateTimeEditingControl'
                                         ]];
 }
 
-- (void)test_notifies_listeners_that_user_wants_to_reserve_a_particular_Timeslice
+- (void) test_timeslices_are_retrieved_from_controls
 {
+  var timeslice = [Timeslice firstDate: '2009-12-10'
+  			      lastDate: '2009-12-11'
+  				 times: [ [Time morning], [Time evening] ]];
+
   [scenario
-    previously: function() {
-      [sut.dateField setStringValue: '2009-12-10'];
-      [sut.timeControl setTime: [Time afternoon]];
-    }
     during: function() {
-      [sut beginReserving: UnusedArgument];
+      [sut timeslice];
     }
   behold: function() {
-      [self listenersWillReceiveNotification: UserHasChosenTimeslice
-			    containingObject: [Timeslice degenerateDate: '2009-12-10'
-								   time: [Time afternoon]]];
+      [sut.firstDateField shouldReceive: @selector(stringValue)
+			      andReturn: '2009-12-10'];
+      [sut.lastDateField shouldReceive: @selector(stringValue)
+			     andReturn: '2009-12-11'];
+      [sut.timeControl shouldReceive: @selector(times)
+			   andReturn: [[ [Time morning], [Time evening]]]];
     }];
 }
 
 
-
-- (void) testDisplayedDateAndTimeWorksForMorning
+- (void) test_timeslices_are_stored_in_controls
 {
+  var timeslice = [Timeslice firstDate: '2009-12-10'
+  			      lastDate: '2009-12-11'
+  				 times: [ [Time morning], [Time evening] ]];
+
   [scenario
-    previously: function() {
-      [sut.dateField setStringValue: '2010-12-02'];
-      [sut.timeControl setTime: [Time morning]];
+    during: function() {
+      [sut setTimeslice: timeslice];
     }
-    testAction: function() {
-      [sut prepareToFinishReservation];
-    }
-  andSo: function() {
-      [self assert: "on the morning of 2010-12-02."
-            equals: [sut.dateTimeSummary stringValue]];
-    }
-   ];
+  behold: function() {
+      [sut.firstDateField shouldReceive: @selector(setStringValue:)
+				   with: '2009-12-10'];
+      [sut.lastDateField shouldReceive: @selector(setStringValue:)
+				  with: '2009-12-11'];
+      [sut.timeControl shouldReceive: @selector(setTimes:)
+				with: [timeslice.times]];
+    }];
 }
 
-- (void) testDisplayedDateAndTimeWorksForAfternoon
+
+- (void)test_notifies_listeners_that_user_wants_to_reserve_a_particular_Timeslice
 {
+  var timeslice = [Timeslice firstDate: '2009-12-10'
+  			      lastDate: '2009-12-11'
+  				 times: [ [Time morning], [Time evening] ]];
+
   [scenario
     previously: function() {
-      [sut.dateField setStringValue: '2012-01-12'];
-      [sut.timeControl setTime: [Time afternoon]];
+      [sut setTimeslice: timeslice];
     }
-    testAction: function() {
-      [sut prepareToFinishReservation];
+  during: function() {
+      [sut beginReserving: UnusedArgument];
     }
-  andSo: function() {
-      [self assert: "on the afternoon of 2012-01-12."
-            equals: [sut.dateTimeSummary stringValue]];
-    }
-   ];
+  behold: function() {
+      [self listenersWillReceiveNotification: UserHasChosenTimeslice
+			    containingObject: timeslice];
+    }];
 }
 
-- (void) testDisplayedDateAndTimeWorksForEvening
+- (void) test_displayed_timeslice_works
 {
+  var timeslice = [Timeslice firstDate: '2009-12-10'
+			      lastDate: '2009-12-10'
+				 times: [ [Time morning] ]];
   [scenario
     previously: function() {
-      [sut.dateField setStringValue: '2012-01-12'];
-      [sut.timeControl setTime: [Time evening]];
+      [sut setTimeslice: timeslice];
     }
-    testAction: function() {
+  testAction: function() {
       [sut prepareToFinishReservation];
     }
   andSo: function() {
-      [self assert: "on the evening of 2012-01-12."
+      [self assert: "on the morning of 2009-12-10."
             equals: [sut.dateTimeSummary stringValue]];
     }
    ];
@@ -119,14 +130,15 @@
     }];
 }
 
--(void)testCanReturn
+-(void) testCanReturn
 {
   [scenario
    previously: function() { 
       [sut.courseField setStringValue: "some course"];
       [sut.instructorField setStringValue: "some instructor"];
-      [sut.dateField setStringValue: "some date"];
-      [sut.timeControl setTime: [Time evening]];
+      [sut.firstDateField setStringValue: "some first date"];
+      [sut.lastDateField setStringValue: "some last date"];
+      [sut.timeControl setTimes: [ [Time evening] ]];
     }
    testAction: function() {
       return [sut data];
@@ -135,13 +147,14 @@
       var dict = scenario.result;
       [self assert: "some course" equals: [dict valueForKey: 'course']];
       [self assert: "some instructor" equals: [dict valueForKey: 'instructor']];
-      [self assert: "some date" equals: [dict valueForKey:'firstDate']];
-      [self assert: "some date" equals: [dict valueForKey:'lastDate']];
-      [self assert: [[Time evening]] equals: [dict valueForKey:'times']];
+      [self assert: [Timeslice firstDate: "some first date" 
+				lastDate: "some last date"
+				   times: [ [Time evening] ]]
+	    equals: [dict valueForKey:'timeslice']];
     }];
 }
 
--(void)test_can_be_told_to_offer_a_link_to_previous_reservation
+-(void) test_can_be_told_to_offer_a_link_to_previous_reservation
 {
   [scenario
    during: function() {
@@ -159,7 +172,7 @@
    ];
 }
 
--(void)test_offering_a_link_to_previous_reservation_also_stashes_ID_in_copy_button
+-(void) test_offering_a_link_to_previous_reservation_also_stashes_ID_in_copy_button
 {
   [scenario
    testAction: function() {
@@ -187,14 +200,14 @@
 
 
 
--(void)testCanReturnToBeginningOfReservationWorkflow
+-(void) testCanReturnToBeginningOfReservationWorkflow
 {
   [scenario
     previously: function() {
       [sut.dateGatheringView setHidden: YES];
       [sut.dateDisplayingView setHidden: NO];
 
-      [sut.restartButton setHidden: NO];
+      [sut.majorModificationView setHidden: NO];
       [sut.reserveButton setHidden: NO];
     }
     testAction: function() {
@@ -204,20 +217,20 @@
       [self assert: NO equals: [sut.dateGatheringView hidden] ];
       [self assert: YES equals: [sut.dateDisplayingView hidden] ];
 
-      [self assert: YES equals: [sut.restartButton hidden] ];
+      [self assert: YES equals: [sut.majorModificationView hidden] ];
       [self assert: YES equals: [sut.reserveButton hidden] ];
     }
    ];
 }
 
 
--(void)testBeToldValuesToEdit
+-(void) testBeToldValuesToEdit
 {
   var data = {'course' : 'the course',
               'instructor' : 'the instructor',
-              'firstDate' : 'the date',
-	      'lastDate' : 'the date',
-              'times' : [[Time morning]]};
+	      'timeslice' : [Timeslice firstDate: 'the first date'
+					lastDate: 'the last date'
+					   times: [[Time morning]]] };
   [scenario
     during: function() {
       [sut setNewValuesFrom: [CPDictionary dictionaryWithJSObject: data]];
@@ -225,25 +238,14 @@
   behold: function() {
       [sut.courseField shouldReceive: @selector(setStringValue:) with: 'the course'];
       [sut.instructorField shouldReceive: @selector(setStringValue:) with: 'the instructor'];
-      [sut.dateField shouldReceive: @selector(setStringValue:) with: 'the date'];
+      [sut.firstDateField shouldReceive: @selector(setStringValue:) with: 'the first date'];
+      [sut.lastDateField shouldReceive: @selector(setStringValue:) with: 'the last date'];
       [sut.dateTimeSummary shouldReceive: @selector(setStringValue:)];
-      [sut.timeControl shouldReceive: @selector(setTime:) with: [Time morning]];
+      [sut.timeControl shouldReceive: @selector(setTimes:) with: [[[Time morning]]]];
     }
    ];
 }
 
--(void)testBeToldValuesToEdit__withAfternoon
-{
-  var data = {'times' : [[Time afternoon]]};
-  [scenario
-    testAction: function() {
-      [sut setNewValuesFrom: [CPDictionary dictionaryWithJSObject: data]];
-    }
-  andSo: function() {
-      [self assert: [Time afternoon] equals: [sut.timeControl time]];
-    }
-   ];
-}
 
 // Popping up a date/time editing panel and handling what it tells us.
 
@@ -251,7 +253,7 @@
 {
   [scenario
   during: function() {
-      [sut startDestructivelyEditingDateTime: UnusedArgument];
+      [sut startDestructivelyEditingTimeslice: UnusedArgument];
     }
   behold: function() {
       [sut.dateTimeEditingPanelController shouldReceive:@selector(appear)];
@@ -264,15 +266,18 @@
 {
   [scenario
     previously: function() {
-      [sut.dateField setStringValue: "a value"];
-      [sut.timeControl setTime: [Time afternoon]];
+      [sut.firstDateField setStringValue: "a first value"];
+      [sut.lastDateField setStringValue: "a last value"];
+      [sut.timeControl setTimes: [ [Time afternoon] ]];
     }
   during: function() {
-      [sut startDestructivelyEditingDateTime: UnusedArgument];
+      [sut startDestructivelyEditingTimeslice: UnusedArgument];
     }
   behold: function() {
-      [sut.dateTimeEditingControl shouldReceive: @selector(setDate:time:)
-                                           with: ["a value", [Time afternoon]]];
+      [sut.dateTimeEditingControl shouldReceive: @selector(setTimeslice:)
+					   with: [Timeslice firstDate: "a first value"
+							     lastDate: "a last value"
+								times: [ [Time afternoon] ] ]];
     }
    ];
 
@@ -282,7 +287,7 @@
 {
   [scenario
   during: function() {
-      [sut forgetEditingDateTime: UnusedArgument];
+      [sut forgetEditingTimeslice: UnusedArgument];
     }
   behold: function() {
       [sut.dateTimeEditingPanelController shouldReceive:@selector(disappear)];
@@ -291,55 +296,46 @@
 }
 
 
-- (void) test__andSoDoesAccepting
-{
-  [scenario
-  during: function() {
-      [sut newDateTimeValuesReady: UnusedArgument];
-    }
-  behold: function() {
-      [sut.dateTimeEditingPanelController shouldReceive:@selector(disappear)];
-    }
-   ];
-}
 
-
-- (void) testChoosingANewDateAndTimeFiresANotification
+- (void) test_choosing_a_new_timeslice_makes_panel_disappear_and_fires_notification
 {
+  var timeslice = [Timeslice firstDate: '2009-12-10'
+			      lastDate: '2009-12-10'
+				 times: [ [Time afternoon] ]];
   [scenario
     during: function() {
-      [sut newDateTimeValuesReady: UnusedArgument];
+      [sut newTimesliceReady: UnusedArgument];
     }
   behold: function() {
-      [sut.dateTimeEditingControl shouldReceive:@selector(date)
-                                      andReturn: '2009-12-10'];
-      [sut.dateTimeEditingControl shouldReceive:@selector(time)
-                                      andReturn: [Time afternoon]];
+      [sut.dateTimeEditingPanelController shouldReceive:@selector(disappear)];
+
+      [sut.dateTimeEditingControl shouldReceive:@selector(timeslice)
+                                      andReturn: timeslice];
       
       [self listenersWillReceiveNotification: TimesliceForCurrentReservationChangedNews
-			    containingObject: [Timeslice degenerateDate: '2009-12-10'
-								   time: [Time afternoon]]];
+			    containingObject: timeslice];
     }
    ];
 }
 
 - (void) testChoosingANewDateAndTimeUpdatesValuesDisplayedOnReservationView
 {
+  var timeslice = [Timeslice firstDate: '2009-12-10'
+			      lastDate: '2009-12-11'
+				 times: [ [Time afternoon] ]];
   [scenario
     during: function() {
-      [sut newDateTimeValuesReady: UnusedArgument];
+      [sut newTimesliceReady: UnusedArgument];
     }
   behold: function() {
-      [sut.dateTimeEditingControl shouldReceive:@selector(date)
-                                      andReturn: '2009-12-10'];
-      [sut.dateTimeEditingControl shouldReceive:@selector(time)
-                                      andReturn: [Time evening]];
+      [sut.dateTimeEditingControl shouldReceive:@selector(timeslice)
+                                      andReturn: timeslice];
     }
   andSo: function() {
-      [self assert: "on the evening of 2009-12-10."
+      [self assert: "on the afternoons of 2009-12-10 through 2009-12-11."
             equals: [sut.dateTimeSummary stringValue]];
     }
    ];
-  
 }
+
 @end
