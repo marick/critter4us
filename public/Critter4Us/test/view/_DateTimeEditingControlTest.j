@@ -15,23 +15,30 @@
   [CPApplication sharedApplication]; // clicks only work in this context.
 }
 
--(void) testCanBeSetToASpecificDateAndTime
+-(void) test_can_be_set_to_a_timeslice
 {
+  var newValue = [Timeslice firstDate: '2009-01-01'
+			     lastDate: '2009-02-02'
+				times: [ [Time morning], [Time evening] ] ];
   [scenario
     previously: function() {
-      [sut.dateField setStringValue: 'BOGUS'];
-      [sut.timeControl setTime: [Time afternoon]];
+      [sut.firstDateField setStringValue: 'BOGUS'];
+      [sut.lastDateField setStringValue: 'BOGUS'];
+      [sut.timeControl setTimes: [[Time afternoon]]];
     }
     testAction: function() {
-      [sut setDate: '2009-01-01' time: [Time morning]]
+      [sut setTimeslice: newValue];
     }
-  andSo: function() {
-      [self assert: '2009-01-01' equals: [sut.dateField stringValue]];
-      [self assert: [Time morning] equals: [sut.timeControl time]];
+    andSo: function() {
+      [self assert: '2009-01-01' equals: [sut.firstDateField stringValue]];
+      [self assert: '2009-02-02' equals: [sut.lastDateField stringValue]];
+      [self assert: [[Time morning], [Time evening]] 
+	    equals: [sut.timeControl times]];
+      [self assert: newValue equals: [sut timeslice]];
    }];
 }
 
--(void) testTargetWillBeInformedOfCancel
+-(void) test_target_will_be_informed_of_cancel
 {
   [scenario
     during: function() {
@@ -40,13 +47,13 @@
     }
   behold: function() {
       sut.target.failOnUnexpectedSelector = YES;
-      [sut.target shouldReceive: @selector(forgetEditingDateTime:)
+      [sut.target shouldReceive: @selector(forgetEditingTimeslice:)
                            with: sut];
    }];
 }
 
 
--(void) testTargetWillBeInformedOfAcceptedChange
+-(void) test_target_will_be_informed_of_expected_change
 {
   [scenario
     during: function() {
@@ -54,25 +61,9 @@
       [sut.changeButton performClick: UnusedArgument]
     }
   behold: function() {
-      [sut.target shouldReceive: @selector(newDateTimeValuesReady:)
+      [sut.target shouldReceive: @selector(newTimesliceReady:)
                            with: sut];
    }];
-}
-
-
--(void) testCanRetrieveDateAndTime
-{
-  [sut setDate: '2009-01-01' time: [Time morning]];
-  [self assert: '2009-01-01' equals: [sut date]];
-  [self assert: [Time morning] equals: [sut time]];
-
-  [sut setDate: '2009-02-02' time: [Time afternoon]];
-  [self assert: '2009-02-02' equals: [sut date]];
-  [self assert: [Time afternoon] equals: [sut time]];
-
-  [sut setDate: '2009-01-01' time: [Time evening]];
-  [self assert: '2009-01-01' equals: [sut date]];
-  [self assert: [Time evening] equals: [sut time]];
 }
 
 @end	

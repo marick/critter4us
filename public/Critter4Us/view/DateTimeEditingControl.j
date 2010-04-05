@@ -1,11 +1,13 @@
 @import <AppKit/AppKit.j>
 @import "../util/Time.j"
 @import "../util/Constants.j"
+@import "../util/Timeslice.j"
 @import "TimeControl.j"
 
 @implementation DateTimeEditingControl : CPView
 {
-  CPTextField dateField;
+  CPTextField firstDateField;
+  CPTextField lastDateField;
   TimeControl timeControl;
   id target; // This could inherit from CPControl... is that overkill? 
   CPButton changeButton;
@@ -31,33 +33,31 @@
   target = anObject;
 }
 
-- (CPString) date
+- (CPString) timeslice
 {
-  return [dateField stringValue];
-}
-
-- (Time) time
-{
-  return [timeControl time];
+  return [Timeslice firstDate: [firstDateField stringValue]
+		     lastDate: [lastDateField stringValue]
+			times: [timeControl times]];
 }
 
 - (void) forwardClick: sender
 {
   if (sender == cancelButton)
   {
-    [target forgetEditingDateTime: self];
+    [target forgetEditingTimeslice: self];
   }
   else
   {
-    [target newDateTimeValuesReady: self];
+    [target newTimesliceReady: self];
   }
 }
 
 
-- (void) setDate: aString time: time
+- (void) setTimeslice: timeslice
 {
-  [dateField setStringValue: aString];
-  [timeControl setTime: time];
+  [firstDateField setStringValue: timeslice.firstDate];
+  [lastDateField setStringValue: timeslice.lastDate];
+  [timeControl setTimes: timeslice.times];
 }
 
 
@@ -65,18 +65,31 @@
 {
   var x = 25;
   var width = 40;
-  var onLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 37, width, 30)];
-  [onLabel setStringValue: "Date: "];
-  [self addSubview:onLabel];
+
+  var firstDateLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 22, width, 30)];
+  [firstDateLabel setStringValue: "First: "];
+  [self addSubview:firstDateLabel];
+
+  var lastDateLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 49, width, 30)];
+  [lastDateLabel setStringValue: "Final: "];
+  [self addSubview:lastDateLabel];
   x += width;
 
   x += 10;
   width = 100;
-  dateField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 30, width, 30)];
-  [dateField setEditable:YES];
-  [dateField setBezeled:YES];
-  [dateField setStringValue: "2009-"];
-  [self addSubview:dateField];
+
+  firstDateField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 15, width, 30)];
+  [firstDateField setEditable:YES];
+  [firstDateField setBezeled:YES];
+  [firstDateField setStringValue: "2010-"];
+  [self addSubview:firstDateField];
+
+  lastDateField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 45, width, 30)];
+  [lastDateField setEditable:YES];
+  [lastDateField setBezeled:YES];
+  [lastDateField setStringValue: "2010-"];
+  [self addSubview:lastDateField];
+
   x += width;
 
   timeControl = [[TimeControl alloc] initAtX: x y: 10];
