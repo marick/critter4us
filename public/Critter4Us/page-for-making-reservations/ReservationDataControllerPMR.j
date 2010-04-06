@@ -1,6 +1,7 @@
 @import "../util/AwakeningObject.j"
 @import "../util/Timeslice.j"
 @import "../util/TimesliceSummarizer.j"
+@import "../view/DualDateControl.j"
 
 
 // This controller does way too many things!
@@ -9,8 +10,8 @@
 {
   CPTextField courseField;
   CPTextField instructorField;
-  CPTextField firstDateField;
-  CPTextField lastDateField;
+
+  DualDateControl dateControl;
   TimeControl timeControl;
 
   CPButton beginButton;
@@ -61,6 +62,8 @@
 
 - (void) beginningOfReservationWorkflow
 {
+  [courseField selectText: nil];  // Doesn't actually work.
+  [[courseField window] makeFirstResponder: courseField];
   [self showDateAndTimeFields: YES];
   [self showGroupEditButtons: NO];
 }
@@ -75,8 +78,7 @@
   [courseField setStringValue: [dictionary valueForKey: 'course']];
   [instructorField setStringValue: [dictionary valueForKey: 'instructor']];
   var timeslice = [dictionary valueForKey: 'timeslice'];
-  [firstDateField setStringValue: timeslice.firstDate];
-  [lastDateField setStringValue: timeslice.lastDate];
+  [dateControl setFirst: timeslice.firstDate last: timeslice.lastDate];
   [timeControl setTimes: timeslice.times];
   [self noteTimeAndDate];
 }
@@ -84,7 +86,8 @@
 - (void) startDestructivelyEditingTimeslice: sender
 {
   [dateTimeEditingPanelController appear];
-  [dateTimeEditingControl setTimeslice: [self timeslice]];
+  var timeslice = [self timeslice];
+  [dateTimeEditingControl setTimeslice: timeslice];
 }
 
 - (void) forgetEditingTimeslice: sender
@@ -140,8 +143,8 @@
   [dict setValue: [instructorField stringValue] forKey: 'instructor'];
 
 
-  var timeslice = [Timeslice firstDate: [firstDateField stringValue]
-			      lastDate: [lastDateField stringValue]
+  var timeslice = [Timeslice firstDate: [dateControl firstDate]
+			      lastDate: [dateControl lastDate]
 				 times: [timeControl times]];
   [dict setValue: timeslice forKey: 'timeslice'];
   return dict;
@@ -149,15 +152,14 @@
 
 - (void) setTimeslice: (Timeslice) timeslice
 {
-  [firstDateField setStringValue: timeslice.firstDate];
-  [lastDateField setStringValue: timeslice.lastDate];
+  [dateControl setFirst: timeslice.firstDate last: timeslice.lastDate];
   [timeControl setTimes: timeslice.times];
 }
 
 - (Timeslice) timeslice
 {
-  var retval = [Timeslice firstDate: [firstDateField stringValue]
-			   lastDate: [lastDateField stringValue]
+  var retval = [Timeslice firstDate: [dateControl firstDate]
+			   lastDate: [dateControl lastDate]
 			      times: [timeControl times]];
   return retval;
 }

@@ -11,7 +11,7 @@
   sut = [[ReservationDataControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasUpwardCollaborators: ['courseField', 'instructorField',
-					'firstDateField', 'lastDateField', 'timeControl',
+					'dateControl', 'timeControl',
                                         'beginButton', 
                                         'reserveButton',
                                         'previousResultsView', 'copyButton',
@@ -34,9 +34,9 @@
       [sut timeslice];
     }
   behold: function() {
-      [sut.firstDateField shouldReceive: @selector(stringValue)
+      [sut.dateControl shouldReceive: @selector(firstDate)
 			      andReturn: '2009-12-10'];
-      [sut.lastDateField shouldReceive: @selector(stringValue)
+      [sut.dateControl shouldReceive: @selector(lastDate)
 			     andReturn: '2009-12-11'];
       [sut.timeControl shouldReceive: @selector(times)
 			   andReturn: [[ [Time morning], [Time evening]]]];
@@ -55,10 +55,8 @@
       [sut setTimeslice: timeslice];
     }
   behold: function() {
-      [sut.firstDateField shouldReceive: @selector(setStringValue:)
-				   with: '2009-12-10'];
-      [sut.lastDateField shouldReceive: @selector(setStringValue:)
-				  with: '2009-12-11'];
+      [sut.dateControl shouldReceive: @selector(setFirst:last:)
+				with: ['2009-12-10', '2009-12-11']];
       [sut.timeControl shouldReceive: @selector(setTimes:)
 				with: [timeslice.times]];
     }];
@@ -79,6 +77,12 @@
       [sut beginReserving: UnusedArgument];
     }
   behold: function() {
+      [sut.dateControl shouldReceive: @selector(firstDate)
+			      andReturn: timeslice.firstDate];
+      [sut.dateControl shouldReceive: @selector(lastDate)
+			     andReturn: timeslice.lastDate];
+      [sut.timeControl shouldReceive: @selector(times)
+			     andReturn: timeslice.times];
       [self listenersWillReceiveNotification: UserHasChosenTimeslice
 			    containingObject: timeslice];
     }];
@@ -86,15 +90,17 @@
 
 - (void) test_displayed_timeslice_works
 {
-  var timeslice = [Timeslice firstDate: '2009-12-10'
-			      lastDate: '2009-12-10'
-				 times: [ [Time morning] ]];
   [scenario
-    previously: function() {
-      [sut setTimeslice: timeslice];
-    }
-  testAction: function() {
+    during: function() {
       [sut prepareToFinishReservation];
+    }
+  behold: function() { 
+      [sut.dateControl shouldReceive: @selector(firstDate)
+			      andReturn: '2009-12-10'];
+      [sut.dateControl shouldReceive: @selector(lastDate)
+			     andReturn: '2009-12-10'];
+      [sut.timeControl shouldReceive: @selector(times)
+			     andReturn: [ [Time morning] ]];
     }
   andSo: function() {
       [self assert: "on the morning of 2009-12-10."
@@ -130,18 +136,22 @@
     }];
 }
 
--(void) testCanReturn
+-(void) test_can_return_values_of_controls_as_dictionary
 {
   [scenario
    previously: function() { 
       [sut.courseField setStringValue: "some course"];
       [sut.instructorField setStringValue: "some instructor"];
-      [sut.firstDateField setStringValue: "some first date"];
-      [sut.lastDateField setStringValue: "some last date"];
       [sut.timeControl setTimes: [ [Time evening] ]];
     }
-   testAction: function() {
+   during: function() {
       return [sut data];
+    }
+  behold: function() { 
+      [sut.dateControl shouldReceive: @selector(firstDate)
+			   andReturn: "some first date"];
+      [sut.dateControl shouldReceive: @selector(lastDate)
+			   andReturn: "some last date"];
     }
   andSo: function() {
       var dict = scenario.result;
@@ -238,8 +248,8 @@
   behold: function() {
       [sut.courseField shouldReceive: @selector(setStringValue:) with: 'the course'];
       [sut.instructorField shouldReceive: @selector(setStringValue:) with: 'the instructor'];
-      [sut.firstDateField shouldReceive: @selector(setStringValue:) with: 'the first date'];
-      [sut.lastDateField shouldReceive: @selector(setStringValue:) with: 'the last date'];
+      [sut.dateControl shouldReceive: @selector(setFirst:last:) 
+				with: ['the first date', 'the last date']];
       [sut.dateTimeSummary shouldReceive: @selector(setStringValue:)];
       [sut.timeControl shouldReceive: @selector(setTimes:) with: [[[Time morning]]]];
     }
@@ -262,25 +272,25 @@
 
 }
 
-- (void) testDateAndTimeEditingPanelIsInitializedWithCurrentValues
+- (void) test_date_and_time_editing_panel_is_initialized_with_current_values
 {
   [scenario
-    previously: function() {
-      [sut.firstDateField setStringValue: "a first value"];
-      [sut.lastDateField setStringValue: "a last value"];
-      [sut.timeControl setTimes: [ [Time afternoon] ]];
-    }
-  during: function() {
+    during: function() {
       [sut startDestructivelyEditingTimeslice: UnusedArgument];
     }
   behold: function() {
+      [sut.dateControl shouldReceive: @selector(firstDate)
+			   andReturn: "a first value"];
+      [sut.dateControl shouldReceive: @selector(lastDate)
+			   andReturn: "a last value"];
+      [sut.timeControl shouldReceive: @selector(times)
+			   andReturn: [ [Time afternoon] ]];
       [sut.dateTimeEditingControl shouldReceive: @selector(setTimeslice:)
 					   with: [Timeslice firstDate: "a first value"
 							     lastDate: "a last value"
 								times: [ [Time afternoon] ] ]];
     }
    ];
-
 }
 
 - (void) testDateAndTimeCancelingCausesPanelToBecomeInvisible
@@ -318,11 +328,12 @@
    ];
 }
 
-- (void) testChoosingANewDateAndTimeUpdatesValuesDisplayedOnReservationView
+- (void) test_choosing_a_new_timeslice_updates_values_displayed_on_reservation_view
 {
   var timeslice = [Timeslice firstDate: '2009-12-10'
 			      lastDate: '2009-12-11'
 				 times: [ [Time afternoon] ]];
+  sut.dateControl = [[DualDateControl alloc] initAtX: 0 y: 0];
   [scenario
     during: function() {
       [sut newTimesliceReady: UnusedArgument];

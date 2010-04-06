@@ -13,8 +13,7 @@
 
   CPTextField instructorField;
   CPTextField courseField;
-  CPTextField firstDateField;
-  CPTextField lastDateField;
+  CPDualDateControl dateControl;
   CPRadio afternoonButton; 
 
   CPButton dateTimeButton;
@@ -31,6 +30,7 @@
   controller = [self custom: [[ReservationDataControllerPMR alloc] init]];
   [self drawControlsOnPage: pageView];
   [self dateTimeEditingPanel];
+  [self setKeyViewLoop];
   return self;
 }
 
@@ -123,18 +123,8 @@
   [resultsView addSubview: copyButton];
   controller.copyButton = copyButton;
 
-  // Temporary for testing
-  [instructorField setStringValue: "morin"];
-  [courseField setStringValue: "VM333"];
-  [firstDateField setStringValue: [Timeslice today]];
+  [dateControl setBoth: [Timeslice today]];
 
-  // TODO: do this with notifications.
-  [courseField setNextKeyView: firstDateField];
-  [firstDateField setNextKeyView: afternoonButton];
-
-  // Doesn't work.
-  //  [theWindow setDefaultButton: goButton];
-  //  [theWindow enableKeyEquivalentForDefaultButton];
 }
 
   
@@ -162,35 +152,12 @@
 {
   //  [aView setBackgroundColor: [CPColor redColor]];
   
+
   x = 10;
-  width = 60;
-  var firstDateLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 20, width, 30)];
-  [firstDateLabel setStringValue: "first date: "];
-  [aView addSubview:firstDateLabel];
-
-  var lastDateLabel = [[CPTextField alloc] initWithFrame:CGRectMake(x, 55, width, 30)];
-  [lastDateLabel setStringValue: "final date: "];
-  [aView addSubview:lastDateLabel];
-
-  x += width;
-
-  width = 100;
-  firstDateField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 15, width, 30)];
-  [firstDateField setEditable:YES];
-  [firstDateField setBezeled:YES];
-  [firstDateField setStringValue: "2010-"];
-  [aView addSubview:firstDateField];
-  controller.firstDateField = firstDateField;
-
-  lastDateField = [[CPTextField alloc] initWithFrame:CGRectMake(x, 50, width, 30)];
-  [lastDateField setEditable:YES];
-  [lastDateField setBezeled:YES];
-  [lastDateField setStringValue: ""];
-  [aView addSubview:lastDateField];
-  controller.lastDateField = lastDateField;
-
-  x += width;
-
+  dateControl = [[DualDateControl alloc] initAtX: x y: 15]
+  [aView addSubview: dateControl];
+  controller.dateControl = dateControl;
+  x += [dateControl bounds].size.width - 60;
   
   timeControl = [[TimeControl alloc] initAtX: x y: 10];
   [aView addSubview: timeControl];
@@ -232,6 +199,18 @@
   panelController = [[PanelController alloc] init];
   panelController.panel = panel;
   controller.dateTimeEditingPanelController = panelController;
+}
+
+- (void) setKeyViewLoop
+{
+  // TODO: Doesn't work in capp 0.7
+  //  [theWindow setDefaultButton: goButton];
+  //  [theWindow enableKeyEquivalentForDefaultButton];
+
+  // TODO: do this with notifications.
+  [courseField setNextKeyView: instructorField];
+  [instructorField setNextKeyView: dateControl.firstDateField];
+  [dateControl.firstDateField setNextKeyView: timeControl.morningButton];
 }
 
 @end

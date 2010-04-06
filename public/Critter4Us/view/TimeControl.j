@@ -11,6 +11,7 @@
 - initAtX: x y: y
 {
   self = [super initWithFrame: CGRectMake(x, y, 100, 80)];
+  // [self setBackgroundColor: [CPColor greenColor]];
   [self placeButtons];
   return self;
 }
