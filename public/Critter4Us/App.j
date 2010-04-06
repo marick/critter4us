@@ -37,6 +37,8 @@ AppForwarder.copy = function(reservationId) {
 {
   theWindow = [[CPWindow alloc] initWithContentRect: CGRectMakeZero()
                                           styleMask: CPBorderlessBridgeWindowMask];
+  [theWindow setAutorecalculatesKeyViewLoop: NO];
+  [theWindow._keyViewLoopIsDirty = NO];    // TODO: Hack
   [theWindow orderFront:self];
 
   [self createMainMenu];
