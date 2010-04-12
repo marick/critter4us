@@ -12,18 +12,6 @@ class Animal < Sequel::Model
   def self.names; map(:name); end
   def self.sorted_names; names.sort; end
 
-  def self.kind_map
-    map = {}
-    Animal.all.each { | a | map[a.name] = a.kind }
-    map
-  end
-
-  def self.all_in_service_on(date)
-    filter(:date_removed_from_service => nil).union(
-    filter(:date_removed_from_service > date)).
-       eager(:uses => {:group => :reservation}).all
-  end
-
   def remove_from_service_as_of(date)
     self.date_removed_from_service = date
     save_changes
@@ -53,11 +41,6 @@ class Animal < Sequel::Model
   end
 
   private
-
-  def sort_by_name(animals)   # Delete this.
-    animals.sort
-  end
-
 
   # following are for testing
 

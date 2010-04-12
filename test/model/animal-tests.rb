@@ -14,13 +14,6 @@ class AnimalTests < FreshDatabaseTestCase
       Animal.random_with_names('c', 'a', 'b')
       assert { Animal.sorted_names == ['a', 'b', 'c'] }
     end
-
-    should "be able to return a name=>kind mapping" do
-      Animal.random(:name => 'bossie', :kind => 'cow')
-      Animal.random(:name => 'fred', :kind => 'horse')
-      assert { Animal.kind_map == {'bossie' => 'cow', 'fred' => 'horse'} }
-    end
-
   end
 
   context "animal instances" do 
@@ -51,17 +44,6 @@ class AnimalTests < FreshDatabaseTestCase
       assert { still_in.in_service_on?(test_date) }
       deny { out.in_service_on?(test_date) } 
       assert { never_removed.in_service_on?(test_date) } 
-    end
-
-
-    should "be able to return a sorted list of all animals in service" do
-      still_in = Animal.random.remove_from_service_as_of('2001-12-02')
-      out = Animal.random.remove_from_service_as_of('2001-12-01')
-      never_removed = Animal.random
-
-      test_date = Date.parse('2001-12-01')
-      assert_equal([still_in, never_removed],
-                   Animal.all_in_service_on(test_date))
     end
 
     context "an animal's pending reservations" do 
