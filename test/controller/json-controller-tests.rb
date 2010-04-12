@@ -22,6 +22,12 @@ class JsonGenerationTests < FreshDatabaseTestCase
     assert_equal(ruby_obj, JSON[last_response.body])
   end
 
+  def a_timeslice_having_first_date(datestring)
+    on { | arg | 
+      arg.first_date == Date.parse(datestring)
+    }
+  end
+
 
   context "delivering a blob of timeslice-specific animal and procedure data" do
 
@@ -59,20 +65,18 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
   context "producing lists of animals in service" do 
     should "return a list of animals with no pending reservations" do 
-      @app.override(mocks(:availability_source, :internalizer))
+      @app.override(mocks(:availability_source))
       availability = flexmock('availability')
 
       during { 
         get '/json/animals_that_can_be_taken_out_of_service', 'date' => '2009-01-01'
       }.behold! {
-        @internalizer.should_receive(:make_timeslice_from_date).once.
-                      with('2009-01-01').
-                      and_return("timeslice")
         @availability_source.should_receive(:new).once.
-                             with("timeslice").
+                             with(a_timeslice_having_first_date('2009-01-01')).
                              and_return(availability)
         availability.should_receive(:animals_that_can_be_removed_from_service).once.
                      and_return(['a list of animal names'])
+
       }
 
       assert_json_response

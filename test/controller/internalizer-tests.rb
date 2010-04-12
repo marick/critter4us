@@ -129,10 +129,11 @@ class InternalizerTests < FreshDatabaseTestCase
 
     should "be able to make a timeslice from a pure date" do 
       timeslice = @internalizer.make_timeslice_from_date('2008/09/08')
-      assert_equal(Date.new(2008,9,8), timeslice.first_date)
-      assert_equal(Date.new(2008,9,8), timeslice.last_date)
-      assert_equal(TimeSet.new(MORNING, AFTERNOON, EVENING), timeslice.times)
+      assert { timeslice.first_date == Date.new(2008,9,8) }
+      assert { timeslice.last_date == Date.new(2008,9,8) }
+      assert { timeslice.times == TimeSet.new(MORNING, AFTERNOON, EVENING) } 
     end
+
   end
 
   context "integer_or_nil" do
