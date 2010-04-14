@@ -6,6 +6,11 @@ class Controller
     redirect '/index.html'
   end
 
+
+  get '/hi' do
+    'hi'
+  end
+
   get '/reservation/:number' do
     number = params[:number]
     ReservationView.new(:reservation => reservation_source[number]).to_pretty
