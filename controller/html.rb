@@ -29,7 +29,7 @@ class Controller
     CritterLogger.warn "To critterlogger"
     # reservations = reservation_source.eager(:groups => {:uses => [:animal, :procedure]}).all
     # view(ReservationListView).new(:reservations => reservations).to_s
-    'hi'
+    'hi: #{params.inspect}'
   end
 
   get '/animals' do 
