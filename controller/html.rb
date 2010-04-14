@@ -24,12 +24,11 @@ class Controller
   end
 
   get '/reservations' do 
-    puts "To stdout"
-    $stderr.puts "To stderr"
-    CritterLogger.warn "To critterlogger"
-    # reservations = reservation_source.eager(:groups => {:uses => [:animal, :procedure]}).all
+    CritterLogger.warn "before"
+    reservations = reservation_source.eager(:groups => {:uses => [:animal, :procedure]}).all
+    CritterLogger.warn "after"
     # view(ReservationListView).new(:reservations => reservations).to_s
-    'hi : #{params.inspect}'
+    "hi : #{params.inspect}"
   end
 
   get '/animals' do 
