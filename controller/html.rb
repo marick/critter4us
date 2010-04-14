@@ -24,9 +24,7 @@ class Controller
   end
 
   get '/reservations' do 
-    CritterLogger.warn "before"
     reservations = reservation_source.eager(:groups => {:uses => [:animal, :procedure]}).all
-    CritterLogger.warn "after"
     view(ReservationListView).new(:reservations => reservations).to_s
   end
 
