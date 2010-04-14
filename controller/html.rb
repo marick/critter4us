@@ -24,8 +24,11 @@ class Controller
   end
 
   get '/reservations' do 
-    reservations = reservation_source.eager(:groups => {:uses => [:animal, :procedure]}).all
-    view(ReservationListView).new(:reservations => reservations).to_s
+    puts "To stdout"
+    $stderr.puts "To stderr"
+    CritterLogger.warn "To critterlogger"
+    # reservations = reservation_source.eager(:groups => {:uses => [:animal, :procedure]}).all
+    # view(ReservationListView).new(:reservations => reservations).to_s
   end
 
   get '/animals' do 
