@@ -1,7 +1,7 @@
 @import "../util/AwakeningObject.j"
 @import "../util/Timeslice.j"
 @import "../util/TimesliceSummarizer.j"
-@import "../view/DualDateControl.j"
+@import "../view/TimesliceControl.j"
 
 
 // This controller does way too many things!
@@ -11,8 +11,8 @@
   CPTextField courseField;
   CPTextField instructorField;
 
-  DualDateControl dateControl;
-  TimeControl timeControl;
+  TimesliceControl timesliceControl;
+  TimesliceSummarizer timesliceSummarizer;
 
   CPButton beginButton;
   CPButton reserveButton;
@@ -33,7 +33,7 @@
 - (void) beginReserving: sender
 {
   [NotificationCenter postNotificationName: UserHasChosenTimeslice
-				    object: [self timeslice]];
+				    object: [timesliceControl timeslice]];
 }
 
 - (void) prepareToFinishReservation
@@ -78,8 +78,7 @@
   [courseField setStringValue: [dictionary valueForKey: 'course']];
   [instructorField setStringValue: [dictionary valueForKey: 'instructor']];
   var timeslice = [dictionary valueForKey: 'timeslice'];
-  [dateControl setFirst: timeslice.firstDate last: timeslice.lastDate];
-  [timeControl setTimes: timeslice.times];
+  [timesliceControl setTimeslice: timeslice];
   [self noteTimeAndDate];
 }
 
@@ -100,7 +99,7 @@
 {
   [dateTimeEditingPanelController disappear];
   var newTimeslice = [dateTimeEditingControl timeslice];
-  [self setTimeslice: newTimeslice];
+  [timesliceControl setTimeslice: newTimeslice];
   [self noteTimeAndDate];
   [NotificationCenter postNotificationName: TimesliceForCurrentReservationChangedNews 
 				    object: newTimeslice];
@@ -132,8 +131,7 @@
 
 - (void) noteTimeAndDate
 {
-  var summarizer = [[TimesliceSummarizer alloc] init];
-  [dateTimeSummary setStringValue: [summarizer summarize: [self timeslice]]+"."];
+  [dateTimeSummary setStringValue: [timesliceSummarizer summarize: [timesliceControl timeslice]]+"."];
 }
 
 - (CPDictionary) data
@@ -143,25 +141,14 @@
   [dict setValue: [instructorField stringValue] forKey: 'instructor'];
 
 
-  var timeslice = [Timeslice firstDate: [dateControl firstDate]
-			      lastDate: [dateControl lastDate]
-				 times: [timeControl times]];
-  [dict setValue: timeslice forKey: 'timeslice'];
+  [dict setValue: [timesliceControl timeslice] forKey: 'timeslice'];
   return dict;
 }
 
-- (void) setTimeslice: (Timeslice) timeslice
-{
-  [dateControl setFirst: timeslice.firstDate last: timeslice.lastDate];
-  [timeControl setTimes: timeslice.times];
-}
-
+// TODO: USED?
 - (Timeslice) timeslice
 {
-  var retval = [Timeslice firstDate: [dateControl firstDate]
-			   lastDate: [dateControl lastDate]
-			      times: [timeControl times]];
-  return retval;
+  return [timesliceControl timeslice];
 }
 @end
 

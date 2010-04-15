@@ -1,10 +1,11 @@
 @import "../../cib/Subgraph.j"
 @import "../ReservationDataControllerPMR.j"
-@import "../../view/TimeControl.j"
+@import "../../view/TimesliceControl.j"
 @import "../../view/DateTimeEditingPanel.j"
 @import "../../view/DateTimeEditingControl.j"
 @import "../../controller/PanelController.j"
 @import "../../util/Constants.j"
+@import "../../util/TimesliceSummarizer.j"
 
 
 @implementation ReservationDataControllerSubgraphPMR : Subgraph
@@ -13,7 +14,7 @@
 
   CPTextField instructorField;
   CPTextField courseField;
-  CPDualDateControl dateControl;
+  TimesliceControl timesliceControl;
   CPRadio afternoonButton; 
 
   CPButton dateTimeButton;
@@ -36,7 +37,7 @@
 
 - (void) connectOutlets
 {
-  // No need.
+  controller.timesliceSummarizer = [[TimesliceSummarizer alloc] init];
 }
 
 
@@ -76,7 +77,7 @@
   controller.instructorField = instructorField;
   x += width;
 
-  var dateGatheringView = [[CPView alloc] initWithFrame:CGRectMake(x, y-30, 370, 100)];
+  var dateGatheringView = [[CPView alloc] initWithFrame:CGRectMake(x, y-30, 400, 100)];
   [self addDateGatheringControlsTo: dateGatheringView];
   [pageView addSubview:dateGatheringView];
   [dateGatheringView setHidden: NO];
@@ -122,9 +123,6 @@
   [copyButton setAction: @selector(copyPreviousReservation:)];
   [resultsView addSubview: copyButton];
   controller.copyButton = copyButton;
-
-  [dateControl setBoth: [Timeslice today]];
-
 }
 
   
@@ -154,17 +152,11 @@
   
 
   x = 10;
-  dateControl = [[DualDateControl alloc] initAtX: x y: 15]
-  [aView addSubview: dateControl];
-  controller.dateControl = dateControl;
-  x += [dateControl bounds].size.width - 60;
-  
-  timeControl = [[TimeControl alloc] initAtX: x y: 10];
-  [aView addSubview: timeControl];
-  controller.timeControl = timeControl;
-  x += [timeControl frame].size.width;
+  timesliceControl = [[TimesliceControl alloc] initAtX: x y: 0]
+  [aView addSubview: timesliceControl];
+  controller.timesliceControl = timesliceControl;
     
-  x += 15
+  x += [timesliceControl bounds].size.width - 30
   width = 80;
   var beginButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 35, width, 30)];
   [beginButton setTitle: "Begin"];
@@ -172,8 +164,6 @@
   controller.beginButton = beginButton;
   [beginButton setTarget: controller];
   [beginButton setAction: @selector(beginReserving:)];
-
-
 }
 
 - (void) addDateDisplayingControlsTo: aView
@@ -209,8 +199,8 @@
 
   // TODO: do this with notifications.
   [courseField setNextKeyView: instructorField];
-  [instructorField setNextKeyView: dateControl.firstDateField];
-  [dateControl.firstDateField setNextKeyView: timeControl.morningButton];
+  [instructorField setNextKeyView: timesliceControl.dateControl.firstDateField];
+  [timesliceControl.dateControl.firstDateField setNextKeyView: timesliceControl.timeControl.morningButton];
 }
 
 @end
