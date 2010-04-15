@@ -49,14 +49,21 @@
 
 -(void) test_target_will_be_informed_of_expected_change
 {
+  var timeslice = [Timeslice degenerateDate: "2009-10-01"
+				       time: [Time morning]];
   [scenario
+    previously: function() {
+      [sut.timesliceControl setTimeslice: timeslice];
+    }
     during: function() {
       [sut setTarget: sut.target];
       [sut.changeButton performClick: UnusedArgument]
     }
   behold: function() {
       [sut.target shouldReceive: @selector(newTimesliceReady:)
-                           with: sut];
+                           with: timeslice];
+      sut.container.failOnUnexpectedSelector = YES;
+      [sut.container shouldReceive: @selector(disappear)];
    }];
 }
 

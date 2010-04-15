@@ -88,10 +88,8 @@
 }
 
 
-- (void) newTimesliceReady: sender
+- (void) newTimesliceReady: newTimeslice
 {
-  [timesliceChangingPopupController disappear];
-  var newTimeslice = [timesliceChangingControl timeslice];
   [timesliceControl setTimeslice: newTimeslice];
   [timesliceSummary summarize: newTimeslice];
   [NotificationCenter postNotificationName: TimesliceForCurrentReservationChangedNews 

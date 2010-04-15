@@ -41,13 +41,10 @@
 
 - (void) forwardClick: sender
 {
-  if (sender == cancelButton)
+  [container disappear];
+  if (sender == changeButton)
   {
-    [container disappear];
-  }
-  else
-  {
-    [target newTimesliceReady: self];
+    [target newTimesliceReady: [self timeslice]];
   }
 }
 

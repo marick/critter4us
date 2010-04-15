@@ -58,7 +58,7 @@
       [sut.timesliceControl setTimeslice: preparing];
       [sut prepareToFinishReservation];
 
-      [sut newTimesliceReady: UnusedArgument];
+      [sut newTimesliceReady: setting];
 
       [sut.timesliceControl setTimeslice: dictionarying];
       [sut setNewValuesFrom: [CPDictionary dictionaryWithJSObject: {'timeslice':dictionarying}]];
@@ -66,8 +66,6 @@
   behold: function() { 
       [sut.timesliceSummary shouldReceive: @selector(summarize:)
 				     with: preparing];
-      [sut.timesliceChangingControl shouldReceive: @selector(timeslice)
-				      andReturn: setting];
       [sut.timesliceSummary shouldReceive: @selector(summarize:)
 				     with: setting];
       [sut.timesliceSummary shouldReceive: @selector(summarize:)
@@ -253,44 +251,18 @@
 
 
 
-- (void) test_choosing_a_new_timeslice_makes_panel_disappear_and_fires_notification
+- (void) test_choosing_a_new_timeslice_fires_notification
 {
   var timeslice = [Timeslice firstDate: '2009-12-10'
 			      lastDate: '2009-12-10'
 				 times: [ [Time afternoon] ]];
   [scenario
     during: function() {
-      [sut newTimesliceReady: UnusedArgument];
+      [sut newTimesliceReady: timeslice];
     }
   behold: function() {
-      [sut.timesliceChangingPopupController shouldReceive:@selector(disappear)];
-
-      [sut.timesliceChangingControl shouldReceive:@selector(timeslice)
-                                      andReturn: timeslice];
-
       [self listenersWillReceiveNotification: TimesliceForCurrentReservationChangedNews
 			    containingObject: timeslice];
-    }
-   ];
-}
-
-
-// TODO: This test will shortly be redundant.
-- (void) test_choosing_a_new_timeslice_updates_values_displayed_on_reservation_view
-{
-  var timeslice = [Timeslice firstDate: '2009-12-10'
-			      lastDate: '2009-12-11'
-				 times: [ [Time afternoon] ]];
-  sut.timesliceControl = [[TimesliceControl alloc] initAtX: 0 y: 0];
-  [scenario
-    during: function() {
-      [sut newTimesliceReady: UnusedArgument];
-    }
-  behold: function() {
-      [sut.timesliceChangingControl shouldReceive:@selector(timeslice)
-                                      andReturn: timeslice];
-      [sut.timesliceSummary shouldReceive:@selector(summarize:)
-				     with: timeslice];
     }
    ];
 }
