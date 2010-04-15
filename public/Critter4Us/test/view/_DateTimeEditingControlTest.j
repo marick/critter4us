@@ -22,19 +22,14 @@
 				times: [ [Time morning], [Time evening] ] ];
   [scenario
     previously: function() {
-      [sut.firstDateField setStringValue: 'BOGUS'];
-      [sut.lastDateField setStringValue: 'BOGUS'];
-      [sut.timeControl setTimes: [[Time afternoon]]];
+      [sut.timesliceControl setTimeslice: [Timeslice degenerateDate: "BOGUS"]];
     }
     testAction: function() {
       [sut setTimeslice: newValue];
     }
     andSo: function() {
-      [self assert: '2009-01-01' equals: [sut.firstDateField stringValue]];
-      [self assert: '2009-02-02' equals: [sut.lastDateField stringValue]];
-      [self assert: [[Time morning], [Time evening]] 
-	    equals: [sut.timeControl times]];
-      [self assert: newValue equals: [sut timeslice]];
+      [self assert: [sut.timesliceControl timeslice]
+	    equals: newValue];
    }];
 }
 
