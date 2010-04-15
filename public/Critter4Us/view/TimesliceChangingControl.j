@@ -8,6 +8,7 @@
 {
   TimesliceControl timesliceControl;
   id target; // This could inherit from CPControl... is that overkill? 
+  id container; 
   CPButton changeButton;
   CPButton cancelButton;
 }
@@ -42,7 +43,7 @@
 {
   if (sender == cancelButton)
   {
-    [target forgetEditingTimeslice: self];
+    [container disappear];
   }
   else
   {

@@ -10,7 +10,7 @@
 {
   sut = [[TimesliceChangingControl alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasDownwardOutlets: ['target']];
+  [scenario sutHasDownwardOutlets: ['target', 'container']];
 
   [CPApplication sharedApplication]; // clicks only work in this context.
 }
@@ -33,7 +33,7 @@
    }];
 }
 
--(void) test_target_will_be_informed_of_cancel
+-(void) test_canceling_hides_popup
 {
   [scenario
     during: function() {
@@ -41,9 +41,8 @@
       [sut.cancelButton performClick: UnusedArgument]
     }
   behold: function() {
-      sut.target.failOnUnexpectedSelector = YES;
-      [sut.target shouldReceive: @selector(forgetEditingTimeslice:)
-                           with: sut];
+      sut.container.failOnUnexpectedSelector = YES;
+      [sut.container shouldReceive: @selector(disappear)];
    }];
 }
 

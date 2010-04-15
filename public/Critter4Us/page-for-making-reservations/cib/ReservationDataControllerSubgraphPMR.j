@@ -175,6 +175,7 @@
   panelController = [[PanelController alloc] init];
   panelController.panel = panel;
   controller.timesliceChangingPopupController = panelController;
+  control.container = panelController;
 }
 
 - (void) setKeyViewLoop

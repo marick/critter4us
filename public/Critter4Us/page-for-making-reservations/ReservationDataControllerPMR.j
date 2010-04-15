@@ -87,11 +87,6 @@
   [timesliceChangingControl setTimeslice: timeslice];
 }
 
-- (void) forgetEditingTimeslice: sender
-{
-  [timesliceChangingPopupController disappear];
-}
-
 
 - (void) newTimesliceReady: sender
 {

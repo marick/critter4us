@@ -251,18 +251,6 @@
    ];
 }
 
-- (void) testDateAndTimeCancelingCausesPanelToBecomeInvisible
-{
-  [scenario
-  during: function() {
-      [sut forgetEditingTimeslice: UnusedArgument];
-    }
-  behold: function() {
-      [sut.timesliceChangingPopupController shouldReceive:@selector(disappear)];
-    }
-   ];
-}
-
 
 
 - (void) test_choosing_a_new_timeslice_makes_panel_disappear_and_fires_notification
