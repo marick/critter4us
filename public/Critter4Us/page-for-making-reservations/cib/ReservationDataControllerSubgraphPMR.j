@@ -169,12 +169,10 @@
   var control = [[TimesliceChangingControl alloc] init];
   [control setTarget: controller];
   
-  controller.timesliceChangingControl = control;
   [panel setContentView: control];
 
   panelController = [[PanelController alloc] init];
   panelController.panel = panel;
-  controller.timesliceChangingPopupController = panelController;
   control.container = panelController;
 }
 

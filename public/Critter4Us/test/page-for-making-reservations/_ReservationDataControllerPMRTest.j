@@ -17,8 +17,6 @@
                                         'previousResultsView', 'copyButton',
                                         'linkToPreviousResults',
     				        'majorModificationView', 'dateGatheringView',
-                                        'timesliceChangingPopupController',
-                                        'timesliceChangingControl'
                                         ]];
 }
 
@@ -215,40 +213,27 @@
 }
 
 
-// Popping up a date/time editing panel and handling what it tells us.
 
-- (void) testDateAndTimeEditingButtonCausesPanelToBecomeVisible
+- (void)test_can_ask_for_new_timeslice
 {
+  var timeslice = [Timeslice firstDate: '2009-12-10'
+  			      lastDate: '2009-12-11'
+  				 times: [ [Time morning], [Time evening] ]];
+
   [scenario
+    previously: function() {
+      [sut.timesliceControl setTimeslice: timeslice];
+    }
   during: function() {
-      [sut startDestructivelyEditingTimeslice: UnusedArgument];
-    }
-  behold: function() {
-      [sut.timesliceChangingPopupController shouldReceive:@selector(appear)];
-    }
-   ];
-
-}
-
-- (void) test_date_and_time_editing_panel_is_initialized_with_current_values
-{
-  var timeslice = [Timeslice firstDate: 'a first value'
-  			      lastDate: 'a last value'
-  				 times: [ [Time afternoon] ]];
-
-  [scenario
-    during: function() {
       [sut startDestructivelyEditingTimeslice: UnusedArgument];
     }
   behold: function() {
       [sut.timesliceControl shouldReceive: @selector(timeslice)
 				andReturn: timeslice];
-      [sut.timesliceChangingControl shouldReceive: @selector(setTimeslice:)
-					   with: timeslice];
-    }
-   ];
+      [self listenersWillReceiveNotification: UserWantsToReplaceTimeslice
+			    containingObject: timeslice];
+    }];
 }
-
 
 
 - (void) test_choosing_a_new_timeslice_fires_notification

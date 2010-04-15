@@ -33,6 +33,23 @@
    }];
 }
 
+- (void) test_responds_to_user_desires_to_change_timeslice
+{
+  var oldTimeslice = [Timeslice firstDate: '2009-01-01'
+				 lastDate: '2009-02-02'
+				    times: [ [Time morning], [Time evening] ] ];
+  [scenario 
+    during: function() { 
+      [self sendNotification: UserWantsToReplaceTimeslice
+		  withObject: oldTimeslice];
+    }
+  behold: function() {
+      [sut.timeliceControl shouldReceive: @selector(setTimeslice:)
+				    with: oldTimeslice];
+      [sut.container shouldReceive: @selector(appear)];
+    }];
+}
+
 -(void) test_canceling_hides_popup
 {
   [scenario

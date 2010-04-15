@@ -26,8 +26,20 @@
   [changeButton setTarget: self];
   [changeButton setAction: @selector(forwardClick:)];
 
+  [NotificationCenter addObserver: self
+			 selector: @selector(begin:)
+			     name: UserWantsToReplaceTimeslice 
+			   object: nil];
+
   return self;
 }
+
+- (void) begin: aNotification
+{
+  [timesliceControl setTimeslice: [aNotification object]];
+  [container appear];
+}
+
 
 - (void) setTarget: anObject
 {
@@ -47,7 +59,6 @@
     [target newTimesliceReady: [self timeslice]];
   }
 }
-
 
 - (void) setTimeslice: timeslice
 {

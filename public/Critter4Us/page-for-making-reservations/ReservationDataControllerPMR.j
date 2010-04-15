@@ -82,9 +82,8 @@
 
 - (void) startDestructivelyEditingTimeslice: sender
 {
-  [timesliceChangingPopupController appear];
-  var timeslice = [self timeslice];
-  [timesliceChangingControl setTimeslice: timeslice];
+  [NotificationCenter postNotificationName: UserWantsToReplaceTimeslice
+				    object: [timesliceControl timeslice]];
 }
 
 
