@@ -17,8 +17,8 @@
                                         'previousResultsView', 'copyButton',
                                         'linkToPreviousResults',
     				        'majorModificationView', 'dateGatheringView',
-                                        'dateTimeEditingPanelController',
-                                        'dateTimeEditingControl'
+                                        'timesliceChangingPopupController',
+                                        'timesliceChangingControl'
                                         ]];
 }
 
@@ -66,7 +66,7 @@
   behold: function() { 
       [sut.timesliceSummary shouldReceive: @selector(summarize:)
 				     with: preparing];
-      [sut.dateTimeEditingControl shouldReceive: @selector(timeslice)
+      [sut.timesliceChangingControl shouldReceive: @selector(timeslice)
 				      andReturn: setting];
       [sut.timesliceSummary shouldReceive: @selector(summarize:)
 				     with: setting];
@@ -226,7 +226,7 @@
       [sut startDestructivelyEditingTimeslice: UnusedArgument];
     }
   behold: function() {
-      [sut.dateTimeEditingPanelController shouldReceive:@selector(appear)];
+      [sut.timesliceChangingPopupController shouldReceive:@selector(appear)];
     }
    ];
 
@@ -245,7 +245,7 @@
   behold: function() {
       [sut.timesliceControl shouldReceive: @selector(timeslice)
 				andReturn: timeslice];
-      [sut.dateTimeEditingControl shouldReceive: @selector(setTimeslice:)
+      [sut.timesliceChangingControl shouldReceive: @selector(setTimeslice:)
 					   with: timeslice];
     }
    ];
@@ -258,7 +258,7 @@
       [sut forgetEditingTimeslice: UnusedArgument];
     }
   behold: function() {
-      [sut.dateTimeEditingPanelController shouldReceive:@selector(disappear)];
+      [sut.timesliceChangingPopupController shouldReceive:@selector(disappear)];
     }
    ];
 }
@@ -275,9 +275,9 @@
       [sut newTimesliceReady: UnusedArgument];
     }
   behold: function() {
-      [sut.dateTimeEditingPanelController shouldReceive:@selector(disappear)];
+      [sut.timesliceChangingPopupController shouldReceive:@selector(disappear)];
 
-      [sut.dateTimeEditingControl shouldReceive:@selector(timeslice)
+      [sut.timesliceChangingControl shouldReceive:@selector(timeslice)
                                       andReturn: timeslice];
 
       [self listenersWillReceiveNotification: TimesliceForCurrentReservationChangedNews
@@ -299,7 +299,7 @@
       [sut newTimesliceReady: UnusedArgument];
     }
   behold: function() {
-      [sut.dateTimeEditingControl shouldReceive:@selector(timeslice)
+      [sut.timesliceChangingControl shouldReceive:@selector(timeslice)
                                       andReturn: timeslice];
       [sut.timesliceSummary shouldReceive:@selector(summarize:)
 				     with: timeslice];

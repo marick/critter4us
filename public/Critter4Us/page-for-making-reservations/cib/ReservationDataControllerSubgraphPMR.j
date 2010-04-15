@@ -1,8 +1,8 @@
 @import "../../cib/Subgraph.j"
 @import "../ReservationDataControllerPMR.j"
 @import "../../view/TimesliceControl.j"
-@import "../../view/DateTimeEditingPanel.j"
-@import "../../view/DateTimeEditingControl.j"
+@import "../../view/TimesliceChangingPopup.j"
+@import "../../view/TimesliceChangingControl.j"
 @import "../../controller/PanelController.j"
 @import "../../util/Constants.j"
 @import "../../util/TimesliceSummarizer.j"
@@ -17,7 +17,7 @@
   TimesliceControl timesliceControl;
   CPRadio afternoonButton; 
 
-  CPButton dateTimeButton;
+  CPButton timesliceButton;
   PanelController panelController;
   ReservationDataControllerPMR controller;
   // There are others but no need to make them instance vars.
@@ -30,7 +30,7 @@
   
   controller = [self custom: [[ReservationDataControllerPMR alloc] init]];
   [self drawControlsOnPage: pageView];
-  [self dateTimeEditingPanel];
+  [self timesliceChangingPopup];
   [self setKeyViewLoop];
   return self;
 }
@@ -135,12 +135,12 @@
 
 
   x -= 80
-  dateTimeButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 35, 160, 30)];
-  [dateTimeButton setTitle: "Change Date or Time"];
-  [dateTimeButton setHidden: NO];
-  [aView addSubview:dateTimeButton];
-  [dateTimeButton setTarget: controller];
-  [dateTimeButton setAction: @selector(startDestructivelyEditingTimeslice:)];
+  timesliceButton = [[CPButton alloc] initWithFrame:CGRectMake(x, 35, 160, 30)];
+  [timesliceButton setTitle: "Change Date or Time"];
+  [timesliceButton setHidden: NO];
+  [aView addSubview:timesliceButton];
+  [timesliceButton setTarget: controller];
+  [timesliceButton setAction: @selector(startDestructivelyEditingTimeslice:)];
 }
     
 - (void) addDateGatheringControlsTo: aView
@@ -163,18 +163,18 @@
   [beginButton setAction: @selector(beginReserving:)];
 }
 
--(void) dateTimeEditingPanel
+-(void) timesliceChangingPopup
 {
-  var panel = [[DateTimeEditingPanel alloc] initAtX: 550 y: 50];
-  var control = [[DateTimeEditingControl alloc] init];
+  var panel = [[TimesliceChangingPopup alloc] initAtX: 550 y: 50];
+  var control = [[TimesliceChangingControl alloc] init];
   [control setTarget: controller];
   
-  controller.dateTimeEditingControl = control;
+  controller.timesliceChangingControl = control;
   [panel setContentView: control];
 
   panelController = [[PanelController alloc] init];
   panelController.panel = panel;
-  controller.dateTimeEditingPanelController = panelController;
+  controller.timesliceChangingPopupController = panelController;
 }
 
 - (void) setKeyViewLoop

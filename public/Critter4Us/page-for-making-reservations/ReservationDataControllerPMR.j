@@ -23,10 +23,9 @@
 
   CPView dateGatheringView;
   CPView majorModificationView;
-  CPTextField dateTimeSummary;
 
-  PanelController dateTimeEditingPanelController;
-  DateTimeEditingControl dateTimeEditingControl;
+  PanelController timesliceChangingPopupController;
+  TimesliceChangingControl timesliceChangingControl;
 }
 
 - (void) beginReserving: sender
@@ -83,21 +82,21 @@
 
 - (void) startDestructivelyEditingTimeslice: sender
 {
-  [dateTimeEditingPanelController appear];
+  [timesliceChangingPopupController appear];
   var timeslice = [self timeslice];
-  [dateTimeEditingControl setTimeslice: timeslice];
+  [timesliceChangingControl setTimeslice: timeslice];
 }
 
 - (void) forgetEditingTimeslice: sender
 {
-  [dateTimeEditingPanelController disappear];
+  [timesliceChangingPopupController disappear];
 }
 
 
 - (void) newTimesliceReady: sender
 {
-  [dateTimeEditingPanelController disappear];
-  var newTimeslice = [dateTimeEditingControl timeslice];
+  [timesliceChangingPopupController disappear];
+  var newTimeslice = [timesliceChangingControl timeslice];
   [timesliceControl setTimeslice: newTimeslice];
   [timesliceSummary summarize: newTimeslice];
   [NotificationCenter postNotificationName: TimesliceForCurrentReservationChangedNews 

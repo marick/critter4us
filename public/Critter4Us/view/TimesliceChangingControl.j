@@ -4,7 +4,7 @@
 @import "../util/Timeslice.j"
 @import "TimesliceControl.j"
 
-@implementation DateTimeEditingControl : CPView
+@implementation TimesliceChangingControl : CPView
 {
   TimesliceControl timesliceControl;
   id target; // This could inherit from CPControl... is that overkill? 

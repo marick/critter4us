@@ -1,11 +1,10 @@
 @import <AppKit/CPPanel.j>
 
 
-// Experimenting with having subclasses manage their own positions as
-// an alternative to having giant Cib-like bundles o' code do that
-// work.
+// This is a separate class from TimesliceChangingControl because
+// CPPanels can't be instantiated without a window system.
 
-@implementation DateTimeEditingPanel : CPPanel
+@implementation TimesliceChangingPopup : CPPanel
 {
 }
 

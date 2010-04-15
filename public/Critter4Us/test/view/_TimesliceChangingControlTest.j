@@ -1,14 +1,14 @@
-@import <Critter4Us/view/DateTimeEditingControl.j>
+@import <Critter4Us/view/TimesliceChangingControl.j>
 @import <Critter4Us/test/testutil/ScenarioTestCase.j>
 
-@implementation _DateTimeEditingControlTest : ScenarioTestCase
+@implementation _TimesliceChangingControlTest : ScenarioTestCase
 {
   
 }
 
 - (void)setUp
 {
-  sut = [[DateTimeEditingControl alloc] init];
+  sut = [[TimesliceChangingControl alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasDownwardOutlets: ['target']];
 
