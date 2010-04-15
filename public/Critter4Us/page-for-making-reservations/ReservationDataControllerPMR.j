@@ -1,6 +1,6 @@
 @import "../util/AwakeningObject.j"
 @import "../util/Timeslice.j"
-@import "../util/TimesliceSummarizer.j"
+@import "../view/TimesliceSummary.j"
 @import "../view/TimesliceControl.j"
 
 
@@ -12,7 +12,7 @@
   CPTextField instructorField;
 
   TimesliceControl timesliceControl;
-  TimesliceSummarizer timesliceSummarizer;
+  TimesliceSummary timesliceSummary;
 
   CPButton beginButton;
   CPButton reserveButton;
@@ -22,7 +22,6 @@
   CPButton copyButton;
 
   CPView dateGatheringView;
-  CPView dateDisplayingView;
   CPView majorModificationView;
   CPTextField dateTimeSummary;
 
@@ -38,7 +37,7 @@
 
 - (void) prepareToFinishReservation
 {
-  [self noteTimeAndDate];
+  [timesliceSummary summarize: [timesliceControl timeslice]];
   [self showDateAndTimeFields: NO];
   [self showGroupEditButtons: YES];
   [previousResultsView setHidden: YES];
@@ -79,7 +78,7 @@
   [instructorField setStringValue: [dictionary valueForKey: 'instructor']];
   var timeslice = [dictionary valueForKey: 'timeslice'];
   [timesliceControl setTimeslice: timeslice];
-  [self noteTimeAndDate];
+  [timesliceSummary summarize: timeslice];
 }
 
 - (void) startDestructivelyEditingTimeslice: sender
@@ -100,7 +99,7 @@
   [dateTimeEditingPanelController disappear];
   var newTimeslice = [dateTimeEditingControl timeslice];
   [timesliceControl setTimeslice: newTimeslice];
-  [self noteTimeAndDate];
+  [timesliceSummary summarize: newTimeslice];
   [NotificationCenter postNotificationName: TimesliceForCurrentReservationChangedNews 
 				    object: newTimeslice];
 }
@@ -126,12 +125,7 @@
 - (void) showDateAndTimeFields: value
 {
   [dateGatheringView setHidden: !value];
-  [dateDisplayingView setHidden: value];
-}
-
-- (void) noteTimeAndDate
-{
-  [dateTimeSummary setStringValue: [timesliceSummarizer summarize: [timesliceControl timeslice]]+"."];
+  [timesliceSummary setHidden: value];
 }
 
 - (CPDictionary) data

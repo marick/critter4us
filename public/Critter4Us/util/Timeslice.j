@@ -23,6 +23,11 @@
 				     times: [aTime]];
 }
 
++ (id) degenerateDate: aString
+{
+  return [self degenerateDate: aString time: []];
+}
+
 
 - (id) initWithFirstDate: firstString lastDate: lastString times: anArray
 {

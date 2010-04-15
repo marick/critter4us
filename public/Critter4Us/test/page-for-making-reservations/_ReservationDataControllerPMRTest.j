@@ -11,13 +11,12 @@
   sut = [[ReservationDataControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasUpwardCollaborators: ['courseField', 'instructorField', 'timesliceControl',
-						     'timesliceSummarizer',
+   				        'timesliceSummary',
                                         'beginButton', 
                                         'reserveButton',
                                         'previousResultsView', 'copyButton',
                                         'linkToPreviousResults',
-    				        'majorModificationView', 'dateGatheringView', 'dateDisplayingView',
-                                        'dateTimeSummary',
+    				        'majorModificationView', 'dateGatheringView',
                                         'dateTimeEditingPanelController',
                                         'dateTimeEditingControl'
                                         ]];
@@ -46,25 +45,33 @@
     }];
 }
 
-- (void) test_displayed_timeslice_works
+
+
+- (void) test_timeslice_summary_is_updated_when_needed
 {
-  var timeslice = [Timeslice firstDate: '2009-12-10'
-  			      lastDate: '2009-12-10'
-  				 times: [ [Time morning] ]];
+  var preparing = [Timeslice degenerateDate: "preparing"];
+  var setting = [Timeslice degenerateDate: "setting"];
+  var dictionarying = [Timeslice degenerateDate: "dictionarying"];
+
   [scenario
     during: function() {
+      [sut.timesliceControl setTimeslice: preparing];
       [sut prepareToFinishReservation];
+
+      [sut newTimesliceReady: UnusedArgument];
+
+      [sut.timesliceControl setTimeslice: dictionarying];
+      [sut setNewValuesFrom: [CPDictionary dictionaryWithJSObject: {'timeslice':dictionarying}]];
     }
   behold: function() { 
-      [sut.timesliceSummarizer shouldReceive: @selector(summarize:)
-					with: timeslice
-				   andReturn: "on the morning of 2009-12-10"];
-      [sut.timesliceControl shouldReceive: @selector(timeslice)
-			      andReturn: timeslice];
-    }
-  andSo: function() {
-      [self assert: "on the morning of 2009-12-10."
-            equals: [sut.dateTimeSummary stringValue]];
+      [sut.timesliceSummary shouldReceive: @selector(summarize:)
+				     with: preparing];
+      [sut.dateTimeEditingControl shouldReceive: @selector(timeslice)
+				      andReturn: setting];
+      [sut.timesliceSummary shouldReceive: @selector(summarize:)
+				     with: setting];
+      [sut.timesliceSummary shouldReceive: @selector(summarize:)
+				     with: dictionarying];
     }
    ];
 }
@@ -170,7 +177,7 @@
   [scenario
     previously: function() {
       [sut.dateGatheringView setHidden: YES];
-      [sut.dateDisplayingView setHidden: NO];
+      [sut.timesliceSummary setHidden: NO];
 
       [sut.majorModificationView setHidden: NO];
       [sut.reserveButton setHidden: NO];
@@ -180,7 +187,7 @@
     }
   andSo: function() {
       [self assert: NO equals: [sut.dateGatheringView hidden] ];
-      [self assert: YES equals: [sut.dateDisplayingView hidden] ];
+      [self assert: YES equals: [sut.timesliceSummary hidden] ];
 
       [self assert: YES equals: [sut.majorModificationView hidden] ];
       [self assert: YES equals: [sut.reserveButton hidden] ];
@@ -205,7 +212,6 @@
       [sut.courseField shouldReceive: @selector(setStringValue:) with: 'the course'];
       [sut.instructorField shouldReceive: @selector(setStringValue:) with: 'the instructor'];
       [sut.timesliceControl shouldReceive: @selector(setTimeslice:) with: timeslice];
-      [sut.dateTimeSummary shouldReceive: @selector(setStringValue:)];
     }
    ];
 }
@@ -274,17 +280,14 @@
       [sut.dateTimeEditingControl shouldReceive:@selector(timeslice)
                                       andReturn: timeslice];
 
-      [sut.timesliceSummarizer shouldReceive:@selector(summarize:)
-					with: timeslice
-				   andReturn: "some summary"];
-	  
-      
       [self listenersWillReceiveNotification: TimesliceForCurrentReservationChangedNews
 			    containingObject: timeslice];
     }
    ];
 }
 
+
+// TODO: This test will shortly be redundant.
 - (void) test_choosing_a_new_timeslice_updates_values_displayed_on_reservation_view
 {
   var timeslice = [Timeslice firstDate: '2009-12-10'
@@ -298,13 +301,8 @@
   behold: function() {
       [sut.dateTimeEditingControl shouldReceive:@selector(timeslice)
                                       andReturn: timeslice];
-      [sut.timesliceSummarizer shouldReceive:@selector(summarize:)
-					with: timeslice
-				   andReturn: "on the afternoons of 2009-12-10 through 2009-12-11"];
-    }
-  andSo: function() {
-      [self assert: "on the afternoons of 2009-12-10 through 2009-12-11."
-            equals: [sut.dateTimeSummary stringValue]];
+      [sut.timesliceSummary shouldReceive:@selector(summarize:)
+				     with: timeslice];
     }
    ];
 }

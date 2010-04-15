@@ -37,7 +37,6 @@
 
 - (void) connectOutlets
 {
-  controller.timesliceSummarizer = [[TimesliceSummarizer alloc] init];
 }
 
 
@@ -91,11 +90,9 @@
   [majorModificationView setHidden: YES];
   controller.majorModificationView = majorModificationView;
 
-  var dateDisplayingView = [[CPView alloc] initWithFrame:CGRectMake(x, y-30, 450, 100)];
-  [self addDateDisplayingControlsTo: dateDisplayingView];
-  [pageView addSubview:dateDisplayingView];
-  [dateDisplayingView setHidden: YES];
-  controller.dateDisplayingView = dateDisplayingView;
+  var timesliceSummary = [[TimesliceSummary alloc] initWithFrame:CGRectMake(x, y-30, 450, 100)];
+  [pageView addSubview:timesliceSummary];
+  controller.timesliceSummary = timesliceSummary;
 
   var placeForLink = x + 280;
 
@@ -165,17 +162,6 @@
   [beginButton setTarget: controller];
   [beginButton setAction: @selector(beginReserving:)];
 }
-
-- (void) addDateDisplayingControlsTo: aView
-{
-  //  [aView setBackgroundColor: [CPColor redColor]];
-
-  var aLabel = [[CPTextField alloc] initWithFrame:CGRectMake(10, 35, 500, 30)];
-  [aView addSubview:aLabel];
-  [aLabel setStringValue: "on the morning of 2009-08-10"];
-  controller.dateTimeSummary = aLabel;
-}
-
 
 -(void) dateTimeEditingPanel
 {
