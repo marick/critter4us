@@ -93,7 +93,7 @@ class ExpandedTimeslice014 < Sequel::Migration
     end
 
     puts "==== deleting left-over column"
-    DB.drop_column :reservations, :morning
+    # yDB.drop_column :reservations, :morning
 
   end
 
