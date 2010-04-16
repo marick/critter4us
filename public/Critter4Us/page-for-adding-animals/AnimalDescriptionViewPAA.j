@@ -20,16 +20,6 @@
   [noteField setStringValue: note];
 }
 
-- (void) keyViewNameFieldTo: next
-{
-  [nameField setNextKeyView: next.nameField];
-}
-
-- (void) keyViewNoteFieldTo: next
-{
-  [noteField setNextKeyView: next.noteField];
-}
-
 
 - (id) initAtX: x y: y
 {

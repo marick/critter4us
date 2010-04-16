@@ -22,6 +22,8 @@
   CPArray rows;
 
   CPButton submitButton;
+  CPPopUpButton defaultSpeciesPopUp;
+  CPTextField defaultNoteField;
 }
 
 - (void)instantiatePageInWindow: someWindow withOwner: owner
@@ -61,18 +63,18 @@
 
   x += width + 10;
   width = 100;
-  var species = [[CPPopUpButton alloc] initWithFrame: CGRectMake(x, y-3, width, height)];
-  [species addItemsWithTitles: [self possibleSpecies]];
-  [species selectItemWithTitle: [self favoriteSpecies]];
-  [[self background] addSubview: species];
+  defaultSpeciesPopUp = [[CPPopUpButton alloc] initWithFrame: CGRectMake(x, y-3, width, height)];
+  [defaultSpeciesPopUp addItemsWithTitles: [self possibleSpecies]];
+  [defaultSpeciesPopUp selectItemWithTitle: [self favoriteSpecies]];
+  [[self background] addSubview: defaultSpeciesPopUp];
 
   x += width + 10;
   width = 200;
-  var note = [[CPTextField alloc] initWithFrame: CGRectMake(x, y-6, width, height)];
-  [note setEditable: YES];
-  [note setBezeled: YES];
-  [note setStringValue: "cow"];
-  [[self background] addSubview: note];
+  defaultNoteField = [[CPTextField alloc] initWithFrame: CGRectMake(x, y-6, width, height)];
+  [defaultNoteField setEditable: YES];
+  [defaultNoteField setBezeled: YES];
+  [defaultNoteField setStringValue: "cow"];
+  [[self background] addSubview: defaultNoteField];
 
 
 }
@@ -184,11 +186,14 @@
 
 - (void) setKeyViewLoop
 {
+  [defaultNoteField setNextKeyView: rows[0].nameField];
   for (i = 0; i < [rows count]-1; i++)
     {
-      [rows[i] keyViewNameFieldTo: rows[i+1]];
-      [rows[i] keyViewNoteFieldTo: rows[i+1]];
+      [rows[i].nameField setNextKeyView: rows[i+1].nameField];
+      [rows[i].noteField setNextKeyView: rows[i+1].noteField];
     }
+  lastIndex = [rows count]-1;
+  [rows[lastIndex].nameField setNextKeyView: rows[0].noteField];
 }
 
 - (CPArray) possibleSpecies
