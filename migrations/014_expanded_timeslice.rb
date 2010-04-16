@@ -4,9 +4,6 @@ require 'pp'
 
 class ExpandedTimeslice014 < Sequel::Migration
   def up
-    puts "==== deleting left-over column"
-    DB.drop_column :reservations, :morning
-
     puts "==== adding bit(3) field for TimeSet and separate start/end dates (for code migration)"
     DB.add_column :reservations, :first_date, Date
     DB.add_column :reservations, :last_date, Date
@@ -94,6 +91,10 @@ class ExpandedTimeslice014 < Sequel::Migration
         end
       end
     end
+
+    puts "==== deleting left-over column"
+    DB.drop_column :reservations, :morning
+
   end
 
   def down
