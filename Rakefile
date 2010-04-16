@@ -85,10 +85,6 @@ task :deploy => [:backup] do
   system("heroku rake migrate --app critter4us")
 end
 
-desc "Update Cappuccino app with cached information"
-task :update_capp_cache do
-  system("ruby admin/exclusions-as-json.rb > public/Critter4Us/persistence/TimeInvariantExclusionCache.j")
-end
 
 # ==============
 
