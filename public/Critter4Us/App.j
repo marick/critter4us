@@ -6,6 +6,7 @@
 @import "page-for-making-reservations/CibPMR.j"
 @import "page-for-viewing-reservations/CibPVR.j"
 @import "page-for-deleting-animals/CibPDA.j"
+@import "page-for-adding-animals/CibPAA.j"
 @import "page-for-viewing-log/CibPVL.j"
 
 
@@ -47,6 +48,7 @@ AppForwarder.copy = function(reservationId) {
   [self createPage: CibPMR];
   [self createPage: CibPVR];
   [self createPage: CibPDA];
+  [self createPage: CibPAA];
   [self createPage: CibPVL];
   [self initializationIndependentOfUI]
 
@@ -55,7 +57,7 @@ AppForwarder.copy = function(reservationId) {
 
 -(void) initializationIndependentOfUI
 {
-  allPageControllers = [pvrPageController, pmrPageController, pdaPageController, pvlPageController];
+  allPageControllers = [pvrPageController, pmrPageController, pdaPageController, pvlPageController, paaPageController];
 }
 
 -(void) createPage: klass
@@ -87,6 +89,11 @@ AppForwarder.copy = function(reservationId) {
 - (void) activateLogViewer: (CPMenuItem) sender
 {
   [self foreground: pvlPageController];
+}
+
+- (void) activateAnimalAdder: (CPMenuItem) sender
+{
+  [self foreground: paaPageController];
 }
 
 - (void) activateAnimalDeleter: (CPMenuItem) sender

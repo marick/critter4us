@@ -42,6 +42,10 @@
 - (void) addAnimalsSubmenu
 {
   var animalsMenu = [self submenuNamed: "Animals" below: mainMenu];
+  [self addMenuItemwithTitle: "Add Animals..."
+                      action: @selector(activateAnimalAdder:)
+               keyEquivalent: "A"
+                       under: animalsMenu];
   [self addMenuItemwithTitle: "Take Animals Out of Service..."
                       action: @selector(activateAnimalDeleter:)
                keyEquivalent: "T"
