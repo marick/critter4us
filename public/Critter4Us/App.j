@@ -26,6 +26,7 @@ AppForwarder.copy = function(reservationId) {
 @implementation App : CPObject
 {
   CPWindow theWindow;
+  CPObject paaPageController;
   CPObject pvrPageController;
   CPObject pmrPageController;
   CPObject pdaPageController;
