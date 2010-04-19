@@ -24,4 +24,42 @@
     }];
 }
 
+- (void) test_note_updates_text_field
+{
+  [scenario
+    during: function() {
+      [sut setNote: "blah"];
+    }
+  behold: function() { 
+      [sut.noteField shouldReceive: @selector(setStringValue:)
+                              with: "blah"];
+    }];
+}
+
+- (void) test_bundles_up_values
+{
+
+  var expected = [[AnimalDescription alloc] initWithName: "name"
+                                                 species: "species"
+                                                    note: "note"];
+  [scenario
+    during: function() {
+      return [sut animalDescription];
+    }
+  behold: function() { 
+      [sut.nameField shouldReceive: @selector(stringValue)
+                         andReturn: expected.name];
+      [sut.speciesPopUp shouldReceive: @selector(selectedItemTitle)
+                         andReturn: expected.species];
+      [sut.noteField shouldReceive: @selector(stringValue)
+                         andReturn: expected.note];
+     }
+  andSo: function() {
+      [self assert: expected equals: scenario.result];
+    }];
+}
+
+
+
+
 @end

@@ -41,9 +41,6 @@
 
 - (void) controlTextDidChange: aNotification
 {
-  [[Logger defaultLogger] log: 'in control'];
-  [[Logger defaultLogger] log: "firstDateField is: " + firstDateField];
-  [[Logger defaultLogger] log: "firstDateField next key view is " + [firstDateField nextKeyView]];
   if ([aNotification object] == lastDateField) {
     lastEdited = YES;
     return;

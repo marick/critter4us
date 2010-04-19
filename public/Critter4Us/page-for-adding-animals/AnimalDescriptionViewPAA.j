@@ -1,5 +1,6 @@
 @import <AppKit/AppKit.j>
 @import "../view/CritterPopUpButton.j"
+@import "../util/AnimalDescription.j"
 
 
 @implementation AnimalDescriptionViewPAA : CPView
@@ -23,6 +24,14 @@
 - (void) setSpecies: name
 {
   [speciesPopUp selectItemWithTitle: name];
+}
+
+- (AnimalDescription) animalDescription
+{
+  var retval = [[AnimalDescription alloc] initWithName: [nameField stringValue]
+					       species: [speciesPopUp selectedItemTitle]
+						  note: [noteField stringValue]];
+  return retval;
 }
 
 
@@ -52,9 +61,9 @@
   noteField = [[CPTextField alloc] initWithFrame: CGRectMake(x, y, width, height)];
   [noteField setEditable: YES];
   [noteField setBezeled: YES];
-  [noteField setStringValue: "cow"];
   [self addSubview: noteField];
 
+  [noteField setDelegate: self];
   return self;
 }
 

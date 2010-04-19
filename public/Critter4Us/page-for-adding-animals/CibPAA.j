@@ -138,12 +138,11 @@
   [defaultSpeciesPopUp setTarget: [self backgroundController]];
   [defaultSpeciesPopUp setAction: @selector(newDefaultSpecies:)];
   
-  [defaultNoteField setTarget: [self backgroundController]];
-  [defaultNoteField setAction: @selector(newDefaultSpecies:)];
+  [defaultNoteField setDelegate: [self backgroundController]];
 
   [self backgroundController].defaultSpeciesPopUp = defaultSpeciesPopUp;
   [self backgroundController].defaultNoteField = defaultNoteField;
-  [self backgroundController].animalDescriptions = rows;
+  [self backgroundController].animalDescriptionViews = rows;
 }
 
 

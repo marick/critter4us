@@ -5,29 +5,45 @@
 {
   CPPopUpButton defaultSpeciesPopUp;
   CPPopUpButton defaultNoteField;
-  CPArray animalDescriptions;
+  CPArray animalDescriptionViews;
 }
 
 
 - (void) newDefaultSpecies: sender
 {
   var title = [defaultSpeciesPopUp selectedItemTitle];
-  for (i = 0; i < [animalDescriptions count]; i++)
+  for (i = 0; i < [animalDescriptionViews count]; i++)
     {
-      [animalDescriptions[i] setSpecies: title];
+      [animalDescriptionViews[i] setSpecies: title];
+    }
+}
+
+- (void) controlTextDidChange: aNotification
+{
+  var note = [defaultNoteField stringValue];
+  for (i = 0; i < [animalDescriptionViews count]; i++)
+    {
+      [animalDescriptionViews[i] setNote: note];
     }
 }
 
   
-- (void) startAddingAnimal: sender 
+- (void) addAnimals: sender 
 {
-  var animal = [CPDictionary dictionaryWithJSObject: {
-        'name': 'Clara', 
-        'kind': 'cow', 
-        'species': 'bovine'}]
-  [NotificationCenter postNotificationName: UserWantsToAddAnAnimal
-                                    object: animal]; 
+  [NotificationCenter postNotificationName: UserWantsToAddAnimals
+                                    object: [self fetchAnimalDescriptions]]; 
 }
 
+
+- (CPArray) fetchAnimalDescriptions
+{
+  var retval = [];
+  for (i = 0; i < [animalDescriptionViews count]; i++)
+    {
+      [retval addObject: [animalDescriptionViews[i] animalDescription]];
+    }
+  alert([retval description])
+  return retval;
+}
 
 @end
