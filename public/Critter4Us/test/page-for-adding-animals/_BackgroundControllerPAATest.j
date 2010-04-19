@@ -9,7 +9,7 @@
 {
   sut = [[BackgroundControllerPAA alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardOutlets: ['defaultSpeciesPopup', 'defaultNoteField']];
+  [scenario sutHasUpwardOutlets: ['defaultSpeciesPopUp', 'defaultNoteField']];
   [scenario makeOneMock: 'firstRow'];
   [scenario makeOneMock: 'nextRow'];
   sut.animalDescriptions = [ sut.firstRow, sut.nextRow ];
@@ -22,11 +22,11 @@
       [sut newDefaultSpecies: UnusedArgument];
     }
   behold: function() { 
-      [sut.defaultSpeciesPopup shouldReceive: @selector(selectedItemTitle)
+      [sut.defaultSpeciesPopUp shouldReceive: @selector(selectedItemTitle)
 				   andReturn: "a title"];
-      [sut.firstRow shouldReceive: @selector(setDefaultSpecies:)
+      [sut.firstRow shouldReceive: @selector(setSpecies:)
 			     with: "a title"];
-      [sut.nextRow shouldReceive: @selector(setDefaultSpecies:)
+      [sut.nextRow shouldReceive: @selector(setSpecies:)
 			    with: "a title"];
     }];
 }

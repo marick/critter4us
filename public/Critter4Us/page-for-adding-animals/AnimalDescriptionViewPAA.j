@@ -1,14 +1,14 @@
 @import <AppKit/AppKit.j>
+@import "../view/CritterPopUpButton.j"
+
 
 @implementation AnimalDescriptionViewPAA : CPView
 {
-  CPView container;
   CPTextField nameField;
-  CPPopUpButton speciesPopUp;
+  CritterPopUpButton speciesPopUp;
   CPTextField noteField;
 }
 
-// These violate
 - (void) setPossibleSpecies: list selecting: favorite
 {
   [speciesPopUp addItemsWithTitles: list];
@@ -18,6 +18,11 @@
 - (void) setNote: note
 {
   [noteField setStringValue: note];
+}
+
+- (void) setSpecies: name
+{
+  [speciesPopUp selectItemWithTitle: name];
 }
 
 
@@ -39,10 +44,7 @@
   
   x += width + 10;
   width = 100;
-  speciesPopUp = [[CPPopUpButton alloc] initWithFrame: CGRectMake(x, y+3, width, height)];
-  [speciesPopUp addItemWithTitle: "bovine"];
-  [speciesPopUp addItemWithTitle: "caprine"];
-  [speciesPopUp addItemWithTitle: "equine"];
+  speciesPopUp = [[CritterPopUpButton alloc] initWithFrame: CGRectMake(x, y+3, width, height)];
   [self addSubview: speciesPopUp];
 
   x += width + 10;

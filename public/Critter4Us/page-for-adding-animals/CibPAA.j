@@ -7,6 +7,7 @@
 @import "../cib/PageControllerSubgraph.j"
 @import "state-machine/OnlyStepPAA.j"
 @import "AnimalDescriptionViewPAA.j"
+@import "../view/CritterPopUpButton.j"
 
 @implementation CibPAA : Subgraph
 {
@@ -22,7 +23,7 @@
   CPArray rows;
 
   CPButton submitButton;
-  CPPopUpButton defaultSpeciesPopUp;
+  CritterPopUpButton defaultSpeciesPopUp;
   CPTextField defaultNoteField;
 }
 
@@ -63,7 +64,7 @@
 
   x += width + 10;
   width = 100;
-  defaultSpeciesPopUp = [[CPPopUpButton alloc] initWithFrame: CGRectMake(x, y-3, width, height)];
+  defaultSpeciesPopUp = [[CritterPopUpButton alloc] initWithFrame: CGRectMake(x, y-3, width, height)];
   [defaultSpeciesPopUp addItemsWithTitles: [self possibleSpecies]];
   [defaultSpeciesPopUp selectItemWithTitle: [self favoriteSpecies]];
   [defaultSpeciesPopUp setTarget: [self backgroundController]];
@@ -133,6 +134,16 @@
   //  [self backgroundController].changeableDateView = [self changeableDateView];
   [[self submitButton] setTarget: [self backgroundController]];
   [[self submitButton] setAction: @selector(addAnimals:)];
+
+  [defaultSpeciesPopUp setTarget: [self backgroundController]];
+  [defaultSpeciesPopUp setAction: @selector(newDefaultSpecies:)];
+  
+  [defaultNoteField setTarget: [self backgroundController]];
+  [defaultNoteField setAction: @selector(newDefaultSpecies:)];
+
+  [self backgroundController].defaultSpeciesPopUp = defaultSpeciesPopUp;
+  [self backgroundController].defaultNoteField = defaultNoteField;
+  [self backgroundController].animalDescriptions = rows;
 }
 
 

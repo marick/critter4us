@@ -3,7 +3,7 @@
 
 @implementation BackgroundControllerPAA : AwakeningObject
 {
-  CPPopUpButton defaultSpeciesPopup;
+  CPPopUpButton defaultSpeciesPopUp;
   CPPopUpButton defaultNoteField;
   CPArray animalDescriptions;
 }
@@ -11,10 +11,10 @@
 
 - (void) newDefaultSpecies: sender
 {
-  var title = [defaultSpeciesPopup selectedItemTitle];
+  var title = [defaultSpeciesPopUp selectedItemTitle];
   for (i = 0; i < [animalDescriptions count]; i++)
     {
-      [animalDescriptions[i] setDefaultSpecies: title];
+      [animalDescriptions[i] setSpecies: title];
     }
 }
 
