@@ -66,6 +66,8 @@
   defaultSpeciesPopUp = [[CPPopUpButton alloc] initWithFrame: CGRectMake(x, y-3, width, height)];
   [defaultSpeciesPopUp addItemsWithTitles: [self possibleSpecies]];
   [defaultSpeciesPopUp selectItemWithTitle: [self favoriteSpecies]];
+  [defaultSpeciesPopUp setTarget: [self backgroundController]];
+  [defaultSpeciesPopUp setAction: @selector(newDefaultSpecies:)]
   [[self background] addSubview: defaultSpeciesPopUp];
 
   x += width + 10;

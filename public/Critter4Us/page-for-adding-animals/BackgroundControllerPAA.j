@@ -3,9 +3,19 @@
 
 @implementation BackgroundControllerPAA : AwakeningObject
 {
-  CPTextField nameField;
-  CPComboBox kindField;
-  CPComboBox speciesField;
+  CPPopUpButton defaultSpeciesPopup;
+  CPPopUpButton defaultNoteField;
+  CPArray animalDescriptions;
+}
+
+
+- (void) newDefaultSpecies: sender
+{
+  var title = [defaultSpeciesPopup selectedItemTitle];
+  for (i = 0; i < [animalDescriptions count]; i++)
+    {
+      [animalDescriptions[i] setDefaultSpecies: title];
+    }
 }
 
   

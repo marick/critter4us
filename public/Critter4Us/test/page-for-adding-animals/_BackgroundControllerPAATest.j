@@ -9,33 +9,26 @@
 {
   sut = [[BackgroundControllerPAA alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardOutlets: ['nameField', 'kindField', 'speciesField']];
+  [scenario sutHasUpwardOutlets: ['defaultSpeciesPopup', 'defaultNoteField']];
+  [scenario makeOneMock: 'firstRow'];
+  [scenario makeOneMock: 'nextRow'];
+  sut.animalDescriptions = [ sut.firstRow, sut.nextRow ];
 }
 
-- (void)test_listeners_are_notified_when_new_animal_is_added
+- (void) test_that_changing_the_default_species_propagates 
 {
-  [scenario
-    previously: function() {
-      [sut.nameField setStringValue: 'Clara'];
-      [sut.kindField setStringValue: 'cow'];
-      [sut.speciesField setStringValue: 'bovine'];
+  [scenario 
+    during: function() {
+      [sut newDefaultSpecies: UnusedArgument];
     }
-  during: function() {
-     [sut startAddingAnimal: UnusedArgument];
-    }
-  behold: function() {
-    
-     var clara = function(actual) {
-       var dict = [actual object];
-       [self assert: [dict valueForKey: 'name'] equals: 'Clara'];
-       [self assert: [dict valueForKey: 'kind'] equals: 'cow'];
-       [self assert: [dict valueForKey: 'species'] equals: 'bovine'];
-       return YES;
-     }
-     [self listenersWillReceiveNotification: UserWantsToAddAnAnimal 
-                            checkingWith: clara];
-     }];
+  behold: function() { 
+      [sut.defaultSpeciesPopup shouldReceive: @selector(selectedItemTitle)
+				   andReturn: "a title"];
+      [sut.firstRow shouldReceive: @selector(setDefaultSpecies:)
+			     with: "a title"];
+      [sut.nextRow shouldReceive: @selector(setDefaultSpecies:)
+			    with: "a title"];
+    }];
 }
-
 
 @end
