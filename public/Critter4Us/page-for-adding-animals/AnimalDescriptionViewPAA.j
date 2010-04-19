@@ -28,12 +28,14 @@
 
 - (AnimalDescription) animalDescription
 {
-  var retval = [[AnimalDescription alloc] initWithName: [nameField stringValue]
-					       species: [speciesPopUp selectedItemTitle]
-						  note: [noteField stringValue]];
+  var name = [nameField stringValue];
+  var species = [speciesPopUp selectedItemTitle];
+  var note = [noteField stringValue];
+  var retval = [[AnimalDescription alloc] initWithName: name
+					       species: species
+						  note: note];
   return retval;
 }
-
 
 - (id) initAtX: x y: y
 {

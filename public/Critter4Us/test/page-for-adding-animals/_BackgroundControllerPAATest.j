@@ -78,4 +78,31 @@
     }];
 }
 
+- (void) test_that_blank_animal_names_are_not_included_in_the_notification
+{
+  var firstAnimal = [[AnimalDescription alloc] initWithName: ''
+						    species: 'bovine'
+						       note: 'cow'];
+  var nextAnimal = [[AnimalDescription alloc] initWithName: ''
+						   species: 'equine'
+						      note: 'gelding'];
+
+  [scenario 
+    during: function() {
+      [sut addAnimals: UnusedArgument];
+    }
+  behold: function() { 
+      [sut.firstRow shouldReceive: @selector(animalDescription)
+			andReturn: firstAnimal];
+      [sut.nextRow shouldReceive: @selector(animalDescription)
+		       andReturn: nextAnimal];
+      [self listenersShouldReceiveNotification: UserWantsToAddAnimals
+				  checkingWith: function(notification) {
+	  var animals = [notification object];
+	  [self assert: 0 equals: [animals count]];
+	  return YES;
+	}];
+    }];
+}
+
 @end

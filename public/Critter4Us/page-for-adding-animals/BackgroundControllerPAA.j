@@ -40,9 +40,12 @@
   var retval = [];
   for (i = 0; i < [animalDescriptionViews count]; i++)
     {
-      [retval addObject: [animalDescriptionViews[i] animalDescription]];
+      var description = [animalDescriptionViews[i] animalDescription];
+      if (! [description.name isEqual: ""])
+	{
+	  [retval addObject: description];
+	}
     }
-  alert([retval description])
   return retval;
 }
 
