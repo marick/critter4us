@@ -156,8 +156,9 @@
                               with: [["array of hashes"]]
                          andReturn: "data=content"];
 
-      [sut.continuationMaker shouldReceive: @selector(continuationNotifying:)
-				    with: UniversallyIgnoredNews
+      [sut.continuationMaker shouldReceive: @selector(continuationNotifying:afterConvertingWith:)
+				      with: [UniversallyIgnoredNews,
+  				             Some(JsonToModelObjectsConverter)]
 				 andReturn: "a continuation"];
       [sut.network shouldReceive: @selector(postContent:toRoute:continuingWith:)
 			with: ["data=content", "route", "a continuation"]];
