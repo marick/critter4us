@@ -6,14 +6,18 @@
 
 - (void) setUpNotifications
 {
+  [self notificationNamed: UserWantsToAddAnimals
+		    calls: @selector(addAnimals:)];
 }
 
 - (void) start
 {
 }
 
-- (void) something: aNotification
+- (void) addAnimals: aNotification
 {
+  var animalDescriptions = [aNotification object];
+  [persistentStore addAnimals: animalDescriptions];
 }
 
 @end
