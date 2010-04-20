@@ -11,12 +11,6 @@ class Procedure  < Sequel::Model
   def self.names; map(:name); end
   def self.sorted_names; names.sort; end
 
-  def exclusion_rules
-    DB[:exclusion_rules].filter(:procedure_id => self.id).collect do | row | 
-      Rule.const_get(row[:rule]).new(self)
-    end
-  end
-
   def self.note_excluded_animals(animals)
     DB[:exclusion_rules].all do | row | 
       rule_class = Rule.const_get(row[:rule])

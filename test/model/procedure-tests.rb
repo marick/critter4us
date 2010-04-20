@@ -13,14 +13,6 @@ class ProcedureTests < FreshDatabaseTestCase
     assert { Procedure.sorted_names == ['a', 'b', 'c'] }
   end
 
-  should "be able to return instances of rules" do
-    proc = Procedure.random(:name => 'floating')
-    DB[:exclusion_rules].insert(:procedure_id => proc.id,
-                                :rule => 'HorsesOnly')
-    assert { proc.exclusion_rules.length == 1 } 
-    assert { proc.exclusion_rules.first.is_a? Rule::HorsesOnly } 
-  end
-
   should "be able to note when a new animal conflicts with any procedures" do
     bessie = Animal.random(:name => 'bessie', :procedure_description_kind => 'bovine')
     jake = Animal.random(:name => 'jake', :procedure_description_kind => 'equine')
