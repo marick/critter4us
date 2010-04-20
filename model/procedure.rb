@@ -17,6 +17,20 @@ class Procedure  < Sequel::Model
     end
   end
 
+  def self.note_excluded_animals(animals)
+    DB[:exclusion_rules].all do | row | 
+      rule_class = Rule.const_get(row[:rule])
+      procedure = Procedure[row[:procedure_id]]
+      rule = rule_class.new(procedure)
+      animals.each do | animal | 
+        if rule.animal_excluded?(animal)
+          DB[:excluded_because_of_animal].insert(:animal_id => animal.id,
+                                                 :procedure_id => procedure.id)
+        end
+      end
+    end
+  end
+
   # following are for testing
 
   def self.random(overrides = {})

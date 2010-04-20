@@ -20,5 +20,20 @@ class ProcedureTests < FreshDatabaseTestCase
     assert { proc.exclusion_rules.length == 1 } 
     assert { proc.exclusion_rules.first.is_a? Rule::HorsesOnly } 
   end
+
+  should "be able to note when a new animal conflicts with any procedures" do
+    bessie = Animal.random(:name => 'bessie', :procedure_description_kind => 'bovine')
+    jake = Animal.random(:name => 'jake', :procedure_description_kind => 'equine')
+    floating = Procedure.random(:name => 'floating')
+    DB[:exclusion_rules].insert(:procedure_id => floating.id,
+                                :rule => 'HorsesOnly')
+    
+    Procedure.note_excluded_animals([bessie, jake])
+
+    assert { DB[:excluded_because_of_animal].count == 1 }
+    only = DB[:excluded_because_of_animal].first
+    assert_equal(bessie.pk, only[:animal_id])
+    assert_equal(floating.pk, only[:procedure_id])
+  end
 end
 
