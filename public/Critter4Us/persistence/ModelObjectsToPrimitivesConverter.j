@@ -1,5 +1,6 @@
 @import "../model/NamedObject.j"
 @import "../util/Time.j"
+@import "../util/AnimalDescription.j"
 
 @implementation ModelObjectsToPrimitivesConverter : CPObject
 {
@@ -34,6 +35,8 @@
     return {'firstDate': firstDate, 'lastDate': lastDate, 'times': times}; 
   case Time:
     return [cpObject description];
+  case AnimalDescription:
+    return {'name':cpObject.name, 'species':cpObject.species, 'note':cpObject.note};
   default:
     alert("Program error: converting unknown object '" + [cpObject description] + "' into javascript.");
   }

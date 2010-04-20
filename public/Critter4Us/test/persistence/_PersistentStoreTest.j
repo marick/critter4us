@@ -139,6 +139,31 @@
     }];
 }
 
+- (void) test_how_persistentStore_coordinates_adding_animals
+{
+  [scenario 
+   during: function() { 
+      [sut addAnimals: ["some animal descriptions"]];
+    }
+  behold: function() {
+      [sut.httpMaker shouldReceive: @selector(POSTAddAnimalsRoute)
+                        andReturn: 'route'];
+
+      [sut.primitivizer shouldReceive: @selector(convert:)
+				 with: [["some animal descriptions"]]
+			    andReturn: ["array of hashes"]];
+      [sut.httpMaker shouldReceive: @selector(genericPOSTContentFrom:)
+                              with: [["array of hashes"]]
+                         andReturn: "data=content"];
+
+      [sut.continuationMaker shouldReceive: @selector(continuationNotifying:)
+				    with: UniversallyIgnoredNews
+				 andReturn: "a continuation"];
+      [sut.network shouldReceive: @selector(postContent:toRoute:continuingWith:)
+			with: ["data=content", "route", "a continuation"]];
+    }];
+}
+
 
 
 - (void) test_how_persistentStore_coordinates_taking_animals_out_of_service

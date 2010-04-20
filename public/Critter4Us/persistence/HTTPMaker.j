@@ -27,7 +27,6 @@ htmlRoute = function(route)
 }
 
 
-
 - (CPString) animalsAndProceduresAvailableAtTimeslice: primitivizedTimeslice
 {
   return jsonRoute("animals_and_procedures_blob")+"?timeslice=" + [CPString JSONFromObject: primitivizedTimeslice];
@@ -42,6 +41,12 @@ htmlRoute = function(route)
 {
   return jsonRoute("store_reservation");
 }
+
+- (CPString) POSTAddAnimalsRoute
+{
+  return jsonRoute("add_animals");
+}
+
 
 - (CPString) reservationPOSTContentFrom: jsData
 {

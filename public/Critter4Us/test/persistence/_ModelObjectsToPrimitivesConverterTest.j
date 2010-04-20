@@ -43,6 +43,19 @@
   [self assertTrue: [cpdict(expected) isEqualToDictionary: cpdict(actual)]];
 }
 
+- (void) test_turns_animal_descriptions_into_dictionaries
+{
+  var description = [[AnimalDescription alloc] initWithName: "betsy"
+						    species: "bovine"
+						       note: "cow"];
+  var expectedElement = {'name':'betsy', 'species':'bovine', 'note':'cow'};
+  var actualArray = [ModelObjectsToPrimitivesConverter convert: [description]];
+  
+  [self assert: 1 equals: [actualArray count]];
+  [self assertTrue: [cpdict(expectedElement)
+		      isEqualToDictionary: cpdict(actualArray[0])]];
+}
+
 -(void) testConvertsEmptyArrayIntoEmptyArray
 {
   var capp = [ ];
