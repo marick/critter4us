@@ -44,6 +44,10 @@ class Internalizer
     convert(JSON[json])
   end
 
+  def convert_animal_descriptions(json)
+    JSON[json]
+  end
+
   def make_timeslice(json)
     internal = convert(JSON.parse(json))
     Timeslice.new(internal[:first_date], internal[:last_date], internal[:times])

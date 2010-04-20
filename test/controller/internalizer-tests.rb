@@ -112,6 +112,12 @@ class InternalizerTests < FreshDatabaseTestCase
     end
   end
 
+  should "convert an array of animal descriptions" do 
+    expected = [ {'name' => 'betsy', 'species' => 'caprine', 'note' => 'male'} ]
+    actual = Internalizer.new.convert_animal_descriptions(expected.to_json)
+    assert_equal(expected, actual)
+  end
+
   context "timeslice" do 
     setup do 
       @data = {'firstDate' => '2009-12-12', 'lastDate' => '2009-12-12',
