@@ -40,6 +40,19 @@ class Controller
     end
   end
 
+  post '/json/add_animals' do 
+    animal_descriptions = @internalizer.convert_animal_descriptions(params[:data])
+    animals = animal_descriptions.collect do | description |
+      CritterLogger.info "Created #{description['species']} #{description['name']}"
+      @animal_source.create(:name => description['name'],
+                            :kind => description['note'],
+                            :procedure_description_kind => description['species'])
+    end
+    @procedure_source.note_excluded_animals(animals)
+    externalize('duplicates' => [])
+  end
+      
+
   get '/json/reservation/:number' do
     reservation_to_fetch = @internalizer.find_reservation(params, 'number')
     reservation_to_ignore = @internalizer.integer_or_nil(params['ignoring'])

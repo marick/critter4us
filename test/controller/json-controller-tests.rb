@@ -108,6 +108,31 @@ class JsonGenerationTests < FreshDatabaseTestCase
     end
   end
 
+  context "adding animals" do 
+    setup do
+      @data = [ {'name' => 'betsy', 'species' => 'caprine', 'note' => 'male'} ]
+      @jsonified_data = @data.to_json
+    end
+
+    should "coordinate objects" do
+      @app.override(mocks(:internalizer, :animal_source, :procedure_source))
+      during { 
+        post '/json/add_animals', 'data' => @jsonified_data
+      }.behold! {
+        @internalizer.should_receive(:convert_animal_descriptions).once.
+                      with(@jsonified_data).
+                      and_return(@data)
+        @animal_source.should_receive(:create).once.
+                       with(:name => 'betsy',
+                            :kind => 'male',
+                            :procedure_description_kind => 'caprine').
+                       and_return("an animal object")
+        @procedure_source.should_receive(:note_excluded_animals).once.
+                          with(["an animal object"])
+      }
+    end
+  end
+
   context "adding a reservation" do 
     setup do
       Animal.random_with_names('twitter', 'jinx')
