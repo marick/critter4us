@@ -157,7 +157,7 @@
                          andReturn: "data=content"];
 
       [sut.continuationMaker shouldReceive: @selector(continuationNotifying:afterConvertingWith:)
-				      with: [UniversallyIgnoredNews,
+				      with: [UserHasAddedAnimals,
   				             Some(JsonToModelObjectsConverter)]
 				 andReturn: "a continuation"];
       [sut.network shouldReceive: @selector(postContent:toRoute:continuingWith:)

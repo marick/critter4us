@@ -3,6 +3,7 @@
 // Notification Names
 
 UserWantsToAddAnimals = "user wants to add animals";
+UserHasAddedAnimals = "user has added animals";
 UserWantsToReplaceTimeslice = "wants to replace timeslice";
 UserHasChosenTimeslice = "user has chosen timeslice";
 DifferentObjectsUsedNews = "Some difference in use";

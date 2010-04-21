@@ -118,7 +118,7 @@ var SharedPersistentStore = nil;
   var route = [httpMaker POSTAddAnimalsRoute];
   var content = [httpMaker genericPOSTContentFrom:
 			    [primitivizer convert: animalDescriptions]];
-  var continuation = [continuationMaker continuationNotifying: UniversallyIgnoredNews
+  var continuation = [continuationMaker continuationNotifying: UserHasAddedAnimals
 					  afterConvertingWith: [JsonToModelObjectsConverter converter]];
   [network postContent: content toRoute: route continuingWith: continuation];
 }
