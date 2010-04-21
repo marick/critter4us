@@ -131,6 +131,13 @@ class JsonGenerationTests < FreshDatabaseTestCase
                           with(["an animal object"])
       }
     end
+
+    should "return description of any animal that could not be added" do
+      Animal.random(:name => "betsy")
+      post '/json/add_animals', 'data' => @jsonified_data
+      assert_json_response
+      assert_jsonification_of({'duplicates' => @data})
+    end
   end
 
   context "adding a reservation" do 

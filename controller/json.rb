@@ -42,14 +42,12 @@ class Controller
 
   post '/json/add_animals' do 
     animal_descriptions = @internalizer.convert_animal_descriptions(params[:data])
-    animals = animal_descriptions.collect do | description |
-      CritterLogger.info "Created #{description['species']} #{description['name']}"
-      @animal_source.create(:name => description['name'],
-                            :kind => description['note'],
-                            :procedure_description_kind => description['species'])
+    duplicates, ok = animal_descriptions.partition do | description |
+      Animal[:name => description['name']]
     end
-    @procedure_source.note_excluded_animals(animals)
-    externalize('duplicates' => [])
+    created = create_animals_from_descriptions(ok)
+    @procedure_source.note_excluded_animals(created)
+    externalize('duplicates' => duplicates)
   end
       
 
@@ -70,6 +68,14 @@ class Controller
   end
 
   private
+
+  def create_animals_from_descriptions(animal_descriptions)
+    animal_descriptions.collect do | description |
+      @animal_source.create(:name => description['name'],
+                            :kind => description['note'],
+                            :procedure_description_kind => description['species'])
+    end
+  end
 
   def reservation_id(reservation) 
     {"reservation" => reservation.id.to_s}
