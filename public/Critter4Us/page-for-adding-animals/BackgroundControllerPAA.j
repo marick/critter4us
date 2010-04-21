@@ -49,4 +49,15 @@
   return retval;
 }
 
+- (void) clearForFurtherAdditions
+{
+  var replacement = [AnimalDescription namelessWithSpecies: [defaultSpeciesPopUp selectedItemTitle]
+						      note: [defaultNoteField stringValue]];
+
+  for (i = 0; i < [animalDescriptionViews count]; i++)
+    {
+      [animalDescriptionViews[i] setAnimalDescription: replacement];
+    }
+}
+
 @end

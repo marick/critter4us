@@ -59,4 +59,23 @@
     }];
 }
 
+- (void) test_can_set_elements_all_at_once
+{
+  var value = [[AnimalDescription alloc] initWithName: "name"
+					      species: "species"
+						 note: "note"];
+  [scenario
+    during: function() {
+      [sut setAnimalDescription: value];
+    }
+  behold: function() { 
+      [sut.nameField shouldReceive: @selector(setStringValue:)
+                              with: "name"];
+      [sut.speciesPopUp shouldReceive: @selector(selectItemWithTitle:)
+                                 with: "species"];
+      [sut.noteField shouldReceive: @selector(setStringValue:)
+                              with: "note"];
+    }];
+}
+
 @end

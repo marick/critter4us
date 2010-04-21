@@ -8,6 +8,11 @@
   String note;
 }
 
++ (id) namelessWithSpecies: (String) aSpecies note: (String) aNote
+{
+  return [[self alloc] initWithName: "" species: aSpecies note: aNote];
+}
+
 - (id) initWithName: (String) aName species: (String) aSpecies note: (String) aNote
 {
   self = [super init];

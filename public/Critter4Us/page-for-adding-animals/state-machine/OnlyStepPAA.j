@@ -8,6 +8,8 @@
 {
   [self notificationNamed: UserWantsToAddAnimals
 		    calls: @selector(addAnimals:)];
+  [self notificationNamed: UserHasAddedAnimals
+		    calls: @selector(handleResponse:)];
 }
 
 - (void) start
@@ -18,6 +20,11 @@
 {
   var animalDescriptions = [aNotification object];
   [persistentStore addAnimals: animalDescriptions];
+}
+
+- (void) handleResponse: aNotification
+{
+   [backgroundController clearForFurtherAdditions];
 }
 
 @end

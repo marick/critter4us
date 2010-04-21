@@ -105,4 +105,25 @@
     }];
 }
 
+- (void) test_that_the_page_can_be_reset_to_allow_further_additions_of_default_kinds
+{
+  var reset = [AnimalDescription namelessWithSpecies: 'ovine'
+						note: 'gelding'];
+
+  [scenario 
+    during: function() {
+      [sut clearForFurtherAdditions];
+    }
+  behold: function() { 
+      [sut.defaultSpeciesPopUp shouldReceive: @selector(selectedItemTitle)
+				   andReturn: "ovine"];
+      [sut.defaultNoteField shouldReceive: @selector(stringValue)
+				   andReturn: "gelding"];
+      [sut.firstReset shouldReceive: @selector(setAnimalDescription:)
+			       with: reset];
+      [sut.nextRow shouldReceive: @selector(setAnimalDescription:)
+			    with: reset];
+    }];
+}
+
 @end

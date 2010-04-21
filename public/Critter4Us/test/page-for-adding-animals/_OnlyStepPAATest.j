@@ -10,6 +10,7 @@
   sut = [OnlyStepPAA alloc];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
   [scenario sutHasDownwardOutlets: ['persistentStore']]
+  [scenario sutHasUpwardOutlets: ['backgroundController']]
   [sut initWithMaster: sut.master];
 }
 
@@ -25,5 +26,20 @@
                                     with: [["animal descriptions"]]];
     }];
 }
+
+- (void) test_tells_control_to_reset_when_animals_come_back
+{
+  [scenario
+    during: function() {
+      [self sendNotification: UserHasAddedAnimals
+                  withObject: []];
+    }
+  behold: function() {
+      [sut.backgroundController shouldReceive: @selector(clearForFurtherAdditions)]
+    }];
+}
+
+
+
 
 @end

@@ -26,6 +26,13 @@
   [speciesPopUp selectItemWithTitle: name];
 }
 
+- (void) setAnimalDescription: description
+{
+  [nameField setStringValue: description.name];
+  [self setSpecies: description.species];
+  [self setNote: description.note];
+}
+
 - (AnimalDescription) animalDescription
 {
   var name = [nameField stringValue];

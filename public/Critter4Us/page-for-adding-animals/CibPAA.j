@@ -40,7 +40,8 @@
 
   [self awakeFromCib];
 
-  var peers = { 'persistentStore' : [self persistentStore] };
+  var peers = { 'persistentStore' : [self persistentStore],
+                'backgroundController' : [self backgroundController]};
   [[StateMachineCoordinator coordinating: peers]
     takeStep: OnlyStepPAA];
 }
