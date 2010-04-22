@@ -60,4 +60,13 @@
     }
 }
 
+- (void) populatePageWithAnimals: animalDescriptions
+{
+  for (i = 0; i < [animalDescriptions count]; i++)
+    {
+      var replacement = animalDescriptions[i];
+      [animalDescriptionViews[i] setAnimalDescription: replacement];
+    }
+}
+
 @end

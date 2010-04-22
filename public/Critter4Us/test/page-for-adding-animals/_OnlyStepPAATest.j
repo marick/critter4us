@@ -1,5 +1,6 @@
 @import <Critter4Us/page-for-adding-animals/state-machine/OnlyStepPAA.j>
 @import <Critter4Us/test/testutil/ScenarioTestCase.j>
+@import <Critter4Us/test/testutil/TestUtil.j>
 
 @implementation _OnlyStepPAATest : ScenarioTestCase
 {
@@ -32,10 +33,12 @@
   [scenario
     during: function() {
       [self sendNotification: UserHasAddedAnimals
-                  withObject: []];
+                  withObject: cpdict({'duplicates' : "animal descriptions"})];
     }
   behold: function() {
-      [sut.backgroundController shouldReceive: @selector(clearForFurtherAdditions)]
+      [sut.backgroundController shouldReceive: @selector(clearForFurtherAdditions)];
+      [sut.backgroundController shouldReceive: @selector(populatePageWithAnimals:)
+					 with: "animal descriptions"];
     }];
 }
 

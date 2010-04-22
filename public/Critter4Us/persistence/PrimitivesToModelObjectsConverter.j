@@ -4,6 +4,7 @@
 @import "../model/Group.j"
 @import "../util/Time.j"
 @import "../util/CritterObject.j"
+@import "../util/AnimalDescription.j"
 
 @implementation PrimitivesToModelObjectsConverter : CritterObject
 {
@@ -69,6 +70,10 @@
         var obj = [self groups: jsHash[key] kindMap: jsHash['kindMap']];
         [retval setValue: obj forKey: key];
         break;
+      case 'duplicates':
+	var obj = [self animalDescriptions: jsHash[key]];
+	[retval setValue: obj forKey: key];
+	break;
       default:
         [retval setValue: jsHash[key] forKey: key];
         break;
@@ -102,6 +107,19 @@
   for(i=0; i < [array count]; i++)
   {
     [retval addObject: [[NamedObject alloc] initWithName: array[i]]];
+  }
+  return retval;
+}
+
+- (CPArray) animalDescriptions: array
+{
+  var retval = [];
+  for(i=0; i < [array count]; i++)
+  {
+    var components = array[i];
+    [retval addObject: [[AnimalDescription alloc] initWithName: components['name']
+						       species: components['species']
+							  note: components['note']]];
   }
   return retval;
 }

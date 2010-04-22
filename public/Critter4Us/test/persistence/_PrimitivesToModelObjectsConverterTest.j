@@ -192,5 +192,22 @@
         equals: [converted valueForKey: 'groups']];
 }
 
+- (void) test_can_create_animal_descriptions
+{
+  var input = {
+       'duplicates' : [ {'name':"betsy", 'species':'bovine', 'note':'cow'} ]
+  };
+  var converted = [PrimitivesToModelObjectsConverter convert: input];
+
+  var expected = [
+		  [[AnimalDescription alloc] initWithName: 'betsy'
+						  species: 'bovine'
+						     note: 'cow']
+		  ];
+  [self assert: expected
+        equals: [converted valueForKey: 'duplicates']];
+  
+}
+
 
 @end

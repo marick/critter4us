@@ -119,11 +119,30 @@
 				   andReturn: "ovine"];
       [sut.defaultNoteField shouldReceive: @selector(stringValue)
 				   andReturn: "gelding"];
-      [sut.firstReset shouldReceive: @selector(setAnimalDescription:)
+      [sut.firstRow shouldReceive: @selector(setAnimalDescription:)
 			       with: reset];
       [sut.nextRow shouldReceive: @selector(setAnimalDescription:)
 			    with: reset];
     }];
 }
+
+
+- (void) test_that_the_page_can_be_populated_with_starting_values
+{
+  var firstAnimal = [[AnimalDescription alloc] initWithName: 'bossy'
+						    species: 'bovine'
+						       note: 'cow'];
+
+  [scenario 
+    during: function() {
+      [sut populatePageWithAnimals: [firstAnimal]];
+    }
+  behold: function() { 
+      [sut.firstRow shouldReceive: @selector(setAnimalDescription:)
+			       with: firstAnimal];
+    }];
+}
+
+
 
 @end
