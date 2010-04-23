@@ -10,7 +10,7 @@
 {
   sut = [[BackgroundControllerPAA alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardOutlets: ['defaultSpeciesPopUp', 'defaultNoteField']];
+  [scenario sutHasUpwardOutlets: ['defaultSpeciesPopUp', 'defaultNoteField', 'resultField']];
   [scenario makeOneMock: 'firstRow'];
   [scenario makeOneMock: 'nextRow'];
   sut.animalDescriptionViews = [ sut.firstRow, sut.nextRow ];
@@ -142,7 +142,6 @@
 			       with: firstAnimal];
     }];
 }
-
 
 
 @end

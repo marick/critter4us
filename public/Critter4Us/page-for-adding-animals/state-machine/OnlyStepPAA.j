@@ -27,6 +27,10 @@
   var conflicts = [[aNotification object] valueForKey: 'duplicates'];
   [backgroundController clearForFurtherAdditions];
   [backgroundController populatePageWithAnimals: conflicts];
+  if ([conflicts count] > 0)
+    [backgroundController describeFailure: [conflicts count]];
+  else
+    [backgroundController describeSuccess];
 }
 
 @end

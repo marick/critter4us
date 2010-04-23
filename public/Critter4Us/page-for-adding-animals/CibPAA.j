@@ -21,6 +21,7 @@
 
   AnimalsControllerPAA animalsController;
   CPArray rows;
+  CPTextField resultField;
 
   CPButton submitButton;
   CritterPopUpButton defaultSpeciesPopUp;
@@ -53,6 +54,7 @@
   rows = [self drawRowsAtX: 20 y: 90];
   //  [[self background] addSubview: [self animalAdders]];
   [[self background] addSubview: [self submitButton]];
+  [[self background] addSubview: [self resultField]];
 }
 
 - (void) drawDefaultsAtX: x y: y
@@ -113,10 +115,11 @@
   [[self background] addSubview: note];
 }  
 
+
 - (CPArray) drawRowsAtX: x y: y
 {
   var retval = [];
-  for (i = 0; i < 10; i++)
+  for (i = 0; i < 12; i++)
     {
       var row = [[AnimalDescriptionViewPAA alloc] initAtX: x y: y+i*32];
       [row setPossibleSpecies: [self possibleSpecies]
@@ -144,6 +147,7 @@
   [self backgroundController].defaultSpeciesPopUp = defaultSpeciesPopUp;
   [self backgroundController].defaultNoteField = defaultNoteField;
   [self backgroundController].animalDescriptionViews = rows;
+  [self backgroundController].resultField = [self resultField];
 }
 
 
@@ -196,6 +200,22 @@
   }
   return submitButton;
 }
+
+- (id) resultField
+{
+  if (!resultField)
+    {
+      var x = 580;
+      var y = 230;
+      var width = 300;
+      var height = 120;
+      resultField = [[CPTextField alloc] initWithFrame: CGRectMake(x, y, width, height)];
+      [resultField setLineBreakMode: CPLineBreakByWordWrapping];
+      [resultField setStringValue: "" ];
+    }
+  return resultField
+}  
+
 
 - (void) setKeyViewLoop
 {

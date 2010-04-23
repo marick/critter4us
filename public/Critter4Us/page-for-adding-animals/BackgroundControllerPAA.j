@@ -6,6 +6,7 @@
   CPPopUpButton defaultSpeciesPopUp;
   CPPopUpButton defaultNoteField;
   CPArray animalDescriptionViews;
+  CPTextField resultField;
 }
 
 
@@ -67,6 +68,24 @@
       var replacement = animalDescriptions[i];
       [animalDescriptionViews[i] setAnimalDescription: replacement];
     }
+}
+
+- (void) describeSuccess
+{
+  [resultField setStringValue: "All the new animals were added."];
+  [resultField setTextColor: [CPColor colorWithRed: 0.1
+					     green: 0.4
+					      blue: 0.0
+					     alpha: 1.0]];
+}
+
+- (void) describeFailure: howManyConflicts
+{
+  var message = (howManyConflicts == 1) ? 
+    "The animal shown to the left could not be added because there is already an animal with that name." :
+    "The animals shown to the left could not be added because there are already animals with those names.";
+  [resultField setStringValue: message];
+  [resultField setTextColor: [CPColor redColor]];
 }
 
 @end
