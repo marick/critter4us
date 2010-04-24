@@ -12,9 +12,12 @@ class DeleteReservationTestCase < EndToEndTestCase
     Animal.random(:name => 'bossie')
     Animal.random(:name => 'staggers')
 
-    make_reservation('2010-12-12', %w{veinie staggers}, %w{venipuncture})
-    make_reservation('2009-01-01', %w{bossie}, %w{physical})
-    @reservation = Reservation[:first_date => Date.new(2009, 1, 1)]
+    @today = Date.today
+    @later = @today + 12
+
+    make_reservation(@later, %w{veinie staggers}, %w{venipuncture})
+    make_reservation(@today, %w{bossie}, %w{physical})
+    @reservation = Reservation[:first_date => @today]
   end
 
   def show_reservations
@@ -41,8 +44,8 @@ class DeleteReservationTestCase < EndToEndTestCase
   def previously_reserved_animals_are_available_on_that_date
     get('/json/animals_and_procedures_blob',
                    :timeslice => {
-                     :firstDate => '2009-01-01', 
-                     :lastDate => '2010-12-12',
+                     :firstDate => @today.to_s, 
+                     :lastDate => @later.to_s,
                      :times => ['morning', 'afternoon', 'evening']
                    }.to_json)
     assert_equal(["bossie"], unjsonify(last_response)['animals'])

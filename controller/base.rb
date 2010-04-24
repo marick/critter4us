@@ -44,7 +44,8 @@ class Controller < Sinatra::Base
                            :internalizer => Internalizer.new,
                            :externalizer => Externalizer.new,
                            :availability_source => Availability,
-                           :tuple_publisher => TuplePublisher.new
+                           :tuple_publisher => TuplePublisher.new,
+                           :date_source => Date
                            )
     self
   end

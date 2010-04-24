@@ -24,7 +24,7 @@ class Controller
   end
 
   get '/reservations' do 
-    reservations = reservation_source.eager(:groups => {:uses => [:animal, :procedure]}).all
+    reservations = @reservation_source.since(@date_source.today - 30)
     view(ReservationListView).new(:reservations => reservations).to_s
   end
 

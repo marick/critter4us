@@ -16,21 +16,31 @@ class HtmlControllerTests < FreshDatabaseTestCase
   end
 
   context "viewing reservations" do
-    setup do 
-      @expected_reservation = Reservation.random do
-        use(@expected_animal = Animal.random)
-        use(@expected_procedure = Procedure.random)
-      end
+    setup do
+      @app.override(mocks(:date_source, :reservation_source))
+      @app.test_view_builder = @dummy_view
+      @today = Date.civil(2010, 4, 1)
+      @expected_reservation = Reservation.random(:first_date => @today,
+                                                 :last_date => @today,
+                                                 :animal => Animal.random,
+                                                 :procedure => Procedure.random)
     end
 
-    should "pass a list of reservations to the view" do
-      @app.test_view_builder = @dummy_view
-      get '/reservations'
+    should "give newish reservations to the view" do
+      during { 
+        get '/reservations'
+      }.behold! {
+        @date_source.should_receive(:today).once.and_return(@today)
+        @reservation_source.should_receive(:since).once.
+                            with(@today - 30).
+                            and_return([@expected_reservation])
+      }
       assert { @dummy_view[:reservations].size == 1 }
       actual_reservation = @dummy_view[:reservations].first
       assert { actual_reservation == @expected_reservation }
     end
   end
+
 
   context "viewing animals" do
     setup do
@@ -68,10 +78,8 @@ class HtmlControllerTests < FreshDatabaseTestCase
       end
       assert { Reservation[:instructor => 'marge'] }
       delete "/reservation/#{@reservation.id}"
-      
-      follow_redirect!
-      assert last_response.ok?        
-      assert_equal "http://example.org/reservations", last_request.url
+      assert { last_response.redirect? }
+      assert { "/reservations" == last_response['Location'] }
     end
   end
 

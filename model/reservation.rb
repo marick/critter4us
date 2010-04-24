@@ -46,6 +46,13 @@ class Reservation < Sequel::Model
                    end
   end
 
+  def self.since(date)
+    filter(:last_date >= date).all
+  end
+
+
+
+
   def uses
     groups.collect{ | group | group.uses }.flatten
   end

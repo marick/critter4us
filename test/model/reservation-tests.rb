@@ -87,6 +87,26 @@ class ReservationTests < FreshDatabaseTestCase
     assert { ['bovine', 'equine'] == reservation.procedure_description_kinds }
   end
 
+
+  should "be able to return reservations past a particular date" do 
+    today = Date.civil(2010, 4, 1)
+    recent = Timeslice.random(:first_date => (today-300).to_s,
+                               :last_date => (today-30).to_s)
+    historical = Timeslice.random(:first_date => (today-300).to_s,
+                                  :last_date => (today-31).to_s)
+    future = Timeslice.random(:first_date => (today+30).to_s, 
+                              :last_date => (today+31).to_s)
+
+    recent_reservation = Reservation.random(:timeslice => recent)
+    historical_reservation = Reservation.random(:timeslice => historical)
+    future_reservation = Reservation.random(:timeslice => future)
+
+    actual = Reservation.since(today-30)
+    assert { actual.size == 2 }
+    assert { actual.include? recent_reservation }
+    assert { actual.include? future_reservation }
+  end
+
     
   should "know about own uses" do 
     animal = Animal.random
