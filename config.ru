@@ -10,7 +10,12 @@
 require File.expand_path('path-setting', File.dirname(__FILE__))
 require File.expand_path('app', File.dirname(__FILE__))
 
-require 'rack/hoptoad'
-use Rack::Hoptoad, '1068f0103e5db4628c91c12495cc3ec5'
+require 'sinatra/base'
+require 'hoptoad_notifier'
+
+HoptoadNotifier.configure do |config|
+  config.api_key = '1068f0103e5db4628c91c12495cc3ec5'
+end
+use HoptoadNotifier::Rack
 
 run Controller
