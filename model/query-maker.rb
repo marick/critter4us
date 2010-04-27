@@ -95,7 +95,7 @@ class QueryMaker
 
   def restrict_to_tuples_with_animals_in_use_during(timeslice)
     restrict_to_tuples_with_blackout_periods_overlapping(timeslice)
-    @query = @query.filter("B? & time_bits != B'000'", timeslice.time_bits)
+    @query = @query.filter("(B? & CAST(time_bits AS bit(3))) != B'000'", timeslice.time_bits)
   end
 
   def restrict_to_tuples_in_use_on_or_after(date)
