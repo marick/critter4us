@@ -26,7 +26,7 @@
 
 - (void) test_by_default_editing_first_date_updates_last_date_with_same_value
 {
-  [sut setFirst: '2010-01-01' last: '2010-02-02'];
+  [sut setFirst: '2010-01-01' last: '2010-01-01'];
 
   [sut.firstDateField setStringValue: "2111-12-12"]; // pretend edited value.
   [sut controlTextDidChange: [CPNotification notificationWithName: CPControlTextDidChangeNotification
@@ -50,6 +50,19 @@
   [self assert: '1111-11-11' equals: [sut firstDate]];
   [self assert: '2222-12-12' equals: [sut lastDate]];
 }
+
+- (void) test_initializing_last_date_to_different_than_first_date_counts_as_it_having_been_edited
+{
+  [sut setFirst: '2010-01-01' last: '2010-01-02'];
+
+  [sut.firstDateField setStringValue: "2111-12-12"]; // pretend edited value.
+  [sut controlTextDidChange: [CPNotification notificationWithName: CPControlTextDidChangeNotification
+							       object: sut.firstDateField]];
+
+  [self assert: '2111-12-12' equals: [sut firstDate]];
+  [self assert: '2010-01-02' equals: [sut lastDate]];
+}
+
 
 
 

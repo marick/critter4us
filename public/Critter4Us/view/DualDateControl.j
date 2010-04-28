@@ -32,6 +32,7 @@
 {
   [firstDateField setStringValue: firstDate];
   [lastDateField setStringValue: lastDate];
+  lastEdited = (! [firstDate isEqualToString: lastDate]);
 }
 
 - (void) setBoth: date
