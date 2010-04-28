@@ -43,7 +43,7 @@ class Controller
   post '/json/add_animals' do 
     animal_descriptions = @internalizer.convert_animal_descriptions(params[:data])
     duplicates, ok = animal_descriptions.partition do | description |
-      Animal[:name => description['name']]
+      @animal_source.with_case_insensitive_name(description['name'])
     end
     created = create_animals_from_descriptions(ok)
     @procedure_source.note_excluded_animals(created)

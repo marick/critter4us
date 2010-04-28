@@ -12,6 +12,10 @@ class Animal < Sequel::Model
   def self.names; map(:name); end
   def self.sorted_names; names.sort; end
 
+  def self.with_case_insensitive_name(name)
+    Animal.filter("UPPER(name) = UPPER(?)", name).first
+  end
+
   def remove_from_service_as_of(date)
     self.date_removed_from_service = date
     save_changes

@@ -14,6 +14,11 @@ class AnimalTests < FreshDatabaseTestCase
       Animal.random_with_names('c', 'a', 'b')
       assert { Animal.sorted_names == ['a', 'b', 'c'] }
     end
+
+    should "be able to do a case-insensitive lookup for names" do 
+      expected = Animal.random(:name => "Cow")
+      assert_equal(expected, Animal.with_case_insensitive_name("cow"))
+    end
   end
 
   context "animal instances" do 

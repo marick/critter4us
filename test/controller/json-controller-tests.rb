@@ -122,6 +122,9 @@ class JsonGenerationTests < FreshDatabaseTestCase
         @internalizer.should_receive(:convert_animal_descriptions).once.
                       with(@jsonified_data).
                       and_return(@data)
+        @animal_source.should_receive(:with_case_insensitive_name).once.
+                       with('betsy').
+                       and_return(nil)
         @animal_source.should_receive(:create).once.
                        with(:name => 'betsy',
                             :kind => 'male',
@@ -134,6 +137,14 @@ class JsonGenerationTests < FreshDatabaseTestCase
 
     should "return description of any animal that could not be added" do
       Animal.random(:name => "betsy")
+      post '/json/add_animals', 'data' => @jsonified_data
+      assert_json_response
+      assert_jsonification_of({'duplicates' => @data})
+    end
+
+
+    should "check for existing animal is case-sensitive" do
+      Animal.random(:name => "BETSY")
       post '/json/add_animals', 'data' => @jsonified_data
       assert_json_response
       assert_jsonification_of({'duplicates' => @data})
