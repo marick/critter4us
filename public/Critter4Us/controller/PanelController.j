@@ -17,7 +17,6 @@
 {
   [self init];
   panel = aPanel;
-  [self setUpNotifications];
   return self;
 }
 
