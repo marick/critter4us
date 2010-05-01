@@ -1,5 +1,7 @@
 @import <AppKit/CPCollectionView.j>
+@import "../util/Constants.j"
 @import "DebuggableCollectionView.j"
+@import "../model/NamedObject.j"
 
 @implementation ButtonCollectionView : CPCollectionView
 {
@@ -73,9 +75,20 @@
 
 -(void) currentItemIsAtIndex: index
 {
-  [[[self items] objectAtIndex: currentIndex] sinkBackIntoObscurity];
+  if ([self validCurrentIndex])
+    {
+      [[[self items] objectAtIndex: currentIndex] sinkBackIntoObscurity];
+    }
   currentIndex = index;
-  [[[self items] objectAtIndex: currentIndex] distinguishYourself];
+  if ([self validCurrentIndex])
+    {
+      [[[self items] objectAtIndex: currentIndex] distinguishYourself];
+    }
+}
+
+-(BOOL) validCurrentIndex
+{
+  return (currentIndex >= 0) && (currentIndex < [[self items] count])
 }
 
 
