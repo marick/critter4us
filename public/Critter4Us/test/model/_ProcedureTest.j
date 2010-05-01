@@ -13,7 +13,6 @@
   aThird = [[Animal alloc] initWithName: 'a third' kind: 'b'];
   duplicate = [[Animal alloc] initWithName: [oneAnimal name]
                                       kind: [oneAnimal kind]];
-
 }
 
 

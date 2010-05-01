@@ -1,4 +1,5 @@
 @import <Foundation/Foundation.j>
+@import "../util/Bugfixes.j"
 @import "NamedObject.j"
 
 @implementation Procedure : NamedObject
