@@ -15,7 +15,7 @@
   get_request_containing_route = function(route) {
     return function(request) {
       [self assert: "GET" equals: [request HTTPMethod]];
-      [self assert: route equals: [request URL]];
+      [self assert: route equals: [[request URL] absoluteString]];
       return YES;
     }
   }
@@ -24,7 +24,7 @@
     return function(request) {
       [self assert: "POST" equals: [request HTTPMethod]];
       [self assert: content equals: [request HTTPBody]];
-      [self assert: route equals: [request URL]];
+      [self assert: route equals: [[request URL] absoluteString]];
       return YES;
     }
   }
