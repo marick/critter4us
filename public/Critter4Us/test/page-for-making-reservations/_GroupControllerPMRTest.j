@@ -20,7 +20,7 @@
 {
   sut = [[GroupControllerPMR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardCollaborators: [
+  [scenario sutHasUpwardCollaborators: [ 
        'groupCollectionView', 'newGroupButton']];
 
   betsy = [[Animal alloc] initWithName: 'betsy' kind: 'cow'];
@@ -102,9 +102,9 @@
       [sut.groupCollectionView shouldReceive: @selector(currentRepresentedObject)
                                    andReturn: empty];
       [mockPopup shouldReceive: @selector(setMessage:)
-                          with: function(message) {
-          return message.match(/bug.*jake/)
-        }];
+			  with: function(message) {
+	  return message.match(/bug/) && message.match(/jake/)
+      }];
       [mockPopup shouldReceive: @selector(run)]
     }
   andSo: function() {
@@ -123,7 +123,7 @@
       [sut setCurrentGroupProcedures: [floating] animals: []];
     }
   behold: function() {
-      [sut.groupCollectionView shouldReceive: @selector(currentNameHasChanged)];
+      [sut.groupCollectionView shouldyReceive: @selector(currentNameHasChanged)];
     }
    ];
 }
