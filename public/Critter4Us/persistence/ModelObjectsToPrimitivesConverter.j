@@ -19,10 +19,13 @@
   }
   switch ([cpObject class]) {
   case CPString:
+    // case CPMutableString:    // -- no such thing in Capp 0.8.1
     return cpObject;
   case CPDictionary:
+  case CPMutableDictionary:
     return [self convertDictionary: cpObject];
   case CPArray:
+  case CPMutableArray:
     return [self convertArray: cpObject];
   case Group: 
     var animals = [self convert: [cpObject animals]];

@@ -1,4 +1,5 @@
 @import <Critter4Us/util/Time.j>
+@import <Critter4Us/test/testutil/TestUtil.j>
 @import <Critter4Us/util/Timeslice.j>
 @import <Critter4Us/model/Animal.j>
 @import <Critter4Us/model/Procedure.j>
@@ -87,7 +88,6 @@
   [capp setValue: [Time morning] forKey: 'time'];
 
   var actual = [ModelObjectsToPrimitivesConverter convert: capp];
-  
   [self assert: 'morning' equals: actual['time']];
 }
 
