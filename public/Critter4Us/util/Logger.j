@@ -18,7 +18,7 @@
 {
   var text = ObjectiveJ.sprintf.apply(this, Array.prototype.slice.call(arguments, 2));
   var date = new Date();
-  text = text.replace('<', '[')
+  text = text.replace('<', '[');
   [log addObject: date.toLocaleTimeString() + " " + text];
 }
 
