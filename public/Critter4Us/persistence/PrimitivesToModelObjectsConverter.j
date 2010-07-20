@@ -38,6 +38,9 @@
         if (jsHash['time'] == Evening)
           [retval setValue: [Time evening] forKey: 'time'];
         break;
+      case 'timeslice': 
+	[retval setValue: [self timeslice: jsHash[key]] forKey: 'timeslice'];
+        break;
       case 'animal':
         var obj = [self animal: jsHash[key] kindMap: jsHash['kindMap']];
         [retval setValue: obj forKey: key];
@@ -82,6 +85,19 @@
   }
   return retval;
 }
+
+- (Timeslice) timeslice: raw
+{
+  var times = [];
+  for(i=0; i < [raw.times count]; i++)
+  {
+    [times addObject: [[Time alloc] initWithString: raw.times[i]]];
+  }
+  return [Timeslice firstDate: raw['firstDate']
+		     lastDate: raw['lastDate']
+			times: times];
+}
+
 
 - (Animal) animal: name kindMap: kindMap
 {

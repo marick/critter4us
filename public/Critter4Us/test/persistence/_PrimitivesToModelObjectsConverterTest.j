@@ -2,6 +2,7 @@
 @import <Critter4Us/model/Animal.j>
 @import <Critter4Us/model/Procedure.j>
 @import <Critter4Us/model/Group.j>
+@import <Critter4Us/util/Timeslice.j>
 @import <Critter4Us/persistence/PrimitivesToModelObjectsConverter.j>
 
 @implementation _PrimitivesToModelObjectsConverterTest : OJTestCase
@@ -56,6 +57,20 @@
   var input = { 'time' : 'evening' };
   var converted = [PrimitivesToModelObjectsConverter convert: input];
   [self assert: [Time evening] equals: [converted valueForKey: 'time']];
+}
+
+-(void) test_converts_timeslices
+{
+  var no_days_input = {"timeslice": {"firstDate":"2010-07-21","lastDate":"2010-07-29","times":[]}}
+  var no_days_actual = [PrimitivesToModelObjectsConverter convert: no_days_input];
+  var no_days_expected = [Timeslice firstDate: "2010-07-21" lastDate: "2010-07-29" times: []];
+  [self assert: no_days_expected equals: [no_days_actual valueForKey: "timeslice"]];
+
+  var two_days_input = {"timeslice": {"firstDate":"2010-07-01","lastDate":"2010-07-29","times":["morning", "afternoon"]}}
+  var two_days_actual = [PrimitivesToModelObjectsConverter convert: two_days_input];
+  var two_days_expected = [Timeslice firstDate: "2010-07-01" lastDate: "2010-07-29"
+					 times: [[Time morning], [Time afternoon]]];
+  [self assert: two_days_expected equals: [two_days_actual valueForKey: "timeslice"]];
 }
 
 -(void) testConvertsAnimalNamesToAnimalObjects_RequiringKindMap
