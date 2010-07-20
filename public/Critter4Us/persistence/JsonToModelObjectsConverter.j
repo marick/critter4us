@@ -16,6 +16,7 @@
 
 - (CPDictionary) convert: json
 {
+  [self log: "This JSON has been received: " + json];
   if (! json)
   {
     alert("No JSON string received from server. Please report this.");

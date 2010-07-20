@@ -58,14 +58,12 @@
 
 -(void)connection:(CPURLConnection)methodConnection didReceiveData:(CPString)data
 {
-  [self log: "connection %@ received %s",
-        [methodConnection hash], [self visible: data]];
+  // [self log: "connection %@ received %s", [methodConnection hash], [self visible: data]];
   result += data;
 }
 
 -(void)connectionDidFinishLoading:(CPURLConnection)methodConnection
 {
-  [self log: "connection %@ finished", [methodConnection hash]];
   if (result == "") 
   {
     [self log: "empty result suggests this is a spurious connection from Firefox"];

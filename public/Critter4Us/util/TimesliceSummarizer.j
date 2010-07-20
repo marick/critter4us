@@ -1,7 +1,7 @@
 @import <Foundation/Foundation.j>
 @import "Timeslice.j"
 
-@implementation TimesliceSummarizer : CPObject
+@implementation TimesliceSummarizer : CritterObject
 {
 }
 
