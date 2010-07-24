@@ -5,7 +5,7 @@
   
 }
 
-
+// Todo: No longer needed. Replace with titleOfSelectedItem
 - (String) selectedItemTitle
 {
   return [[self selectedItem] title];
