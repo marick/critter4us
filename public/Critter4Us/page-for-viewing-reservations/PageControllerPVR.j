@@ -3,6 +3,12 @@
 
 @implementation PageControllerPVR : HtmlViewingPageController
 {
+  CritterPopUpButton daySelection;
+}
+
+- (void) changeDays: sender
+{
+  [self fetchHTML];
 }
 
 - (CPString) finishNotificationName
@@ -12,7 +18,7 @@
 
 - (CPString) fetchHTML
 {
-  [persistentStore allReservationsHtml];
+  [persistentStore allReservationsHtmlForPastDays: [daySelection titleOfSelectedItem]];
 }
 
 @end

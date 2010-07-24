@@ -81,10 +81,10 @@ var SharedPersistentStore = nil;
 	   continuingWith: continuation];
 }
 
-- (CPString) allReservationsHtml
+- (CPString) allReservationsHtmlForPastDays: dayString
 {
   var continuation = [continuationMaker continuationNotifying: AllReservationsHtmlNews]; 
-  [network get: [httpMaker route_getAllReservations_html]
+  [network get: [httpMaker route_getAllReservations_html: dayString]
 	   continuingWith: continuation];
 }
 

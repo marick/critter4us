@@ -221,10 +221,11 @@
 {
   [scenario 
    during: function() { 
-      [sut allReservationsHtml];
+      [sut allReservationsHtmlForPastDays: "400"];
     }
   behold: function() {
-      [sut.httpMaker shouldReceive: @selector(route_getAllReservations_html)
+      [sut.httpMaker shouldReceive: @selector(route_getAllReservations_html:)
+			      with: "400"
 			 andReturn: 'route'];
       [sut.continuationMaker shouldReceive: @selector(continuationNotifying:)
                                 with: AllReservationsHtmlNews

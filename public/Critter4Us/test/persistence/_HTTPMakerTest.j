@@ -45,6 +45,12 @@
         equals: [maker fetchReservationRoute: 333]];
 }
 
+-(void) test_can_make_route_to_fetch_all_reservations_since_a_certain_date
+{
+  [self assert: '/reservations/333'
+        equals: [maker route_getAllReservations_html: "333"]];
+}
+
 -(void) test_can_make_route_to_fetch_animals_with_pending_reservations_on_a_date
 {
   [self assert: '/animals_with_pending_reservations?date=2009-12-30'

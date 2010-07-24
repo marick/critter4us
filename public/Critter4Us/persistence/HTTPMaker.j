@@ -16,9 +16,9 @@ htmlRoute = function(route)
 {
 }
 
-- (CPString) route_getAllReservations_html
+- (CPString) route_getAllReservations_html: dayString
 {
-  return htmlRoute("reservations");
+  return htmlRoute("reservations/" + dayString);
 }
 
 - (CPString) route_animalsThatCanBeTakenOutOfService_data: date

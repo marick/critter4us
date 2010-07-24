@@ -10,7 +10,7 @@
   sut = [[PageControllerPVR alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
 
-  [scenario sutHasUpwardOutlets: ['table']];
+  [scenario sutHasUpwardOutlets: ['table', 'daySelection']];
   [scenario sutHasDownwardOutlets: ['persistentStore']];
 }
 
@@ -22,7 +22,24 @@
      [sut appear];
    }
    behold: function() {
-      [sut.persistentStore shouldReceive: @selector(allReservationsHtml)];
+      [sut.daySelection shouldReceive: @selector(titleOfSelectedItem)
+			    andReturn: "30"];
+      [sut.persistentStore shouldReceive: @selector(allReservationsHtmlForPastDays:)
+				    with: "30"];
+   }];
+}
+
+- (void) test_popup_change_fetches_the_latest_version_of_the_reservation_table
+{
+  [scenario
+   during: function() {
+      [sut changeDays: "ignored sender"];
+   }
+   behold: function() {
+      [sut.daySelection shouldReceive: @selector(titleOfSelectedItem)
+			    andReturn: "60"];
+      [sut.persistentStore shouldReceive: @selector(allReservationsHtmlForPastDays:)
+				    with: "60"];
    }];
 }
 
