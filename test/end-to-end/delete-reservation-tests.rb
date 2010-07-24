@@ -21,7 +21,7 @@ class DeleteReservationTestCase < EndToEndTestCase
   end
 
   def show_reservations
-    get '/reservations'
+    get '/reservations/all'
     to_delete = /#{@reservation.id}/
     assert_xhtml(last_response.body) do 
       table do 

@@ -26,19 +26,31 @@ class HtmlControllerTests < FreshDatabaseTestCase
                                                  :procedure => Procedure.random)
     end
 
-    should "give newish reservations to the view" do
+    should "require a specific number of days" do
       during { 
-        get '/reservations'
+        get '/reservations/200'
       }.behold! {
         @date_source.should_receive(:today).once.and_return(@today)
         @reservation_source.should_receive(:since).once.
-                            with(@today - 30).
+                            with(@today - 200).
                             and_return([@expected_reservation])
       }
       assert { @dummy_view[:reservations].size == 1 }
       actual_reservation = @dummy_view[:reservations].first
       assert { actual_reservation == @expected_reservation }
     end
+
+    should "also let words to denote 'forever'" do
+      during { 
+        get '/reservations/gazillions'
+      }.behold! {
+        @date_source.should_receive(:today).once.and_return(@today)
+        @reservation_source.should_receive(:since).once.
+                            with(@today - 3650).
+                            and_return([@expected_reservation])
+      }
+    end
+
   end
 
 

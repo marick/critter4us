@@ -23,8 +23,10 @@ class Controller
     redirect '/reservations'
   end
 
-  get '/reservations' do 
-    reservations = @reservation_source.since(@date_source.today - 30)
+  get '/reservations/:days' do 
+    days = params[:days].to_i
+    days = 3650 if days == 0
+    reservations = @reservation_source.since(@date_source.today - days)
     view(ReservationListView).new(:reservations => reservations).to_s
   end
 
