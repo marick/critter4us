@@ -74,7 +74,7 @@ class HtmlControllerTests < FreshDatabaseTestCase
       @app.override(mocks(:reservation_source, :tuple_publisher))
 
       during { 
-        delete "/reservation/12"
+        delete "/reservation/12/days_to_display_after_deletion"
       }.behold! {
         @reservation_source.should_receive(:erase).once.
                             with(12)
@@ -89,9 +89,9 @@ class HtmlControllerTests < FreshDatabaseTestCase
         use Procedure.random
       end
       assert { Reservation[:instructor => 'marge'] }
-      delete "/reservation/#{@reservation.id}"
+      delete "/reservation/#{@reservation.id}/days_to_display_after_deletion"
       assert { last_response.redirect? }
-      assert { "/reservations" == last_response['Location'] }
+      assert { "/reservations/days_to_display_after_deletion" == last_response['Location'] }
     end
   end
 

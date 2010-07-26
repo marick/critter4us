@@ -35,7 +35,7 @@ class DeleteReservationTestCase < EndToEndTestCase
   end
 
   def choose_deletion
-    delete("/reservation/#{@reservation.id}")
+    delete("/reservation/#{@reservation.id}/days_to_display_after_deletion")
     follow_redirect!
     deny { /bossie/ =~ last_response.body }
     deny { Reservation[@reservation.id] }

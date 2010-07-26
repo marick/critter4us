@@ -56,8 +56,9 @@ class ReservationListViewTests < FreshDatabaseTestCase
   should "contain well-formed delete button" do
     reservation = Reservation.random(:course => 'v=m=1')
 
-    output = ReservationListView.new(:reservations => [reservation]).to_s
-    assert { output.include? delete_button("reservation/#{reservation.id}") } 
+    output = ReservationListView.new(:reservations => [reservation],
+                                     :days_to_display_after_deletion => 321).to_s
+    assert { output.include? delete_button("/reservation/#{reservation.id}/321") } 
   end
 
   should "contain well-formed edit button" do
@@ -90,7 +91,7 @@ class ReservationListViewTests < FreshDatabaseTestCase
     output = ReservationListView.new(:reservations => [reservation]).to_s
     assert_xhtml(output) do
       td do
-        a(/View/, :href => %r{reservation/#{reservation.pk}})
+        a(/View/, :href => %r{/reservation/#{reservation.pk}})
       end
     end
   end

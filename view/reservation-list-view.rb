@@ -20,7 +20,7 @@ class ReservationListView < Erector::Widget
               td { text r.course }
               td { text r.animal_names.join(', ') }
               td { text r.procedure_names.join(', ') }
-              td { rawtext delete_button("reservation/#{r.id}") }
+              td { rawtext delete_button("/reservation/#{r.id}/#{@days_to_display_after_deletion}") }
               td do
                 form do 
                   input(:type => 'button', :value=>'Edit',
@@ -35,7 +35,7 @@ class ReservationListView < Erector::Widget
               end
               td do
                 a('View',
-                  :href => "reservation/#{r.id}",
+                  :href => "/reservation/#{r.id}",
                   :target => "_blank")
               end
             end

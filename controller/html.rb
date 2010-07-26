@@ -16,18 +16,19 @@ class Controller
     ReservationView.new(:reservation => reservation_source[number]).to_pretty
   end
 
-  delete '/reservation/:number' do
+  delete '/reservation/:number/:days_to_display_after_deletion' do
     number = params[:number].to_i
     reservation_source.erase(number)
     tuple_publisher.remove_reservation_exclusions(number)
-    redirect '/reservations'
+    redirect "/reservations/#{params[:days_to_display_after_deletion]}"
   end
 
   get '/reservations/:days' do 
     days = params[:days].to_i
     days = 3650 if days == 0
     reservations = @reservation_source.since(@date_source.today - days)
-    view(ReservationListView).new(:reservations => reservations).to_s
+    view(ReservationListView).new(:reservations => reservations,
+                                  :days_to_display_after_deletion => days).to_s
   end
 
   get '/animals' do 
