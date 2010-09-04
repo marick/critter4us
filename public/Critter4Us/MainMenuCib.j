@@ -13,6 +13,7 @@
   [self addMainMenu];
   [self addReservationsSubmenu];
   [self addAnimalsSubmenu];
+  [self addReportsSubmenu];
   [self addDebugSubmenu];
 }
 
@@ -51,6 +52,16 @@
                keyEquivalent: "T"
                        under: animalsMenu];
 }
+
+- (void) addReportsSubmenu
+{
+  var menu = [self submenuNamed: "Reports" below: mainMenu];
+  [self addMenuItemwithTitle: "All Animals and Procedures By Date"
+                      action: @selector(activateReportAllByDate:)
+               keyEquivalent: "P"
+                       under: menu];
+}
+
 
 - (void) addDebugSubmenu
 {

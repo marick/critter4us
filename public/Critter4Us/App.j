@@ -8,6 +8,7 @@
 @import "page-for-deleting-animals/CibPDA.j"
 @import "page-for-adding-animals/CibPAA.j"
 @import "page-for-viewing-log/CibPVL.j"
+@import "page-for-reporting-all-by-date/CibRABD.j"
 
 
 // This pure-javascript object is used to make forwarding from HTML
@@ -31,6 +32,7 @@ AppForwarder.copy = function(reservationId) {
   CPObject pmrPageController;
   CPObject pdaPageController;
   CPObject pvlPageController;
+  CPObject rabdPageController;
 
   CPArray allPageControllers;
 }
@@ -51,6 +53,7 @@ AppForwarder.copy = function(reservationId) {
   [self createPage: CibPDA];
   [self createPage: CibPAA];
   [self createPage: CibPVL];
+  [self createPage: CibRABD];
   [self initializationIndependentOfUI]
 
   [self activateReservationMaker: self];
@@ -58,7 +61,7 @@ AppForwarder.copy = function(reservationId) {
 
 -(void) initializationIndependentOfUI
 {
-  allPageControllers = [pvrPageController, pmrPageController, pdaPageController, pvlPageController, paaPageController];
+  allPageControllers = [pvrPageController, pmrPageController, pdaPageController, pvlPageController, paaPageController, rabdPageController];
 }
 
 -(void) createPage: klass
@@ -100,6 +103,11 @@ AppForwarder.copy = function(reservationId) {
 - (void) activateAnimalDeleter: (CPMenuItem) sender
 {
   [self foreground: pdaPageController];
+}
+
+- (void) activateReportAllByDate: (CPMenuItem) sender
+{
+  [self foreground: rabdPageController];
 }
 
 - (void) activateReservationMaker: (CPMenuItem) sender

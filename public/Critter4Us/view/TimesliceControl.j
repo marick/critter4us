@@ -32,6 +32,11 @@
   [timeControl setTimes: timeslice.times];
 }
 
+- (void) setTimes: (CPArray) times
+{
+  [timeControl setTimes: times]
+}
+
 - (Timeslice) timeslice
 {
   var retval = [Timeslice firstDate: [dateControl firstDate]
