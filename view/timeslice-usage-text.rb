@@ -20,7 +20,7 @@ class TimesliceUsageText < Erector::Widget
 
   def summarize_range
     if @timeslice.first_date == @timeslice.last_date
-      @timeslice.first.to_s
+      @timeslice.first_date.to_s
     else
       "#{@timeslice.first_date} through #{@timeslice.last_date}"
     end
