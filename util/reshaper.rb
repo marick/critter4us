@@ -14,9 +14,13 @@ class Reshaper
   def group_by(pair_array, which_key, which_value)
     pair_array.inject({}) do | accumulator, hash | 
       accumulator[hash[which_key]] = [] unless accumulator[hash[which_key]]
-      accumulator[hash[which_key]] << hash[which_value]
+      accumulator[hash[which_key]] << hash[which_value] if hash[which_value]
       accumulator
     end
+  end
+
+  def empty_key_groups(pair_array, which_key)
+    group_by(pair_array, which_key, 'some value name that could not possibly exist')
   end
 
   def presentable(array)

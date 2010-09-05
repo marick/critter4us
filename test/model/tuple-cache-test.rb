@@ -99,25 +99,37 @@ class TupleCacheTests < FreshDatabaseTestCase
 
   end
 
-  context "which animals are out of service as of a timeslice" do
+  context "which animals are in or out of service as of a timeslice" do
     setup do 
       @timeslice = Timeslice.new(@date, @date+1, TimeSet.new(MORNING))
 
       Animal.random(:name => "animal out before", :date_removed_from_service => @date-1)
-      Animal.random(:name => "animal out during", :date_removed_from_service => @date+1)
+      Animal.random(:name => "animal out during - begin", :date_removed_from_service => @date)
+      Animal.random(:name => "animal out during - end", :date_removed_from_service => @date+1)
       Animal.random(:name => "animal out after", :date_removed_from_service => @date+2)
-      @actual = @tuple_cache.animals_out_of_service(@timeslice)
+      Animal.random(:name => "never removed")
+      @actual_in = @tuple_cache.animals_in_service(@timeslice)
+      @actual_out = @tuple_cache.animals_out_of_service(@timeslice)
     end
 
     should "be knowable" do
-      assert { animal_named?(@actual, 'animal out before') } 
-      assert { animal_named?(@actual, 'animal out during') } 
-      deny { animal_named?(@actual, 'animal out after') } 
+      assert { animal_named?(@actual_out, 'animal out before') } 
+      assert { animal_named?(@actual_out, 'animal out during - begin') } 
+      assert { animal_named?(@actual_out, 'animal out during - end') } 
+      deny { animal_named?(@actual_out, 'animal out after') } 
+      deny { animal_named?(@actual_out, 'never removed') } 
+
+      deny { animal_named?(@actual_in, 'animal out before') } 
+      assert { animal_named?(@actual_in, 'animal out during - begin') } 
+      assert { animal_named?(@actual_in, 'animal out during - end') } 
+      assert { animal_named?(@actual_in, 'animal out after') } 
+      assert { animal_named?(@actual_in, 'never removed') } 
     end
 
     should "be cached" do
       DB[:animals].delete
       assert { @tuple_cache.animals_out_of_service(@timeslice).count > 0 }
+      assert { @tuple_cache.animals_in_service(@timeslice).count > 0 }
     end
   end
 
@@ -208,7 +220,8 @@ class TupleCacheTests < FreshDatabaseTestCase
       Reservation.random(:timeslice => @timeslice, 
                          :animal => Animal.random,
                          :procedure => Procedure.random)
-      @actual = @tuple_cache.animals_and_procedures_used_during(@timeslice)
+      Animal.random(:name => 'unused animal')
+      @actual = @tuple_cache.animal_usage(@timeslice)
     end
 
     should "be knowable" do 
@@ -219,7 +232,7 @@ class TupleCacheTests < FreshDatabaseTestCase
 
     should "be cached" do 
       DB[:reservations].delete
-      assert(1, @tuple_cache.animals_and_procedures_used_during(@timeslice).size)
+      assert(1, @tuple_cache.animal_usage(@timeslice).size)
     end
   end
 end

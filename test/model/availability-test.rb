@@ -229,21 +229,35 @@ class AvailabilityTests < FreshDatabaseTestCase
 
   should "merge pairs into names in animal_to_procedure_used" do 
     @availability.override(mocks(:tuple_cache, :reshaper))
-    tuples = [{:animal_name => "double", :procedure_name => "1"},
-              {:animal_name => "single", :procedure_name => "1"},
-              {:animal_name => "double", :procedure_name => "2"}]
-    grouped = {"double" => ["1", "2"], "single" => ["2"]}
+    usage_tuples = [{:animal_name => "double", :procedure_name => "1"},
+                    {:animal_name => "single", :procedure_name => "1"},
+                    {:animal_name => "double", :procedure_name => "2"}]
+    grouped_used = {"double" => ["1", "2"], "single" => ["2"]}
+
+    animals_in_service_tuples = [ {:animal_name => 'double'},
+                                  {:animal_name => 'single'}, 
+                                  {:animal_name => 'unused'} ];
+    empty_grouped = {'double' => [], 'single' => [], 'unused' => [] } 
+
     during { 
-      @availability.animal_to_procedure_used
+      @availability.animal_usage
     }.behold! {
-      @tuple_cache.should_receive(:animals_and_procedures_used_during).
+      @tuple_cache.should_receive(:animal_usage).
                    with(@timeslice).
-                   and_return(tuples)
+                   and_return(usage_tuples)
       @reshaper.should_receive(:group_by).
-               with(tuples, :animal_name, :procedure_name).
-               and_return(grouped)
+               with(usage_tuples, :animal_name, :procedure_name).
+               and_return(grouped_used)
+
+      @tuple_cache.should_receive(:animals_in_service).
+                   with(@timeslice).
+                   and_return(animals_in_service_tuples)
+      @reshaper.should_receive(:empty_key_groups).
+                with(animals_in_service_tuples, :animal_name).
+                and_return(empty_grouped)
     }
-    assert_equal(grouped, @result)
+    assert_equal({"double" => ["1", "2"], "single" => ["2"], "unused" => []},
+                 @result)
   end
 
 end

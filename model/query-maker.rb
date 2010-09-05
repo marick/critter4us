@@ -101,6 +101,11 @@ class QueryMaker
                      timeslice.last_date.to_s)
   end
 
+  def restrict_to_tuples_with_animals_in_service(timeslice)
+    @query = @query.filter("(animals.date_removed_from_service IS NULL) OR (animals.date_removed_from_service >= DATE ?)",
+                     timeslice.first_date.to_s)
+  end
+
   def restrict_to_tuples_with_animals_in_use_during(timeslice)
     restrict_to_tuples_with_blackout_periods_overlapping(timeslice)
     @query = @query.filter("(B? & CAST(time_bits AS bit(3))) != B'000'", timeslice.time_bits)

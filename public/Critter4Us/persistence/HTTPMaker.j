@@ -23,7 +23,7 @@ htmlRoute = function(route)
 
 - (CPString) route_reportAllAnimalsAtTimeslice_html: primitivizedTimeslice
 {
-  return htmlRoute("used_animals_and_procedures")+"?timeslice=" + [CPString JSONFromObject: primitivizedTimeslice];
+  return htmlRoute("animal_usage_report")+"?timeslice=" + [CPString JSONFromObject: primitivizedTimeslice];
 }
 
 - (CPString) route_animalsThatCanBeTakenOutOfService_data: date

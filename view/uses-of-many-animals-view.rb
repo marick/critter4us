@@ -8,10 +8,10 @@ class UsesOfManyAnimalsView < Erector::Widget
   def content
     html do 
       head do
-        title "Animals in use #{@timeslice.pretty}"
+        title(TimesliceUsageText.new(:timeslice => @timeslice).to_s)
       end
       body do
-        h1 "Animals in use #{@timeslice.pretty}"
+        h1(TimesliceUsageText.new(:timeslice => @timeslice).to_s)
         table(NarrowTableStyle) do 
           animals = @data.keys.sort
           animals.each do | animal | 

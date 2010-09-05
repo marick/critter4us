@@ -89,9 +89,12 @@ class Availability
     @reshaper.tuples_to_presentable_array(@tuple_cache.animals_out_of_service(@timeslice), :animal_name)
   end
 
-  def animal_to_procedure_used
-    tuples = @tuple_cache.animals_and_procedures_used_during(@timeslice)
-    @reshaper.group_by(tuples, :animal_name, :procedure_name)
+  def animal_usage
+    usage_tuples = @tuple_cache.animal_usage(@timeslice)
+    animals_in_service_tuples = @tuple_cache.animals_in_service(@timeslice)
+
+    @reshaper.empty_key_groups(animals_in_service_tuples, :animal_name).merge(
+    @reshaper.group_by(usage_tuples, :animal_name, :procedure_name))
   end
 
   private

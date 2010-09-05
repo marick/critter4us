@@ -48,10 +48,10 @@ class Controller
                                                  :date => Date.parse(params[:date])).to_s
   end
 
-  get '/used_animals_and_procedures' do
+  get '/animal_usage_report' do
     timeslice = @internalizer.make_timeslice(params['timeslice'])
     availability = @availability_source.new(timeslice)
-    view(UsesOfManyAnimalsView).new(:data => availability.animal_to_procedure_used,
+    view(UsesOfManyAnimalsView).new(:data => availability.animal_usage,
                                     :timeslice => timeslice).to_s
   end
 end

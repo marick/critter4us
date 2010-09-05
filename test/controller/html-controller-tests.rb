@@ -130,7 +130,7 @@ class HtmlControllerTests < FreshDatabaseTestCase
       @app.override(mocks(:internalizer, :availability_source))
       availability = flexmock("availability")
       during {
-        get "/used_animals_and_procedures?timeslice=timeslice"
+        get "/animal_usage_report?timeslice=timeslice"
       }.behold! {
         @internalizer.should_receive(:make_timeslice).
                       with("timeslice").
@@ -138,7 +138,7 @@ class HtmlControllerTests < FreshDatabaseTestCase
         @availability_source.should_receive(:new).
                              with("timeslice object").
                              and_return(availability)
-        availability.should_receive(:animal_to_procedure_used).and_return("hash")
+        availability.should_receive(:animal_usage).and_return("hash")
       }
       assert_equal("hash", @dummy_view[:data])
       assert_equal("timeslice object", @dummy_view[:timeslice])

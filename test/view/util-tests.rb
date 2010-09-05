@@ -22,51 +22,6 @@ class ViewHelperTests < Test::Unit::TestCase
                  highlighted_first_words(["leg wrapping", "fake"]))
   end
 
-  context "timeslice summaries" do 
-    should "work for singleton times" do 
-      timeslice = Timeslice.new(Date.new(2009,12,10),
-                                Date.new(2009,12,10),
-                                TimeSet.new(MORNING))
-      assert_equal("on the morning of 2009-12-10", timeslice.pretty)
-    end
-
-    should "work for two times" do 
-      timeslice = Timeslice.new(Date.new(2009,12,10),
-                                Date.new(2009,12,10),
-                                TimeSet.new(EVENING, AFTERNOON))
-
-      assert_equal("on the afternoon and evening of 2009-12-10",
-                   timeslice.pretty)
-    end
-
-    should "work for three times" do 
-      timeslice = Timeslice.new(Date.new(2009,12,10),
-                                Date.new(2009,12,10),
-                                TimeSet.new(MORNING, EVENING, AFTERNOON))
-      assert_equal("for the whole day on 2009-12-10", timeslice.pretty)
-    end
-
-    should "work for singleton times on a range of dates" do 
-      timeslice = Timeslice.new(Date.new(2009,12,10),
-                                Date.new(2009,12,11),
-                                TimeSet.new(MORNING))
-      assert_equal("on the mornings of 2009-12-10 through 2009-12-11", timeslice.pretty)
-    end
-
-    should "work for multiple times on a range of dates" do 
-      timeslice = Timeslice.new(Date.new(2009,12,10),
-                                Date.new(2009,12,11),
-                                TimeSet.new(EVENING, AFTERNOON))
-      assert_equal("on the afternoons and evenings of 2009-12-10 through 2009-12-11", timeslice.pretty)
-    end
-
-    should "work for all times on a range of dates" do 
-      timeslice = Timeslice.new(Date.new(2009,12,10),
-                                Date.new(2009,12,11),
-                                TimeSet.new(EVENING, AFTERNOON, MORNING))
-      assert_equal("for the whole day on 2009-12-10 through 2009-12-11", timeslice.pretty)
-    end
-  end
 end
 
 

@@ -44,12 +44,20 @@ class ReshaperTests < Test::Unit::TestCase
                                          :word, :value))
   end
 
-  should "group value by keys" do 
-    assert_equal({'one' => [1, 11], 'two' => [2]},
-                 @reshaper.group_by([{:word => 'one', :value => 1},
-                                     {:word => 'one', :value => 11},
-                                     {:word => 'two', :value => 2}],
-                                    :word, :value))
+  context "grouping tuples by keys" do 
+    should "group value by keys" do 
+      assert_equal({'one' => [1, 11], 'two' => [2]},
+                   @reshaper.group_by([{:word => 'one', :value => 1},
+                                       {:word => 'one', :value => 11},
+                                       {:word => 'two', :value => 2}],
+                                      :word, :value))
+    end
+    should "create empty-list values" do 
+      assert_equal({'one' => [], 'two' => []},
+                   @reshaper.empty_key_groups([{:word => 'one'},
+                                               {:word => 'two'},
+                                               {:word => 'two'}], :word))
+    end
   end
 
 end

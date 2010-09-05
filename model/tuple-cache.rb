@@ -46,6 +46,14 @@ class TupleCache
       end
   end
 
+  def animals_in_service(timeslice)
+    @animals_in_service_during_timeslice ||=
+      @query_maker.to_select_appropriate(:animal_name) do | q | 
+        q.begin_with(:animals)
+        q.restrict_to_tuples_with_animals_in_service(timeslice)
+      end
+  end
+
   def animals_with_procedure_conflicts
     @animals_with_procedure_conflicts ||=
       tuples = @query_maker.to_select_appropriate(:procedure_name, :animal_name) do | q | 
@@ -69,7 +77,7 @@ class TupleCache
       end
   end
 
-  def animals_and_procedures_used_during(timeslice)
+  def animal_usage(timeslice)
     @animals_and_procedures_used_during ||= 
       @query_maker.to_select_appropriate(:animal_name, :procedure_name) do | q | 
         q.begin_with_flattened_reservations
