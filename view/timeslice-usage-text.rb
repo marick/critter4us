@@ -11,7 +11,7 @@ class TimesliceUsageText < Erector::Widget
   private
 
   def summarize_times(ordered_times, suffix)
-    case ordered_times.count
+    case ordered_times.size
     when 1 then "on the #{ordered_times[0]}#{suffix} of "
     when 2 then "during the #{ordered_times[0]}#{suffix} or #{ordered_times[1]}#{suffix} of "
     when 3 then "at any time during "
