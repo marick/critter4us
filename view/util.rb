@@ -22,7 +22,8 @@ module ViewHelper
 
   def count_annotated(string_array)
     uniqs = string_array.uniq
-    initial_value = Hash[uniqs.zip([0]*uniqs.size)]
+    # This is simpler in 1.8.7....
+    initial_value = Hash[*uniqs.zip([0]*uniqs.size).flatten]
     tagged = string_array.inject(initial_value) do | accumulator, s |
       accumulator[s] += 1
       accumulator
