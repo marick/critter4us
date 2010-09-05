@@ -74,6 +74,9 @@
   [lastDateField setBezeled:YES];
   [lastDateField setDelegate: self];
 
+  [firstDateField setNextKeyView: lastDateField];
+  [lastDateField setNextKeyView: firstDateField];
+
   [self addSubview:firstDateLabel];
   [self addSubview:lastDateLabel];
   [self addSubview:firstDateField];
