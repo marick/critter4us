@@ -80,6 +80,14 @@ class QueryMaker
     end
   end
 
+  def begin_with_flattened_reservations
+    @query = DB[:reservations]
+    @query = @query.join(:groups, :groups__reservation_id => :reservations__id).
+                    join(:uses, :uses__group_id => :groups__id).
+                    join(:animals, :animals__id => :uses__animal_id).
+                    join(:procedures, :procedures__id => :uses__procedure_id)
+  end
+
   def restrict_to_tuples_with_animals_ever_out_of_service
     @query = @query.filter("animals.date_removed_from_service IS NOT NULL")
   end
@@ -102,10 +110,13 @@ class QueryMaker
     @query = @query.filter("last_date >= Date ?", date.to_s)
   end
 
-  def restrict_to_tuples_with_blackout_periods_overlapping(timeslice)
+  def restrict_to_tuples_overlapping(timeslice)
     @query = @query.filter("(DATE ? <= last_date) AND (first_date <= DATE ?)",
                             timeslice.first_date.to_s, timeslice.last_date.to_s)
   end
+
+  alias_method :restrict_to_tuples_with_blackout_periods_overlapping,
+               :restrict_to_tuples_overlapping
 
   def to_s; @query.sql; end
 end

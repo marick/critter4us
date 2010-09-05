@@ -68,4 +68,12 @@ class TupleCache
         q.restrict_to_tuples_with_animals_in_use_during(timeslice)
       end
   end
+
+  def animals_and_procedures_used_during(timeslice)
+    @animals_and_procedures_used_during ||= 
+      @query_maker.to_select_appropriate(:animal_name, :procedure_name) do | q | 
+        q.begin_with_flattened_reservations
+        q.restrict_to_tuples_overlapping(timeslice)
+      end
+  end
 end

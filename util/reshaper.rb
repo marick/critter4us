@@ -11,6 +11,14 @@ class Reshaper
     end
   end
 
+  def group_by(pair_array, which_key, which_value)
+    pair_array.inject({}) do | accumulator, hash | 
+      accumulator[hash[which_key]] = [] unless accumulator[hash[which_key]]
+      accumulator[hash[which_key]] << hash[which_value]
+      accumulator
+    end
+  end
+
   def presentable(array)
     result = array.uniq.sort { | a, b | a.downcase <=> b.downcase }
     def result.legacy

@@ -226,5 +226,25 @@ class AvailabilityTests < FreshDatabaseTestCase
                  @result)
     
   end
+
+  should "merge pairs into names in animal_to_procedure_used" do 
+    @availability.override(mocks(:tuple_cache, :reshaper))
+    tuples = [{:animal_name => "double", :procedure_name => "1"},
+              {:animal_name => "single", :procedure_name => "1"},
+              {:animal_name => "double", :procedure_name => "2"}]
+    grouped = {"double" => ["1", "2"], "single" => ["2"]}
+    during { 
+      @availability.animal_to_procedure_used
+    }.behold! {
+      @tuple_cache.should_receive(:animals_and_procedures_used_during).
+                   with(@timeslice).
+                   and_return(tuples)
+      @reshaper.should_receive(:group_by).
+               with(tuples, :animal_name, :procedure_name).
+               and_return(grouped)
+    }
+    assert_equal(grouped, @result)
+  end
+
 end
 

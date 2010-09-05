@@ -89,10 +89,16 @@ class Availability
     @reshaper.tuples_to_presentable_array(@tuple_cache.animals_out_of_service(@timeslice), :animal_name)
   end
 
+  def animal_to_procedure_used
+    tuples = @tuple_cache.animals_and_procedures_used_during(@timeslice)
+    @reshaper.group_by(tuples, :animal_name, :procedure_name)
+  end
+
   private
 
   def without_reservation_tuples(tuples)
     return tuples unless @reservation_id_to_ignore
     tuples.reject { | tuple | tuple[:reservation_id] == @reservation_id_to_ignore }
   end
+
 end

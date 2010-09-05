@@ -20,7 +20,35 @@ module ViewHelper
     end
   end
 
+  def count_annotated(string_array)
+    uniqs = string_array.uniq
+    initial_value = Hash[uniqs.zip([0]*uniqs.size)]
+    tagged = string_array.inject(initial_value) do | accumulator, s |
+      accumulator[s] += 1
+      accumulator
+    end
+    tagged.collect { | string, count | 
+      if count == 1 
+        string
+      else
+        string + " (#{count} times)"
+      end
+    }.sort
+  end
 
+  def without_parens(string_array)
+    string_array.collect do | s |
+      s.gsub(/\(.*\)/, '').strip
+    end
+  end
+
+  def highlighted_first_words(string_array)
+    string_array.collect do | s |
+      s.gsub(/^(\w*)/, '<b>\1</b>').strip
+    end
+  end
+
+  
 end
 
 module ReservationHelper

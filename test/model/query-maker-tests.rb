@@ -33,7 +33,7 @@ class QueryMakerTests < FreshDatabaseTestCase
     assert_equal(:table__column, @query.qualified(:table, :column))
   end
 
-  context "joining tables" do 
+  context "joining exclusion tables" do 
     setup do 
       @animal = Animal.random(:name => '1343')
       @procedure = Procedure.random(:name => "floating")
@@ -80,6 +80,24 @@ class QueryMakerTests < FreshDatabaseTestCase
       end
       assert_equal([{:procedure_name => 'floating', :animal_name => '1343'}],
                    result)
+    end
+  end
+
+  context "flattening reservations" do
+    should "contain animals and procedures" do 
+      Reservation.random(:animal => Animal.random(:name => 'betsy'),
+                         :procedure => Procedure.random(:name => 'route'),
+                         :timeslice => Timeslice.new(Date.new(2009, 1, 1),
+                                                     Date.new(2010, 2, 1),
+                                                     TimeSet.new(MORNING)))
+      result = @query.to_select_appropriate(:animal_name, :procedure_name, :first_date) do | q | 
+        q.begin_with_flattened_reservations
+      end
+        
+      assert_equal(1, result.size)
+      assert_equal("betsy", result[0][:animal_name])
+      assert_equal("route", result[0][:procedure_name])
+      assert_equal(Date.new(2009,1,1), result[0][:first_date])
     end
   end
 

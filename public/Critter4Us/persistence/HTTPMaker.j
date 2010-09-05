@@ -21,6 +21,11 @@ htmlRoute = function(route)
   return htmlRoute("reservations/" + dayString);
 }
 
+- (CPString) route_reportAllAnimalsAtTimeslice_html: primitivizedTimeslice
+{
+  return htmlRoute("used_animals_and_procedures")+"?timeslice=" + [CPString JSONFromObject: primitivizedTimeslice];
+}
+
 - (CPString) route_animalsThatCanBeTakenOutOfService_data: date
 {
   return jsonRoute("animals_that_can_be_taken_out_of_service")+"?date=" + date

@@ -47,5 +47,12 @@ class Controller
     view(AnimalsWithPendingReservationsView).new(:animal_source => Animal,
                                                  :date => Date.parse(params[:date])).to_s
   end
+
+  get '/used_animals_and_procedures' do
+    timeslice = @internalizer.make_timeslice(params['timeslice'])
+    availability = @availability_source.new(timeslice)
+    view(UsesOfManyAnimalsView).new(:data => availability.animal_to_procedure_used,
+                                    :timeslice => timeslice).to_s
+  end
 end
 

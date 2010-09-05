@@ -201,4 +201,25 @@ class TupleCacheTests < FreshDatabaseTestCase
       assert { @tuple_cache.animals_blacked_out(@timeslice).count > 0 }
     end
   end
+
+  context "returning animals and procedures used during a date" do 
+    setup do 
+      @timeslice = Timeslice.new(@date, @date+1, TimeSet.new(MORNING))
+      Reservation.random(:timeslice => @timeslice, 
+                         :animal => Animal.random,
+                         :procedure => Procedure.random)
+      @actual = @tuple_cache.animals_and_procedures_used_during(@timeslice)
+    end
+
+    should "be knowable" do 
+      assert_equal(1, @actual.size)
+      assert(@actual[0][:animal_name])
+      assert(@actual[0][:procedure_name])
+    end
+
+    should "be cached" do 
+      DB[:reservations].delete
+      assert(1, @tuple_cache.animals_and_procedures_used_during(@timeslice).size)
+    end
+  end
 end

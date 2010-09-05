@@ -29,6 +29,8 @@
 {
   [self backgroundController].timesliceControl = [self timesliceControl];
   [self backgroundController].reportButton = [self reportButton];
+  [self backgroundController].httpMaker = [[HTTPMaker alloc] init];
+  [self backgroundController].primitivizer = [[ModelObjectsToPrimitivesConverter alloc] init];
   [[self reportButton] setTarget: [self backgroundController]];
   [[self reportButton] setAction: @selector(report:)];
 }

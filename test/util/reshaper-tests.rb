@@ -44,4 +44,12 @@ class ReshaperTests < Test::Unit::TestCase
                                          :word, :value))
   end
 
+  should "group value by keys" do 
+    assert_equal({'one' => [1, 11], 'two' => [2]},
+                 @reshaper.group_by([{:word => 'one', :value => 1},
+                                     {:word => 'one', :value => 11},
+                                     {:word => 'two', :value => 2}],
+                                    :word, :value))
+  end
+
 end
