@@ -124,16 +124,16 @@ class HtmlControllerTests < FreshDatabaseTestCase
     end
   end
 
-  context "getting a report on animals and procedures in a timeslice" do
+  context "getting a report on animals and procedures between two dates" do
     should "pass animal->procedure map to view" do 
       @app.test_view_builder = @dummy_view
       @app.override(mocks(:internalizer, :availability_source))
       availability = flexmock("availability")
       during {
-        get "/animal_usage_report?timeslice=timeslice"
+        get "/animal_usage_report?firstDate=first&lastDate=last"
       }.behold! {
-        @internalizer.should_receive(:make_timeslice).
-                      with("timeslice").
+        @internalizer.should_receive(:make_timeslice_from_dates).
+                      with("first", "last").
                       and_return("timeslice object")
         @availability_source.should_receive(:new).
                              with("timeslice object").

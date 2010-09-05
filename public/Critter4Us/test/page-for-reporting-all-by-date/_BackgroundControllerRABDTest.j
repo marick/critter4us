@@ -9,24 +9,32 @@
 {
   sut = [[BackgroundControllerRABD alloc] init];
   scenario = [[Scenario alloc] initForTest: self andSut: sut];
-  [scenario sutHasUpwardOutlets: ['timesliceControl']];
+  [scenario sutHasUpwardOutlets: ['dateControl']];
   [scenario sutHasDownwardCollaborators: ['primitivizer', 'httpMaker']];
 }
 
-- (void)test_reports_with_timeslice
+- (void)test_reports_with_dates
 {
   [scenario
     during: function() {
       [sut report: UnusedArgument];
     }
   behold: function() {
-      [sut.timesliceControl shouldReceive: @selector(timeslice)
-				andReturn: "a timeslice"];
+      var first = "2001-01-01";
+      var last =  "2111-11-11";
+	
+      [sut.dateControl shouldReceive: @selector(firstDate)
+				andReturn: first];
+      [sut.dateControl shouldReceive: @selector(lastDate)
+				andReturn: last];
       [sut.primitivizer shouldReceive: @selector(convert:)
-				 with: "a timeslice"
-			    andReturn: "primitive timeslice"];
-      [sut.httpMaker shouldReceive: @selector(route_reportAllAnimalsAtTimeslice_html:)
-			      with: "primitive timeslice"
+				 with: first
+			    andReturn: first];
+      [sut.primitivizer shouldReceive: @selector(convert:)
+				 with: last
+			    andReturn: last];
+      [sut.httpMaker shouldReceive: @selector(route_html_usageReportFirst:last:)
+			      with: [first, last]
 			 andReturn: "route"
        ]; 
       // Can't check, but it should call window.open

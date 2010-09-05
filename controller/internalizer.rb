@@ -55,7 +55,13 @@ class Internalizer
 
   def make_timeslice_from_date(raw_date)
     date = @date_parser.call(raw_date)
-    Timeslice.new(date, date, TimeSet.new(MORNING, AFTERNOON, EVENING))
+    Timeslice.all_day(date, date)
+  end
+
+  def make_timeslice_from_dates(first_date, last_date)
+    first_date = @date_parser.call(first_date)
+    last_date = @date_parser.call(last_date)
+    Timeslice.all_day(first_date, last_date)
   end
 
   def integer_or_nil(value)

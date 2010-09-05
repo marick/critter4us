@@ -8,7 +8,7 @@
   CPView background; 
   PageController pageController;
 
-  TimesliceControl timesliceControl;
+  DualDateControl dateControl;
   CPButton reportButton;
   PanelController panelController;
   BackgroundControllerRABD backgroundController;
@@ -27,7 +27,7 @@
 
 - (void) connectControllers
 {
-  [self backgroundController].timesliceControl = [self timesliceControl];
+  [self backgroundController].dateControl = [self dateControl];
   [self backgroundController].reportButton = [self reportButton];
   [self backgroundController].httpMaker = [[HTTPMaker alloc] init];
   [self backgroundController].primitivizer = [[ModelObjectsToPrimitivesConverter alloc] init];
@@ -37,7 +37,7 @@
 
 - (void) drawBackground
 {
-  [[self background] addSubview: [self timesliceControl]];
+  [[self background] addSubview: [self dateControl]];
   [[self background] addSubview: [self reportButton]];
 }
 
@@ -71,22 +71,20 @@
   pageController = pageControllerSubgraph.controller;
 }
 
--(id) timesliceControl
+-(id) dateControl
 {
-  if (!timesliceControl)
+  if (!dateControl)
   {
-    timesliceControl = [[TimesliceControl alloc] initAtX: 10 y: 0];
-    var all_day = [ [Time morning], [Time afternoon], [Time evening] ];
-    [timesliceControl setTimes: all_day];
+    dateControl = [[DualDateControl alloc] initAtX: 20 y: 30];
   }
-  return timesliceControl;
+  return dateControl;
 }
 
 -(id) reportButton
 {
   if (!reportButton)
   {
-    reportButton = [[CPButton alloc] initWithFrame: CGRectMake(20, 100, 250, 30)];
+    reportButton = [[CPButton alloc] initWithFrame: CGRectMake(20, 110, 250, 30)];
     [reportButton setTitle: "Report (in separate window)"];
     [reportButton setHidden: NO];
   }

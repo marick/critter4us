@@ -16,6 +16,10 @@ Timeslice = Struct.new(:first_date, :last_date, :times) do
         TimeSet.new(actual[:times]))
   end
 
+  def self.all_day(first, last)
+    new(first, last, TimeSet.new(MORNING, AFTERNOON, EVENING))
+  end
+
   def self.degenerate(date, time)
     new(date, date, TimeSet.new(time))
   end

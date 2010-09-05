@@ -21,9 +21,9 @@ htmlRoute = function(route)
   return htmlRoute("reservations/" + dayString);
 }
 
-- (CPString) route_reportAllAnimalsAtTimeslice_html: primitivizedTimeslice
+- (CPString) route_html_usageReportFirst: first last: last
 {
-  return htmlRoute("animal_usage_report")+"?timeslice=" + [CPString JSONFromObject: primitivizedTimeslice];
+  return htmlRoute("animal_usage_report")+"?firstDate=" + first+"&lastDate=" + last;
 }
 
 - (CPString) route_animalsThatCanBeTakenOutOfService_data: date

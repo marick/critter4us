@@ -19,11 +19,12 @@
         equals: [maker animalsAndProceduresAvailableAtTimeslice: primitivizedTimeslice]];
 }
 
--(void) test_can_make_route_to_fetch_all_animal_report
+-(void) test_can_make_route_to_fetch_usage_report
 {
-  var primitivizedTimeslice = {'startDate':'10-12-90', 'endDate':'10-12-90','times': ['morning']};
-  [self assert: "/animal_usage_report?timeslice=" + [CPString JSONFromObject: primitivizedTimeslice]
-        equals: [maker route_reportAllAnimalsAtTimeslice_html: primitivizedTimeslice]];
+  var first = '10-12-90';
+  var last = '10-12-99';
+  [self assert: "/animal_usage_report?firstDate=10-12-90&lastDate=10-12-99"
+        equals: [maker route_html_usageReportFirst: first last: last]];
 }
 
 -(void) test_chooses_to_create_a_new_reservation_when_storing

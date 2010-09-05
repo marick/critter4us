@@ -49,7 +49,8 @@ class Controller
   end
 
   get '/animal_usage_report' do
-    timeslice = @internalizer.make_timeslice(params['timeslice'])
+    timeslice = @internalizer.make_timeslice_from_dates(params['firstDate'],
+                                                       params['lastDate'])
     availability = @availability_source.new(timeslice)
     view(UsesOfManyAnimalsView).new(:data => availability.animal_usage,
                                     :timeslice => timeslice).to_s
