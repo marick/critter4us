@@ -8,6 +8,12 @@ end
 class Procedure  < Sequel::Model
   one_to_many :uses
 
+  def before_destroy
+    DB[:excluded_because_of_animal].filter(:procedure_id => self.pk).delete
+    DB[:exclusion_rules].filter(:procedure_id => self.pk).delete
+    DB[:procedure_descriptions].filter(:procedure_id => self.pk).delete
+  end
+
   def self.names; map(:name); end
   def self.sorted_names; names.sort; end
 

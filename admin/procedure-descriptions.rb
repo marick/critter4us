@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+# WARNING:
+#
+#
+#
+# This is now defunct except for the text of the descriptions.
+#
+#
+# WARNING
+
 unless $in_rake 
   require 'rubygems'
   require 'path-setting'
