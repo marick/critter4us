@@ -1,4 +1,4 @@
-require 'rubygems'
+require 'rubygems'; gem 'sinatra', '< 1.0'
 require 'sinatra/base'
 require 'json'
 require 'util/test-support'
@@ -26,6 +26,7 @@ class Controller < Sinatra::Base
   # so test calls like 
   #    Controller.new.authorizer = ... 
   # die with method-not-found.
+
   enable :methodoverride unless environment == :test
 
   before do

@@ -5,6 +5,7 @@ require 'controller/base'
 class AuthorizationControllerTests < FreshDatabaseTestCase
   include Rack::Test::Methods
 
+  
   attr_reader :app
 
   def setup
