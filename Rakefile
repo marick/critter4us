@@ -31,7 +31,7 @@ end
 
 desc "Backup critter4us"
 task :backup do
-   system("heroku db:pull  postgres://localhost/critter4us-backup --app critter4us --confirm")
+   system("heroku db:pull  postgres://localhost/critter4us-backup --app critter4us  --confirm critter4us")
 end
 
 desc "Update staging server with data from production"
