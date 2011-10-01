@@ -8,9 +8,11 @@ class NewProcedures015 < Sequel::Migration
 
   def data
     [ ["nasal swab (cattle)", 0, "bovine", "BovineOnly", NASAL_SWAB],
+      ["Mock TB Test (cattle)", 7, "bovine", "BovineOnly", MOCK_TB],
       ["lameness exam (horses)", 0, "equine", "HorsesOnly", LAMENESS],
-      ["superovulation (cattle)", 21, "bovine", "BovineOnly", SUPEROVULATION],
-      ["embryo flush (cattle)", 21, "bovine", "BovineOnly", EMBRYO_FLUSH],
+      ["endoscopy or gastroscopy (horses)", 0, "equine", "HorsesOnly", ENDOSCOPY],
+      ["superovulation (cattle)", 7, "bovine", "BovineOnly", SUPEROVULATION],
+      ["embryo flush (cattle)", 19, "bovine", "BovineOnly", EMBRYO_FLUSH],
     ]
   end
 
@@ -41,6 +43,52 @@ Insert a sterile swab into the nasal passages and make contact with the mucosal 
 </ul>
 "
 
+
+MOCK_TB  ="
+<b>Mock TB Test: Cattle</b>
+
+<p>
+Caudal fold TB Test:
+</p>
+<ul>
+<li>
+The cow will be restrained in a headgate.
+</li>
+<li>
+The tail will be elevated.
+</li>
+<li>
+The injection site (caudal fold of the tail) will be cleaned with alcohol or saline if necessary. 0.1 mL of sterile saline will be injected intradermally into the caudal fold using a 1 cc syringe with a 26 g 1 cm needle.
+</li>
+<li>
+The injection site will be palpated to make sure the saline was placed intradermally, not subcutaneously.
+</li>
+<li>
+ The procedure may be repeated on the same or opposite fold as long as the cow tolerates it well.
+</li>
+<li>
+Up to 10 injections may be made per week.
+</li>
+</ul>
+
+<p>
+Comparative cervical TB test:
+</p>
+<ul>
+<li>
+Two  3\" square areas will be shaved on the side of the cow's neck.
+</li>
+<li>
+A circle will be drawn on the skin in the center of each area to illustrate where tuberculin would be injected.
+</li>
+<li>
+If mock intradermal injection is performed, it will be done using sterile saline no more than once/site/week.
+</li>
+</ul>
+
+"
+
+
 LAMENESS  ="
 <b>Lameness Examination: Horses</b>
 <ul>
@@ -49,6 +97,18 @@ In order to teach lameness examination, the following activities may be performe
 </li>
 <li>
 If joints are to be tapped/synovial fluid collected, these procedures must be reserved separately. They have specific recordkeeping requirements and limits.
+</li>
+</ul>
+"
+
+ENDOSCOPY  ="
+<b>Endoscopy or gastroscopy: Horses</b>
+<ul>
+<li>
+These procedures involve passage a small diameter fiberoptic flexible endoscope through the nares and ventral nasal meatus in order to observe the laryngeal and pharyngeal structure of the horse or for passage through the esophagus into the stomach to observe the structures of the stomach, pylorus and duodenum.
+</li>
+<li>
+The procedure is performed in the awake standing horse using minimal restraint (lead rope and halter, perhaps a lip twitch) and occasionally mild sedation (listed on protocol).
 </li>
 </ul>
 "
