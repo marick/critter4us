@@ -1,31 +1,15 @@
 @import <AppKit/AppKit.j>
+@import "FloatingPanel.j"
 @import "NamedObjectCollectionView.j"
 
-@implementation NameListPanel : CPPanel
+@implementation NameListPanel : FloatingPanel
 {
   CPCollectionView collectionView;
 }
 
-- (id) initWithContentRect: panelRect
-{
-  self = [self initWithContentRect: panelRect
-                         styleMask: CPHUDBackgroundWindowMask | CPResizableWindowMask];
-  [self setFloatingPanel:YES];
-  return self;
-}
-
-- (id) initAtX: x y: y withTitle: aTitle color: aColor
-{
-  return [self initWithRect: CGRectMake(x, y, SourceWindowWidth, SourceWindowHeight)
-                      title: aTitle
-                      color: aColor];
-}
-
 - (id) initWithRect: panelRect title: aTitle color: aColor
 {
-  [self initWithContentRect: panelRect];
-  [self setTitle: aTitle];
-  [self orderFront: self]; // TODO: delete when page layout done.
+  [self initWithRect: panelRect title: aTitle]
   [self addCollectionWithBackgroundColor: aColor]
   return self;
 }
@@ -40,15 +24,6 @@
         
   [collectionView placeScrollablyWithin: [self contentView]
                     withBackgroundColor: color];
-}
-
-
-- (CPRect) usableArea
-{
-  var contentView = [self contentView];
-  var bounds = [contentView bounds];
-  bounds.size.height -= WindowBottomMargin;
-  return bounds;
 }
 
 @end

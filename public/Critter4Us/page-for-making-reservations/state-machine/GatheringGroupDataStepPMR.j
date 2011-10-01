@@ -33,6 +33,7 @@
   [groupController showGroupButtons];
   [groupController addEmptyGroupToCollection];
   [currentGroupPanelController appear];
+  [notesPanelController appear];
 }
 
                        // Getting Data For This State

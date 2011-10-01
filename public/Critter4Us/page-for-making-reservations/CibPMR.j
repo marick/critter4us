@@ -1,6 +1,7 @@
 @import <AppKit/AppKit.j>
 @import "../util/Constants.j"
 @import "../util/StateMachineCoordinator.j"
+@import "../view/FloatingPanel.j"
 @import "../view/NameListPanel.j"
 @import "../view/CurrentGroupPanel.j"
 @import "../persistence/PersistentStore.j"
@@ -30,14 +31,15 @@
   CurrentGroupPanel currentGroupPanel;
   PanelController currentGroupPanelController;
 
+  FloatingPanel notesPanel;
+  PanelController notesPanelController;
+
   PersistentStore persistentStore;
 }
 
 - (void)instantiatePageInWindow: theWindow withOwner: owner
 {
   self = [super init];  // TODO: Hack. This should not be an initializer.
-
-
 
   [self drawControlledSubgraphsIn: theWindow];
   persistentStore = [PersistentStore sharedPersistentStore];
@@ -46,6 +48,15 @@
   currentGroupPanelController = [[PanelController alloc] initWithPanel: currentGroupPanel];
   [pageControllerSubgraph.controller addPanelController: currentGroupPanelController];
 
+  notesPanel = [[FloatingPanel alloc] initWithRect: CGRectMake(280,140,430,30) title: "Notes"];
+  notesField = [[CPWebView alloc] initWithFrame: CGRectMake(0, 0, 430, 30)];
+  [notesField setAutoresizingMask: (CPViewWidthSizable | CPViewHeightSizable)];
+  //    [notesField loadHTMLString: '<html><head><title>foo</title><body><p></p></body></html>'];
+  //  [notesField loadHTMLString: '<textarea style="background-color: yellow" cols="20" rows="10">' baseURL: nil];
+
+  [[notesPanel contentView] addSubview: notesField];
+  notesPanelController = [[PanelController alloc] initWithPanel: notesPanel];
+  [pageControllerSubgraph.controller addPanelController: notesPanelController];
 
   [self connectRemainingOutlets];
 
@@ -59,7 +70,8 @@
                 'animalController' : animalControllerSubgraph.controller,
                 'procedureController' : procedureControllerSubgraph.controller,
                 'groupController' : groupControllerSubgraph.controller,
-                'currentGroupPanelController' : currentGroupPanelController
+                'currentGroupPanelController' : currentGroupPanelController,
+                'notesPanelController' : notesPanelController
   };
   
   [[StateMachineCoordinator coordinating: peers]

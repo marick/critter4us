@@ -25,6 +25,7 @@
   [animalController beginningOfReservationWorkflow];
   [groupController beginningOfReservationWorkflow];
   [currentGroupPanelController disappear];
+  [notesPanelController disappear];
   // TODO: Do the following in every step?
   [NotificationCenter postNotificationName: AdvisoriesAreIrrelevantNews object: nil];
 }
