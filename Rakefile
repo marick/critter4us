@@ -36,8 +36,8 @@ end
 
 desc "Update staging server with data from production"
 task :update_staging do
-   system("heroku db:pull postgres://localhost/critter4us-refresh-staging --app critter4us")
-   system("heroku db:push postgres://localhost/critter4us-refresh-staging --app critter4us-staging")
+   system("heroku db:pull postgres://localhost/critter4us-refresh-staging --app critter4us --confirm critter4us-staging")
+   system("heroku db:push postgres://localhost/critter4us-refresh-staging --app critter4us-staging --confirm critter4us-staging")
 end
 
 
