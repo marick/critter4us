@@ -1,4 +1,4 @@
-require 'test/testutil/mock-talk'
+require './test/testutil/mock-talk'
 
 module ErectorTestSupport
   def view_itself

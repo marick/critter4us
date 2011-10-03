@@ -1,4 +1,4 @@
-require 'view/util'
+require './view/util'
 
 class TimesliceUsageText < Erector::Widget
   include ViewHelper

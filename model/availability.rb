@@ -1,5 +1,5 @@
-require 'util/requires'
-require 'model/requires'
+require './util/requires'
+require './model/requires'
 
 # TODO: The boundaries between Availability, TupleCache, and
 # QueryMaker are fairly clear, but the tests slop back and forth over

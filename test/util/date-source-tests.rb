@@ -1,6 +1,6 @@
 $: << '../..' unless $in_rake
-require 'test/testutil/requires'
-require 'util/requires'
+require './test/testutil/requires'
+require './util/requires'
 
 class DateSourceTests < Test::Unit::TestCase
   should "return current date" do

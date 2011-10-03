@@ -1,4 +1,4 @@
-require 'rubygems'; gem 'sinatra', '< 1.0'
+require 'rubygems'
 require 'sinatra/base'
 require 'sequel'
 require 'logger'

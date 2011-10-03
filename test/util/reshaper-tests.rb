@@ -1,6 +1,6 @@
 $: << '../..' unless $in_rake
-require 'test/testutil/requires'
-require 'util/requires'
+require './test/testutil/requires'
+require './util/requires'
 
 class ReshaperTests < Test::Unit::TestCase
   def setup

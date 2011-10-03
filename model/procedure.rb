@@ -1,5 +1,5 @@
 require 'pp'
-require 'model/requires'
+require './model/requires'
 
 class ExclusionRule < Sequel::Model
   many_to_one :procedure

@@ -1,4 +1,4 @@
-require 'util/extensions'
+require './util/extensions'
 
 class Controller
 

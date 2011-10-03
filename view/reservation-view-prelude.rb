@@ -1,4 +1,4 @@
-require 'view/util'
+require './view/util'
 
 class ReservationViewPrelude < Erector::Widget
   include ReservationHelper

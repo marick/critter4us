@@ -1,5 +1,5 @@
-require 'model/query-maker'
-require 'model/timeslice'
+require './model/query-maker'
+require './model/timeslice'
 
 class TupleCache
   include TestSupport

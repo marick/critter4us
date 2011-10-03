@@ -1,6 +1,5 @@
-$: << '../..' unless $in_rake
-require 'test/testutil/requires'
-require 'controller/base'
+require './test/testutil/requires'
+require './controller/base'
 
 class JsonControllerTests < FreshDatabaseTestCase
   include Rack::Test::Methods

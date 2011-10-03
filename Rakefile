@@ -70,7 +70,7 @@ end
 
 desc "Clear password on this machine"
 task :clear_password do 
-  require 'admin/clear-password'
+  require './admin/clear-password'
 end
 
 desc "Deploy new version on staging server."

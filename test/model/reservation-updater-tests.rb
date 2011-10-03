@@ -1,7 +1,6 @@
-$: << '../..' unless $in_rake
-require 'test/testutil/requires'
-require 'model/requires'
-require 'model/reservation-updater'
+require './test/testutil/requires'
+require './model/requires'
+require './model/reservation-updater'
 
 class ReservationUpdaterTests < FreshDatabaseTestCase
 
@@ -14,7 +13,7 @@ class ReservationUpdaterTests < FreshDatabaseTestCase
                                                                     TimeSet.new(MORNING)),
                                         :animal => Animal.random(:name => 'animal'),
                                         :procedure => Procedure.random(:name => 'procedure'))
-      @betsy = Animal.random(:name => 'betsy')
+      @bet = Animal.random(:name => 'betsy')
       @jake = Animal.random(:name => 'jake')
       @floating = Procedure.random(:name => 'floating')
       @venipuncture = Procedure.random(:name => 'venipuncture')

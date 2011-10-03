@@ -1,7 +1,6 @@
-$: << '../..' unless $in_rake
-require 'test/testutil/requires'
-require 'model/requires'
-require 'model/rules'
+require './test/testutil/requires'
+require './model/requires'
+require './model/rules'
 
 class RulesTest < FreshDatabaseTestCase
 

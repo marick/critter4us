@@ -1,4 +1,4 @@
-require 'view/util'
+require './view/util'
 
 class UsesOfManyAnimalsView < Erector::Widget
   include ViewHelper

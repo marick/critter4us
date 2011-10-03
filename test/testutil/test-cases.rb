@@ -1,6 +1,6 @@
 
 class FreshDatabaseTestCase < Test::Unit::TestCase
-  require 'test/testutil/db-helpers'
+  require './test/testutil/db-helpers'
   include DBHelpers
   def default_test; 'silence test::unit whining about missing tests'; end
 
@@ -11,9 +11,9 @@ end
 
 
 class EndToEndTestCase < FreshDatabaseTestCase
-  require 'model/requires'
-  require 'controller/base'
-  require 'test/testutil/end-to-end-util'
+  require './model/requires'
+  require './controller/base'
+  require './test/testutil/end-to-end-util'
 
   include Rack::Test::Methods
   attr_reader :app

@@ -1,9 +1,9 @@
-require 'rubygems'; gem 'sinatra', '< 1.0'
+require 'rubygems'
 require 'sinatra/base'
 require 'json'
-require 'util/test-support'
-require 'model/requires'
-require 'view/requires'
+require './util/test-support'
+require './model/requires'
+require './view/requires'
 require 'pp'
 
 require 'erector'
@@ -52,8 +52,8 @@ class Controller < Sinatra::Base
   end
 end
 
-require 'controller/internalizer'
-require 'controller/externalizer'
-require 'controller/authorization'
-require 'controller/html'
-require 'controller/json'
+require './controller/internalizer'
+require './controller/externalizer'
+require './controller/authorization'
+require './controller/html'
+require './controller/json'

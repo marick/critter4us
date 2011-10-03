@@ -1,6 +1,5 @@
-$: << '../..' unless $in_rake
-require 'test/testutil/requires'
-require 'model/authorizer'
+require './test/testutil/requires'
+require './model/authorizer'
 require 'ostruct'
 
 class AuthorizerfTests < FreshDatabaseTestCase

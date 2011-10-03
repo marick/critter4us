@@ -1,6 +1,5 @@
-$: << '../..' unless $in_rake
-require 'test/testutil/requires'
-require 'controller/externalizer'
+require './test/testutil/requires'
+require './controller/externalizer'
 
 class ExternalizerTests < FreshDatabaseTestCase
   def setup

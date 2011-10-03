@@ -7,10 +7,12 @@
 # application as FastCGI, CGI, or standalone with Mongrel or WEBrick -- all from
 # the same configuration.
 
-require 'rubygems'; gem 'sinatra', '< 1.0'
+require 'rubygems'
+require "bundler"
+Bundler.require
 
-require File.expand_path('path-setting', File.dirname(__FILE__))
-require File.expand_path('app', File.dirname(__FILE__))
+puts $:
+require './app'
 
 require 'sinatra/base'
 require 'hoptoad_notifier'

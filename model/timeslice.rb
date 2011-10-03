@@ -1,5 +1,5 @@
-require 'util/requires'
-require 'model/requires'
+require './util/requires'
+require './model/requires'
 
 Timeslice = Struct.new(:first_date, :last_date, :times) do
   include TestSupport

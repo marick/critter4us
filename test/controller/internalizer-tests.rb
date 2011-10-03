@@ -1,8 +1,8 @@
 $: << '../..' unless $in_rake
-require 'test/testutil/requires'
-require 'controller/internalizer'
-require 'model/reservation'
-require 'model/timeslice'
+require './test/testutil/requires'
+require './controller/internalizer'
+require './model/reservation'
+require './model/timeslice'
 
 class InternalizerTests < FreshDatabaseTestCase
   should "turn hash keys into symbols" do

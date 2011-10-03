@@ -1,7 +1,6 @@
-$: << '../..' unless $in_rake
-require 'test/testutil/requires'
-require 'model/requires'
-require 'view/requires'
+require './test/testutil/requires'
+require './model/requires'
+require './view/requires'
 require 'assert2/xhtml'
 
 class AnimalListDeletionCellWidgetTests < Test::Unit::TestCase

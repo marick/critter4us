@@ -1,5 +1,4 @@
-$: << '../..' unless $in_rake
-require 'test/testutil/requires'
+require './test/testutil/requires'
 
 class TakingOutOfServiceTestCase < EndToEndTestCase
 

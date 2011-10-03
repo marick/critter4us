@@ -1,6 +1,5 @@
-$: << '../..' unless $in_rake
-require 'test/testutil/requires'
-require 'model/requires'
+require './test/testutil/requires'
+require './model/requires'
 
 class GroupTests < FreshDatabaseTestCase
   def setup

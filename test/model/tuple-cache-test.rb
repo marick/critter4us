@@ -1,6 +1,5 @@
-$: << '../..' unless $in_rake
-require 'test/testutil/requires'
-require 'model/requires'
+require './test/testutil/requires'
+require './model/requires'
 
 # TODO: Many of these tests test directly facts that are also tested
 # by QueryMaker tests. For simplicity, the tests should not check edge

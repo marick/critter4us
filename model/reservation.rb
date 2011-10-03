@@ -1,9 +1,9 @@
 require 'pp'
-require 'util/constants'
+require './util/constants'
 require 'ostruct'
 require 'set'
-require 'model/reservation-maker'
-require 'model/reservation-updater'
+require './model/reservation-maker'
+require './model/reservation-updater'
 
 class Reservation < Sequel::Model
 

@@ -1,4 +1,4 @@
-require 'util/constants'
+require './util/constants'
 require 'json'
 
 class Internalizer

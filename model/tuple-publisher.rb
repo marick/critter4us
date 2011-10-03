@@ -1,4 +1,4 @@
-require 'model/query-maker'
+require './model/query-maker'
 
 class TuplePublisher
   include TestSupport

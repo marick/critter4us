@@ -1,4 +1,4 @@
-require 'model/reservation-base'
+require './model/reservation-base'
 
 class ReservationMaker < ReservationBase
   def self.build_from(data)

@@ -1,4 +1,4 @@
-require 'model/reservation-base'
+require './model/reservation-base'
 
 class ReservationUpdater < ReservationBase
   def self.update(reservation, data)

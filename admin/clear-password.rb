@@ -1,5 +1,4 @@
 require 'rubygems'
-require 'path-setting'
-require 'config'
+require './config'
 
 DB[:authorizations].delete

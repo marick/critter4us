@@ -1,6 +1,5 @@
-$: << '../..' unless $in_rake
-require 'test/testutil/requires'
-require 'model/requires'
+require './test/testutil/requires'
+require './model/requires'
 
 # TODO: Many of these tests test directly facts that are also tested
 # by TupleCache or QueryMaker tests. If you change a test in this

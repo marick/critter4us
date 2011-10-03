@@ -1,5 +1,5 @@
-require 'util/constants'
-require 'model/requires'
+require './util/constants'
+require './model/requires'
 require 'pp'
 
 NOTE="<span style='color:red'>NOTE:</span>"
