@@ -11,7 +11,6 @@ require 'rubygems'
 require "bundler"
 Bundler.require
 
-puts $:
 require './app'
 
 require 'sinatra/base'

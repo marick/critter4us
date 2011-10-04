@@ -15,19 +15,18 @@ include Erector::Mixin
 class Controller < Sinatra::Base  
   include TestSupport
 
+  # In Rack::Test tests, it's hard to grab hold of the actual controller
+  # from behind a maze of middleware. (It seems.) So this is a hack to make
+  # it available to tests so that mocks can be injected.
+  class << self
+    attr_accessor :actual_object
+  end
+
   set :static, true
   set :root, File.join(File.dirname(__FILE__), "..")
   enable :raise_errors
   enable :sessions
-
-  # TODO: Not wild about this. If methodoverride is enabled in the 
-  # test environment, Controller.new returns this:
-  #<Rack::MethodOverride:0x19fbe50 @app=#<Controller:0x19fbf7c @app=nil>>
-  # so test calls like 
-  #    Controller.new.authorizer = ... 
-  # die with method-not-found.
-
-  enable :methodoverride unless environment == :test
+  enable :methodoverride
 
   before do
     CritterLogger.info "==== #{request.path}"
@@ -48,7 +47,7 @@ class Controller < Sinatra::Base
                            :tuple_publisher => TuplePublisher.new,
                            :date_source => Date
                            )
-    self
+    self.class.actual_object = self
   end
 end
 

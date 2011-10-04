@@ -6,8 +6,7 @@ class Controller
     redirect '/index.html'
   end
 
-
-  get '/hi' do
+  get '/protected_route_for_testing' do 
     'hi'
   end
 
