@@ -2,22 +2,16 @@ require './test/testutil/requires'
 require './controller/base'
 require 'ostruct'
 
-class HtmlControllerTests < FreshDatabaseTestCase
-  include Rack::Test::Methods
-
-  attr_reader :app
-
+class HtmlControllerTests < RackTestTestCase
   def setup
     super
-    @app = Controller.new
-    @app.authorizer = AuthorizeEverything.new
     @dummy_view = TestViewClass.new
   end
 
   context "viewing reservations" do
     setup do
-      @app.override(mocks(:date_source, :reservation_source))
-      @app.test_view_builder = @dummy_view
+      real_controller.override(mocks(:date_source, :reservation_source))
+      real_controller.test_view_builder = @dummy_view
       @today = Date.civil(2010, 4, 1)
       @expected_reservation = Reservation.random(:first_date => @today,
                                                  :last_date => @today,
@@ -61,7 +55,7 @@ class HtmlControllerTests < FreshDatabaseTestCase
     end
 
     should "pass an animal source and date source to the view" do
-      @app.test_view_builder = @dummy_view
+      real_controller.test_view_builder = @dummy_view
       get '/animals'
       assert { Animal == @dummy_view[:animal_source] }
       assert { @dummy_view[:date_source].is_a? DateSource } 
@@ -70,7 +64,7 @@ class HtmlControllerTests < FreshDatabaseTestCase
 
   context "deleting reservations" do
     should "coordinate deletion of reservations" do
-      @app.override(mocks(:reservation_source, :tuple_publisher))
+      real_controller.override(mocks(:reservation_source, :tuple_publisher))
 
       during { 
         delete "/reservation/12/days_to_display_after_deletion"
@@ -116,7 +110,7 @@ class HtmlControllerTests < FreshDatabaseTestCase
 
   context "returning a table of animals with pending reservations" do 
     should "pass date and animal source to view" do
-      @app.test_view_builder = @dummy_view
+      real_controller.test_view_builder = @dummy_view
       get "/animals_with_pending_reservations?date=2009-08-03"
       assert_equal(Animal, @dummy_view[:animal_source])
       assert { Date.new(2009, 8, 3) == @dummy_view[:date] }
@@ -125,8 +119,8 @@ class HtmlControllerTests < FreshDatabaseTestCase
 
   context "getting a report on animals and procedures between two dates" do
     should "pass animal->procedure map to view" do 
-      @app.test_view_builder = @dummy_view
-      @app.override(mocks(:internalizer, :availability_source))
+      real_controller.test_view_builder = @dummy_view
+      real_controller.override(mocks(:internalizer, :availability_source))
       availability = flexmock("availability")
       during {
         get "/animal_usage_report?firstDate=first&lastDate=last"

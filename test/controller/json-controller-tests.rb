@@ -1,16 +1,7 @@
 require './test/testutil/requires'
 require './controller/base'
 
-class JsonControllerTests < FreshDatabaseTestCase
-  include Rack::Test::Methods
-
-  attr_reader :app
-
-  def setup
-    super
-    @app = Controller.new
-    @app.authorizer = AuthorizeEverything.new
-  end
+class JsonControllerTests < RackTestTestCase
 
   def assert_json_response
     assert { last_response['Content-Type'] == 'application/json' }
@@ -31,7 +22,7 @@ class JsonControllerTests < FreshDatabaseTestCase
   context "delivering a blob of timeslice-specific animal and procedure data" do
 
     should "exclude animals that are currently in use" do 
-      @app.override(mocks(:internalizer, :availability_source, :externalizer))
+      real_controller.override(mocks(:internalizer, :availability_source, :externalizer))
       availability = flexmock("availability")
 
       during { 
@@ -64,7 +55,7 @@ class JsonControllerTests < FreshDatabaseTestCase
 
   context "producing lists of animals in service" do 
     should "return a list of animals with no pending reservations" do 
-      @app.override(mocks(:availability_source))
+      real_controller.override(mocks(:availability_source))
       availability = flexmock('availability')
 
       during { 
@@ -114,7 +105,7 @@ class JsonControllerTests < FreshDatabaseTestCase
     end
 
     should "coordinate objects" do
-      @app.override(mocks(:internalizer, :animal_source, :procedure_source))
+      real_controller.override(mocks(:internalizer, :animal_source, :procedure_source))
       during { 
         post '/json/add_animals', 'data' => @jsonified_data
       }.behold! {
@@ -171,7 +162,7 @@ class JsonControllerTests < FreshDatabaseTestCase
 
 
     should "coordinate creation of reservation" do 
-      @app.override(mocks(:internalizer, :reservation_source, :tuple_publisher))
+      real_controller.override(mocks(:internalizer, :reservation_source, :tuple_publisher))
       reservation = flexmock("reservation", :id => 12)
 
       during { 
@@ -201,7 +192,7 @@ class JsonControllerTests < FreshDatabaseTestCase
 
   context "modifying a reservation" do 
     should "coordinate other objects" do 
-      @app.override(mocks(:internalizer, :reservation_source, :tuple_publisher))
+      real_controller.override(mocks(:internalizer, :reservation_source, :tuple_publisher))
       @reservation = flexmock("reservation", :id => 12)
 
       during {
@@ -233,7 +224,7 @@ class JsonControllerTests < FreshDatabaseTestCase
 
   should "be able to retrieve a reservation and associated data" do 
     
-    @app.override(mocks(:availability_source, :excluder, :internalizer))
+    real_controller.override(mocks(:availability_source, :excluder, :internalizer))
     reservation = flexmock("reservation")
     availability = flexmock('availability')
 

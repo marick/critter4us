@@ -69,9 +69,7 @@ class SevenAndOneDayExampleOfBlackoutPeriodTests < EndToEndTestCase
 end
 
 
-class DetailsAboutTimingTests < FreshDatabaseTestCase
-  include Rack::Test::Methods
-  attr_reader :app
+class DetailsAboutTimingTests < RackTestTestCase
 
   BoundaryCases = [
       # Reservation attempt for date after previously-made reservation
@@ -136,9 +134,6 @@ class DetailsAboutTimingTests < FreshDatabaseTestCase
   end
 
   def prior_reservation(delay, date, time)
-    @app = Controller.new
-    @app.authorizer = AuthorizeEverything.new
-    
     animal = Animal.random(:name => "bossie")
     procedure = Procedure.random(:name => 'procedure', :days_delay => delay)
 
