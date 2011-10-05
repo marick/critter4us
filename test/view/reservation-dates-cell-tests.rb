@@ -11,7 +11,7 @@ class ReservationDatesCellWidgetTests < FreshDatabaseTestCase
       @reservation = Reservation.random(:timeslice =>
                                         Timeslice.random(:first_date => '2010-01-01',
                                                          :last_date => '2010-01-01'))
-      @html = ReservationDatesCell.new(:reservations => [@reservation]).to_s
+      @html = ReservationDatesCell.new(:reservations => [@reservation]).to_html
     end
     
     should "include dates in its output" do 
@@ -34,7 +34,7 @@ class ReservationDatesCellWidgetTests < FreshDatabaseTestCase
       @reservation = Reservation.random(:timeslice => 
                                         Timeslice.random(:first_date => '2019-12-13',
                                                          :last_date => '2019-12-14'))
-      @html = ReservationDatesCell.new(:reservations => [@reservation]).to_s
+      @html = ReservationDatesCell.new(:reservations => [@reservation]).to_html
     end
     
     should "include dates in its output" do 

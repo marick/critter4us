@@ -27,12 +27,12 @@ class Controller
     days = 3650 if days == 0
     reservations = @reservation_source.since(@date_source.today - days)
     view(ReservationListView).new(:reservations => reservations,
-                                  :days_to_display_after_deletion => days).to_s
+                                  :days_to_display_after_deletion => days).to_html
   end
 
   get '/animals' do 
     view(AnimalListView).new(:animal_source => animal_source,
-                             :date_source => DateSource.new).to_s
+                             :date_source => DateSource.new).to_html
   end
 
   delete '/animal/:number' do
@@ -44,7 +44,7 @@ class Controller
 
   get '/animals_with_pending_reservations' do
     view(AnimalsWithPendingReservationsView).new(:animal_source => Animal,
-                                                 :date => Date.parse(params[:date])).to_s
+                                                 :date => Date.parse(params[:date])).to_html
   end
 
   get '/animal_usage_report' do
@@ -52,7 +52,7 @@ class Controller
                                                        params['lastDate'])
     availability = @availability_source.new(timeslice)
     view(UsesOfManyAnimalsView).new(:data => availability.animal_usage,
-                                    :timeslice => timeslice).to_s
+                                    :timeslice => timeslice).to_html
   end
 end
 

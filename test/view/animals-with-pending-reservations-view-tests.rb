@@ -48,7 +48,7 @@ class AnimalsWithPendingReservationsViewTests < FreshDatabaseTestCase
   end
 
   should "show animals with pending reservations" do 
-    html = @view.to_s
+    html = @view.to_html
     assert { html.include? 'far future' }
     assert { html.include? 'Near future' }
     deny { html.include? 'not reserved' }
@@ -56,13 +56,13 @@ class AnimalsWithPendingReservationsViewTests < FreshDatabaseTestCase
   end
 
   should "sort animals by name" do
-    html = @view.to_s
+    html = @view.to_html
     assert { html.index("far future") < html.index("Near future") }
   end
 
   should "use a sub-widget to fill in the dates cell" do
     during { 
-      @view.to_s
+      @view.to_html
     }.behold! { 
       view_itself.should_use_widget(ReservationDatesCell).
                   handing_it(:reservations => [@far_future_reservation])

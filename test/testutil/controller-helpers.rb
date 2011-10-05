@@ -1,3 +1,5 @@
+require 'ostruct'
+
 class TestViewClass
   attr_reader :variables
 
@@ -7,6 +9,6 @@ class TestViewClass
 
   def new(variables = {})
     @variables = variables
-    "ensure that the return value is a string"
+    OpenStruct.new(:to_html => "ensure that the return value gives a string when htmlified")
   end
 end

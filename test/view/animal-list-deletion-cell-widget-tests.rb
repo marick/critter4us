@@ -15,7 +15,7 @@ class AnimalListDeletionCellWidgetTests < Test::Unit::TestCase
 
   should "produce a 'delete' button if in no future reservations" do
     during { 
-      @widget.to_s
+      @widget.to_html
     }.behold! { 
       @animal.should_receive(:dates_used_after_beginning_of).
               with(@proposed_removal_from_service_date).
@@ -40,7 +40,7 @@ class AnimalListDeletionCellWidgetTests < Test::Unit::TestCase
   should "procedure a list of dates if future reservations" do 
     dates_to_be_used = ['2012-01-02', '2013-03-01', '2013-03-02']
     during { 
-      @widget.to_s
+      @widget.to_html
     }.behold! { 
       @animal.should_receive(:dates_used_after_beginning_of).
               with(@proposed_removal_from_service_date).

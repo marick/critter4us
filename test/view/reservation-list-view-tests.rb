@@ -31,7 +31,7 @@ class ReservationListViewTests < FreshDatabaseTestCase
     first = Reservation.random(:course => 'v=m=1')
     second = Reservation.random(:course => 'v=m=2')
 
-    output = ReservationListView.new(:reservations => [first, second]).to_s
+    output = ReservationListView.new(:reservations => [first, second]).to_html
     assert { /v=m=1/ =~ output }
     assert { /v=m=2/ =~ output }
   end
@@ -43,7 +43,7 @@ class ReservationListViewTests < FreshDatabaseTestCase
 
     r = lambda { | string | Regexp.new(Regexp.escape(string)) }
 
-    output = ReservationListView.new(:reservations => [reservation]).to_s
+    output = ReservationListView.new(:reservations => [reservation]).to_html
     assert { r[reservation.instructor] =~ output }
     assert { r[reservation.course] =~ output }
     assert { r[reservation.date_text] =~ output }
@@ -56,14 +56,14 @@ class ReservationListViewTests < FreshDatabaseTestCase
     reservation = Reservation.random(:course => 'v=m=1')
 
     output = ReservationListView.new(:reservations => [reservation],
-                                     :days_to_display_after_deletion => 321).to_s
+                                     :days_to_display_after_deletion => 321).to_html
     assert { output.include? delete_button("/reservation/#{reservation.id}/321") } 
   end
 
   should "contain well-formed edit button" do
     reservation = Reservation.random
 
-    output = ReservationListView.new(:reservations => [reservation]).to_s
+    output = ReservationListView.new(:reservations => [reservation]).to_html
     assert_text_has_selector(output, "td")
     assert_text_has_attributes(output, "input", :type => 'button', :value => "Edit",
                                :onclick => "window.parent.AppForwarder.edit(#{reservation.id})")
@@ -78,7 +78,7 @@ class ReservationListViewTests < FreshDatabaseTestCase
   should "contain well-formed copy button" do
     reservation = Reservation.random
 
-    output = ReservationListView.new(:reservations => [reservation]).to_s
+    output = ReservationListView.new(:reservations => [reservation]).to_html
     assert_text_has_selector(output, "td")
     assert_text_has_attributes(output, "input", :type => 'button', :value => "Copy",
                                :onclick => "window.parent.AppForwarder.copy(#{reservation.id})")
@@ -93,7 +93,7 @@ class ReservationListViewTests < FreshDatabaseTestCase
   should "contain a link to the reservation view" do
     reservation = Reservation.random
 
-    output = ReservationListView.new(:reservations => [reservation]).to_s
+    output = ReservationListView.new(:reservations => [reservation]).to_html
     assert_text_has_selector(output, "td")
     assert_text_has_selector(output, "a", :text => /View/)
     assert_text_has_attributes(output, "a",  :href => %r{/reservation/#{reservation.pk}})

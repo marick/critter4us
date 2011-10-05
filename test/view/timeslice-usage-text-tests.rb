@@ -11,7 +11,7 @@ class TimesliceUsageTextTests < Test::Unit::TestCase
       timeslice = Timeslice.new(Date.new(2009,12,10),
                                 Date.new(2009,12,10),
                                 TimeSet.new(MORNING))
-      text = TimesliceUsageText.new(:timeslice => timeslice).to_s
+      text = TimesliceUsageText.new(:timeslice => timeslice).to_html
       assert_equal("Animals in use on the morning of 2009-12-10", text)
     end
 
@@ -19,7 +19,7 @@ class TimesliceUsageTextTests < Test::Unit::TestCase
       timeslice = Timeslice.new(Date.new(2009,12,10),
                                 Date.new(2009,12,10),
                                 TimeSet.new(EVENING, AFTERNOON))
-      text = TimesliceUsageText.new(:timeslice => timeslice).to_s
+      text = TimesliceUsageText.new(:timeslice => timeslice).to_html
 
       assert_equal("Animals in use during the afternoon or evening of 2009-12-10",
                    text)
@@ -29,7 +29,7 @@ class TimesliceUsageTextTests < Test::Unit::TestCase
       timeslice = Timeslice.new(Date.new(2009,12,10),
                                 Date.new(2009,12,10),
                                 TimeSet.new(MORNING, EVENING, AFTERNOON))
-      text = TimesliceUsageText.new(:timeslice => timeslice).to_s
+      text = TimesliceUsageText.new(:timeslice => timeslice).to_html
       assert_equal("Animals in use at any time during 2009-12-10", text)
     end
 
@@ -37,7 +37,7 @@ class TimesliceUsageTextTests < Test::Unit::TestCase
       timeslice = Timeslice.new(Date.new(2009,12,10),
                                 Date.new(2009,12,11),
                                 TimeSet.new(MORNING))
-      text = TimesliceUsageText.new(:timeslice => timeslice).to_s
+      text = TimesliceUsageText.new(:timeslice => timeslice).to_html
       assert_equal("Animals in use on the mornings of 2009-12-10 through 2009-12-11", text)
     end
 
@@ -45,7 +45,7 @@ class TimesliceUsageTextTests < Test::Unit::TestCase
       timeslice = Timeslice.new(Date.new(2009,12,10),
                                 Date.new(2009,12,11),
                                 TimeSet.new(EVENING, AFTERNOON))
-      text = TimesliceUsageText.new(:timeslice => timeslice).to_s
+      text = TimesliceUsageText.new(:timeslice => timeslice).to_html
       assert_equal("Animals in use during the afternoons or evenings of 2009-12-10 through 2009-12-11", text)
     end
 
@@ -53,7 +53,7 @@ class TimesliceUsageTextTests < Test::Unit::TestCase
       timeslice = Timeslice.new(Date.new(2009,12,10),
                                 Date.new(2009,12,11),
                                 TimeSet.new(EVENING, AFTERNOON, MORNING))
-      text = TimesliceUsageText.new(:timeslice => timeslice).to_s
+      text = TimesliceUsageText.new(:timeslice => timeslice).to_html
       assert_equal("Animals in use at any time during 2009-12-10 through 2009-12-11", text)
     end
   end

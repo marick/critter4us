@@ -23,7 +23,7 @@ class AnimalViewTests < FreshDatabaseTestCase
     end
 
     should "show all the animals" do 
-      html = @view.to_s
+      html = @view.to_html
       Animal.names.each do | a | 
         assert { html.include?(a) }
       end
@@ -39,7 +39,7 @@ class AnimalViewTests < FreshDatabaseTestCase
       @view = AnimalListView.new(:animal_source => Animal,
                                  :date_source => @date_source)
       during { 
-        @view.to_s
+        @view.to_html
       }.behold! { 
         @date_source.should_receive(:current_date_as_string).and_return('2012-01-03')
         view_itself.should_use_widget(AnimalDeletionCell).
@@ -65,7 +65,7 @@ class AnimalViewTests < FreshDatabaseTestCase
 
     should "show only animals that have not been removed" do 
       during {
-        @view.to_s
+        @view.to_html
       }.behold! { 
         @date_source.should_receive(:current_date).and_return(Date.parse('2009-11-18'))
       }

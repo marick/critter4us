@@ -13,7 +13,7 @@ class ReservationViewTests < FreshDatabaseTestCase
                                                                  TimeSet.new(MORNING)),
                                      :instructor => expected_instructor,
                                      :course => expected_course)
-    actual = ReservationView.new(:reservation => reservation).to_s
+    actual = ReservationView.new(:reservation => reservation).to_html
     assert { actual.include?(expected_date) }
     assert { actual.include?(expected_morning) }
     assert { actual.include?(expected_instructor) }
@@ -64,7 +64,7 @@ class ReservationViewTests < FreshDatabaseTestCase
     end
 
     should "be able to display different groups" do 
-      text = ReservationView.new(:reservation => @reservation).to_s
+      text = ReservationView.new(:reservation => @reservation).to_html
       assert { text =~ /betsy.*floating.*venipuncture/m }
       assert { text =~ /betsy.*jake.*milking.*venipuncture/m }
     end
