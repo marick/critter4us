@@ -84,7 +84,7 @@ class HtmlControllerTests < RackTestTestCase
       assert { Reservation[:instructor => 'marge'] }
       delete "/reservation/#{@reservation.id}/days_to_display_after_deletion"
       assert { last_response.redirect? }
-      assert { "/reservations/days_to_display_after_deletion" == last_response['Location'] }
+      assert { %r{/reservations/days_to_display_after_deletion$} =~ last_response['Location'] }
     end
   end
 
@@ -104,7 +104,7 @@ class HtmlControllerTests < RackTestTestCase
     should "redirect to animals page" do
       follow_redirect!
       assert last_response.ok?        
-      assert_equal "http://example.org/animals", last_request.url
+      assert { %r{/animals$} =~ last_request.url }
     end
   end
 
