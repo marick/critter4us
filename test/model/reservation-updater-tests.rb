@@ -13,7 +13,7 @@ class ReservationUpdaterTests < FreshDatabaseTestCase
                                                                     TimeSet.new(MORNING)),
                                         :animal => Animal.random(:name => 'animal'),
                                         :procedure => Procedure.random(:name => 'procedure'))
-      @bet = Animal.random(:name => 'betsy')
+      @betsy = Animal.random(:name => 'betsy')
       @jake = Animal.random(:name => 'jake')
       @floating = Procedure.random(:name => 'floating')
       @venipuncture = Procedure.random(:name => 'venipuncture')
