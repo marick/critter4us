@@ -1,9 +1,9 @@
 require './test/testutil/requires'
 require './model/requires'
 require './view/requires'
-require 'assert2/xhtml'
 
 class ProcedurePartialTests < FreshDatabaseTestCase
+  include HtmlAssertions
   
   def setup
     @floating = Procedure.random(:name => 'floating')
@@ -108,9 +108,11 @@ class ProcedurePartialTests < FreshDatabaseTestCase
     should "be able to create a link from a procedure to its procedure description" do
       text = @partial.linkified_procedure_name
       procedure_description_id = @floating_procedure_description_equine.unique_identifier
-      assert_xhtml(text) do
-        a("floating", :href => "##{procedure_description_id}")
-      end
+      assert_text_has_selector(text, 'a', :text => "floating")
+      assert_text_has_attributes(text, 'a', :href => "##{procedure_description_id}")
+      # assert_xhtml(text) do
+      #   a("floating", :href => "##{procedure_description_id}")
+      # end
     end
 
     should "be able to create a link to same place if duplicate procedures" do
@@ -131,11 +133,13 @@ class ProcedurePartialTests < FreshDatabaseTestCase
       descriptions = []
       @partial.add_name_anchored_descriptions_to(descriptions)
       text = descriptions.first
-      assert_xhtml(text) do
-        div(/floating description/) do 
-          a(:name => /\d+/)
-        end
-      end
+      assert_text_has_selector(text, 'div', :text => /floating description/)
+      assert_text_has_attributes(text, "a", :name =>  /\d+/)
+      # assert_xhtml(text) do
+      #   div(/floating description/) do 
+      #     a(:name => /\d+/)
+      #   end
+      # end
     end
 
     should "include cases where there are two species but only a generic procedure description" do 
@@ -145,9 +149,12 @@ class ProcedurePartialTests < FreshDatabaseTestCase
       partial = ProcedurePartial.for(@venipuncture, @moo, @billy)
       procedure_name = partial.linkified_procedure_name
       procedure_description_id = @venipuncture_procedure_description.unique_identifier
-      assert_xhtml(procedure_name) do
-        a("venipuncture", :href => "##{procedure_description_id}")
-      end
+
+      assert_text_has_selector(procedure_name, "a", :text => "venipuncture")
+      assert_text_has_attributes(procedure_name, "a", :href => "##{procedure_description_id}")
+      # assert_xhtml(procedure_name) do
+      #   a("venipuncture", :href => "##{procedure_description_id}")
+      # end
 
       descriptions = []
       partial.add_name_anchored_description(@venipuncture_procedure_description, descriptions)
@@ -171,12 +178,19 @@ class ProcedurePartialTests < FreshDatabaseTestCase
       text = ProcedurePartial.for(@floating, @moo, @billy).linkified_procedure_name
       bovine_procedure_description_id = @floating_procedure_description_bovine.unique_identifier
       caprine_procedure_description_id = @floating_procedure_description_caprine.unique_identifier
-      assert_xhtml(text) do
-        span(/floating/) do
-          a(/bovine/, :href => "##{bovine_procedure_description_id}")
-          a(/caprine/, :href => "##{caprine_procedure_description_id}")
-        end
-      end
+
+      assert_text_has_selector(text, "span", :text=>/floating/)
+      assert_text_has_selector(text, "a", :text=>/bovine/)
+      assert_text_has_attributes(text, "a", :href => "##{bovine_procedure_description_id}")
+      assert_text_has_selector(text, "a", :text=>/caprine/)
+      assert_text_has_attributes(text, "a", :href => "##{caprine_procedure_description_id}")
+
+      # assert_xhtml(text) do
+      #   span(/floating/) do
+      #     a(/bovine/, :href => "##{bovine_procedure_description_id}")
+      #     a(/caprine/, :href => "##{caprine_procedure_description_id}")
+      #   end
+      # end
     end
 
     should "be able to create descriptions for each procedure" do

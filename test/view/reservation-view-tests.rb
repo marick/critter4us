@@ -1,7 +1,6 @@
 require './test/testutil/requires'
 require './model/requires'
 require './view/requires'
-require 'assert2/xhtml'
 
 class ReservationViewTests < FreshDatabaseTestCase
   should "include session information in output" do

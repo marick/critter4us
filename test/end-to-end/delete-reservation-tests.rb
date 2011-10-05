@@ -22,15 +22,21 @@ class DeleteReservationTestCase < EndToEndTestCase
   def show_reservations
     get '/reservations/all'
     to_delete = /#{@reservation.id}/
-    assert_xhtml(last_response.body) do 
-      table do 
-        td("staggers, veinie")
-        td("bossie")
-        form(:action => to_delete) do 
-          input(:type => "submit", :value => "Delete")
-        end
-      end
-    end
+
+    # TODO: These checks are less specific than the assert_xhtml one
+    # below.
+    assert_body_has_selector('td', :text => "staggers, veinie")
+    assert_body_has_selector('td', :text => "bossie")
+    assert_body_has_attributes('form', :action => to_delete)
+    # assert_xhtml(last_response.body) do 
+    #   table do 
+    #     td("staggers, veinie")
+    #     td("bossie")
+    #     form(:action => to_delete) do 
+    #       input(:type => "submit", :value => "Delete")
+    #     end
+    #   end
+    # end
   end
 
   def choose_deletion

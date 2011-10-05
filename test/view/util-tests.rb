@@ -1,7 +1,6 @@
 require './test/testutil/requires'
 require './model/requires'
 require './view/requires'
-require 'assert2/xhtml'
 
 class ViewHelperTests < Test::Unit::TestCase
   include ViewHelper

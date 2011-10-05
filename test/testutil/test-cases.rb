@@ -12,8 +12,9 @@ end
 class RackTestTestCase < FreshDatabaseTestCase
   require './model/requires'
   require './controller/base'
-
   include Rack::Test::Methods
+  include HtmlAssertions
+
   attr_reader :app
 
   def setup

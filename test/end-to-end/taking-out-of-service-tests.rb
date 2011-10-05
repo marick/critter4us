@@ -1,4 +1,6 @@
 require './test/testutil/requires'
+require 'capybara'
+
 
 class TakingOutOfServiceTestCase < EndToEndTestCase
 
@@ -26,9 +28,7 @@ class TakingOutOfServiceTestCase < EndToEndTestCase
     get('/animals_with_pending_reservations', :date => '2009-01-02')
     assert_match(/staggers/, last_response.body)
     assert_match(/veinie/, last_response.body)
-    assert_xhtml(last_response.body) do 
-      a('2010-12-12')
-    end
+    assert_body_has_selector('a', :text => '2010-12-12')
   end  
 
   def post_take_animals_out_of_service

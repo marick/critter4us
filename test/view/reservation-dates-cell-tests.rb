@@ -1,10 +1,10 @@
 require './test/testutil/requires'
 require './model/requires'
 require './view/requires'
-require 'assert2/xhtml'
 
 class ReservationDatesCellWidgetTests < FreshDatabaseTestCase
   include ViewHelper
+  include HtmlAssertions
 
   context "single-day reservations" do 
     setup do 
@@ -20,9 +20,11 @@ class ReservationDatesCellWidgetTests < FreshDatabaseTestCase
 
     should "include a link to the reservation" do 
       reservation = @reservation
-      assert_xhtml(@html) do
-        a('2010-01-01', :href => %r{reservation/#{reservation.pk}})
-      end
+      assert_text_has_selector(@html, "a", :text => '2010-01-01')
+      assert_text_has_attributes(@html, "a", :href => %r{reservation/#{reservation.pk}})
+      # assert_xhtml(@html) do
+      #   a('2010-01-01', :href => %r{reservation/#{reservation.pk}})
+      # end
     end
   end
 
@@ -41,9 +43,11 @@ class ReservationDatesCellWidgetTests < FreshDatabaseTestCase
 
     should "include a link to the reservation" do 
       reservation = @reservation
-      assert_xhtml(@html) do
-        a('2019-12-13 to 2019-12-14', :href => %r{reservation/#{reservation.pk}})
-      end
+      assert_text_has_selector(@html, "a", :text => '2019-12-13 to 2019-12-14')
+      assert_text_has_attributes(@html, "a", :href => %r{reservation/#{reservation.pk}})
+      # assert_xhtml(@html) do
+      #   a('2019-12-13 to 2019-12-14', :href => %r{reservation/#{reservation.pk}})
+      # end
     end
   end
 

@@ -1,10 +1,10 @@
 require './test/testutil/requires'
 require './model/requires'
 require './view/requires'
-require 'assert2/xhtml'
 
 class ReservationListViewTests < FreshDatabaseTestCase
   include ViewHelper
+  include HtmlAssertions
 
   should "sort reservations" do
     earlier = Reservation.random(:timeslice => Timeslice.new(Date.new(2008, 8, 8),
@@ -64,35 +64,45 @@ class ReservationListViewTests < FreshDatabaseTestCase
     reservation = Reservation.random
 
     output = ReservationListView.new(:reservations => [reservation]).to_s
-    assert_xhtml(output) do
-      td do
-        input(:type => 'button', :value => "Edit",
-              :onclick => "window.parent.AppForwarder.edit(#{reservation.id})")
-      end
-    end
+    assert_text_has_selector(output, "td")
+    assert_text_has_attributes(output, "input", :type => 'button', :value => "Edit",
+                               :onclick => "window.parent.AppForwarder.edit(#{reservation.id})")
+    # assert_xhtml(output) do
+    #   td do
+    #     input(:type => 'button', :value => "Edit",
+    #           :onclick => "window.parent.AppForwarder.edit(#{reservation.id})")
+    #   end
+    # end
   end
 
   should "contain well-formed copy button" do
     reservation = Reservation.random
 
     output = ReservationListView.new(:reservations => [reservation]).to_s
-    assert_xhtml(output) do
-      td do
-        input(:type => 'button', :value => "Copy",
-              :onclick => "window.parent.AppForwarder.copy(#{reservation.id})")
-      end
-    end
+    assert_text_has_selector(output, "td")
+    assert_text_has_attributes(output, "input", :type => 'button', :value => "Copy",
+                               :onclick => "window.parent.AppForwarder.copy(#{reservation.id})")
+    # assert_xhtml(output) do
+    #   td do
+    #     input(:type => 'button', :value => "Copy",
+    #           :onclick => "window.parent.AppForwarder.copy(#{reservation.id})")
+    #   end
+    # end
   end
 
   should "contain a link to the reservation view" do
     reservation = Reservation.random
 
     output = ReservationListView.new(:reservations => [reservation]).to_s
-    assert_xhtml(output) do
-      td do
-        a(/View/, :href => %r{/reservation/#{reservation.pk}})
-      end
-    end
+    assert_text_has_selector(output, "td")
+    assert_text_has_selector(output, "a", :text => /View/)
+    assert_text_has_attributes(output, "a",  :href => %r{/reservation/#{reservation.pk}})
+
+    # assert_xhtml(output) do
+    #   td do
+    #     a(/View/, :href => %r{/reservation/#{reservation.pk}})
+    #   end
+    # end
   end
 
 end

@@ -1,10 +1,10 @@
 require './test/testutil/requires'
 require './model/requires'
 require './view/requires'
-require 'assert2/xhtml'
 
 class AnimalListDeletionCellWidgetTests < Test::Unit::TestCase
   include ViewHelper
+  include HtmlAssertions
 
   def setup
     super
@@ -23,13 +23,18 @@ class AnimalListDeletionCellWidgetTests < Test::Unit::TestCase
     }
     action = "animal/#{@animal.id}"
     default_date = @proposed_removal_from_service_date
-    assert_xhtml(@result) do
-      form(:method => "POST", :action => action) do
-        input(:type => "submit", :value => 'Remove from service')
-        input(:name => "_method", :value => "DELETE")
-        input(:type => "text", :value => default_date)
-      end
-    end
+    assert_text_has_attributes(@result, 'form', :method=>"POST", :action => action)
+    assert_text_has_attributes(@result, 'input',
+                               :type=>"submit",  :value => 'Remove from service')
+    assert_text_has_attributes(@result, 'input', :name => "_method", :value => "DELETE")
+    assert_text_has_attributes(@result, 'input',
+                               :type => "text", :value => default_date)
+    # assert_xhtml(@result) do
+    #   form(:method => "POST", :action => action) do
+    #     input(:type => "submit", :value => 'Remove from service')
+    #     input(:name => "_method", :value => "DELETE")
+    #     input(:type => "text", :value => default_date)
+    #   end
   end
 
   should "procedure a list of dates if future reservations" do 

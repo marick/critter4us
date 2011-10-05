@@ -2,7 +2,6 @@ $: << '../..' unless $in_rake
 require './test/testutil/requires'
 require './model/requires'
 require './view/requires'
-require 'assert2/xhtml'
 
 class TimesliceUsageTextTests < Test::Unit::TestCase
   include ViewHelper
