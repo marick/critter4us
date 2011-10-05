@@ -47,7 +47,7 @@ class Reservation < Sequel::Model
   end
 
   def self.since(date)
-    filter(:last_date >= date).all
+    filter("last_date >= ?", date).all
   end
 
 
