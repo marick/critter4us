@@ -5,6 +5,8 @@ require './model/reservation'
 require './model/timeslice'
 
 class InternalizerTests < FreshDatabaseTestCase
+  include DataUtils
+
   should "turn hash keys into symbols" do
     input = { 'key' => 'value' } 
     expected = { :key => 'value' }
@@ -120,12 +122,12 @@ class InternalizerTests < FreshDatabaseTestCase
 
   context "timeslice" do 
     setup do 
-      @data = {'firstDate' => '2009-12-12', 'lastDate' => '2009-12-12',
-               'times' => ['morning']}.to_json
+      @data = encode_url_param({'firstDate' => '2009-12-12', 'lastDate' => '2009-12-12',
+                                 'times' => ['morning']})
       @internalizer = Internalizer.new
     end
 
-    should "be able to make a timeslice from JSON" do
+    should "be able to make a timeslice from Base64/JSON" do
       reservation = Reservation.random
       timeslice = @internalizer.make_timeslice(@data)
       assert_equal(Date.new(2009,12,12), timeslice.first_date)

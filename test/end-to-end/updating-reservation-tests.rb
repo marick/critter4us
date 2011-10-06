@@ -49,10 +49,10 @@ class UpdatingReservationTests < EndToEndTestCase
 
   should "update exclusions for other dates" do 
     get("/json/animals_and_procedures_blob",
-                   :timeslice => {
+                   :timeslice => encode_url_param({
                      'firstDate' => '2000-10-10',
                      'lastDate' => '2000-10-11',
-                     'times' => ['morning']}.to_json)
+                     'times' => ['morning']}))
     actual = JSON(last_response.body)
 
     # Bossie can't be used for physical because she's in the blackout period.

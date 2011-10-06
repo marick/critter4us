@@ -1,4 +1,5 @@
 require './util/constants'
+require 'base64'
 require 'json'
 
 class Internalizer
@@ -7,7 +8,6 @@ class Internalizer
     @convert_unjsonified_val = lambda { | val | convert(JSON.parse(val)) }
     @converters = {
       :date => @date_parser, :firstDate => @date_parser, :lastDate => @date_parser,
-      # Todo: change next key to "json_data"
       :data => @convert_unjsonified_val,
       :timeslice => lambda { | hash | 
         better = convert(hash)
@@ -48,8 +48,8 @@ class Internalizer
     JSON[json]
   end
 
-  def make_timeslice(json)
-    internal = convert(JSON.parse(json))
+  def make_timeslice(base64_json)
+    internal = convert(JSON.parse(Base64.decode64(base64_json)))
     Timeslice.new(internal[:first_date], internal[:last_date], internal[:times])
   end
 

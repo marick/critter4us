@@ -34,7 +34,7 @@ htmlRoute = function(route)
 
 - (CPString) animalsAndProceduresAvailableAtTimeslice: primitivizedTimeslice
 {
-  return jsonRoute("animals_and_procedures_blob")+"?timeslice=" + [CPString JSONFromObject: primitivizedTimeslice];
+  return jsonRoute("animals_and_procedures_blob")+"?timeslice=" + window.btoa([CPString JSONFromObject: primitivizedTimeslice]);
 }
 
 - (CPString) pendingReservationAnimalListWithDate: date

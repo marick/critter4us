@@ -48,11 +48,11 @@ class DeleteReservationTestCase < EndToEndTestCase
 
   def previously_reserved_animals_are_available_on_that_date
     get('/json/animals_and_procedures_blob',
-                   :timeslice => {
+                   :timeslice => encode_url_param({
                      :firstDate => @today.to_s, 
                      :lastDate => @later.to_s,
                      :times => ['morning', 'afternoon', 'evening']
-                   }.to_json)
+                   }))
     assert_equal(["bossie"], unjsonify(last_response)['animals'])
   end
   

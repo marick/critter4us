@@ -1,4 +1,7 @@
+require './test/testutil/data'
+
 class EndToEndTestCase
+  include DataUtils
 
   def make_reservation(date, animals, procedures)
     data = {

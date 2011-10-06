@@ -41,21 +41,21 @@ class TakingOutOfServiceTestCase < EndToEndTestCase
 
   def check_if_animal_in_service_before_out_of_service_date
     get('/json/animals_and_procedures_blob',
-                   :timeslice => {
+                   :timeslice => encode_url_param({
                      :firstDate => '2009-02-02', 
                      :lastDate => '2009-02-02',
                      :times => ['morning']
-                   }.to_json)
+                   }))
     assert_equal(["bossie", "staggers", "veinie"], unjsonify(last_response)['animals'])
   end
 
   def check_if_animal_out_of_service_afterwards
     get('/json/animals_and_procedures_blob',
-                   :timeslice => {
+                   :timeslice => encode_url_param({
                      :firstDate => '2009-06-01', 
                      :lastDate => '2009-06-06',
                      :times => ['morning', 'evening']
-                   }.to_json)
+                   }))
     assert_equal(["staggers", "veinie"], unjsonify(last_response)['animals'])
   end
   
