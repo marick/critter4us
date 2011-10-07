@@ -1,6 +1,6 @@
 require './view/util'
 
-class AddNoteView < Erector::Widget     
+class ReservationNoteView < Erector::Widget     
   include ViewHelper
 
   def content

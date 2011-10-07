@@ -8,20 +8,6 @@ class HtmlControllerTests < RackTestTestCase
     @dummy_view = TestViewClass.new
   end
 
-  context "adding notes to reservations" do
-    setup do
-      real_controller.override(mocks(:reservation_source))
-      real_controller.test_view_builder = @dummy_view
-      @expected_reservation = Reservation.random
-    end
-
-    should "upon get, should pass the reservation number to a view" do
-      puts @dummy_view.inspect
-      get '/2/add_note/200'
-      assert { @dummy_view[:reservation_id] == "200" }
-    end
-  end
-
   context "viewing reservations" do
     setup do
       real_controller.override(mocks(:date_source, :reservation_source))

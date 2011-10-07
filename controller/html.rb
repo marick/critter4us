@@ -6,16 +6,6 @@ class Controller
     redirect '/index.html'
   end
 
-  get '/2' do
-    redirect '/2.html'
-  end
-
-  get '/2/add_note/:reservation_id' do
-    x = view(AddNoteView).new(:reservation_id => params[:reservation_id]).to_pretty
-    puts x
-    x
-  end
-
   get '/protected_route_for_testing' do 
     'hi'
   end
