@@ -15,9 +15,16 @@ class NewControllerTests < RackTestTestCase
       @expected_reservation = Reservation.random
     end
 
-    should "upon get, should pass the reservation number to a view" do
-      get '/2/reservation/200/note'
-      assert { @dummy_view[:reservation_id] == "200" }
+    should "upon get, should pass the reservation to a view" do
+      during { 
+        get '/2/reservation/200/note'
+      }.behold! {
+        @reservation_source.should_receive(:[]).once.
+                            with(200).
+                            and_return(@expected_reservation)
+      }
+
+      assert { @dummy_view[:reservation] == @expected_reservation }
     end
   end
 end

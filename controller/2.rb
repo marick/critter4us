@@ -4,7 +4,8 @@ class Controller
   end
 
   get '/2/reservation/:reservation_id/note' do
-    view(ReservationNoteView).new(:reservation_id => params[:reservation_id]).to_pretty
+    number = params[:reservation_id].to_i
+    view(ReservationNoteView).new(:reservation => reservation_source[number]).to_pretty
   end
 end
 
