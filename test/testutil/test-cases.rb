@@ -24,6 +24,12 @@ class RackTestTestCase < FreshDatabaseTestCase
   end
 
   def default_test; 'silence test::unit whining about missing tests'; end
+  
+  def assert_redirect_to (where)
+    assert { last_response.redirect? }
+    assert { %r{#{where}$} =~ last_response['Location'] }
+  end
+
 end
 
 class EndToEndTestCase < RackTestTestCase
