@@ -94,8 +94,6 @@
   [pageView addSubview:timesliceSummary];
   controller.timesliceSummary = timesliceSummary;
 
-  var placeForLink = x + 280;
-
   var reserveButton = [[CPButton alloc] initWithFrame:CGRectMake(320, 410, 160, 30)];
   [reserveButton setTitle: "Finish this Reservation"];
   [reserveButton setHidden: YES];
@@ -105,6 +103,7 @@
   [reserveButton setAction: @selector(makeReservation:)];
 
 
+  var placeForLink = x + 180;
   var resultsView = [[CPView alloc] initWithFrame: CGRectMake(placeForLink,95,500,200)];
   [resultsView setHidden: YES];
   [pageView addSubview: resultsView];
