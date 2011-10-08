@@ -1,4 +1,5 @@
 require './view/util'
+require 'RedCloth'
 
 class ReservationNoteView < Erector::Widget     
   include ViewHelper
@@ -11,9 +12,12 @@ class ReservationNoteView < Erector::Widget
       end
       body do 
         p { long_form(@reservation) }
+        detextilized(@reservation.note)
         form(:method => "POST",
-             :action => "/2/reservation/#{@reservation.id}/note") do
-          textarea(:name => "note") do
+             :action => note_view_uri(@reservation)) do
+          textarea(:name => "note",
+                   :rows => "20",
+                   :cols => "60") do
             rawtext @reservation.note
           end
           p do 
