@@ -7,6 +7,7 @@ gem "sequel"
 gem "i18n"
 gem "pg"
 gem "json"
+gem "RedCloth"
 
 
 gem 'rack-test'

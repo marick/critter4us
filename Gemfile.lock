@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    RedCloth (4.2.8)
     activesupport (3.1.0)
       multi_json (~> 1.0)
     assert2 (0.5.5)
@@ -40,6 +41,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  RedCloth
   assert2
   erector
   flexmock
