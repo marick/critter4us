@@ -51,7 +51,7 @@
 - (id) offerOperationsOnJustFinishedReservation: reservationID
 {
   var view = "<a href='/reservation/" + reservationID + "' target='_blank'>";
-  var note = "<a href='/2/add_note/" + reservationID + "' target='_blank'>";
+  var note = "<a href='/2/reservation/" + reservationID + "/note' target='_blank'>";
   [linkToPreviousResults loadHTMLString:@"Click to " + view + "view the reservation</a> in another window or " + note + "add a note</a>."
                baseURL: nil];
   [copyButton setTag: reservationID];
