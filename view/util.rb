@@ -49,6 +49,10 @@ module ViewHelper
     end
   end
 
+  def detextilized(text)
+    rawtext RedCloth.new(text).to_html
+  end
+  
   
 end
 
@@ -67,6 +71,10 @@ module ReservationHelper
     a "#{reservation.instructor}@illinois.edu",
     :href=>"mailto:#{reservation.instructor}@illinois.edu"
     text " for #{reservation.course}."
+  end
+
+  def note_view_uri(reservation)
+    "/2/reservation/#{reservation.id}/note"
   end
 
 end

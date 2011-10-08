@@ -36,6 +36,16 @@ class ReservationListViewTests < FreshDatabaseTestCase
     assert { /v=m=2/ =~ output }
   end
 
+  should "display the note and an editing link" do
+    reservation = Reservation.random(:note => "here is a note")
+    output = ReservationListView.new(:reservations => [reservation]).to_html
+    assert { %r{<p>.*here is a note.*</p>} =~ output }
+    regex = %r{/reservation/#{reservation.id}/note}
+    assert do
+      regex =~ output
+    end
+  end
+
   should "display entirety of reservation" do
     reservation = Reservation.random(:timeslice => Timeslice.random(:times => [AFTERNOON]),
                                      :animal => Animal.random,

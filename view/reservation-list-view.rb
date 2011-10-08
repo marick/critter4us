@@ -39,6 +39,16 @@ class ReservationListView < Erector::Widget
                   :target => "_blank")
               end
             end
+            tr do
+              td(:colspan => 6) do
+                detextilized r.note
+              end
+              td(:colspan => 4) do
+                a('Edit Note',
+                  :href => note_view_uri(r),
+                  :target => "_blank")
+              end
+            end
           end
         end
       end
