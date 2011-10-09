@@ -40,10 +40,7 @@ class ReservationListViewTests < FreshDatabaseTestCase
     reservation = Reservation.random(:note => "here is a note")
     output = ReservationListView.new(:reservations => [reservation]).to_html
     assert { %r{<p>.*here is a note.*</p>} =~ output }
-    regex = %r{/reservation/#{reservation.id}/note}
-    assert do
-      regex =~ output
-    end
+    assert { Regexp.new(Href.reservation_viewing_page(reservation)) =~ output }
   end
 
   should "display entirety of reservation" do
@@ -106,7 +103,8 @@ class ReservationListViewTests < FreshDatabaseTestCase
     output = ReservationListView.new(:reservations => [reservation]).to_html
     assert_text_has_selector(output, "td")
     assert_text_has_selector(output, "a", :text => /View/)
-    assert_text_has_attributes(output, "a",  :href => %r{/reservation/#{reservation.pk}})
+    assert_text_has_attributes(output, "a",
+                               :href => Regexp.new(Href.reservation_viewing_page(reservation)))
 
     # assert_xhtml(output) do
     #   td do

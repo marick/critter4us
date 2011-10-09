@@ -12,13 +12,20 @@ class ReservationNoteView < Erector::Widget
       end
       body do 
         p { long_form(@reservation) }
-        detextilized(@reservation.note)
+        detextilized @reservation.note
         form(:method => "POST",
-             :action => note_view_uri(@reservation)) do
+             :action => Href.note_editing_page(@reservation)) do
           textarea(:name => "note",
                    :rows => "20",
                    :cols => "60") do
             rawtext @reservation.note
+          end
+          p do 
+            text "You can add bolding and other effects using "
+            a(:href => "http://redcloth.org/textile/phrase-modifiers/") do
+              text "Textile"
+            end
+            text "."
           end
           p do 
             input(:type => 'submit', :value=>"Update Note")

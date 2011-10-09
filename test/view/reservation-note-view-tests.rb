@@ -11,7 +11,7 @@ class ReservationNoteViewTests < FreshDatabaseTestCase
     reservation = Reservation.random(:note => note_content)
     output = ReservationNoteView.new(:reservation => reservation).to_html
     assert_text_has_attributes(output, 'form', :method=>"POST",
-                               :action => "/2/reservation/#{reservation.id}/note")
+                               :action => Href.note_editing_page(reservation))
     assert_text_has_attributes(output, 'input',
                                 :type=>"submit",  :value => 'Update Note')
     assert_text_has_attributes(output, 'textarea', :name => "note")

@@ -35,7 +35,7 @@ class ReservationListView < Erector::Widget
               end
               td do
                 a('View',
-                  :href => "/reservation/#{r.id}",
+                  :href => Href.reservation_viewing_page(r),
                   :target => "_blank")
               end
             end
@@ -45,7 +45,7 @@ class ReservationListView < Erector::Widget
               end
               td(:colspan => 4) do
                 a('Edit Note',
-                  :href => note_view_uri(r),
+                  :href => Href.note_editing_page(r),
                   :target => "_blank")
               end
             end

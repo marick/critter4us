@@ -73,10 +73,6 @@ module ReservationHelper
     text " for #{reservation.course}."
   end
 
-  def note_view_uri(reservation)
-    "/2/reservation/#{reservation.id}/note"
-  end
-
 end
 
 
