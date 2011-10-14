@@ -1,0 +1,39 @@
+%head
+  %title 
+    Critter4Us Version 2
+  %link{:href => "/css2/stacklayout.css", :rel => "stylesheet", :type => "text/css"}
+  %link{:href => "/css2/skin.css", :rel => "stylesheet", :type => "text/css"}
+  %script{:src => "/js2/jquery.js", :type => "text/javascript"}
+  %script{:src => "/js2/jquery.form.js", :type => "text/javascript"}
+  %script{:src => "/js2/c4.js", :type => "text/javascript"}
+  %script{:id => "jquery_code", :type => "text/javascript"}
+
+%body
+  %div#page
+    %div.stack
+      %div#header
+        %div#banner.stackContent
+          %p.stackContent
+            %a{:href => "http://aacup.illinois.edu/"}
+              Agricultural Animal Care and Use Program
+            Animal Reservation System
+      %div#content
+        =yield
+      %div#footer
+        %div.stackAuto
+          %p.stackContent
+            A service of 
+            %a{:href => "http://aacup.illinois.edu/"}
+              AACUP
+        %div.stackAuto
+          %p.stackContent
+            &copy; 2011 
+            %a{:href=>"http://path11.com"}
+              Path11
+
+
+
+
+
+
+
