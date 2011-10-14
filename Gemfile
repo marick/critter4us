@@ -8,6 +8,8 @@ gem "i18n"
 gem "pg"
 gem "json"
 gem "RedCloth"
+gem "haml"
+gem "capybara"
 
 
 gem 'rack-test'
