@@ -55,7 +55,7 @@ end
 
 desc "Update staging server with data from production"
 task :update_staging do
-   fill_local_database("critter4us-staging")
+   fill_local_database("critter4us-refresh-staging")
    system("heroku db:push \
           #{db_url('critter4us-refresh-staging')} #{app('critter4us-staging')}")
 end
