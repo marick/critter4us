@@ -11,11 +11,12 @@ if ENV['DATABASE_URL']   # Production/Heroku
   DB = Sequel.connect(ENV['DATABASE_URL'])
 elsif ENV['RACK_ENV'] == 'test'
   DB = Sequel.postgres("critter4us-test", :host => 'localhost',
-                       :user => 'postgres')
+                       :user => ENV['C4U_USER'],
+                       :password => ENV['C4U_PASS'])
 else
   DB = Sequel.postgres("critter4us", :host => 'localhost',
-                       :user => 'postgres',
-                       :password =>  'c0wm4gnet')
+                       :user => ENV['C4U_USER'],
+                       :password =>  ENV['C4U_PASS'])
 end
 
 task :default => :test
@@ -29,15 +30,34 @@ task :echo do
   puts "HI"
 end
 
+
+def db_url(name)
+  "postgres://#{ENV['C4U_USER']}:#{ENV['C4U_PASS']}@localhost/#{name}"
+end
+
+def app(name)
+  "--app #{name} --confirm #{name}"
+end
+
+def fill_local_database(name)
+   system("heroku db:pull #{db_url(name)} #{app('critter4us')}")
+end		  
+
+desc "Fills the TO database from deployed app"
+task :fill do
+   fill_local_database(ENV["TO"])
+end
+
 desc "Backup critter4us"
 task :backup do
-   system("heroku db:pull  postgres://localhost/critter4us-backup --app critter4us  --confirm critter4us")
+   fill_local_database("critter4us-backup")
 end
 
 desc "Update staging server with data from production"
 task :update_staging do
-   system("heroku db:pull postgres://localhost/critter4us-refresh-staging --app critter4us --confirm critter4us-staging")
-   system("heroku db:push postgres://localhost/critter4us-refresh-staging --app critter4us-staging --confirm critter4us-staging")
+   fill_local_database("critter4us-staging")
+   system("heroku db:push \
+          #{db_url('critter4us-refresh-staging')} #{app('critter4us-staging')}")
 end
 
 
