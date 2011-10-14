@@ -13,7 +13,7 @@ class NewControllerTests < RackTestTestCase
       @reservation = Reservation.random
     end
 
-    should "upon get, should pass the reservation to a view" do
+    should_eventually "upon get, should pass the reservation to a view" do
       real_controller.test_view_builder = @dummy_view
       get Href.note_editing_page(@reservation)
       assert { @dummy_view[:reservation] == @reservation }
