@@ -55,7 +55,7 @@ class AnimalsWithPendingReservationsViewTests < FreshDatabaseTestCase
     deny { html.include? 'reserved in past' }
   end
 
-  should "sort animals by name" do
+  should_eventually "sort animals by name" do
     html = @view.to_html
     assert { html.index("far future") < html.index("Near future") }
   end
