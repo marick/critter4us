@@ -8,6 +8,7 @@ gem "i18n"
 gem "pg"
 gem "json"
 gem "RedCloth"
+gem "bluecloth"
 gem "haml"
 gem "capybara"
 

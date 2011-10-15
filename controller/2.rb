@@ -1,7 +1,8 @@
-require 'haml'
+require './views/requires'
 
 class Controller
   set :haml, :format => :html5
+  helpers Sinatra::Partials, Helpers::Reservation
 
   get '/2' do
     redirect '/2.html'

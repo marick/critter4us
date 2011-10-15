@@ -1,15 +1,15 @@
 %p
-//  =long_form(@reservation)
+  =partial('partials/long_form_reservation')
 //=detextilized @reservation.note
-%form.stackContent{:method => "POST", :action => Href.note_editing_page(@reservation)}
-  %textarea.stackContent{:name => "note", :rows => "20", :cols => "60"}
+%form{:method => "POST", :action => Href.note_editing_page(@reservation)}
+  %textarea{:name => "note", :rows => "20", :cols => "60"}
     =@reservation.note
-  %p.stackContent
+  %p
     You can add bolding and other effects using 
     %a{:href => "http://redcloth.org/textile/phrase-modifiers/"}
       Textile
     \.
-  %p.stackContent
+  %p
     %input{:type => 'submit', :value=>"Update Note"}
 
 

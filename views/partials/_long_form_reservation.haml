@@ -1,0 +1,7 @@
+%p
+  :markdown
+    Reservation for the #{time_of_day(@reservation)} of
+    #{@reservation.date_text},
+    made by
+    [#{@reservation.instructor}@illinois.edu](mailto:#{@reservation.instructor}@illinois.edu)
+    for #{@reservation.course}.

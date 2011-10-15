@@ -1,6 +1,7 @@
 require 'rubygems'
 
 require './config'
+require './views/requires'
 require './controller/base'
 require './view/requires'
 
