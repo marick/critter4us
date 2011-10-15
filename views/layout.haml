@@ -1,39 +1,54 @@
+!!! 5
+
+/[if lt IE 7 ] <html lang="en-us" class="no-js ie6">
+/[if IE 7 ]    <html lang="en-us" class="no-js ie7">
+/[if IE 8 ]    <html lang="en-us" class="no-js ie8">
+/[if IE 9 ]    <html lang="en-us" class="no-js ie9">
+/[if (gt IE 9)|!(IE)]
+  <html lang="en-us" class="no-js">
+
 %head
+  %meta{'http-equiv' => "X-UA-Compatible", 'content' => "IE=Edge;chrome=1" }
+  %meta{'charset' => "utf-8"}
+  %meta{'name' => "viewport",  'content' => "width=device-width, initial-scale=1.0"} 
+
   %title 
     Critter4Us Version 2
-  %link{:href => "/css2/stacklayout.css", :rel => "stylesheet", :type => "text/css"}
+
+  %link{:href => "/css2/columnal.css", :rel => "stylesheet",  :type => "text/css", :media => "screen"}
+  %link{:href => "/css2/ie.css", :rel => "stylesheet", :type => "text/css"}
+  %link{:href => "/css2/fixed-984px-ie.css", :rel => "stylesheet", :type => "text/css"}
   %link{:href => "/css2/skin.css", :rel => "stylesheet", :type => "text/css"}
   %script{:src => "/js2/jquery.js", :type => "text/javascript"}
   %script{:src => "/js2/jquery.form.js", :type => "text/javascript"}
-  %script{:src => "/js2/c4.js", :type => "text/javascript"}
-  %script{:id => "jquery_code", :type => "text/javascript"}
 
+
+
+  / Fixes for IE
+  /[if lt IE 9]> <link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" />
+  /[if lte IE 7]> <link rel="stylesheet" href="css/fixed-984px-ie.css" type="text/css" media="screen" />
+
+  / Page build tools - only needed while creating a site, remove when launching - Gray box colors and page debugging tools
+  %link{:rel=>"stylesheet", :href=>"css/build.css", :type=>"text/css", :media=>"screen"}
+    
 %body
-  %div#page
-    %div.stack
-      %div#header
-        %div#banner.stackContent
-          %p.stackContent
-            %a{:href => "http://aacup.illinois.edu/"}
-              Agricultural Animal Care and Use Program
-            Animal Reservation System
-      %div#content
+  %div.container.test
+    %div#header.row
+      %div#banner.col_12.last
+        %a{:href => "http://aacup.illinois.edu/"}
+          Agricultural Animal Care and Use Program
+        Animal Reservation System
+    %div#content.row
+      %div.col_12.last
         =yield
-      %div#footer
-        %div.stackAuto
-          %p.stackContent
-            A service of 
-            %a{:href => "http://aacup.illinois.edu/"}
-              AACUP
-        %div.stackAuto
-          %p.stackContent
-            &copy; 2011 
-            %a{:href=>"http://path11.com"}
-              Path11
+    %div#footer.row
+      %div.col_6
+        A service of 
+        %a{:href => "http://aacup.illinois.edu/"}
+          AACUP
+      %div.col_6.last
+        &copy; 2011 
+        %a{:href=>"http://path11.com"}
+          Path11
 
-
-
-
-
-
-
+</html>
