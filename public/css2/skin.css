@@ -1,57 +1,3 @@
-/* Originally from stacklayout.com mockup. Creative Commons
-License. See stacklayout.css. */
-
-
-/* TABLE OF CONTENTS
-Prefix your search term with "* " to jump to that section.
-Eg: to jump to the footer styles, search for "* footer"
-
-* resets
-* global layout
-* colors
-* fonts
-* anchors
-* header
-* logo
-* title
-* nav
-* content
-* section
-* aside
-* footer
-* templates
-*/
-
-/* resets */
-*
-{
-    padding:0;
-    margin:0;
-}
-
-input.stackContent
-{
-    text-align: left ! important;
-}
-
-input, select
-{
-    margin: 5px;
-    padding: 2px;
-}
-
-img
-{
-    display:block;
-}
-
-#page
-{
-    max-width:1100px;
-    _width:1100px;
-    margin:0 auto;
-}
-
 
 
 /* anchors */
@@ -75,7 +21,9 @@ a:focus
 #header
 {
     background:#B9BDA9;
-    padding:10px;
+    margin-left: auto;
+    margin-right; auto;
+    text-align: center;
 }
 
 #header a
@@ -85,6 +33,7 @@ a:focus
 
 #header p
 {
+    text-align: center;
     color: #333333;
 }
 
@@ -94,26 +43,37 @@ a:focus
     color: #ffffff;
 }
 
+
+
+#content
+{
+    background:#B9BDA9;
+    margin-left: auto;
+    margin-right; auto;
+    text-align: center;
+}
+
+
 /* footer */
 /* all mockups */
+
+#header
+{
+    background:#B9BDA9;
+    margin-left: auto;
+    margin-right; auto;
+    text-align: center;
+}
 
 #footer
 {
     font-size:0.8em;
+    margin-left: auto;
+    margin-right; auto;
+    text-align: center;
     color:#ccc;
     background:#fff;
-}
-#footer .stackAuto
-{
     vertical-align:middle;
-    padding:10px 0
-
-}
-
-#footer .stackContent
-{
-    padding:10px;
-    margin:10px;
 }
 
 #footer a
@@ -127,9 +87,4 @@ a:focus
 #footer a:focus
 {
     color:#000;
-}
-
-/* templates */
-div.templates {
-  display: none;
 }
