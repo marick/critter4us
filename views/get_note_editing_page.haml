@@ -5,10 +5,9 @@
   %textarea{:name => "note", :rows => "20", :cols => "60"}
     =@reservation.note
   %p
-    You can add bolding and other effects using 
-    %a{:href => "http://redcloth.org/textile/phrase-modifiers/"}
-      Textile
-    \.
+    :markdown 
+      You can add bolding and other effects using 
+      [Textile](http://redcloth.org/textile/phrase-modifiers/).
   %p
     %input{:type => 'submit', :value=>"Update Note"}
 
