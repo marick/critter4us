@@ -21,6 +21,11 @@ end
 
 task :default => :test
 
+desc "Convert coffeescript to javascript"
+task :coffee do 
+  system("coffee -c public/js2")
+end            
+
 desc "Run tests."
 Rake::TestTask.new do | t |
   t.test_files = FileList['test/**/*test*.rb']

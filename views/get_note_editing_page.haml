@@ -13,10 +13,5 @@
 
 :javascript
   jQuery(function() {
-    $('input#update_note').click(function() {
-        $.post("/2/reservation/#{@reservation.id}/note", $('form#note_form').serialize(), function() {
-         $('#note').load("/2/reservation/#{@reservation.id}/notetext");
-       }); 
-    });
-    $('#note').load("/2/reservation/#{@reservation.id}/notetext");
+    window.OnStarts.get_note_editing_page(#{@reservation.id});
   });
