@@ -33,7 +33,6 @@ a:focus
 
 #header p
 {
-    text-align: center;
     color: #333333;
 }
 
@@ -48,22 +47,16 @@ a:focus
 #content
 {
     background:#B9BDA9;
-    margin-left: auto;
-    margin-right; auto;
-    text-align: center;
 }
 
-
-/* footer */
-/* all mockups */
-
-#header
+.centered
 {
-    background:#B9BDA9;
     margin-left: auto;
     margin-right; auto;
     text-align: center;
 }
+
+
 
 #footer
 {
