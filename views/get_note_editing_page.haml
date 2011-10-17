@@ -1,15 +1,21 @@
 %div.centered
   =partial('partials/long_form_reservation')
-  =partial('partials/reservation_note')
-  %form{:method => "POST", :action => Href.note_editing_page(@reservation)}
+  %div#note.textile.hidden
+  %form#note_form{:method => "POST", :action => Href.note_editing_page(@reservation)}
     %textarea{:name => "note", :rows => "20", :cols => "100"}
       =@reservation.note
     :markdown 
       You can add bolding and other effects using 
       [Textile](http://redcloth.org/textile/phrase-modifiers/).
     %p
-      %input{:type => 'submit', :value=>"Update Note"}
+      %input#update_note{:type => 'button', :value=>"Update Note"}
 
-
-
-
+:javascript
+  jQuery(function() {
+    $('input#update_note').click(function() {
+        $.post("/2/reservation/#{@reservation.id}/note", $('form#note_form').serialize(), function() {
+         $('#note').load("/2/reservation/#{@reservation.id}/notetext");
+       }); 
+    });
+    $('#note').load("/2/reservation/#{@reservation.id}/notetext");
+  });

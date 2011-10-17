@@ -52,11 +52,29 @@ a:focus
 .centered
 {
     margin-left: auto;
-    margin-right; auto;
+    margin-right: auto;
     text-align: center;
 }
 
+.textile
+{
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1em;
+  padding: 1em;
+  text-align: left;
+  border: 1px solid black;
+  width: 80%
+}
 
+.textile p
+{
+  margin-bottom: 0;
+}
+
+.hidden {
+  display: none;
+}
 
 #footer
 {
