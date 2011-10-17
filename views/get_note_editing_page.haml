@@ -2,7 +2,7 @@
   =partial('partials/long_form_reservation')
   =partial('partials/reservation_note')
   %form{:method => "POST", :action => Href.note_editing_page(@reservation)}
-    %textarea{:name => "note", :rows => "20", :cols => "60"}
+    %textarea{:name => "note", :rows => "20", :cols => "100"}
       =@reservation.note
     :markdown 
       You can add bolding and other effects using 
