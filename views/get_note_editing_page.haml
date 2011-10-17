@@ -1,5 +1,6 @@
 %div.centered
-  =partial('partials/long_form_reservation')
+  %p
+    =partial('partials/long_form_reservation')
   %div#note.textile.hidden
   %form#note_form{:method => "POST", :action => Href.note_editing_page(@reservation)}
     %textarea{:name => "note", :rows => "20", :cols => "100"}
