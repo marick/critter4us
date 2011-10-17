@@ -1,29 +1,32 @@
 
 
 /* anchors */
+
+/*
 a
 {
     text-decoration:none;
     cursor:pointer;
-    color:#B9BDA9;
+    color:#444;
 }
 
 a:hover,
-a:focus
+a:focus,
+a:visited
 {
     color: #666666;
 }
-
+*/
 
 
 
 /* header */
 #header
 {
-    background:#B9BDA9;
-    margin-left: auto;
-    margin-right; auto;
+    background:#84896A;
     text-align: center;
+    padding-top: 1em;
+    font-size: 1.5em;
 }
 
 #header a
@@ -46,7 +49,7 @@ a:focus
 
 #content
 {
-    background:#B9BDA9;
+    background:#B9BCAA;
 }
 
 .centered
