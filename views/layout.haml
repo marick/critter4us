@@ -34,18 +34,17 @@
 %body
   %div.container
     %div#header.row
-      %div#banner.col_12.last
-        %a{:href => "http://aacup.illinois.edu/"}
-          Agricultural Animal Care and Use Program
-        Animal Reservation System
+      %div.col_12.last
+        :markdown
+           [Agricultural Animal Care and Use Program](http://aacup.illinois.edu/)
+           Animal Reservation System
     %div#content.row
       %div.col_12.last
         =yield
     %div#footer.row
       %div.col_6
-        A service of 
-        %a{:href => "http://aacup.illinois.edu/"}
-          AACUP
+        :markdown
+          A service of [AACUP](http://aacup.illinois.edu).
       %div.col_6.last
         &copy; 2011 
         %a{:href=>"http://path11.com"}
