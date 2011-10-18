@@ -13,11 +13,7 @@ class global.OnStarts
       !OnStarts.isEmpty(this)
     .slideDown(duration)
 
-
-  @update_textile_div: (newStuff) ->
-    $('.textile').html(newStuff)
-
-  @get_note_editing_page: (reservation_id) ->
+  @get_note_editing_page:  ->
     OnStarts.hide_empty_textile_div(0)
     # The following prevents Safari from confusing the user
     # by falsely saying form text has never been submitted.
@@ -26,6 +22,3 @@ class global.OnStarts
                        target: '.textile'
                        success: (responseText) ->
                           OnStarts.hide_empty_textile_div("fast")}
-
-
-

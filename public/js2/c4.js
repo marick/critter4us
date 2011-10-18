@@ -14,10 +14,7 @@
         return !OnStarts.isEmpty(this);
       }).slideDown(duration);
     };
-    OnStarts.update_textile_div = function(newStuff) {
-      return $('.textile').html(newStuff);
-    };
-    OnStarts.get_note_editing_page = function(reservation_id) {
+    OnStarts.get_note_editing_page = function() {
       OnStarts.hide_empty_textile_div(0);
       $('body').attr('onbeforeunload', "");
       return $('#note_form').ajaxForm({
