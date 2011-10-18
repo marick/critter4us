@@ -8,10 +8,6 @@ class Controller
     redirect '/2.html'
   end
 
-  get '/2/reservation/:reservation_id/notetext' do |reservation_id|
-    RedCloth.new(Reservation[reservation_id].note).to_html
-  end
-
   get Href.note_editing_page_route(:reservation_id) do
     number = params[:reservation_id]
 #    view(ReservationNoteView).new(:reservation => reservation_source[number]).to_pretty
@@ -22,7 +18,7 @@ class Controller
   post Href.note_editing_page_route(:reservation_id) do
     reservation = reservation_source[params[:reservation_id]]
     reservation.update(:note => params[:note])
-    redirect Href.note_editing_page(reservation)
+    textile_note(reservation)
   end
 
 
