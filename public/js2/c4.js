@@ -16,11 +16,11 @@
     };
     OnStarts.get_note_editing_page = function(reservation_id) {
       OnStarts.hide_empty_textile_div();
-      return $('input#update_note').click(function() {
-        return $.post("/2/reservation/" + reservation_id + "/note", $('form#note_form').serialize(), function(data) {
-          OnStarts.update_textile_div(data);
-          return OnStarts.hide_empty_textile_div();
-        });
+      $('body').attr('onbeforeunload', "");
+      return $('#note_form').ajaxForm({
+        target: '.textile'
+      }, function() {
+        return OnStarts.hide_empty_textile_div();
       });
     };
     return OnStarts;
