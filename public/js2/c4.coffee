@@ -1,3 +1,5 @@
+# -*- indent-tabs-mode: nil -*-
+
 global = (exports ? this)
 
 class global.OnStarts
@@ -6,9 +8,9 @@ class global.OnStarts
     tag.innerHTML.match /^\s*$/
 
   @hasStuff: (tag) ->
-    !OnStarts.isEmpty(tag)  
+    !OnStarts.isEmpty(tag)
 
-  @hide_empty_textile_divs: (duration) -> 
+  @hide_empty_textile_divs: (duration) ->
     $('.textile').filter(-> OnStarts.isEmpty(this)).slideUp(duration)
     $('.textile').filter(-> OnStarts.hasStuff(this)).slideDown(duration)
 
