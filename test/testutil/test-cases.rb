@@ -8,6 +8,20 @@ class FreshDatabaseTestCase < Test::Unit::TestCase
   end
 end
 
+class ViewTestCase < FreshDatabaseTestCase
+  def default_test; 'silence test::unit whining about missing tests'; end
+
+  def setup
+    super
+    # This, behind the scenes, is needed for the renderer.
+    # The assignment isn't strictly needed. It's there to keep you from
+    # wondering "What about garbage collection?"
+    @hack_to_objectify_views = Controller.new
+    @renderer = Renderer.new
+  end
+
+end
+
 
 class RackTestTestCase < FreshDatabaseTestCase
   require './model/requires'
