@@ -15,4 +15,9 @@ module Sinatra::Partials
       haml(:"#{template}", options)
     end
   end
+
+  def partial_call(template, locals)
+    partial("partials/#{template}", :locals => locals)
+  end
+  
 end

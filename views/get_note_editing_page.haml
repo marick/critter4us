@@ -1,6 +1,6 @@
 %div.centered
   %p
-    =partial('partials/long_form_reservation', :locals => {:reservation => reservation})
+    =partial_call(:long_form_reservation, :reservation => reservation)
   %div#note.textile.hidden
     =textile_note(reservation)
   %form#note_form{:method => "POST", :action => Href.note_editing_page(reservation)}
