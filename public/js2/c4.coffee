@@ -2,31 +2,22 @@ global = (exports ? this)
 
 class global.OnStarts
 
-  @hide_empty_textile_div: -> 
-    $('.textile').filter (index) ->
-      this.innerHTML.match /^\s*$/
-    .hide("slow")
-    $('.textile').filter (index) ->
-      !this.innerHTML.match(/^\s*$/)
-    .show("slow")
+  @isEmpty: (tag) ->
+    tag.innerHTML.match /^\s*$/
 
+  @hasStuff: (tag) ->
+    !OnStarts.isEmpty(tag)  
 
-  @update_textile_div: (newStuff) ->
-    $('.textile').html(newStuff)
+  @hide_empty_textile_divs: (duration) -> 
+    $('.textile').filter(-> OnStarts.isEmpty(this)).slideUp(duration)
+    $('.textile').filter(-> OnStarts.hasStuff(this)).slideDown(duration)
 
-  @get_note_editing_page: (reservation_id) ->
-    OnStarts.hide_empty_textile_div()
-    $('input#update_note').click -> 
-      $.post "/2/reservation/#{reservation_id}/note",
-             $('form#note_form').serialize(), (data) ->  
-               OnStarts.update_textile_div(data)
-               OnStarts.hide_empty_textile_div()
-
-
- # @get_note_editing_page: (reservation_id) ->
- #   $('input#update_note').click -> 
- #     $.post "/2/reservation/#{reservation_id}/note",
- #            $('form#note_form').serialize(),
- #            -> $('#note').load("/2/reservation/#{reservation_id}/notetext")
- #   $('#note').load("/2/reservation/#{reservation_id}/notetext")
-
+  @get_note_editing_page:  ->
+    OnStarts.hide_empty_textile_divs(0)
+    # The following prevents Safari from confusing the user
+    # by falsely saying form text has never been submitted.
+    $('body').attr('onbeforeunload', "")
+    $('#note_form').ajaxForm {
+                       target: '.textile'
+                       success: ->
+                          OnStarts.hide_empty_textile_divs("fast")}
