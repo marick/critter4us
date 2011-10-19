@@ -39,6 +39,7 @@ class Controller < Sinatra::Base
 
   def initialize(*args)
     super
+    self.class.actual_object = self
     collaborators_start_as(:animal_source => Animal, 
                            :procedure_source => Procedure,
                            :reservation_source => Reservation,
@@ -47,9 +48,8 @@ class Controller < Sinatra::Base
                            :availability_source => Availability,
                            :tuple_publisher => TuplePublisher.new,
                            :date_source => Date,
-                           :renderer => Renderer.new(self)
+                           :renderer => Renderer.new
                            )
-    self.class.actual_object = self
   end
 end
 
