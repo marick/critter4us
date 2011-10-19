@@ -1,3 +1,5 @@
+# -*- indent-tabs-mode: nil -*-
+
 require './views/requires'
 
 class Controller
@@ -15,7 +17,7 @@ class Controller
   post Href.note_editing_page_route(:reservation_id) do
     reservation = reservation_source[params[:reservation_id]]
     reservation.update(:note => params[:note])
-    textile_note(reservation)
+    @renderer.render_textile(reservation.note)
   end
 
 

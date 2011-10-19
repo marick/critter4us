@@ -8,9 +8,5 @@ module Helpers
       result.join(', ')
     end
 
-    def textile_note(reservation)
-      RedCloth.new(reservation.note).to_html
-    end
-
   end
 end

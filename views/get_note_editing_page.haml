@@ -2,7 +2,7 @@
   %p
     =partial_call(:long_form_reservation, :reservation => reservation)
   %div#note.textile.hidden
-    =textile_note(reservation)
+    = @renderer.render_textile(reservation.note)
   %form#note_form{:method => "POST", :action => Href.note_editing_page(reservation)}
     %textarea{:name => "note", :rows => "20", :cols => "100"}
       =reservation.note

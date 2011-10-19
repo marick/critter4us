@@ -6,6 +6,9 @@ class NewControllerTests < RackTestTestCase
   def setup
     super
     @dummy_view = TestViewClass.new
+    real_controller.override(mocks(:renderer))
+    @renderer.should_receive(:render_textile, :render_page).zero_or_more_times.
+              with_any_args.by_default
   end
 
   context "adding notes to reservations" do
@@ -14,7 +17,6 @@ class NewControllerTests < RackTestTestCase
     end
 
     should "upon get, should pass the reservation to a view" do
-      real_controller.override(mocks(:renderer))
       during {
         get Href.note_editing_page(@reservation)
       }.behold! {
@@ -25,14 +27,17 @@ class NewControllerTests < RackTestTestCase
 
     context "posting a new note" do
 
-      should "upon post, should update reservation's note" do
+      should "update the reservation's note" do
         post Href.note_editing_page(@reservation), "note" => "new text"
         assert { Reservation[:note => "new text"].id == @reservation.id }
       end
 
-      should "return the note as html" do
-        post Href.note_editing_page(@reservation), "note" => "**new**"
-        assert { last_response.body =~ /<b>new<\/b>/ }
+      should "return the note as Textile html" do
+        during { 
+          post Href.note_editing_page(@reservation), "note" => "**new**"
+        }.behold! {
+          @renderer.should_receive(:render_textile).once.with("**new**")
+        }
       end
     end
   end
