@@ -20,6 +20,8 @@ a:visited
 
 i { font-style: italic; }
 b { font-weight: bold; }
+p + p { margin-top: 0.5em; } 
+input, textarea { font: 1em  Arial, "Helvetica Neue", Helvetica, sans-serif; }
 
 
 /* header */

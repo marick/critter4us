@@ -11,7 +11,8 @@ class Controller
   end
 
   get Href.note_editing_page_route(:reservation_id) do |reservation_id|
-    @renderer.render_page(:get_note_editing_page, :reservation => reservation_source[reservation_id])
+    reservation = reservation_source[reservation_id]
+    @renderer.render_page(:get_note_editing_page, :reservation => reservation)
   end
 
   post Href.note_editing_page_route(:reservation_id) do
