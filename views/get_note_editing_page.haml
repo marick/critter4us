@@ -1,11 +1,11 @@
 %div.centered
   %p
-    =partial('partials/long_form_reservation')
+    =partial('partials/long_form_reservation', :locals => {:reservation => reservation})
   %div#note.textile.hidden
-    =textile_note(@reservation)
-  %form#note_form{:method => "POST", :action => Href.note_editing_page(@reservation)}
+    =textile_note(reservation)
+  %form#note_form{:method => "POST", :action => Href.note_editing_page(reservation)}
     %textarea{:name => "note", :rows => "20", :cols => "100"}
-      =@reservation.note
+      =reservation.note
     :markdown 
       You can add bolding and other effects using 
       [Textile](http://redcloth.org/textile/phrase-modifiers/).
@@ -14,5 +14,5 @@
 
 :javascript
   jQuery(function() {
-    window.OnStarts.get_note_editing_page(#{@reservation.id});
+    window.OnStarts.get_note_editing_page(#{reservation.id});
   });

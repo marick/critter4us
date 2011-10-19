@@ -13,16 +13,28 @@ class NewControllerTests < RackTestTestCase
       @reservation = Reservation.random
     end
 
-    should_eventually "upon get, should pass the reservation to a view" do
-      real_controller.test_view_builder = @dummy_view
-      get Href.note_editing_page(@reservation)
-      assert { @dummy_view[:reservation] == @reservation }
+    should "upon get, should pass the reservation to a view" do
+      real_controller.override(mocks(:renderer))
+      during {
+        get Href.note_editing_page(@reservation)
+      }.behold! {
+        @renderer.should_receive(:render_page).once.
+                  with(:get_note_editing_page, :reservation => @reservation)
+      }
     end
 
-    should "upon post, should update reservation's note" do
-      post Href.note_editing_page(@reservation), "note" => "new text"
-      assert { Reservation[:note => "new text"].id == @reservation.id }
-      assert_redirect_to(Href.note_editing_page(@reservation))
+    context "posting a new note" do
+
+      should "upon post, should update reservation's note" do
+        post Href.note_editing_page(@reservation), "note" => "new text"
+        assert { Reservation[:note => "new text"].id == @reservation.id }
+      end
+
+      should "return the note as html" do
+        post Href.note_editing_page(@reservation), "note" => "**new**"
+        assert { last_response.body =~ /<b>new<\/b>/ }
+      end
     end
   end
+
 end

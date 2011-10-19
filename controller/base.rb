@@ -4,6 +4,7 @@ require 'json'
 require './util/test-support'
 require './model/requires'
 require './view/requires'
+require './views/requires'
 require 'pp'
 
 require 'erector'
@@ -45,7 +46,8 @@ class Controller < Sinatra::Base
                            :externalizer => Externalizer.new,
                            :availability_source => Availability,
                            :tuple_publisher => TuplePublisher.new,
-                           :date_source => Date
+                           :date_source => Date,
+                           :renderer => Renderer.new(self)
                            )
     self.class.actual_object = self
   end
