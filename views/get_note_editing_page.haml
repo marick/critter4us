@@ -4,8 +4,7 @@
   %div#note.textile.hidden
     = @renderer.render_textile(reservation.note)
   %form#note_form{:method => "POST", :action => Href.note_editing_page(reservation)}
-    %textarea{:name => "note", :rows => "20", :cols => "100"}
-      =reservation.note
+    %textarea{:name => "note", :rows => "12", :cols => "70"}=find_and_preserve reservation.note
     :markdown 
       You can add bolding and other effects using 
       [Textile](http://redcloth.org/textile/phrase-modifiers/).

@@ -4,13 +4,17 @@ require './views/requires'
 
 class NoteEditingPageTests < ViewTestCase
 
-  def setup 
-    super
-    @reservation = Reservation.random(:instructor => 'Dr. Dawn')
+  def render(hash)
+    reservation = Reservation.random(hash)
+    @renderer.render_page(:get_note_editing_page, :reservation => reservation)
   end
-  
+
   should "use reservation to populate page upon GET" do
-    html = @renderer.render_page(:get_note_editing_page, :reservation => @reservation)
-    assert { /Dr. Dawn/ =~ html }
+    assert { render(:instructor => 'Dr. Dawn')['Dr. Dawn'] }
+  end
+
+  should "not spuriously indent multi-line notes" do
+    # http://haml-lang.com/docs/yardoc/file.FAQ.html#q-preserve
+    assert { render(:note => "Multi\nLine")["Multi&#x000A;Line"] }
   end
 end
