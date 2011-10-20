@@ -10,7 +10,7 @@ class GetReservationSchedulingPageTest < ViewTestCase
   end
 
   should "use reservation to populate page upon GET" do
-    puts render(:instructor => 'Dr. Dawn')
+    assert { render(:instructor => 'Dr. Dawn')['Dr. Dawn'] }
   end
 
 end
