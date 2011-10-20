@@ -17,4 +17,4 @@ gem 'rack-test'
 gem 'shoulda'
 gem 'assert2'
 gem 'flexmock'
-
+gem 'jasmine'
