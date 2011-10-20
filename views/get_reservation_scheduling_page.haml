@@ -1,11 +1,10 @@
 %div.centered
-  :markdown
-    Schedule copies of this reservation:    
-    =partial_call(:long_form_reservation, :reservation => reservation)
+  Schedule copies of this reservation:
+  =partial_call(:long_form_reservation, :reservation => reservation)
   %form#schedule_form{:method => 'POST', :action => Href.schedule_reservations_page(reservation)}
     Repeat every week up through
-    %input#date{:type => 'text'}
-    %button{:type=>'submit', :name=>"Duplicate"}
+    %input#weekly_end_date{:type => 'text'}
+    %input{:type=>'submit', :value=>"Duplicate"}
 
 :javascript
   jQuery(function() {
