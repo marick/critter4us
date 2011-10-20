@@ -27,6 +27,24 @@
         }
       });
     };
+    OnStarts.next_month = function() {
+      var next_month;
+      next_month = new Date();
+      next_month.setMonth(next_month.getMonth() + 1);
+      return next_month;
+    };
+    OnStarts.get_reservation_scheduling_page = function() {
+      var input$;
+      input$ = $('#weekly_end_date');
+      return input$.DatePicker({
+        current: OnStarts.next_month(),
+        calendars: 2,
+        onChange: function() {
+          return input$.val(input$.DatePickerGetDate('formatted')).DatePickerHide();
+        },
+        date: new Date()
+      });
+    };
     return OnStarts;
   })();
 }).call(this);
