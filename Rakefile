@@ -26,6 +26,18 @@ task :coffee do
   system("coffee -c public/js2")
 end            
 
+desc "Start Jasmine spec runner"
+task :start_jasmine do
+  system("bundle exec ruby jasmine.rb &")
+end
+
+desc "Start Rasmine and open browser"
+task :jasmine do
+  system("(sleep 5; open http://localhost:4567/SpecRunner.html)&")
+  system("bundle exec ruby jasmine.rb")
+end
+
+
 desc "Run tests."
 Rake::TestTask.new do | t |
   t.test_files = FileList['test/**/*test*.rb']
