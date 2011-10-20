@@ -22,5 +22,11 @@ class Controller
   end
 
 
+  get Href.schedule_reservations_page_route(:reservation_id) do |reservation_id|
+    reservation = reservation_source[reservation_id]
+    @renderer.render_page(:get_reservation_scheduling_page, :reservation => reservation)
+  end
+
+
 end
 
