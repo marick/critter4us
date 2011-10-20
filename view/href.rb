@@ -11,7 +11,6 @@ module Href
     note_editing_page_raw(key.inspect)
   end
 
-
   def self.reservation_viewing_page(reservation)
     "/reservation/#{reservation.id}"
   end

@@ -14,7 +14,7 @@ class global.OnStarts
     $('.textile').filter(-> OnStarts.isEmpty(this)).slideUp(duration)
     $('.textile').filter(-> OnStarts.hasStuff(this)).slideDown(duration)
 
-  @get_note_editing_page:  ->
+  @get_note_editing_page: ->
     OnStarts.hide_empty_textile_divs(0)
     # The following prevents Safari from confusing the user
     # by falsely saying form text has never been submitted.
@@ -23,3 +23,7 @@ class global.OnStarts
                        target: '.textile'
                        success: ->
                           OnStarts.hide_empty_textile_divs("fast")}
+
+  @get_reservation_scheduling_page: ->
+    $('input').DatePicker({date: new Date()});
+
