@@ -15,10 +15,13 @@ class global.OnStarts
     $('.textile').filter(-> OnStarts.hasStuff(this)).slideDown(duration)
 
   @get_note_editing_page: ->
-    OnStarts.hide_empty_textile_divs(0)
     # The following prevents Safari from confusing the user
     # by falsely saying form text has never been submitted.
-    $('body').attr('onbeforeunload', "")
+    # This used to work and mysteriously stopped.
+    # $('body').attr('onbeforeunload', "")
+    # But this does work. For now!
+    window.onbeforeunload = -> nil
+    OnStarts.hide_empty_textile_divs(0)
     $('#note_form').ajaxForm {
                        target: '.textile'
                        success: ->

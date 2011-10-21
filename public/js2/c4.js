@@ -18,8 +18,10 @@
       }).slideDown(duration);
     };
     OnStarts.get_note_editing_page = function() {
+      window.onbeforeunload = function() {
+        return nil;
+      };
       OnStarts.hide_empty_textile_divs(0);
-      $('body').attr('onbeforeunload', "");
       return $('#note_form').ajaxForm({
         target: '.textile',
         success: function() {
