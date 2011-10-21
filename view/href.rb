@@ -3,16 +3,18 @@ module Href
     "/2/reservation/#{value}/note"
   end
   
-  def self.note_editing_page(reservation)
-    note_editing_page_raw(reservation.id)
+  def self.note_editing_page(reservation_id)
+    CritterLogger.info reservation_id
+    note_editing_page_raw(reservation_id)
   end
 
   def self.note_editing_page_route(key)
     note_editing_page_raw(key.inspect)
   end
 
-  def self.reservation_viewing_page(reservation)
-    "/reservation/#{reservation.id}"
+
+  def self.reservation_viewing_page(reservation_id)
+    "/reservation/#{reservation_id}"
   end
 
 
@@ -22,8 +24,8 @@ module Href
     "/2/reservation/#{value}/schedule"
   end
   
-  def self.schedule_reservations_page(reservation)
-    schedule_reservations_page_raw(reservation.id)
+  def self.schedule_reservations_page(reservation_id)
+    schedule_reservations_page_raw(reservation_id)
   end
 
   def self.schedule_reservations_page_route(key)
