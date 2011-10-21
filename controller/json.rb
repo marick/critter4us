@@ -2,9 +2,13 @@ require './util/extensions'
 
 class Controller
 
+  def json_response
+    response['Content-Type'] = 'application/json'
+  end
+
   before do
     if request.path =~ %r{/json/}
-      response['Content-Type'] = 'application/json'
+      json_response
     end
   end
 

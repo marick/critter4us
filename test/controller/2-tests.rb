@@ -3,6 +3,8 @@ require './controller/base'
 require 'ostruct'
 
 class NewControllerTests < RackTestTestCase
+  include JsonHelpers
+
   def setup
     super
     @dummy_view = TestViewClass.new
@@ -39,46 +41,35 @@ class NewControllerTests < RackTestTestCase
   end
 
   context "scheduling further reservations by example" do
-    should "GET produces a page containing the reservation" do 
-      during {
-        get Href.schedule_reservations_page(@reservation.id)
-      }.behold! {
-        @renderer.should_receive(:render_page).once.
-        with(:get_reservation_scheduling_page, :reservation => @reservation)
-      }
+    context "GET" do 
+      should "produce a page containing the reservation" do 
+        during {
+          get Href.schedule_reservations_page(@reservation.id)
+        }.behold! {
+          @renderer.should_receive(:render_page).once.
+          with(:get_reservation_scheduling_page, :reservation => @reservation)
+        }
+      end
     end
 
-    should_eventually "POST should coordinate other objects" do
-      real_controller.override(mocks(:internalizer, :externalizer,
-                                     :availability_source, :reservation_source))
-      availability = flexmock("availability")
-      reservation = flexmock("reservation")
-      during {
-        post Href.schedule_reservations_page("id"),
-             :timeslice=>"timeslice representation"
-      }.behold! {
-        @internalizer.should_receive(:make_timeslice).once.
-                      with("timeslice representation").
-                      and_return("timeslice")
-        @availability_source.should_receive(:new).once.
-                             with("timeslice").
-                             and_return(availability)
-
-        @reservation_source.should_receive(:[]).once.
-                            with("id").
-                            and_return(reservation)
-
-        availability.should_receive(:trim_conflicting_uses).once.
-                      with(reservation)
-        reservation.should_receive(:save_as_copy).once
-        reservation.should_receive(:trimmed_animals).once.
-                     and_return(["animals"])
-        @externalizer.should_receive(:convert).once.
-                     with({'omitted_animals' => ["animals"]}).
-                     and_return("json")
-      }
-      assert_json_response
-      assert_jsonification_of("json")
+    context "POST" do 
+      should "coordinate other objects" do
+        real_controller.override(mocks(:internalizer2, :renderer, :functionally))
+        during {
+          post Href.schedule_reservations_page("id"),
+               :timeslice=>"timeslice representation"
+        }.behold! {
+          @internalizer2.should_receive(:maplike_timeslice).once.
+                         with("timeslice representation").
+                         and_return("timeslice")
+          @functionally.should_receive(:shift_to_timeslice).once.
+                        with("id", "timeslice").
+                        and_return(["animal names"])
+          @renderer.should_receive(:render_json).once.
+                    with(:omitted_animals => ["animal names"])
+        }
+        assert_json_response
+      end
     end
   end
   

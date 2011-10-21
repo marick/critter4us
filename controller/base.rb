@@ -5,6 +5,10 @@ require './util/test-support'
 require './model/requires'
 require './view/requires'
 require './views/requires'
+
+# New version
+require './controller/internalizer2'
+require './functional/functionally'
 require 'pp'
 
 require 'erector'
@@ -48,7 +52,11 @@ class Controller < Sinatra::Base
                            :availability_source => Availability,
                            :tuple_publisher => TuplePublisher.new,
                            :date_source => Date,
-                           :renderer => Renderer.new
+
+                           # The new, strangling code.
+                           :renderer => Renderer.new,
+                           :internalizer2 => Internalizer2.new(@internalizer),
+                           :functionally => Functionally.new
                            )
   end
 end
