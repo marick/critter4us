@@ -10,4 +10,10 @@ class RendererTests < ViewTestCase
   end
 
   # Rendering HAML is tested implicitly by page tests.
+
+  should "be able to render JSON" do
+    a_structure = {:key => ["value1", 3]}
+    result = @renderer.render_json(a_structure)
+    assert { a_structure.to_json == result }
+  end
 end
