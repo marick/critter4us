@@ -15,10 +15,15 @@ class Controller
     externalize(availability.animals_and_procedures_and_exclusions)
   end
 
-  post '/json/store_reservation' do
-    reservation_data = @internalizer.convert(params)[:reservation_data]
+  def store_reservation(reservation_data)
     new_reservation = reservation_source.create_with_groups(reservation_data)
     @tuple_publisher.note_reservation_exclusions(new_reservation)
+    new_reservation
+  end
+
+  post '/json/store_reservation' do
+    reservation_data = @internalizer.convert(params)[:reservation_data]
+    new_reservation = store_reservation(reservation_data)
     externalize(reservation_id(new_reservation))
   end
 
