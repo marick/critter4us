@@ -24,8 +24,9 @@ end
 
 
 class RackTestTestCase < FreshDatabaseTestCase
-  require './model/requires'
-  require './controller/base'
+  require './src/routes/base'
+  require './strangled-src/model/requires'
+  require './src/routes/requires'
   include Rack::Test::Methods
   include HtmlAssertions
 

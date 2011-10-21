@@ -1,5 +1,0 @@
-require './views/partials'
-require './views/helpers'
-require './views/renderer'
-require 'bluecloth'
-require 'haml'

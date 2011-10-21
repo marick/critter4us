@@ -1,0 +1,6 @@
+require './src/views/partials'
+require './src/views/helpers'
+require './src/views/renderer'
+require 'bluecloth'
+require 'RedCloth'
+require 'haml'
