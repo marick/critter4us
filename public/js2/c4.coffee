@@ -8,11 +8,18 @@ class global.OnStarts
     tag.innerHTML.match /^\s*$/
 
   @hasStuff: (tag) ->
-    !OnStarts.isEmpty(tag)
+    !@isEmpty(tag)
 
-  @hide_empty_textile_divs: (duration) ->
-    $('.textile').filter(-> OnStarts.isEmpty(this)).slideUp(duration)
-    $('.textile').filter(-> OnStarts.hasStuff(this)).slideDown(duration)
+  @update_textile_divs_visibility: (duration) ->
+    duration ?= 0
+    $('.textile').filter(-> @isEmpty(this)).slideUp(duration)
+    $('.textile').filter(-> @hasStuff(this)).slideDown(duration)
+
+  @submit_note_update: ->
+    $('#note_form').ajaxForm {
+                       target: '.textile'
+                       success: ->
+                          @update_textile_divs_visibility("fast")}
 
   @get_note_editing_page: ->
     # The following prevents Safari from confusing the user
@@ -21,30 +28,23 @@ class global.OnStarts
     # $('body').attr('onbeforeunload', "")
     # But this does work. For now!
     window.onbeforeunload = -> nil
-    OnStarts.hide_empty_textile_divs(0)
-    $('#note_form').ajaxForm {
-                       target: '.textile'
-                       success: ->
-                          OnStarts.hide_empty_textile_divs("fast")}
+    @update_textile_divs_visibility()
+    @submit_note_update()
 
   @next_month: ->
     next_month = new Date()
     next_month.setMonth(next_month.getMonth()+1)
     next_month
 
-
-  @get_reservation_scheduling_page: ->
-    input$ = $('#weekly_end_date')
-    input$.DatePicker(
-      {
-        current: OnStarts.next_month(),
+  @update_with_date_picker: (input$) ->
+    input$.DatePicker({
+        current: @next_month(),
         calendars: 2,
         onChange: ->
           input$.val(input$.DatePickerGetDate('formatted')).DatePickerHide()
-
-        # This is required, but I suspect it's a bug. It doesn't affect which
-        # calendar is shown initially, or create a selection, or anything.
-        #
-        date: new Date(),
+        date: new Date(), # needs to be here, not sure why, doesn't affect the calendar shown
       })
+
+  @get_reservation_scheduling_page: ->
+    @update_with_date_picker($('#weekly_end_date'))
 
