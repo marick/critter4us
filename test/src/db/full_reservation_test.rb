@@ -1,6 +1,7 @@
-require './test/testutil/requires'
+require './test/testutil/fast-loading-requires'
 require './src/db/full_reservation'
 require './src/db/functional_timeslice'
+require './strangled-src/model/requires'
 
 class FullReservationTest < FreshDatabaseTestCase
   include FHUtil

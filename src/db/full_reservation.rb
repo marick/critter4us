@@ -1,4 +1,5 @@
 require './src/functional/functional_hash'
+require './strangled-src/util/test-support'
 
 
 class FullReservation < FunctionalHash
