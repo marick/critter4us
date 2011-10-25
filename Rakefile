@@ -1,4 +1,3 @@
-
 require 'rake'
 require 'rake/testtask'
 $in_rake = true
@@ -19,24 +18,18 @@ else
                        :password =>  ENV['C4U_PASS'])
 end
 
-task :default => :test
+task :default => :test_all
 
 desc "Convert coffeescript to javascript"
 task :coffee do 
-  system("coffee -c public/js2")
-end            
-
-desc "Start Jasmine spec runner"
-task :start_jasmine do
-  system("bundle exec ruby jasmine.rb &")
+  system("coffee -o public/js2 -c src/coffee")
 end
 
-desc "Start Rasmine and open browser"
-task :jasmine do
-  system("(sleep 5; open http://localhost:4567/SpecRunner.html)&")
-  system("bundle exec ruby jasmine.rb")
-end
+task :test_all => [:test, :spec]
 
+task :spec do
+  system('xvfb-run jasmine-headless-webkit -c -j spec/support/jasmine.yml')
+end
 
 desc "Run tests."
 Rake::TestTask.new do | t |

@@ -1,0 +1,7 @@
+src_files:
+  - src/coffee/*.coffee
+
+spec_dir: spec
+
+spec_files:
+  - **/*_spec.{js,coffee}
