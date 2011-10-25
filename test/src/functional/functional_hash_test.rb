@@ -1,4 +1,4 @@
-require './test/testutil/requires'
+require './test/testutil/fast-loading-requires'
 require './src/functional/functional_hash'
 
 class FunctionalHashTest < Test::Unit::TestCase
@@ -97,12 +97,14 @@ class FunctionalHashTest < Test::Unit::TestCase
 
       should "act as + at zero level" do
         actual = @hashlike.change_within(:val, 4)
+        assert { actual.is_a?(FunctionalHash) }
         assert { actual.val == 4 } 
         assert { actual.other == "other" }
       end
 
       should "allow nesting" do
         actual = @hashlike.change_within(:nested, :val, 44)
+        assert { actual.is_a?(FunctionalHash) }
         assert { actual.val == 3 }
         assert { actual.nested.val == 44 }
         assert { actual.nested.other == "other" }
@@ -110,6 +112,7 @@ class FunctionalHashTest < Test::Unit::TestCase
 
       should "allow n levels of nesting" do
         actual = @hashlike.change_within(:nested, :nested, :val, 444)
+        assert { actual.is_a?(FunctionalHash) }
         assert { actual.val == 3 }
         assert { actual.nested.val == 33 }
         assert { actual.nested.nested.val == 444 } 
@@ -130,12 +133,14 @@ class FunctionalHashTest < Test::Unit::TestCase
 
       should "act as - at zero level" do
         actual = @hashlike.remove_within(:val)
+        assert { actual.is_a?(FunctionalHash) }
         assert { !actual.has_key?(:val) } 
         assert { actual.other == "other" }
       end
 
       should "allow nesting" do
         actual = @hashlike.remove_within(:nested, :val)
+        assert { actual.is_a?(FunctionalHash) }
         assert { actual.val == 3 }
         assert { ! actual.nested.has_key?(:val) }
         assert { actual.nested.other == "other" }
@@ -143,6 +148,7 @@ class FunctionalHashTest < Test::Unit::TestCase
 
       should "allow n levels of nesting" do
         actual = @hashlike.remove_within(:nested, :nested, :val)
+        assert { actual.is_a?(FunctionalHash) }
         assert { actual.val == 3 }
         assert { actual.nested.val == 33 }
         assert { ! actual.nested.nested.has_key?(:val) }
@@ -150,6 +156,16 @@ class FunctionalHashTest < Test::Unit::TestCase
       end
 
     end
+
+    context "making smaller hashes" do
+      should "be done with the `only` method" do
+        hashlike = F(:a => 1, :b => 2, :c => 3)
+        actual = hashlike.only(:a, :c)
+        assert { actual.is_a?(FunctionalHash) }
+        assert { actual == {:a => 1, :c => 3} }
+      end
+    end
+    
 
   end
 end

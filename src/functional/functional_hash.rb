@@ -58,8 +58,6 @@ class FunctionalHash < Hash
     end
   end
 
-
-
   def -(keys)
     keys = [keys] unless keys.respond_to?(:first)
     remove(*keys)
@@ -67,6 +65,10 @@ class FunctionalHash < Hash
 
   def [](key)
     fetch(key, nil)
+  end
+
+  def only(*keys)
+    self.class[*keys.zip(self.values_at(*keys)).flatten(1)]
   end
 
   private :[]=, :clear, :delete, :delete_if
