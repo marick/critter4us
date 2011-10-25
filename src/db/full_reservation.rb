@@ -3,6 +3,12 @@ require './src/functional/functional_hash'
 
 class FullReservation < FunctionalHash
   self.extend(FHUtil)
+  include TestSupport
+
+  def initialize(*args)
+    super
+    collaborators_start_as(:timeslice_source => FunctionalTimeslice)
+  end
 
   def self.from_id(reservation_id)
     new(:starting_id => reservation_id,
@@ -29,5 +35,17 @@ class FullReservation < FunctionalHash
       change_within(:data, :last_date, timeslice.last_date).
       change_within(:data, :time_bits, timeslice.time_bits).
       remove_within(:data, :id)
+  end
+
+  def without_excluded_animals
+    uses_to_discard, uses_to_keep = animals_to_discard_and_keep
+    self.merge(uses: uses_to_keep,
+               animals_with_scheduling_conflicts: uses_to_discard.map(&:animal_name).uniq)
+  end
+
+  def animals_to_discard_and_keep
+    animals_excluded = @timeslice_source.from_reservation(self).animals_excluded_during
+    bad_animal = lambda { | animal_id | animals_excluded.include?(animal_id) }
+    uses.partition{ |use| bad_animal.(use.animal_id) }
   end
 end
