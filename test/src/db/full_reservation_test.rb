@@ -7,9 +7,12 @@ class FullReservationTest < FreshDatabaseTestCase
   include FHUtil
 
   def setup
-    @our_animal = Animal.random(:name => "animal")
-    @old_format = Reservation.random(:animal => @our_animal,
-                                     :procedure => Procedure.random(:name => "procedure"),
+    @animal_1 = Animal.random(:name => "animal 1")
+    @animal_2 = Animal.random(:name => "animal 2")
+    @procedure_1 = Procedure.random(:name => "procedure 1")
+    @procedure_2 = Procedure.random(:name => "procedure 2")
+    @old_format = Reservation.random(:animal => @animal_1,
+                                     :procedure => @procedure_1,
                                      :timeslice => Timeslice.new(Date.new(2009, 7, 23),
                                                                  Date.new(2009, 8, 24),
                                                                  TimeSet.new(MORNING)),
@@ -27,8 +30,8 @@ class FullReservationTest < FreshDatabaseTestCase
     assert { @reservation.data.time_bits == "100" }
 
     only_use = @reservation.uses.first
-    assert { only_use.animal_name == 'animal' }
-    assert { only_use.procedure_name == 'procedure' }
+    assert { only_use.animal_name == 'animal 1' }
+    assert { only_use.procedure_name == 'procedure 1' }
     assert { only_use.group_id == @reservation.groups.first.id }
   end
 
@@ -74,11 +77,44 @@ class FullReservationTest < FreshDatabaseTestCase
                           with(@reservation).
                           and_return(@timeslice)
         @timeslice.should_receive(:animals_excluded_during).
-                   and_return([@our_animal.id])
+                   and_return([@animal_1.id])
       }
       assert { @result.uses == [] }
       assert { @result.groups != [] }
-      assert { @result.animals_with_scheduling_conflicts == [@our_animal.name] }
+      assert { @result.animals_with_scheduling_conflicts == [@animal_1.name] }
     end
   end
+
+  context "`as_saved`" do
+    should "put the reservation on disk and return the new copy" do
+      new_one = @reservation.as_saved
+
+      assert { @reservation.data != new_one.data } # ... because of id
+      assert { @reservation.data - :id == new_one.data - :id }
+
+      assert { @reservation.groups.first != new_one.groups.first }
+      assert { @reservation.groups.first - :id != new_one.groups.first - :id }
+
+      assert { @reservation.uses.first != new_one.uses.first }
+      assert { @reservation.uses.first - :id != new_one.uses.first - :id }
+    end
+
+    should "work even with multiple groups" do
+      two_groups = Fall([{id: 5, reservation_id: @reservation.data.id},
+                         {id: 33, reservation_id: @reservation.data.id}])
+      two_uses = Fall([{group_id: 5, animal_id: @animal_1.id, procedure_id: @procedure_1.id},
+                       {group_id: 33, animal_id: @animal_2.id, procedure_id: @procedure_2.id}])
+
+      new_one = @reservation.merge(:groups => two_groups, :uses => two_uses).as_saved
+
+
+      groups = new_one.groups.sort { | a, b | a.id <=> b.id }
+      uses = new_one.uses.sort { | a, b | a.group_id <=> b.group_id } 
+
+      assert { groups[0].id == uses[0].group_id }
+      assert { groups[1].id == uses[1].group_id }
+    end
+  end
+  
+  
 end

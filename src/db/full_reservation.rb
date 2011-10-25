@@ -49,4 +49,16 @@ class FullReservation < FunctionalHash
     bad_animal = lambda { | animal_id | animals_excluded.include?(animal_id) }
     uses.partition{ |use| bad_animal.(use.animal_id) }
   end
+
+  def as_saved
+    new_id = DB[:reservations].insert(self.data - :id)
+    self.groups.each do | group |
+      group_id = DB[:groups].insert(group - :id + {reservation_id: new_id })
+      new_uses = uses.select { | use | use.group_id == group.id }.map do | use |
+        use.only(:animal_id, :procedure_id) + {group_id: group_id}
+      end
+      DB[:uses].multi_insert(new_uses)
+    end
+    self.class.from_id(new_id)
+  end
 end
