@@ -1,4 +1,4 @@
-source "http://rubygems.org"
+source :rubygems
 
 gem "sinatra"
 gem "erector"
@@ -10,11 +10,13 @@ gem "json"
 gem "RedCloth"
 gem "bluecloth"
 gem "haml"
-gem "capybara"
 
-
-gem 'rack-test'
-gem 'shoulda'
-gem 'assert2'
-gem 'flexmock'
-gem 'rack-coffee'
+group :development, :test do
+  gem "capybara"
+  gem 'capybara-webkit'
+  gem 'rack-test'
+  gem 'shoulda'
+  gem 'assert2'
+  gem 'flexmock'
+  gem 'rack-coffee'
+end
