@@ -1,3 +1,4 @@
+require './src/db/database_structure'
 require './src/functional/functional_hash'
 require './strangled-src/util/test-support'
 
@@ -5,6 +6,7 @@ require './strangled-src/util/test-support'
 class FullReservation < FunctionalHash
   self.extend(FHUtil)
   include TestSupport
+  include DatabaseStructure
 
   def initialize(*args)
     super
@@ -14,20 +16,15 @@ class FullReservation < FunctionalHash
   def self.from_id(reservation_id)
     new(:starting_id => reservation_id,
         :data => lambda { | instance |
-          Fonly(DB[:reservations].filter(:id => instance.starting_id))
+          Fonly(ReservationTable.filter(:id => instance.starting_id).all)
         },
         :groups => lambda { | instance | 
-          Fall(DB[:groups].filter(:reservation_id => instance.starting_id).all)
+          Fall(GroupTable.filter(:reservation_id => instance.starting_id).all)
         },
         :uses => lambda { | instance |
-          Fall(DB[:uses].
-               join(:animals, :animals__id => :uses__animal_id).
-               join(:procedures, :procedures__id => :uses__procedure_id).
-               filter(:group_id => instance.groups.map(&:id)).
-               select(:animals__name.as(:animal_name),
-                      :procedures__name.as(:procedure_name),
-                      :procedure_id, :animal_id, :group_id,
-                      :uses__id))
+          Fall(UsesTable.join_with_names.
+                         filter_by_groups(instance.groups).
+                         select(*UsesTable.columns_and_names).all)
         })
     end
 
@@ -44,6 +41,7 @@ class FullReservation < FunctionalHash
                animals_with_scheduling_conflicts: uses_to_discard.map(&:animal_name).uniq)
   end
 
+  # Todo: move this to Timeslice
   def animals_to_discard_and_keep
     animals_excluded = @timeslice_source.from_reservation(self).animals_excluded_during
     bad_animal = lambda { | animal_id | animals_excluded.include?(animal_id) }
@@ -51,13 +49,13 @@ class FullReservation < FunctionalHash
   end
 
   def as_saved
-    new_id = DB[:reservations].insert(self.data - :id)
+    new_id = ReservationTable.insert(self.data - :id)
     self.groups.each do | group |
-      group_id = DB[:groups].insert(group - :id + {reservation_id: new_id })
+      group_id = GroupTable.insert(group - :id + {reservation_id: new_id })
       new_uses = uses.select { | use | use.group_id == group.id }.map do | use |
         use.only(:animal_id, :procedure_id) + {group_id: group_id}
       end
-      DB[:uses].multi_insert(new_uses)
+      UsesTable.multi_insert(new_uses)
     end
     self.class.from_id(new_id)
   end
