@@ -36,16 +36,16 @@ class FullReservation < FunctionalHash
   end
 
   def without_excluded_animals
-    uses_to_discard, uses_to_keep = animals_to_discard_and_keep
+
+    uses_to_discard_and_keep = lambda {
+      animals_excluded = @timeslice_source.from_reservation(self).animals_excluded_during
+      discardp = lambda { | animal_id | animals_excluded.include?(animal_id) }
+      uses.partition{ |use| discardp.(use.animal_id) }
+    }
+
+    uses_to_discard, uses_to_keep = uses_to_discard_and_keep.()
     self.merge(uses: uses_to_keep,
                animals_with_scheduling_conflicts: uses_to_discard.map(&:animal_name).uniq)
-  end
-
-  # Todo: move this to Timeslice
-  def animals_to_discard_and_keep
-    animals_excluded = @timeslice_source.from_reservation(self).animals_excluded_during
-    bad_animal = lambda { | animal_id | animals_excluded.include?(animal_id) }
-    uses.partition{ |use| bad_animal.(use.animal_id) }
   end
 
   def as_saved
