@@ -2,6 +2,7 @@ require './test/testutil/fast-loading-requires'
 require './src/db/full_reservation'
 require './src/db/functional_timeslice'
 require './strangled-src/model/requires'
+require 'set'
 
 class FullReservationTest < FreshDatabaseTestCase
   include FHUtil
@@ -11,13 +12,17 @@ class FullReservationTest < FreshDatabaseTestCase
     @animal_2 = Animal.random(:name => "animal 2")
     @procedure_1 = Procedure.random(:name => "procedure 1")
     @procedure_2 = Procedure.random(:name => "procedure 2")
-    @old_format = Reservation.random(:animal => @animal_1,
-                                     :procedure => @procedure_1,
-                                     :timeslice => Timeslice.new(Date.new(2009, 7, 23),
-                                                                 Date.new(2009, 8, 24),
-                                                                 TimeSet.new(MORNING)),
-                                     :course => 'vm333',
-                                     :instructor => 'morin')
+    
+    data = {
+      :timeslice => Timeslice.new(Date.new(2009, 7, 23),
+                                  Date.new(2009, 8, 24),
+                                  TimeSet.new(MORNING)),
+      :course => 'vm333',
+      :instructor => 'morin',
+      :groups => [ {:procedures => ['procedure 1'], :animals => ['animal 1'] }, 
+                   {:procedures => ['procedure 2'], :animals => ['animal 2'] } ]
+    }
+    @old_format = ReservationMaker.build_from(data)
     @reservation = FullReservation.from_id(@old_format.id)
   end
 
@@ -29,10 +34,15 @@ class FullReservationTest < FreshDatabaseTestCase
     assert { @reservation.data.last_date == Date.new(2009, 8, 24) }
     assert { @reservation.data.time_bits == "100" }
 
-    only_use = @reservation.uses.first
-    assert { only_use.animal_name == 'animal 1' }
-    assert { only_use.procedure_name == 'procedure 1' }
-    assert { only_use.group_id == @reservation.groups.first.id }
+    assert { Set.new(@reservation.uses.map(&:animal_name)) ==
+      Set.new(['animal 1', 'animal 2']) 
+    }
+    assert { Set.new(@reservation.uses.map(&:procedure_name)) ==
+      Set.new(['procedure 1', 'procedure 2'])
+    }
+    assert { Set.new(@reservation.uses.map(&:group_id)) ==
+      Set.new(@reservation.groups.map(&:id))
+    }
   end
 
   context "changing the time" do 
@@ -68,6 +78,7 @@ class FullReservationTest < FreshDatabaseTestCase
   end
   
   context "pruning uses when there is a scheduling conflict with an animal" do
+    use_to_be_excluded = use_to_be_retained = nil
     should "include animals that are in use during the timeslice" do
       @reservation.override(mocks(:timeslice_source, :timeslice))
       during {
@@ -76,45 +87,45 @@ class FullReservationTest < FreshDatabaseTestCase
         @timeslice_source.should_receive(:from_reservation).
                           with(@reservation).
                           and_return(@timeslice)
-        @timeslice.should_receive(:animals_excluded_during).
-                   and_return([@animal_1.id])
+
+        # The timeslice will mark one of the two animals as one to be excluded
+        original_uses = @reservation.uses
+        use_to_be_excluded = original_uses[0] + {should_be_excluded: true}
+        use_to_be_retained = original_uses[1] + {should_be_excluded: false}
+        @timeslice.should_receive(:mark_excluded_uses).
+                   with(original_uses).
+                   and_return([use_to_be_excluded, use_to_be_retained])
       }
-      assert { @result.uses == [] }
-      assert { @result.groups != [] }
-      assert { @result.animals_with_scheduling_conflicts == [@animal_1.name] }
+      assert { @result.uses.size == 1 }
+      assert { @result.uses[0].animal_name == use_to_be_retained.animal_name }
+      assert { @result.groups == @reservation.groups } # No change, but one is empty
+      assert { @result.animals_with_scheduling_conflicts == [use_to_be_excluded.animal_name] }
     end
   end
 
   context "`as_saved`" do
     should "put the reservation on disk and return the new copy" do
-      new_one = @reservation.as_saved
+      @reservation.uses
+      new_reservation = @reservation.as_saved
+      new_reservation.uses
 
-      assert { @reservation.data != new_one.data } # ... because of id
-      assert { @reservation.data - :id == new_one.data - :id }
+      assert { @reservation.data != new_reservation.data } # ... because of id
+      assert { @reservation.data - :id == new_reservation.data - :id }
 
-      assert { @reservation.groups.first != new_one.groups.first }
-      assert { @reservation.groups.first - :id != new_one.groups.first - :id }
+      assert { 
+        new_reservation.groups.all? { | group | group.reservation_id == new_reservation.data.id }
+      }
 
-      assert { @reservation.uses.first != new_one.uses.first }
-      assert { @reservation.uses.first - :id != new_one.uses.first - :id }
-    end
+      assert { new_reservation.uses.size == 2 }
+      use_1 = new_reservation.uses.find { | use | use.animal_name == 'animal 1' }
+      assert { use_1.procedure_name == 'procedure 1' } 
+      assert { new_reservation.groups.find { | group | group.id == use_1.group_id} } 
 
-    should "work even with multiple groups" do
-      two_groups = Fall([{id: 5, reservation_id: @reservation.data.id},
-                         {id: 33, reservation_id: @reservation.data.id}])
-      two_uses = Fall([{group_id: 5, animal_id: @animal_1.id, procedure_id: @procedure_1.id},
-                       {group_id: 33, animal_id: @animal_2.id, procedure_id: @procedure_2.id}])
+      use_2 = new_reservation.uses.find { | use | use.animal_name == 'animal 2' }
+      assert { use_2.procedure_name == 'procedure 2' } 
+      assert { new_reservation.groups.find { | group | group.id == use_2.group_id} } 
 
-      new_one = @reservation.merge(:groups => two_groups, :uses => two_uses).as_saved
-
-
-      groups = new_one.groups.sort { | a, b | a.id <=> b.id }
-      uses = new_one.uses.sort { | a, b | a.group_id <=> b.group_id } 
-
-      assert { groups[0].id == uses[0].group_id }
-      assert { groups[1].id == uses[1].group_id }
+      assert { use_2.group_id != use_1.group_id }
     end
   end
-  
-  
 end
