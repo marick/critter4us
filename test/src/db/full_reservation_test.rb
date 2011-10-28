@@ -5,7 +5,6 @@ require './strangled-src/model/requires'
 require 'set'
 
 class FullReservationTest < FreshDatabaseTestCase
-  include FHUtil
 
   def setup
     @animal_1 = Animal.random(:name => "animal 1")

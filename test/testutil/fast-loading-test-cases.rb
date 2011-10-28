@@ -4,10 +4,13 @@ require 'assert2'
 require 'flexmock'
 require 'ostruct'
 require './admin/tables'
+require './src/functional/functional_hash.rb'
 
 class FreshDatabaseTestCase < Test::Unit::TestCase
   require './test/testutil/db-helpers'
   include DBHelpers
+  include FHUtil
+
   def default_test; 'silence test::unit whining about missing tests'; end
 
   def setup
