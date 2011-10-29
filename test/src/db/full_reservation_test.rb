@@ -98,12 +98,10 @@ class FullReservationTest < FreshDatabaseTestCase
       assert { @result.animals_already_in_use == [ @use_that_conflicts.animal_name ] }
     end
 
-    should_eventually "handle extra animals or use pairs" do
-    end
-
     should "prune and identify uses that are blacked out during the timeslice" do
-      blacked_out = @use_that_conflicts.only(:animal_id, :procedure_id)
-      blacked_out_names = @use_that_conflicts.only(:animal_name, :procedure_name)
+      blacked_out = [@use_that_conflicts.only(:animal_id, :procedure_id),
+                     F(animal_id: "not relevant to", procedure_id: "this reservation")]
+      corresponding_pairs = [@use_that_conflicts.only(:animal_name, :procedure_name)]
       during {
         @reservation.without_blacked_out_use_pairs
       }.behold! {
@@ -111,10 +109,10 @@ class FullReservationTest < FreshDatabaseTestCase
                           with(@reservation).
                           and_return(@timeslice)
         @timeslice.should_receive(:use_pairs_blacked_out).
-                   and_return([blacked_out])
+                   and_return(blacked_out)
       }
       assert { @result.uses == [@use_without_conflict] }
-      assert { @result.blacked_out_use_pairs == [blacked_out_names] }
+      assert { @result.blacked_out_use_pairs == corresponding_pairs }
     end
 
 
