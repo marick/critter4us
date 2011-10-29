@@ -47,6 +47,14 @@ class FullReservation < DBHash
                animals_already_in_use: uses_to_discard.map(&:animal_name).uniq)
   end
 
+  def without_blacked_out_use_pairs
+    uses_to_discard, uses_to_keep =
+      partition_by_values_of_property(my_timeslice.use_pairs_blacked_out,
+                                      ->use {use.only(:animal_id, :procedure_id) })
+    self.merge(uses: uses_to_keep,
+               blacked_out_use_pairs: uses_to_discard.map{|u| u.only(:animal_name, :procedure_name)})
+  end
+
   def as_saved
     new_id = ReservationTable.insert(self.data - :id)
     self.groups.each do | group |

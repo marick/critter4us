@@ -76,9 +76,12 @@ class FullReservationTest < FreshDatabaseTestCase
   end
   
   context "pruning uses when there is a scheduling conflict with an animal" do
-    should "include animals that are in use during the timeslice" do
+    setup do 
       @reservation.override(mocks(:timeslice_source, :timeslice))
-      use_that_conflicts, use_without_conflict = @reservation.uses
+      @use_that_conflicts, @use_without_conflict = @reservation.uses
+    end
+
+    should "prune and identify animals that are in use during the timeslice" do
       during {
         @reservation.without_animals_in_use
       }.behold! {
@@ -86,13 +89,34 @@ class FullReservationTest < FreshDatabaseTestCase
                           with(@reservation).
                           and_return(@timeslice)
         @timeslice.should_receive(:animal_ids_in_use).
-                   and_return([use_that_conflicts.animal_id])
+                   and_return([@use_that_conflicts.animal_id])
       }
       assert { @result.uses.size == 1 }
-      deny { @result.uses.any? { | u | u.animal_id == use_that_conflicts.animal_id } }
-      assert { @result.uses.any? { | u | u.animal_id == use_without_conflict.animal_id } }
-      assert { @result.animals_already_in_use == [ use_that_conflicts.animal_name ] }
+      deny { @result.uses.any? { | u | u.animal_id == @use_that_conflicts.animal_id } }
+      assert { @result.uses.any? { | u | u.animal_id == @use_without_conflict.animal_id } }
+      assert { @result.animals_already_in_use == [ @use_that_conflicts.animal_name ] }
     end
+
+    should_eventually "handle extra animals or use pairs" do
+    end
+
+    should "prune and identify uses that are blacked out during the timeslice" do
+      blacked_out = @use_that_conflicts.only(:animal_id, :procedure_id)
+      blacked_out_names = @use_that_conflicts.only(:animal_name, :procedure_name)
+      during {
+        @reservation.without_blacked_out_use_pairs
+      }.behold! {
+        @timeslice_source.should_receive(:from_reservation).
+                          with(@reservation).
+                          and_return(@timeslice)
+        @timeslice.should_receive(:use_pairs_blacked_out).
+                   and_return([blacked_out])
+      }
+      assert { @result.uses == [@use_without_conflict] }
+      assert { @result.blacked_out_use_pairs == [blacked_out_names] }
+    end
+
+
   end
 
   context "`as_saved`" do
