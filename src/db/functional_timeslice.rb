@@ -31,16 +31,4 @@ class FunctionalTimeslice < DBHash
   def use_pairs_blacked_out
     overlaps(ExcludedBecauseOfBlackoutPeriod).map { | o | o.only(:animal_id, :procedure_id) }.uniq
   end
-
-  def mark_excluded_uses(uses)
-    animals_in_use = @exclusion_memory.animals_in_use(self)
-    blacked_out_uses = @exclusion_memory.blacked_out_potential_uses(self)
-    uses.collect do | use |
-      should_be_excluded =
-        animals_in_use.any? { | animal | animal.animal_id == use.animal_id } || 
-        blacked_out_uses.any? { | blacked_out | use.animal_id == blacked_out.animal_id && 
-                                                use.procedure_id == blacked_out.procedure_id }
-      use + {should_be_excluded: should_be_excluded}
-    end
-  end
 end
