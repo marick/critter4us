@@ -1,12 +1,6 @@
 require './src/db/db_hash'
-require './src/db/exclusion_memory'
 
 class FunctionalTimeslice < DBHash
-  def initialize(*args)
-    super
-    collaborators_start_as(:exclusion_memory => ExclusionMemory)
-  end
-
   def self.from_browser(raw_data)
     data = JSON.parse(Base64.decode64(raw_data))
     from_time_data(Date.parse(data['first_date']), Date.parse(data['last_date']),
