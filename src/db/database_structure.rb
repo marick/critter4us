@@ -21,4 +21,7 @@ module DatabaseStructure
     end
   end
 
+  ExcludedBecauseInUse = DB[:excluded_because_in_use]
+  ExcludedBecauseOfBlackoutPeriod = DB[:excluded_because_of_blackout_period]
+
 end
