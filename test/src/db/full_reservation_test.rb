@@ -7,11 +7,10 @@ require 'set'
 class FullReservationTest < FreshDatabaseTestCase
 
   def setup
-    @animal_1 = Animal.random(:name => "animal 1")
-    @animal_2 = Animal.random(:name => "animal 2")
-    @procedure_1 = Procedure.random(:name => "procedure 1")
-    @procedure_2 = Procedure.random(:name => "procedure 2")
-    
+    Animal.random(:name => "animal 1")
+    Animal.random(:name => "animal 2")
+    Procedure.random(:name => "procedure 1")
+    Procedure.random(:name => "procedure 2")
     data = {
       :timeslice => Timeslice.new(Date.new(2009, 7, 23),
                                   Date.new(2009, 8, 24),
@@ -77,28 +76,22 @@ class FullReservationTest < FreshDatabaseTestCase
   end
   
   context "pruning uses when there is a scheduling conflict with an animal" do
-    use_to_be_excluded = use_to_be_retained = nil
     should "include animals that are in use during the timeslice" do
       @reservation.override(mocks(:timeslice_source, :timeslice))
+      use_that_conflicts, use_without_conflict = @reservation.uses
       during {
-        @reservation.without_excluded_animals
+        @reservation.without_animals_in_use
       }.behold! {
         @timeslice_source.should_receive(:from_reservation).
                           with(@reservation).
                           and_return(@timeslice)
-
-        # The timeslice will mark one of the two animals as one to be excluded
-        original_uses = @reservation.uses
-        use_to_be_excluded = original_uses[0] + {should_be_excluded: true}
-        use_to_be_retained = original_uses[1] + {should_be_excluded: false}
-        @timeslice.should_receive(:mark_excluded_uses).
-                   with(original_uses).
-                   and_return([use_to_be_excluded, use_to_be_retained])
+        @timeslice.should_receive(:animal_ids_in_use).
+                   and_return([use_that_conflicts.animal_id])
       }
       assert { @result.uses.size == 1 }
-      assert { @result.uses[0].animal_name == use_to_be_retained.animal_name }
-      assert { @result.groups == @reservation.groups } # No change, but one is empty
-      assert { @result.animals_with_scheduling_conflicts == [use_to_be_excluded.animal_name] }
+      deny { @result.uses.any? { | u | u.animal_id == use_that_conflicts.animal_id } }
+      assert { @result.uses.any? { | u | u.animal_id == use_without_conflict.animal_id } }
+      assert { @result.animals_already_in_use == [ use_that_conflicts.animal_name ] }
     end
   end
 

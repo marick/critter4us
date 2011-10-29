@@ -28,12 +28,23 @@ class FullReservation < DBHash
       remove_within(:data, :id)
   end
 
-  def without_excluded_animals
-    timeslice = @timeslice_source.from_reservation(self)
-    with_markings = timeslice.mark_excluded_uses(self.uses)
-    uses_to_discard, uses_to_keep = with_markings.partition(&:should_be_excluded)
+  def my_timeslice
+    @timeslice_source.from_reservation(self)
+  end
+    
+  def partition_by_values_of_property(excluded_values, use_property)
+    excluded_values = Set.new(excluded_values)
+    uses.partition do | u |
+      excluded_values.include?(use_property.(u))
+    end
+  end
+
+  def without_animals_in_use
+    uses_to_discard, uses_to_keep =
+      partition_by_values_of_property(my_timeslice.animal_ids_in_use,
+                                      ->use {use.animal_id})
     self.merge(uses: uses_to_keep,
-               animals_with_scheduling_conflicts: uses_to_discard.map(&:animal_name).uniq)
+               animals_already_in_use: uses_to_discard.map(&:animal_name).uniq)
   end
 
   def as_saved
