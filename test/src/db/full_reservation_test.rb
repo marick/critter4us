@@ -82,6 +82,7 @@ class FullReservationTest < FreshDatabaseTestCase
     end
 
     should "prune and identify animals that are in use during the timeslice" do
+      animal_ids_in_use = [@use_that_conflicts.animal_id, "some irrelevant one"]
       during {
         @reservation.without_animals_in_use
       }.behold! {
@@ -89,7 +90,7 @@ class FullReservationTest < FreshDatabaseTestCase
                           with(@reservation).
                           and_return(@timeslice)
         @timeslice.should_receive(:animal_ids_in_use).
-                   and_return([@use_that_conflicts.animal_id])
+                   and_return(animal_ids_in_use)
       }
       assert { @result.uses.size == 1 }
       deny { @result.uses.any? { | u | u.animal_id == @use_that_conflicts.animal_id } }
