@@ -32,27 +32,27 @@ class FullReservation < DBHash
     @timeslice_source.from_reservation(self)
   end
     
-  def partition_by_values_of_property(excluded_values, use_property)
+  def partition_and_record(excluded_values, use_property, recording_symbol, recorded_property)
     excluded_values = Set.new(excluded_values)
-    uses.partition do | u |
+    uses_to_discard, uses_to_keep = uses.partition do | u |
       excluded_values.include?(use_property.(u))
     end
+    self.merge(:uses => uses_to_keep,
+               recording_symbol => uses_to_discard.map(&recorded_property).uniq)
   end
 
   def without_animals_in_use
-    uses_to_discard, uses_to_keep =
-      partition_by_values_of_property(my_timeslice.animal_ids_in_use,
-                                      ->use {use.animal_id})
-    self.merge(uses: uses_to_keep,
-               animals_already_in_use: uses_to_discard.map(&:animal_name).uniq)
+    partition_and_record(my_timeslice.animal_ids_in_use,
+                         ->use {use.animal_id},
+                         :animals_already_in_use,
+                         ->use {use.animal_name})
   end
 
   def without_blacked_out_use_pairs
-    uses_to_discard, uses_to_keep =
-      partition_by_values_of_property(my_timeslice.use_pairs_blacked_out,
-                                      ->use {use.only(:animal_id, :procedure_id) })
-    self.merge(uses: uses_to_keep,
-               blacked_out_use_pairs: uses_to_discard.map{|u| u.only(:animal_name, :procedure_name)})
+    partition_and_record(my_timeslice.use_pairs_blacked_out,
+                         ->use {use.only(:animal_id, :procedure_id) },
+                         :blacked_out_use_pairs, 
+                         ->use {use.only(:animal_name, :procedure_name) })
   end
 
   def as_saved
