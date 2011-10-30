@@ -33,11 +33,11 @@ class FunctionalHash < Hash
   alias_method :+, :merge
 
   def change_within(*args)
-    key = args.first
-    rest = args[1..-1]
-    if (args.count <= 2)
-      merge(key => rest.first)
+    if (args.first.is_a? Hash)
+      merge(args.first)
     else
+      key = args.first
+      rest = args[1..-1]
       merge(key => fetch(key).change_within(*rest))
     end
   end

@@ -96,14 +96,14 @@ class FunctionalHashTest < Test::Unit::TestCase
       end
 
       should "act as + at zero level" do
-        actual = @hashlike.change_within(:val, 4)
+        actual = @hashlike.change_within(val: 4)
         assert { actual.is_a?(FunctionalHash) }
         assert { actual.val == 4 } 
         assert { actual.other == "other" }
       end
 
       should "allow nesting" do
-        actual = @hashlike.change_within(:nested, :val, 44)
+        actual = @hashlike.change_within(:nested, val => 44)
         assert { actual.is_a?(FunctionalHash) }
         assert { actual.val == 3 }
         assert { actual.nested.val == 44 }
@@ -111,7 +111,7 @@ class FunctionalHashTest < Test::Unit::TestCase
       end
 
       should "allow n levels of nesting" do
-        actual = @hashlike.change_within(:nested, :nested, :val, 444)
+        actual = @hashlike.change_within(:nested, :nested, val => 444)
         assert { actual.is_a?(FunctionalHash) }
         assert { actual.val == 3 }
         assert { actual.nested.val == 33 }

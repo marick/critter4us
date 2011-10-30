@@ -22,10 +22,7 @@ class FullReservation < DBHash
     end
 
   def with_changed_timeslice(timeslice)
-    change_within(:data, :first_date, timeslice.first_date).
-      change_within(:data, :last_date, timeslice.last_date).
-      change_within(:data, :time_bits, timeslice.time_bits).
-      remove_within(:data, :id)
+    change_within(:data, timeslice).remove_within(:data, :id)
   end
 
   def my_timeslice
