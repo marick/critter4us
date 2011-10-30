@@ -53,7 +53,7 @@ class NewControllerTests < RackTestTestCase
     end
 
     context "POST" do 
-      should "coordinate other objects" do
+      should_eventually "coordinate other objects" do
         real_controller.override(mocks(:internalizer2, :renderer, :functionally))
         during {
           post Href.schedule_reservations_page("id"),

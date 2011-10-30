@@ -30,9 +30,9 @@ class Controller
 
   post Href.schedule_reservations_page_route(:reservation_id) do |reservation_id|
     json_response
-    timeslice = @internalizer2.maplike_timeslice(params[:timeslice])
-    animal_names = @functionally.shift_to_timeslice(reservation_id, timeslice)
-    @renderer.render_json(:omitted_animals => animal_names)
+    reservation = FullReservation.from_id(reservation_id)
+    timeslice = FunctionalTimeslice.from_browser(params[:timeslice])
+    @renderer.render_json(@functionally.shift_to_timeslice(reservation, timeslice))
   end
 end
 

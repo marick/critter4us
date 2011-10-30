@@ -1,13 +1,15 @@
 class Functionally
 
-  def copy_to_timeslice(reservation_id, raw_timeslice)
+  def copy_to_timeslice(reservation, timeslice)
     new_reservation =
-      FullReservation.from_id(reservation_id).
-         with_changed_timeslice(FunctionalTimeslice.from_browser(raw_timeslice)).
-         without_excluded_animals.
-         as_saved
-    { reservation_id: new_reservation.data.id,
-      animals_to_replace: new_reservation.animals_with_scheduling_conflicts }
+      reservation.
+      with_changed_timeslice(timeslice).
+      without_animals_in_use.
+      without_blacked_out_use_pairs.
+      as_saved
+    new_reservation.
+      only(:animals_already_in_use, :blacked_out_use_pairs).
+      merge(animals_already_in_use: new_reservation.animals_with_scheduling_conflicts)
   end
 
 end
