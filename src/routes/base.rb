@@ -53,7 +53,7 @@ class Controller < Sinatra::Base
                            # The new, strangling code.
                            :renderer => Renderer.new,
                            :internalizer2 => Internalizer2.new(@internalizer),
-                           :functionally => Functionally.new
+                           :functionally => Functionally
                            )
   end
 end
