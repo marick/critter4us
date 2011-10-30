@@ -1,6 +1,11 @@
 require './test/testutil/requires'
 require './src/routes/base'
 require 'ostruct'
+require './src/db/full_reservation'
+require './src/functional/functionally'
+require './strangled-src/model/requires'
+
+# Migrate these toward end-to-end tests instead of mock tests?
 
 class NewControllerTests < RackTestTestCase
   include JsonHelpers
@@ -53,24 +58,67 @@ class NewControllerTests < RackTestTestCase
     end
 
     context "POST" do 
-      should_eventually "coordinate other objects" do
-        real_controller.override(mocks(:internalizer2, :renderer, :functionally))
-        during {
-          post Href.schedule_reservations_page("id"),
-               :timeslice=>"timeslice representation"
-        }.behold! {
-          @internalizer2.should_receive(:maplike_timeslice).once.
-                         with("timeslice representation").
-                         and_return("timeslice")
-          @functionally.should_receive(:shift_to_timeslice).once.
-                        with("id", "timeslice").
-                        and_return(["animal names"])
-          @renderer.should_receive(:render_json).once.
-                    with(:omitted_animals => ["animal names"])
+      should "be able to copy reservations" do
+        animal1 = Animal.random(:name => "animal 1 - in use")
+        animal2 = Animal.random(:name => "animal 2 - blackout with procedure 2")
+        animal3 = Animal.random(:name => "animal 3")
+        procedure1 = Procedure.random(:name => "procedure 1")
+        procedure2 = Procedure.random(:name => "procedure 2")
+        data = {
+          :timeslice => Timeslice.new(Date.new(2009, 7, 23),
+                                      Date.new(2009, 8, 24),
+                                      TimeSet.new(MORNING)),
+          :course => 'vm333',
+          :instructor => 'morin',
+          :groups => [ {:procedures => ['procedure 1'], :animals => [animal1.name, animal2.name] }, 
+                       {:procedures => ['procedure 2'], :animals => [animal1.name, animal2.name, animal3.name] } ]
         }
-        assert_json_response
+        old_style = ReservationMaker.build_from(data)
+
+        new_timeslice = {
+          :first_date => Date.new(2010, 1, 1),
+          :last_date => Date.new(2010, 2, 2),
+          :times => ["morning"]
+        }
+
+        ExcludedBecauseInUse.insert(:first_date => new_timeslice[:first_date],
+                                    :last_date => new_timeslice[:first_date],
+                                    :time_bits => "100",
+                                    :animal_id => animal1.id)
+        ExcludedBecauseOfBlackoutPeriod.insert(:first_date => new_timeslice[:last_date],
+                                               :last_date => new_timeslice[:last_date]+10,
+                                               :time_bits => "111",
+                                               :animal_id => animal2.id,
+                                               :procedure_id => procedure2.id)
+
+        data_to_render = nil
+        during { 
+          post Href.schedule_reservations_page_route(old_style.id),
+                    "timeslice" => Base64.encode64(new_timeslice.to_json)
+        }.behold! { 
+          @renderer.should_receive(:render_json).once.
+          with(on { | arg | data_to_render = arg; true })
+        }
+
+        assert { data_to_render.size == 3 }
+        assert { data_to_render.animals_already_in_use == [animal1.name] }
+        assert { data_to_render.blacked_out_use_pairs == [ {:animal_name => animal2.name,
+                                                     :procedure_name => procedure2.name }] }
+        # The reservation is the new one. 
+        from_disk = FullReservation.from_id(data_to_render.reservation_id)
+        deny { from_disk.uses.any? { | use | use.animal_name == animal1.name } } 
+        deny { from_disk.uses.any? { | use | 
+            use.animal_name == animal2.name && use.procedure_name == procedure2.name
+          }}
+
+        # But the other two remain
+        assert { from_disk.uses.any? { | use | 
+            use.animal_name == animal2.name && use.procedure_name == procedure1.name
+          }}
+        assert { from_disk.uses.any? { | use | 
+            use.animal_name == animal3.name && use.procedure_name == procedure2.name
+          }}
       end
     end
   end
-  
 end

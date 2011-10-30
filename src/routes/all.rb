@@ -32,7 +32,7 @@ class Controller
     json_response
     reservation = FullReservation.from_id(reservation_id)
     timeslice = FunctionalTimeslice.from_browser(params[:timeslice])
-    @renderer.render_json(@functionally.shift_to_timeslice(reservation, timeslice))
+    @renderer.render_json(Functionally.copy_to_timeslice(reservation, timeslice))
   end
 end
 
