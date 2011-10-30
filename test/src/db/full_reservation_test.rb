@@ -114,33 +114,45 @@ class FullReservationTest < FreshDatabaseTestCase
       assert { @result.uses == [@use_without_conflict] }
       assert { @result.blacked_out_use_pairs == corresponding_pairs }
     end
-
-
   end
 
   context "`as_saved`" do
-    should "put the reservation on disk and return the new copy" do
-      @reservation.uses
-      new_reservation = @reservation.as_saved
-      new_reservation.uses
 
-      assert { @reservation.data != new_reservation.data } # ... because of id
-      assert { @reservation.data - :id == new_reservation.data - :id }
+    setup do 
+      @reservation_data_checks = lambda { | new_reservation | 
+        assert { @reservation.data != new_reservation.data } # ... because of id
+        assert { @reservation.data - :id == new_reservation.data - :id }
 
-      assert { 
-        new_reservation.groups.all? { | group | group.reservation_id == new_reservation.data.id }
+        assert { 
+          new_reservation.groups.all? { | group | group.reservation_id == new_reservation.data.id }
+        }
+
+        assert { new_reservation.uses.size == 2 }
+        use_1 = new_reservation.uses.find { | use | use.animal_name == 'animal 1' }
+        assert { use_1.procedure_name == 'procedure 1' } 
+        assert { new_reservation.groups.find { | group | group.id == use_1.group_id} } 
+
+        use_2 = new_reservation.uses.find { | use | use.animal_name == 'animal 2' }
+        assert { use_2.procedure_name == 'procedure 2' } 
+        assert { new_reservation.groups.find { | group | group.id == use_2.group_id} } 
+
+        assert { use_2.group_id != use_1.group_id }
       }
+    end
 
-      assert { new_reservation.uses.size == 2 }
-      use_1 = new_reservation.uses.find { | use | use.animal_name == 'animal 1' }
-      assert { use_1.procedure_name == 'procedure 1' } 
-      assert { new_reservation.groups.find { | group | group.id == use_1.group_id} } 
+    should "return data with new ids" do
+      @reservation_data_checks.(@reservation.as_saved)
+    end
 
-      use_2 = new_reservation.uses.find { | use | use.animal_name == 'animal 2' }
-      assert { use_2.procedure_name == 'procedure 2' } 
-      assert { new_reservation.groups.find { | group | group.id == use_2.group_id} } 
+    should "put the reservation on disk" do
+      @reservation_data_checks.(FullReservation.from_id(@reservation.as_saved.data.id))
+      @reservation_data_checks.(FullReservation.from_id(@reservation.as_saved.starting_id))
+    end
 
-      assert { use_2.group_id != use_1.group_id }
+    should "retain non-persistent data that was attached to the reservation" do
+      new_reservation = @reservation.merge(retain_me: "Please").as_saved
+      assert { new_reservation.retain_me == "Please" }
     end
   end
 end
+

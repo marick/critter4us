@@ -1,4 +1,5 @@
 require './src/db/db_hash'
+require './src/db/functional_timeslice'
 
 class FullReservation < DBHash
   def initialize(*args)
@@ -6,20 +7,31 @@ class FullReservation < DBHash
     collaborators_start_as(:timeslice_source => FunctionalTimeslice)
   end
 
+  DATA_FETCHER = lambda { | instance |
+    Fonly(ReservationTable.filter(:id => instance.starting_id).all)
+  }
+  GROUPS_FETCHER = lambda { | instance | 
+    Fall(GroupTable.filter(:reservation_id => instance.starting_id).all)
+  }
+  USES_FETCHER = lambda { | instance |
+    Fall(UsesTable.
+         join_with_names.
+         filter_by_groups(instance.groups).
+         select(*UsesTable.columns_and_names).all)
+  }
+  
+  def self.resets(reservation_id)
+    { 
+      :starting_id => reservation_id,
+      :data => DATA_FETCHER,
+      :groups => GROUPS_FETCHER,
+      :uses => USES_FETCHER
+    }
+  end
+
   def self.from_id(reservation_id)
-    new(:starting_id => reservation_id,
-        :data => lambda { | instance |
-          Fonly(ReservationTable.filter(:id => instance.starting_id).all)
-        },
-        :groups => lambda { | instance | 
-          Fall(GroupTable.filter(:reservation_id => instance.starting_id).all)
-        },
-        :uses => lambda { | instance |
-          Fall(UsesTable.join_with_names.
-                         filter_by_groups(instance.groups).
-                         select(*UsesTable.columns_and_names).all)
-        })
-    end
+    new(resets(reservation_id))
+  end
 
   def with_changed_timeslice(timeslice)
     change_within(:data, timeslice).remove_within(:data, :id)
@@ -52,15 +64,19 @@ class FullReservation < DBHash
                          ->use {use.only(:animal_name, :procedure_name) })
   end
 
-  def as_saved
-    new_id = ReservationTable.insert(self.data - :id)
+  def save!
+    resulting_id = ReservationTable.insert(self.data - :id)
     self.groups.each do | group |
-      group_id = GroupTable.insert(group - :id + {reservation_id: new_id })
+      group_id = GroupTable.insert(group - :id + {reservation_id: resulting_id })
       new_uses = uses.select { | use | use.group_id == group.id }.map do | use |
         use.only(:animal_id, :procedure_id) + {group_id: group_id}
       end
       UsesTable.multi_insert(new_uses)
     end
-    self.class.from_id(new_id)
+    resulting_id
+  end
+
+  def as_saved
+    merge(self.class.resets(save!))
   end
 end
