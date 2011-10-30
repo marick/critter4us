@@ -12,10 +12,14 @@ class FunctionalTimeslice < DBHash
                    reservation.data.time_bits)
   end
 
+  def self.from_hash(hash)
+    self.new(hash)
+  end
+
   def self.from_time_data(first_date, last_date, time_bits)
-    self.new(:first_date => first_date,
-             :last_date => last_date,
-             :time_bits => time_bits)
+    from_hash(:first_date => first_date,
+              :last_date => last_date,
+              :time_bits => time_bits)
   end
 
   def overlaps(dataset)
