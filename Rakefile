@@ -27,9 +27,19 @@ end
 
 task :test_all => [:test, :spec]
 
-task :spec => :coffee do
+
+
+task :spec => [:coffee, :spec_cleanup] do
      runner = (`uname` =~ /Darwin/ ? "" : "xvfb-run")
      system("#{runner} jasmine-headless-webkit -c -j spec/support/jasmine.yml")
+end
+
+desc "Way coffeescript is set up doesn't agree with emacs coffeescript-mode"
+task :spec_cleanup do
+     droppings = "spec/*_spec.js"
+     unless Dir[droppings].empty?
+          `rm #{droppings}` 
+     end       
 end
 
 desc "Run tests."
