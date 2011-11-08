@@ -32,49 +32,49 @@ global.C4.TagUtils =
 
 
 
-class global.OnStarts
+class global.C4.NoteEditingPage extends global.C4.Module
+  @include global.C4.TagUtils
 
-  @isEmpty: (tag) ->
-    tag.innerHTML.match /^\s*$/
-
-  @hasStuff: (tag) ->
-    !OnStarts.isEmpty(tag)
-
-  @update_textile_divs_visibility: (duration) ->
+  update_textile_divs_visibility: (duration) ->
     duration ?= 0
-    $('.textile').filter(-> OnStarts.isEmpty(this)).slideUp(duration)
-    $('.textile').filter(-> OnStarts.hasStuff(this)).slideDown(duration)
+    self=this
+    $('.textile').filter( (index) -> self.isEmpty(this)).slideUp(duration)
+    $('.textile').filter( (index) -> self.hasStuff(this)).slideDown(duration)
 
-  @submit_note_update: ->
+  submit_note_update: ->
     $('#note_form').ajaxForm {
                        target: '.textile'
-                       success: ->
-                          OnStarts.update_textile_divs_visibility("fast")}
+                       success: =>
+                          @update_textile_divs_visibility("fast")}
 
-  @get_note_editing_page: ->
+  initialize_jquery: ->
     # The following prevents Safari from confusing the user
     # by falsely saying form text has never been submitted.
     # This used to work and mysteriously stopped.
     # $('body').attr('onbeforeunload', "")
     # But this does work. For now!
     window.onbeforeunload = -> nil
-    OnStarts.update_textile_divs_visibility()
-    OnStarts.submit_note_update()
+    @update_textile_divs_visibility()
+    @submit_note_update()
 
-  @next_month: ->
+
+class global.C4.ReservationSchedulingPage extends global.C4.Module
+  next_month: ->
     next_month = new Date()
     next_month.setMonth(next_month.getMonth()+1)
     next_month
 
-  @update_with_date_picker: (input$) ->
+  update_with_date_picker: (input$) ->
     input$.DatePicker({
-        current: OnStarts.next_month(),
+        current: @next_month(),
         calendars: 2,
         onChange: ->
           input$.val(input$.DatePickerGetDate('formatted')).DatePickerHide()
         date: new Date(), # needs to be here, not sure why, doesn't affect the calendar shown
       })
 
-  @get_reservation_scheduling_page: ->
-    OnStarts.update_with_date_picker($('#weekly_end_date'))
+  initialize_jquery: ->
+    @update_with_date_picker($('#weekly_end_date'))
+
+
 

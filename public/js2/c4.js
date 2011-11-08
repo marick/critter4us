@@ -5,7 +5,14 @@
       if (this[i] === item) return i;
     }
     return -1;
-  };
+  }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
+    for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+    function ctor() { this.constructor = child; }
+    ctor.prototype = parent.prototype;
+    child.prototype = new ctor;
+    child.__super__ = parent.prototype;
+    return child;
+  }, __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
   global = typeof exports !== "undefined" && exports !== null ? exports : this;
   if (global.C4 == null) {
     global.C4 = new Object();
@@ -49,49 +56,56 @@
       return !this.isEmpty(tag);
     }
   };
-  global.OnStarts = (function() {
-    function OnStarts() {}
-    OnStarts.isEmpty = function(tag) {
-      return tag.innerHTML.match(/^\s*$/);
-    };
-    OnStarts.hasStuff = function(tag) {
-      return !OnStarts.isEmpty(tag);
-    };
-    OnStarts.update_textile_divs_visibility = function(duration) {
+  global.C4.NoteEditingPage = (function() {
+    __extends(NoteEditingPage, global.C4.Module);
+    function NoteEditingPage() {
+      NoteEditingPage.__super__.constructor.apply(this, arguments);
+    }
+    NoteEditingPage.include(global.C4.TagUtils);
+    NoteEditingPage.prototype.update_textile_divs_visibility = function(duration) {
+      var self;
       if (duration == null) {
         duration = 0;
       }
-      $('.textile').filter(function() {
-        return OnStarts.isEmpty(this);
+      self = this;
+      $('.textile').filter(function(index) {
+        return self.isEmpty(this);
       }).slideUp(duration);
-      return $('.textile').filter(function() {
-        return OnStarts.hasStuff(this);
+      return $('.textile').filter(function(index) {
+        return self.hasStuff(this);
       }).slideDown(duration);
     };
-    OnStarts.submit_note_update = function() {
+    NoteEditingPage.prototype.submit_note_update = function() {
       return $('#note_form').ajaxForm({
         target: '.textile',
-        success: function() {
-          return OnStarts.update_textile_divs_visibility("fast");
-        }
+        success: __bind(function() {
+          return this.update_textile_divs_visibility("fast");
+        }, this)
       });
     };
-    OnStarts.get_note_editing_page = function() {
+    NoteEditingPage.prototype.initialize_jquery = function() {
       window.onbeforeunload = function() {
         return nil;
       };
-      OnStarts.update_textile_divs_visibility();
-      return OnStarts.submit_note_update();
+      this.update_textile_divs_visibility();
+      return this.submit_note_update();
     };
-    OnStarts.next_month = function() {
+    return NoteEditingPage;
+  })();
+  global.C4.ReservationSchedulingPage = (function() {
+    __extends(ReservationSchedulingPage, global.C4.Module);
+    function ReservationSchedulingPage() {
+      ReservationSchedulingPage.__super__.constructor.apply(this, arguments);
+    }
+    ReservationSchedulingPage.prototype.next_month = function() {
       var next_month;
       next_month = new Date();
       next_month.setMonth(next_month.getMonth() + 1);
       return next_month;
     };
-    OnStarts.update_with_date_picker = function(input$) {
+    ReservationSchedulingPage.prototype.update_with_date_picker = function(input$) {
       return input$.DatePicker({
-        current: OnStarts.next_month(),
+        current: this.next_month(),
         calendars: 2,
         onChange: function() {
           return input$.val(input$.DatePickerGetDate('formatted')).DatePickerHide();
@@ -99,9 +113,9 @@
         date: new Date()
       });
     };
-    OnStarts.get_reservation_scheduling_page = function() {
-      return OnStarts.update_with_date_picker($('#weekly_end_date'));
+    ReservationSchedulingPage.prototype.initialize_jquery = function() {
+      return this.update_with_date_picker($('#weekly_end_date'));
     };
-    return OnStarts;
+    return ReservationSchedulingPage;
   })();
 }).call(this);
