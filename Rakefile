@@ -27,7 +27,7 @@ end
 
 task :test_all => [:test, :spec]
 
-task :spec do
+task :spec => :coffee do
      runner = (`uname` =~ /Darwin/ ? "" : "xvfb-run")
      system("#{runner} jasmine-headless-webkit -c -j spec/support/jasmine.yml")
 end
