@@ -89,7 +89,7 @@
     }
     NoteEditingPage.include(global.C4.TagUtils);
     NoteEditingPage.include(global.C4.Textile);
-    NoteEditingPage.prototype.submit_note_update = function() {
+    NoteEditingPage.prototype.describe_update_action = function() {
       return $('#note_form').ajaxForm({
         target: '.textile',
         success: __bind(function() {
@@ -102,7 +102,7 @@
         return nil;
       };
       this.update_textile_divs_visibility();
-      return this.submit_note_update();
+      return this.describe_update_action();
     };
     return NoteEditingPage;
   })();
@@ -112,18 +112,22 @@
       ReservationSchedulingPage.__super__.constructor.apply(this, arguments);
     }
     ReservationSchedulingPage.include(global.C4.DateUtils);
-    ReservationSchedulingPage.prototype.update_with_date_picker = function(input$) {
+    ReservationSchedulingPage.prototype.make_date_picker_stasher = function(input$) {
+      return function() {
+        return input$.val(input$.DatePickerGetDate('formatted')).DatePickerHide();
+      };
+    };
+    ReservationSchedulingPage.prototype.describe_date_picker = function(input$) {
       return input$.DatePicker({
         current: this.next_month(),
         calendars: 2,
-        onChange: function() {
-          return input$.val(input$.DatePickerGetDate('formatted')).DatePickerHide();
-        },
+        onChange: this.make_date_picker_stasher(input$),
         date: new Date()
       });
     };
     ReservationSchedulingPage.prototype.initialize_jquery = function() {
-      return this.update_with_date_picker($('#weekly_end_date'));
+      this.weekly_end_date_input$ = $('#weekly_end_date');
+      return this.describe_date_picker(this.weekly_end_date_input$);
     };
     return ReservationSchedulingPage;
   })();

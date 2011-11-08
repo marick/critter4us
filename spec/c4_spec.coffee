@@ -5,7 +5,7 @@ class Includeroo extends global.C4.Module
   @include global.C4.DateUtils
   @include global.C4.Textile
 
-describe 'all of C4', ->
+describe 'all of C4 modules', ->
   beforeEach ->
     @sut = new Includeroo
 
@@ -36,3 +36,16 @@ describe 'all of C4', ->
       starting_date = new Date(2001, 0, 31)
       next_month = @sut.next_month(starting_date)
       expect(next_month.getDate()).toBe(3)
+
+describe 'ReservationSchedulingPage', ->
+  beforeEach ->
+    setFixtures("<input type='text' id='weekly_end_date'/>")
+    @sut = new global.C4.ReservationSchedulingPage
+    @sut.initialize_jquery()
+
+  it "can stash dates that are picked", ->
+    $(@sut.weekly_end_date_input$).DatePickerSetDate(new Date(2011, 5, 3))
+    @sut.make_date_picker_stasher(@sut.weekly_end_date_input$)()
+    expect(@sut.weekly_end_date_input$).toHaveValue("2011-06-03")
+
+

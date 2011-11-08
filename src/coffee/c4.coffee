@@ -49,7 +49,7 @@ class global.C4.NoteEditingPage extends global.C4.Module
   @include global.C4.TagUtils
   @include global.C4.Textile
 
-  submit_note_update: ->
+  describe_update_action: ->
     $('#note_form').ajaxForm {
                        target: '.textile'
                        success: =>
@@ -63,20 +63,23 @@ class global.C4.NoteEditingPage extends global.C4.Module
     # But this does work. For now!
     window.onbeforeunload = -> nil
     @update_textile_divs_visibility()
-    @submit_note_update()
+    @describe_update_action()
 
 
 class global.C4.ReservationSchedulingPage extends global.C4.Module
   @include global.C4.DateUtils
 
-  update_with_date_picker: (input$) ->
+  make_date_picker_stasher: (input$) ->
+    -> input$.val(input$.DatePickerGetDate('formatted')).DatePickerHide()
+
+  describe_date_picker: (input$) ->
     input$.DatePicker({
         current: @next_month(),
         calendars: 2,
-        onChange: ->
-          input$.val(input$.DatePickerGetDate('formatted')).DatePickerHide()
+        onChange: @make_date_picker_stasher(input$)
         date: new Date(), # needs to be here, not sure why, doesn't affect the calendar shown
       })
 
   initialize_jquery: ->
-    @update_with_date_picker($('#weekly_end_date'))
+    @weekly_end_date_input$ = $('#weekly_end_date')
+    @describe_date_picker(@weekly_end_date_input$)
