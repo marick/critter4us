@@ -30,16 +30,23 @@ global.C4.TagUtils =
   hasStuff: (tag) ->
     !@isEmpty(tag)
 
+global.C4.DateUtils =
+  next_month: ->
+    next_month = new Date()
+    next_month.setMonth(next_month.getMonth()+1)
+    next_month
 
-
-class global.C4.NoteEditingPage extends global.C4.Module
-  @include global.C4.TagUtils
-
+global.C4.Textile =
   update_textile_divs_visibility: (duration) ->
     duration ?= 0
     self=this
     $('.textile').filter( (index) -> self.isEmpty(this)).slideUp(duration)
     $('.textile').filter( (index) -> self.hasStuff(this)).slideDown(duration)
+
+
+class global.C4.NoteEditingPage extends global.C4.Module
+  @include global.C4.TagUtils
+  @include global.C4.Textile
 
   submit_note_update: ->
     $('#note_form').ajaxForm {
@@ -59,10 +66,7 @@ class global.C4.NoteEditingPage extends global.C4.Module
 
 
 class global.C4.ReservationSchedulingPage extends global.C4.Module
-  next_month: ->
-    next_month = new Date()
-    next_month.setMonth(next_month.getMonth()+1)
-    next_month
+  @include global.C4.DateUtils
 
   update_with_date_picker: (input$) ->
     input$.DatePicker({
@@ -75,6 +79,3 @@ class global.C4.ReservationSchedulingPage extends global.C4.Module
 
   initialize_jquery: ->
     @update_with_date_picker($('#weekly_end_date'))
-
-
-
