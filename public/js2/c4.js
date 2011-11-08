@@ -56,13 +56,19 @@
       return !this.isEmpty(tag);
     }
   };
-  global.C4.NoteEditingPage = (function() {
-    __extends(NoteEditingPage, global.C4.Module);
-    function NoteEditingPage() {
-      NoteEditingPage.__super__.constructor.apply(this, arguments);
+  global.C4.DateUtils = {
+    next_month: function(starting_date) {
+      var next_month;
+      if (starting_date == null) {
+        starting_date = new Date();
+      }
+      next_month = new Date(starting_date);
+      next_month.setMonth(next_month.getMonth() + 1);
+      return next_month;
     }
-    NoteEditingPage.include(global.C4.TagUtils);
-    NoteEditingPage.prototype.update_textile_divs_visibility = function(duration) {
+  };
+  global.C4.Textile = {
+    update_textile_divs_visibility: function(duration) {
       var self;
       if (duration == null) {
         duration = 0;
@@ -74,7 +80,15 @@
       return $('.textile').filter(function(index) {
         return self.hasStuff(this);
       }).slideDown(duration);
-    };
+    }
+  };
+  global.C4.NoteEditingPage = (function() {
+    __extends(NoteEditingPage, global.C4.Module);
+    function NoteEditingPage() {
+      NoteEditingPage.__super__.constructor.apply(this, arguments);
+    }
+    NoteEditingPage.include(global.C4.TagUtils);
+    NoteEditingPage.include(global.C4.Textile);
     NoteEditingPage.prototype.submit_note_update = function() {
       return $('#note_form').ajaxForm({
         target: '.textile',
@@ -97,12 +111,7 @@
     function ReservationSchedulingPage() {
       ReservationSchedulingPage.__super__.constructor.apply(this, arguments);
     }
-    ReservationSchedulingPage.prototype.next_month = function() {
-      var next_month;
-      next_month = new Date();
-      next_month.setMonth(next_month.getMonth() + 1);
-      return next_month;
-    };
+    ReservationSchedulingPage.include(global.C4.DateUtils);
     ReservationSchedulingPage.prototype.update_with_date_picker = function(input$) {
       return input$.DatePicker({
         current: this.next_month(),

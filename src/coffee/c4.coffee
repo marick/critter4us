@@ -31,8 +31,9 @@ global.C4.TagUtils =
     !@isEmpty(tag)
 
 global.C4.DateUtils =
-  next_month: ->
-    next_month = new Date()
+  next_month: (starting_date) ->
+    starting_date = new Date() unless starting_date?
+    next_month = new Date(starting_date)
     next_month.setMonth(next_month.getMonth()+1)
     next_month
 
