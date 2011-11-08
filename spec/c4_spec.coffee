@@ -1,10 +1,13 @@
 global = (exports ? this)
 
-describe 'C4 -- currently all the coffeescript', ->
-  describe 'base class', ->
-    beforeEach ->
-      @sut = new global.C4
+class Includeroo extends global.C4.Module
+  @include global.C4.TagUtils
 
+describe 'all of C4', ->
+  beforeEach ->
+    @sut = new Includeroo
+
+  describe 'Tag utils', ->
     it 'can detect if a tag has no text in its inner HTML', ->
       tag = document.createElement('h1')
       expect(@sut.isEmpty(tag)).toBeTruthy()

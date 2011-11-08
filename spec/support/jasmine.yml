@@ -3,7 +3,7 @@ src_files:
   - public/js2/jquery.js
   - public/js2/jquery.form.js
   - public/js2/datepicker.js
-  # Are the following needed? 
+  # Are the following files used by any code anywhere?
   - public/js2/eye.js
   - public/js2/layout.js
   - public/js2/utils.js

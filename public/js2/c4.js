@@ -1,16 +1,54 @@
 (function() {
-  var global;
+  var global, moduleKeywords;
+  var __indexOf = Array.prototype.indexOf || function(item) {
+    for (var i = 0, l = this.length; i < l; i++) {
+      if (this[i] === item) return i;
+    }
+    return -1;
+  };
   global = typeof exports !== "undefined" && exports !== null ? exports : this;
-  global.C4 = (function() {
-    function C4() {}
-    C4.prototype.isEmpty = function(tag) {
-      return tag.innerHTML.match(/^\s*$/);
+  if (global.C4 == null) {
+    global.C4 = new Object();
+  }
+  moduleKeywords = ['extended', 'included'];
+  global.C4.Module = (function() {
+    function Module() {}
+    Module.extend = function(obj) {
+      var key, value, _ref;
+      for (key in obj) {
+        value = obj[key];
+        if (__indexOf.call(moduleKeywords, key) < 0) {
+          this[key] = value;
+        }
+      }
+      if ((_ref = obj.extended) != null) {
+        _ref.apply(this);
+      }
+      return this;
     };
-    C4.prototype.hasStuff = function(tag) {
-      return !this.isEmpty(tag);
+    Module.include = function(obj) {
+      var key, value, _ref;
+      for (key in obj) {
+        value = obj[key];
+        if (__indexOf.call(moduleKeywords, key) < 0) {
+          this.prototype[key] = value;
+        }
+      }
+      if ((_ref = obj.included) != null) {
+        _ref.apply(this);
+      }
+      return this;
     };
-    return C4;
+    return Module;
   })();
+  global.C4.TagUtils = {
+    isEmpty: function(tag) {
+      return tag.innerHTML.match(/^\s*$/);
+    },
+    hasStuff: function(tag) {
+      return !this.isEmpty(tag);
+    }
+  };
   global.OnStarts = (function() {
     function OnStarts() {}
     OnStarts.isEmpty = function(tag) {
