@@ -37,6 +37,22 @@ describe 'all of C4 modules', ->
       next_month = @sut.next_month(starting_date)
       expect(next_month.getDate()).toBe(3)
 
+  describe 'Textile', ->
+    it "will reveal a div with contents", ->
+      setFixtures("<div class='textile'>text</div>")
+      $('.textile').hide()
+      expect($('.textile')).toBeHidden()
+      @sut.update_textile_divs_visibility(0)
+      expect($('.textile')).toBeVisible()
+
+    it "hide a div with no contents", ->
+      setFixtures("<div class='textile'></div>")
+      expect($('.textile')).toBeVisible()
+      @sut.update_textile_divs_visibility(0)
+      expect($('.textile')).toBeHidden()
+
+
+
 describe 'ReservationSchedulingPage', ->
   beforeEach ->
     setFixtures("<input type='text' id='weekly_end_date'/>")
