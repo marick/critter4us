@@ -18,18 +18,18 @@ class global.OnStarts
     tag.innerHTML.match /^\s*$/
 
   @hasStuff: (tag) ->
-    !@isEmpty(tag)
+    !OnStarts.isEmpty(tag)
 
   @update_textile_divs_visibility: (duration) ->
     duration ?= 0
-    $('.textile').filter(-> @isEmpty(this)).slideUp(duration)
-    $('.textile').filter(-> @hasStuff(this)).slideDown(duration)
+    $('.textile').filter(-> OnStarts.isEmpty(this)).slideUp(duration)
+    $('.textile').filter(-> OnStarts.hasStuff(this)).slideDown(duration)
 
   @submit_note_update: ->
     $('#note_form').ajaxForm {
                        target: '.textile'
                        success: ->
-                          @update_textile_divs_visibility("fast")}
+                          OnStarts.update_textile_divs_visibility("fast")}
 
   @get_note_editing_page: ->
     # The following prevents Safari from confusing the user
@@ -38,8 +38,8 @@ class global.OnStarts
     # $('body').attr('onbeforeunload', "")
     # But this does work. For now!
     window.onbeforeunload = -> nil
-    @update_textile_divs_visibility()
-    @submit_note_update()
+    OnStarts.update_textile_divs_visibility()
+    OnStarts.submit_note_update()
 
   @next_month: ->
     next_month = new Date()
@@ -48,7 +48,7 @@ class global.OnStarts
 
   @update_with_date_picker: (input$) ->
     input$.DatePicker({
-        current: @next_month(),
+        current: OnStarts.next_month(),
         calendars: 2,
         onChange: ->
           input$.val(input$.DatePickerGetDate('formatted')).DatePickerHide()
@@ -56,5 +56,5 @@ class global.OnStarts
       })
 
   @get_reservation_scheduling_page: ->
-    @update_with_date_picker($('#weekly_end_date'))
+    OnStarts.update_with_date_picker($('#weekly_end_date'))
 

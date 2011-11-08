@@ -17,24 +17,24 @@
       return tag.innerHTML.match(/^\s*$/);
     };
     OnStarts.hasStuff = function(tag) {
-      return !this.isEmpty(tag);
+      return !OnStarts.isEmpty(tag);
     };
     OnStarts.update_textile_divs_visibility = function(duration) {
       if (duration == null) {
         duration = 0;
       }
       $('.textile').filter(function() {
-        return this.isEmpty(this);
+        return OnStarts.isEmpty(this);
       }).slideUp(duration);
       return $('.textile').filter(function() {
-        return this.hasStuff(this);
+        return OnStarts.hasStuff(this);
       }).slideDown(duration);
     };
     OnStarts.submit_note_update = function() {
       return $('#note_form').ajaxForm({
         target: '.textile',
         success: function() {
-          return this.update_textile_divs_visibility("fast");
+          return OnStarts.update_textile_divs_visibility("fast");
         }
       });
     };
@@ -42,8 +42,8 @@
       window.onbeforeunload = function() {
         return nil;
       };
-      this.update_textile_divs_visibility();
-      return this.submit_note_update();
+      OnStarts.update_textile_divs_visibility();
+      return OnStarts.submit_note_update();
     };
     OnStarts.next_month = function() {
       var next_month;
@@ -53,7 +53,7 @@
     };
     OnStarts.update_with_date_picker = function(input$) {
       return input$.DatePicker({
-        current: this.next_month(),
+        current: OnStarts.next_month(),
         calendars: 2,
         onChange: function() {
           return input$.val(input$.DatePickerGetDate('formatted')).DatePickerHide();
@@ -62,7 +62,7 @@
       });
     };
     OnStarts.get_reservation_scheduling_page = function() {
-      return this.update_with_date_picker($('#weekly_end_date'));
+      return OnStarts.update_with_date_picker($('#weekly_end_date'));
     };
     return OnStarts;
   })();
