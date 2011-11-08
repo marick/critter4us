@@ -2,6 +2,16 @@
 
 global = (exports ? this)
 
+class global.C4
+  isEmpty: (tag) ->
+    tag.innerHTML.match /^\s*$/
+
+  hasStuff: (tag) ->
+    !@isEmpty(tag)
+
+
+
+
 class global.OnStarts
 
   @isEmpty: (tag) ->

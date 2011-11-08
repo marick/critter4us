@@ -1,6 +1,16 @@
 (function() {
   var global;
   global = typeof exports !== "undefined" && exports !== null ? exports : this;
+  global.C4 = (function() {
+    function C4() {}
+    C4.prototype.isEmpty = function(tag) {
+      return tag.innerHTML.match(/^\s*$/);
+    };
+    C4.prototype.hasStuff = function(tag) {
+      return !this.isEmpty(tag);
+    };
+    return C4;
+  })();
   global.OnStarts = (function() {
     function OnStarts() {}
     OnStarts.isEmpty = function(tag) {
