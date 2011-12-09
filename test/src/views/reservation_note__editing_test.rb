@@ -6,7 +6,7 @@ class NoteEditingPageTests < ViewTestCase
 
   def render(hash)
     reservation = Reservation.random(hash)
-    @renderer.render_page(:get_note_editing_page, :reservation => reservation)
+    @renderer.render_page(:reservation_note__editing, :reservation => reservation)
   end
 
   should "use reservation to populate page upon GET" do

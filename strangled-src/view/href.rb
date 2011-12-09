@@ -1,15 +1,15 @@
 module Href
-  def self.note_editing_page_raw(value)
+  def self.reservation_note_raw(value)
     "/2/reservation/#{value}/note"
   end
   
-  def self.note_editing_page(reservation_id)
+  def self.reservation_note(reservation_id)
     CritterLogger.info reservation_id
-    note_editing_page_raw(reservation_id)
+    reservation_note_raw(reservation_id)
   end
 
-  def self.note_editing_page_route(key)
-    note_editing_page_raw(key.inspect)
+  def self.reservation_note_route(key)
+    reservation_note_raw(key.inspect)
   end
 
 

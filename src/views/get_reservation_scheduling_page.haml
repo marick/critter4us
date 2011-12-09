@@ -12,5 +12,5 @@
 :javascript
   jQuery(function() {
     var start = new Date(#{reservation.first_date.year}, #{reservation.first_date.month-1}, #{reservation.first_date.mday});
-    (new window.C4.ReservationSchedulingPage).initialize_jquery("#{callback}", start);
+    (new window.C4.ReservationSchedulingPage).initialize_jquery(#{reservation.id}, start);
   });

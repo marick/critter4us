@@ -22,22 +22,22 @@ class NewControllerTests < RackTestTestCase
   context "adding notes to reservations" do
     should "GET should pass the reservation to a view" do
       during {
-        get Href.note_editing_page(@reservation.id)
+        get Href.reservation_note(@reservation.id)
       }.behold! {
         @renderer.should_receive(:render_page).once.
-                  with(:get_note_editing_page, :reservation => @reservation)
+                  with(:reservation_note__editing, :reservation => @reservation)
       }
     end
 
     context "POST" do 
       should "update the reservation's note" do
-        post Href.note_editing_page(@reservation.id), "note" => "new text"
+        post Href.reservation_note(@reservation.id), "note" => "new text"
         assert { Reservation[:note => "new text"].id == @reservation.id }
       end
 
       should "return the note as Textile html" do
         during { 
-          post Href.note_editing_page(@reservation.id), "note" => "**new**"
+          post Href.reservation_note(@reservation.id), "note" => "**new**"
         }.behold! {
           @renderer.should_receive(:render_textile).once.with("**new**")
         }

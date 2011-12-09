@@ -11,12 +11,12 @@ class Controller
     redirect '/2.html'
   end
 
-  get Href.note_editing_page_route(:reservation_id) do |reservation_id|
+  get Href.reservation_note_route(:reservation_id) do |reservation_id|
     reservation = reservation_source[reservation_id]
-    @renderer.render_page(:get_note_editing_page, :reservation => reservation)
+    @renderer.render_page(:reservation_note__editing, :reservation => reservation)
   end
 
-  post Href.note_editing_page_route(:reservation_id) do
+  post Href.reservation_note_route(:reservation_id) do
     reservation = reservation_source[params[:reservation_id]]
     reservation.update(:note => params[:note])
     @renderer.render_textile(reservation.note)
