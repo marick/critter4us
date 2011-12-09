@@ -1,16 +1,16 @@
 %div.centered
   Schedule copies of this reservation:
   =partial_call(:long_form_reservation, :reservation => reservation)
-  %form#schedule_form{:method => 'POST', :action => Href.schedule_reservations_page(reservation)}
+  %div
     Repeat every week up through
     %input#weekly_end_date{:type => 'text'}
-    %input{:type=>'submit', :value=>"Duplicate"}
+    %input#duplicate_by_week{:type=>'submit', :value=>"Duplicate"}
 
     %div#action_template
       %span.date_holder Date
        
 :javascript
   jQuery(function() {
-    start = new Date(#{reservation.first_date.year}, #{reservation.first_date.month-1}, #{reservation.first_date.mday});
-    (new window.C4.ReservationSchedulingPage).initialize_jquery(#{reservation.id}, start);
+    var start = new Date(#{reservation.first_date.year}, #{reservation.first_date.month-1}, #{reservation.first_date.mday});
+    (new window.C4.ReservationSchedulingPage).initialize_jquery("#{callback}", start);
   });
