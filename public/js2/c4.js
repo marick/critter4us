@@ -144,13 +144,11 @@
         calendars: 2,
         onChange: this.make_date_picker_stasher(input$),
         date: new Date(),
-        onRender: function(d) {
-          var today;
-          today = new Date();
+        onRender: __bind(function(d) {
           return {
-            disabled: d <= today || d.getDay() !== today.getDay()
+            disabled: !this.same_weekday_in_future(d)
           };
-        }
+        }, this)
       });
     };
     ReservationSchedulingPage.prototype.initialize_jquery = function() {

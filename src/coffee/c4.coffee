@@ -92,8 +92,8 @@ class global.C4.ReservationSchedulingPage extends global.C4.Module
         calendars: 2,
         onChange: @make_date_picker_stasher(input$)
         date: new Date(), # needs to be here, not sure why, doesn't affect the calendar shown
-        onRender: (d) ->
-          {disabled: !same_weekday_in_future}
+        onRender: (d) =>
+          {disabled: !@same_weekday_in_future(d)}
       })
 
   initialize_jquery: ->
