@@ -37,6 +37,20 @@ global.C4.DateUtils =
     next_month.setMonth(next_month.getMonth()+1)
     next_month
 
+  shift_day: (starting_date, count) ->
+    retval = new Date(starting_date)
+    retval.setDate(retval.getDate() + count)
+    retval
+
+  shift_week: (starting_date, count) ->
+    @shift_day(starting_date, count*7)
+
+  same_weekday_in_future: (candidate, today) ->
+    today = new Date() unless today?
+    return false unless candidate.getDay() == today.getDay()
+    return false unless candidate > today
+    true
+
 global.C4.Textile =
   update_textile_divs_visibility: (duration) ->
     duration ?= 0
@@ -78,6 +92,8 @@ class global.C4.ReservationSchedulingPage extends global.C4.Module
         calendars: 2,
         onChange: @make_date_picker_stasher(input$)
         date: new Date(), # needs to be here, not sure why, doesn't affect the calendar shown
+        onRender: (d) ->
+          {disabled: !same_weekday_in_future}
       })
 
   initialize_jquery: ->

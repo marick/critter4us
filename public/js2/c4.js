@@ -65,6 +65,27 @@
       next_month = new Date(starting_date);
       next_month.setMonth(next_month.getMonth() + 1);
       return next_month;
+    },
+    shift_day: function(starting_date, count) {
+      var retval;
+      retval = new Date(starting_date);
+      retval.setDate(retval.getDate() + count);
+      return retval;
+    },
+    shift_week: function(starting_date, count) {
+      return this.shift_day(starting_date, count * 7);
+    },
+    same_weekday_in_future: function(candidate, today) {
+      if (today == null) {
+        today = new Date();
+      }
+      if (candidate.getDay() !== today.getDay()) {
+        return false;
+      }
+      if (!(candidate > today)) {
+        return false;
+      }
+      return true;
     }
   };
   global.C4.Textile = {
@@ -122,7 +143,14 @@
         current: this.next_month(),
         calendars: 2,
         onChange: this.make_date_picker_stasher(input$),
-        date: new Date()
+        date: new Date(),
+        onRender: function(d) {
+          var today;
+          today = new Date();
+          return {
+            disabled: d <= today || d.getDay() !== today.getDay()
+          };
+        }
       });
     };
     ReservationSchedulingPage.prototype.initialize_jquery = function() {
