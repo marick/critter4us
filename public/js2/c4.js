@@ -138,22 +138,23 @@
         return input$.val(input$.DatePickerGetDate('formatted')).DatePickerHide();
       };
     };
-    ReservationSchedulingPage.prototype.describe_date_picker = function(input$) {
+    ReservationSchedulingPage.prototype.describe_date_picker = function(input$, reservation_date) {
       return input$.DatePicker({
-        current: this.next_month(),
+        current: this.next_month(reservation_date),
         calendars: 2,
         onChange: this.make_date_picker_stasher(input$),
         date: new Date(),
         onRender: __bind(function(d) {
           return {
-            disabled: !this.same_weekday_in_future(d)
+            disabled: !this.same_weekday_in_future(d, reservation_date)
           };
         }, this)
       });
     };
-    ReservationSchedulingPage.prototype.initialize_jquery = function() {
+    ReservationSchedulingPage.prototype.initialize_jquery = function(reservation_id, reservation_date) {
+      this.reservation_id = reservation_id;
       this.weekly_end_date_input$ = $('#weekly_end_date');
-      return this.describe_date_picker(this.weekly_end_date_input$);
+      return this.describe_date_picker(this.weekly_end_date_input$, reservation_date);
     };
     return ReservationSchedulingPage;
   })();

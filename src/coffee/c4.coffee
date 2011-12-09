@@ -86,16 +86,17 @@ class global.C4.ReservationSchedulingPage extends global.C4.Module
   make_date_picker_stasher: (input$) ->
     -> input$.val(input$.DatePickerGetDate('formatted')).DatePickerHide()
 
-  describe_date_picker: (input$) ->
+  describe_date_picker: (input$, reservation_date) ->
     input$.DatePicker({
-        current: @next_month(),
+        current: @next_month(reservation_date),
         calendars: 2,
         onChange: @make_date_picker_stasher(input$)
         date: new Date(), # needs to be here, not sure why, doesn't affect the calendar shown
         onRender: (d) =>
-          {disabled: !@same_weekday_in_future(d)}
+          {disabled: !@same_weekday_in_future(d, reservation_date)}
       })
 
-  initialize_jquery: ->
+  initialize_jquery: (reservation_id, reservation_date) ->
+    @reservation_id = reservation_id
     @weekly_end_date_input$ = $('#weekly_end_date')
-    @describe_date_picker(@weekly_end_date_input$)
+    @describe_date_picker(@weekly_end_date_input$, reservation_date)
