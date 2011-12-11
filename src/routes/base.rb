@@ -2,6 +2,8 @@ require 'rubygems'
 require 'sinatra/base'
 require 'json'
 require 'pp'
+require './src/views/partials'
+require './src/views/helpers'
 require './strangled-src/util/test-support'
 require './strangled-src/model/requires'
 require './strangled-src/view/requires'
@@ -15,6 +17,8 @@ include Erector::Mixin
 
 class Controller < Sinatra::Base  
   include TestSupport
+  set :haml, :format => :html5
+  helpers Sinatra::Partials, Helpers::Reservation
 
   # In Rack::Test tests, it's hard to grab hold of the actual controller
   # from behind a maze of middleware. (It seems.) So this is a hack to make
