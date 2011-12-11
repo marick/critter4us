@@ -10,8 +10,7 @@ class Controller
     @renderer.render_textile(reservation.note)
   end
 
-  # TODO: Temp name
-  post Href::Reservation.schedule_reservations_page_match do |reservation_id|
+  post Href::Reservation.repetitions_match do |reservation_id|
     json_response
     reservation = FullReservation.from_id(reservation_id)
     timeslice = FunctionalTimeslice.from_browser(params[:timeslice])

@@ -70,7 +70,7 @@ class ReservationResourceTest < RackTestTestCase
 
         data_to_render = nil
         during { 
-          post Href::Reservation.schedule_reservations_page_generator(old_style.id),
+          post Href::Reservation.repetitions_generator(old_style.id),
                     "timeslice" => Base64.encode64(new_timeslice.to_json)
         }.behold! { 
           @renderer.should_receive(:render_json).once.

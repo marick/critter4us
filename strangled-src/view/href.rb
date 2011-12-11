@@ -22,8 +22,8 @@ module Href
 
 
   module Reservation
-    def self.note_raw(substitute)
-      "/2/reservations/#{substitute}/note"
+    def self.note_raw(interpolation)
+      "/2/reservations/#{interpolation}/note"
     end
 
     def self.note_match
@@ -34,12 +34,16 @@ module Href
       note_raw(reservation_id)
     end
 
-    def self.schedule_reservations_page_match
-      "/2/reservation/:reservation_id/schedule"
+    def self.repetitions_raw(interpolation)
+      "/2/reservations/#{interpolation}/repetitions"
     end
 
-    def self.schedule_reservations_page_generator(reservation_id)
-      "/2/reservation/#{reservation_id}/schedule"
+    def self.repetitions_match
+      repetitions_raw(:reservation_id.inspect)
+    end
+
+    def self.repetitions_generator(reservation_id)
+      repetitions_raw(reservation_id)
     end
   end
 
