@@ -19,8 +19,8 @@ class Controller
     render_reservation_page(:task_uis__reservation__edit_note)
   end
 
-  get Href::Task_Uis.make_reservation_copies_match do 
-    render_reservation_page(:task_uis__reservation__make_copies)
+  get Href::Task_Uis.add_reservation_repetitions_match do 
+    render_reservation_page(:task_uis__reservation__add_repetitions)
   end
 end
 

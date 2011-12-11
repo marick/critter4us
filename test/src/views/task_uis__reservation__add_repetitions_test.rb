@@ -6,7 +6,7 @@ class GetReservationSchedulingPageTest < ViewTestCase
 
   def render(hash)
     reservation = Reservation.random(hash)
-    @renderer.render_page(:task_uis__reservation__make_copies, :reservation => reservation)
+    @renderer.render_page(:task_uis__reservation__add_repetitions, :reservation => reservation)
   end
 
   should "use reservation to populate page upon GET" do

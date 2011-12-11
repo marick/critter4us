@@ -29,10 +29,10 @@ class TaskUITests < RackTestTestCase
     context "GET" do 
       should "produce a page containing the reservation" do 
         during {
-          get Href::Task_Uis.make_reservation_copies_generator(@reservation.id)
+          get Href::Task_Uis.add_reservation_repetitions_generator(@reservation.id)
         }.behold! {
           @renderer.should_receive(:render_page).once.
-          with(:task_uis__reservation__make_copies, :reservation => @reservation)
+          with(:task_uis__reservation__add_repetitions, :reservation => @reservation)
         }
       end
     end
