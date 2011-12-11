@@ -22,35 +22,26 @@ module Href
 
 
   module Reservation
-    def self.note_raw(interpolation)
-      "/2/reservations/#{interpolation}/note"
+    def self.uris(subpart)
+      defs =  %Q{def #{subpart}_raw(interpolation)
+                   "/2/reservations/\#{interpolation}/#{subpart}"
+                 end
+                 def #{subpart}_match
+                   #{subpart}_raw(:reservation_id.inspect)
+                 end
+                 def #{subpart}_generator(reservation_id)
+                   #{subpart}_raw(reservation_id)
+                 end
+               }
+     instance_eval(defs)
     end
 
-    def self.note_match
-      note_raw(:reservation_id.inspect)
-    end
-
-    def self.note_generator(reservation_id)
-      note_raw(reservation_id)
-    end
-
-    def self.repetitions_raw(interpolation)
-      "/2/reservations/#{interpolation}/repetitions"
-    end
-
-    def self.repetitions_match
-      repetitions_raw(:reservation_id.inspect)
-    end
-
-    def self.repetitions_generator(reservation_id)
-      repetitions_raw(reservation_id)
-    end
+    uris("note")
+    uris("repetitions")
   end
 
   # OLD
   def self.reservation_viewing_page(reservation_id)
     "/reservation/#{reservation_id}"
   end
-
-
 end
