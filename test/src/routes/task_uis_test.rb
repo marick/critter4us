@@ -17,10 +17,10 @@ class TaskUITests < RackTestTestCase
   context "adding notes to reservations" do
     should "GET should pass the reservation to a view" do
       during {
-        get Href::Task_Uis.edit_reservation_note_generator(@reservation.id)
+        get Href::Reservation.note_editor_generator(@reservation.id)
       }.behold! {
         @renderer.should_receive(:render_page).once.
-                  with(:task_uis__reservation__edit_note, :reservation => @reservation)
+                  with(:reservation__note_editor, :reservation => @reservation)
       }
     end
   end
@@ -29,10 +29,10 @@ class TaskUITests < RackTestTestCase
     context "GET" do 
       should "produce a page containing the reservation" do 
         during {
-          get Href::Task_Uis.add_reservation_repetitions_generator(@reservation.id)
+          get Href::Reservation.repetition_adder_generator(@reservation.id)
         }.behold! {
           @renderer.should_receive(:render_page).once.
-          with(:task_uis__reservation__add_repetitions, :reservation => @reservation)
+          with(:reservation__repetition_adder, :reservation => @reservation)
         }
       end
     end

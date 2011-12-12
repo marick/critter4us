@@ -15,12 +15,12 @@ class Controller
   end
     
 
-  get Href::Task_Uis.edit_reservation_note_match do 
-    render_reservation_page(:task_uis__reservation__edit_note)
+  get Href::Reservation.note_editor_match do 
+    render_reservation_page(:reservation__note_editor)
   end
 
-  get Href::Task_Uis.add_reservation_repetitions_match do 
-    render_reservation_page(:task_uis__reservation__add_repetitions)
+  get Href::Reservation.repetition_adder_match do 
+    render_reservation_page(:reservation__repetition_adder)
   end
 end
 

@@ -45,7 +45,7 @@ class ReservationListView < Erector::Widget
               end
               td(:colspan => 4) do
                 a('Edit Note',
-                  :href => Href::Task_Uis.edit_reservation_note_generator(r.id),
+                  :href => Href::Reservation.note_editor_generator(r.id),
                   :target => "_blank")
               end
             end

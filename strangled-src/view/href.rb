@@ -1,35 +1,5 @@
 module Href
 
-  module Task_Uis
-
-    def self.uris(action, subpart)
-      defs = %Q{def #{action}_reservation_#{subpart}_match
-                 '/2/task-uis/reservation/#{action}-#{subpart}'
-                end
-
-                def #{action}_reservation_#{subpart}_generator(reservation_id)
-                  #{action}_reservation_#{subpart}_match + "?reservation_id=\#{reservation_id}"
-                end
-              }
-              
-      instance_eval(defs)
-    end
-
-    uris('edit', 'note')
-    uris('add', 'repetitions')
-
-
-    # def self.make_reservation_copies_match
-    #   '/2/task-uis/reservation/make-copies'
-    # end
-
-    # def self.make_reservation_copies_generator(reservation_id)
-    #   make_reservation_copies_match + "?reservation_id=#{reservation_id}"
-    # end
-
-  end
-
-
   module Reservation
     def self.uris(subpart)
       defs =  %Q{def #{subpart}_raw(interpolation)
@@ -47,6 +17,8 @@ module Href
 
     uris("note")
     uris("repetitions")
+    uris("note_editor")
+    uris("repetition_adder")
   end
 
   # OLD
