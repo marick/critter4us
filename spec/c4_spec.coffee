@@ -85,10 +85,10 @@ describe 'all of C4 modules', ->
 
 
 
-describe 'ReservationSchedulingPage', ->
+describe 'RepetitionAddingPage', ->
   beforeEach ->
     setFixtures("<input type='text' id='weekly_end_date'/>")
-    @sut = new global.C4.ReservationSchedulingPage
+    @sut = new global.C4.RepetitionAddingPage
     @sut.initialize_jquery()
 
   it "can stash dates that are picked", ->

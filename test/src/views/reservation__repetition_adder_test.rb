@@ -2,7 +2,7 @@ require './test/testutil/requires'
 require './strangled-src/model/requires'
 require './src/views/requires'
 
-class GetReservationSchedulingPageTest < ViewTestCase
+class GetRepetitionAddingPageTest < ViewTestCase
 
   def render(hash)
     reservation = Reservation.random(hash)

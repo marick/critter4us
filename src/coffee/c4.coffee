@@ -80,7 +80,7 @@ class global.C4.NoteEditingPage extends global.C4.Module
     @describe_update_action()
 
 
-class global.C4.ReservationSchedulingPage extends global.C4.Module
+class global.C4.RepetitionAddingPage extends global.C4.Module
   @include global.C4.DateUtils
 
   make_date_picker_stasher: (input$) ->
