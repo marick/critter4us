@@ -87,7 +87,10 @@ describe 'all of C4 modules', ->
 
 describe 'RepetitionAddingPage', ->
   beforeEach ->
-    setFixtures("<input type='text' id='weekly_end_date'/>")
+    setFixtures("<div>
+                   <input type='text' id='weekly_end_date'/>
+                   <input id='duplicate_by_week' type='submit'/>
+                 </div>")
     @sut = new global.C4.RepetitionAddingPage
     @sut.initialize_jquery()
 
@@ -95,4 +98,9 @@ describe 'RepetitionAddingPage', ->
     $(@sut.weekly_end_date_input$).DatePickerSetDate(new Date(2011, 5, 3))
     @sut.make_date_picker_stasher(@sut.weekly_end_date_input$)()
     expect(@sut.weekly_end_date_input$).toHaveValue("2011-06-03")
+
+  it "can respond to a button click by starting to send repetitions", ->
+    @sut.add_repetitions = jasmine.createSpy("put function")
+    $('#duplicate_by_week').click()
+    expect(@sut.add_repetitions).toHaveBeenCalled()
 

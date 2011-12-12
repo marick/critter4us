@@ -151,10 +151,16 @@
         }, this)
       });
     };
+    RepetitionAddingPage.prototype.add_repetitions = function() {
+      return alert("add repetitions!");
+    };
     RepetitionAddingPage.prototype.initialize_jquery = function(reservation_id, reservation_date) {
       this.reservation_id = reservation_id;
       this.weekly_end_date_input$ = $('#weekly_end_date');
-      return this.describe_date_picker(this.weekly_end_date_input$, reservation_date);
+      this.describe_date_picker(this.weekly_end_date_input$, reservation_date);
+      return $('#duplicate_by_week').click(__bind(function() {
+        return this.add_repetitions();
+      }, this));
     };
     return RepetitionAddingPage;
   })();

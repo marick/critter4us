@@ -96,7 +96,12 @@ class global.C4.RepetitionAddingPage extends global.C4.Module
           {disabled: !@same_weekday_in_future(d, reservation_date)}
       })
 
+  add_repetitions: ->
+    alert("add repetitions!")
+
+
   initialize_jquery: (reservation_id, reservation_date) ->
     @reservation_id = reservation_id
     @weekly_end_date_input$ = $('#weekly_end_date')
     @describe_date_picker(@weekly_end_date_input$, reservation_date)
+    $('#duplicate_by_week').click( => @add_repetitions())
