@@ -6,9 +6,11 @@
     %input#weekly_end_date{:type => 'text'}
     %input#duplicate_by_week{:type=>'submit', :value=>"Duplicate"}
 
-    %div#action_template
-      %span.date_holder Date
-       
+%div#templates
+  %div.repetition_template
+    %p.date
+    %p.notes    
+     
 :javascript
   jQuery(function() {
     var start = new Date(#{reservation.first_date.year}, #{reservation.first_date.month-1}, #{reservation.first_date.mday});

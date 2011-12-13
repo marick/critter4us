@@ -106,3 +106,8 @@ input, textarea { font: 1em  Arial, "Helvetica Neue", Helvetica, sans-serif; }
 {
     color:#000;
 }
+
+/* templates */
+div.templates {
+  display: none;
+}

@@ -86,6 +86,21 @@
         return false;
       }
       return true;
+    },
+    dates_within: function(omitted_start, included_end, step_size, so_far) {
+      var next;
+      if (step_size == null) {
+        step_size = 1;
+      }
+      if (so_far == null) {
+        so_far = [];
+      }
+      next = this.shift_day(omitted_start, step_size);
+      if (next <= included_end) {
+        return this.dates_within(next, included_end, step_size, so_far.concat([next]));
+      } else {
+        return so_far;
+      }
     }
   };
   global.C4.Textile = {
@@ -151,15 +166,23 @@
         }, this)
       });
     };
-    RepetitionAddingPage.prototype.add_repetitions = function() {
-      return alert("add repetitions!");
+    RepetitionAddingPage.prototype.chosen_date = function() {
+      return this.weekly_end_date_input$.DatePickerGetDate(false);
+    };
+    RepetitionAddingPage.prototype.populate_dates = function(omitted_start, included_end, step_size_in_days) {
+      return alert("populate dates");
+    };
+    RepetitionAddingPage.prototype.add_repetitions = function(desired$) {
+      return alert("add_");
     };
     RepetitionAddingPage.prototype.initialize_jquery = function(reservation_id, reservation_date) {
       this.reservation_id = reservation_id;
       this.weekly_end_date_input$ = $('#weekly_end_date');
       this.describe_date_picker(this.weekly_end_date_input$, reservation_date);
       return $('#duplicate_by_week').click(__bind(function() {
-        return this.add_repetitions();
+        var divs_representing_repetitions$;
+        divs_representing_repetitions$ = this.populate_dates(reservation_date, this.chosen_date(), 7);
+        return this.add_repetitions(divs_representing_repetitions$);
       }, this));
     };
     return RepetitionAddingPage;

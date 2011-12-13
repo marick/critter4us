@@ -69,6 +69,22 @@ describe 'all of C4 modules', ->
         candidate = @sut.shift_week(new Date(), 1)
         expect(@sut.same_weekday_in_future(candidate)).toBeTruthy()
 
+  describe "dates_within", ->
+    it "does not include the starting date", ->
+      actual = @sut.dates_within(new Date(2000, 1, 1), new Date(2000, 1, 1))
+      expect(actual).toEqual([])
+    it "does include the ending date", ->
+      actual = @sut.dates_within(new Date(2000, 1, 1), new Date(2000, 1, 2))
+      expect(actual).toEqual([new Date(2000, 1, 2)])
+    it "can take a step size", ->
+      actual = @sut.dates_within(new Date(2000, 1, 1), new Date(2000, 1, 5), 2)
+      expect(actual).toEqual([new Date(2000, 1, 3), new Date(2000, 1, 5)])
+    it "omits ending date if [first, last] is not an integral multiple of step size", ->
+      actual = @sut.dates_within(new Date(2000, 1, 1), new Date(2000, 1, 6), 2)
+      expect(actual).toEqual([new Date(2000, 1, 3), new Date(2000, 1, 5)])
+
+
+
   describe 'Textile', ->
     it "will reveal a div with contents", ->
       setFixtures("<div class='textile'>text</div>")
@@ -92,15 +108,25 @@ describe 'RepetitionAddingPage', ->
                    <input id='duplicate_by_week' type='submit'/>
                  </div>")
     @sut = new global.C4.RepetitionAddingPage
-    @sut.initialize_jquery()
+    @arbitrary_date = new Date(2011, 5, 3)
+    @sut.initialize_jquery("reservation_id", @arbitrary_date)
 
   it "can stash dates that are picked", ->
-    $(@sut.weekly_end_date_input$).DatePickerSetDate(new Date(2011, 5, 3))
+    $(@sut.weekly_end_date_input$).DatePickerSetDate(new Date(2012, 6, 5))
     @sut.make_date_picker_stasher(@sut.weekly_end_date_input$)()
-    expect(@sut.weekly_end_date_input$).toHaveValue("2011-06-03")
+    expect(@sut.weekly_end_date_input$).toHaveValue("2012-07-05")
 
-  it "can respond to a button click by starting to send repetitions", ->
-    @sut.add_repetitions = jasmine.createSpy("put function")
+  it "can query chosen dates", ->
+    $(@sut.weekly_end_date_input$).DatePickerSetDate(@arbitrary_date)
+    expect(@sut.chosen_date()).toEqual(@arbitrary_date)
+
+  it "can respond to a button click by making and processing templates", ->
+    chosen_date = @sut.shift_week(@arbitrary_date, 2)
+    $(@sut.weekly_end_date_input$).DatePickerSetDate(chosen_date)
+
+    spyOn(@sut, 'populate_dates').andReturn(["div1$", "div2$"])
+    spyOn(@sut, 'add_repetitions')
     $('#duplicate_by_week').click()
-    expect(@sut.add_repetitions).toHaveBeenCalled()
+    expect(@sut.populate_dates).toHaveBeenCalledWith(@arbitrary_date, chosen_date, 7)
+    expect(@sut.add_repetitions).toHaveBeenCalledWith(["div1$", "div2$"])
 
