@@ -27,14 +27,16 @@
   %script{:src => "/js2/datepicker.js", :type => "text/javascript"}
 
 
-
   / Fixes for IE
   /[if lt IE 9]> <link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" />
   /[if lte IE 7]> <link rel="stylesheet" href="css/fixed-984px-ie.css" type="text/css" media="screen" />
 
   / Page build tools - only needed while creating a site, remove when launching - Gray box colors and page debugging tools
   %link{:rel=>"stylesheet", :href=>"css2/build.css", :type=>"text/css", :media=>"screen"}
-    
+
+  / For RESTy links
+  =partial_call(:links, :data => rest_links) if defined? rest_links
+  
 %body
   %div.container
     %div#header.row

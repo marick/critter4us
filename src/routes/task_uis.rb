@@ -19,8 +19,11 @@ class Controller
     render_reservation_page(:reservation__note_editor)
   end
 
-  get Href::Reservation.repetition_adder_match do 
-    render_reservation_page(:reservation__repetition_adder)
+  get Href::Reservation.repetition_adder_match do
+    @renderer.render_page(:reservation__repetition_adder,
+                          :reservation => desired_reservation,
+                          :rest_links => [{:url => Href::Reservation.repetitions_generator(desired_reservation[:id]), :rel => "adder"}])
+    # render_reservation_page(:reservation__repetition_adder)
   end
 end
 
