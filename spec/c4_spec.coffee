@@ -53,6 +53,11 @@ describe 'all of C4 modules', ->
       it "can go backwards over a month boundary", ->
         expect(@sut.shift_week(new Date(2011, 11, 8), -5)).toEqual(new Date(2011, 10, 3))
 
+    describe "date_format", ->
+      it "can format dates the way we like", ->
+        expect(@sut.chatty_date_format(new Date(2011, 0, 1))).toEqual('Sat Jan 01 2011')
+        expect(@sut.chatty_date_format(new Date(2011, 10, 11))).toEqual('Fri Nov 11 2011')
+
 
     # Note these tests will fail if run across day boundary
     describe "same_weekday_in_future", ->
@@ -106,6 +111,12 @@ describe 'RepetitionAddingPage', ->
     setFixtures("<div>
                    <input type='text' id='weekly_end_date'/>
                    <input id='duplicate_by_week' type='submit'/>
+                   <div id='progress_container'/>
+                   <div id='templates'>
+                      <div class='repetition_progress'>
+                        <p class='date' om='f'>
+                      </div>
+                   </div>
                  </div>")
     @sut = new global.C4.RepetitionAddingPage
     @arbitrary_date = new Date(2011, 5, 3)
@@ -129,4 +140,20 @@ describe 'RepetitionAddingPage', ->
     $('#duplicate_by_week').click()
     expect(@sut.populate_dates).toHaveBeenCalledWith(@arbitrary_date, chosen_date, 7)
     expect(@sut.add_repetitions).toHaveBeenCalledWith(["div1$", "div2$"])
+
+  it "can duplicate templates", ->
+    actual = @sut.populate_dates(@arbitrary_date, @sut.shift_week(@arbitrary_date, 2), 7)
+
+    instantiated$ = $("#progress_container .repetition_progress")
+    expect(instantiated$.length).toEqual(2)
+
+    dates = $('#progress_container .repetition_progress').
+            map(-> $.trim($(this).text())).
+            get()
+    expect(dates).toEqual([@sut.chatty_date_format(@sut.shift_week(@arbitrary_date, 1)),
+                           @sut.chatty_date_format(@sut.shift_week(@arbitrary_date, 2))])
+    shifts = instantiated$.map(-> $(this).data('day_shift')).get()
+    expect(shifts).toEqual([7, 14])
+
+    expect(actual).toEqual(instantiated$)
 

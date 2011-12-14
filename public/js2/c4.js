@@ -101,6 +101,9 @@
       } else {
         return so_far;
       }
+    },
+    chatty_date_format: function(date) {
+      return date.toDateString();
     }
   };
   global.C4.Textile = {
@@ -170,7 +173,18 @@
       return this.weekly_end_date_input$.DatePickerGetDate(false);
     };
     RepetitionAddingPage.prototype.populate_dates = function(omitted_start, included_end, step_size_in_days) {
-      return alert("populate dates");
+      var date, dates, i, progress, target$, template$, _len;
+      dates = this.dates_within(omitted_start, included_end, step_size_in_days);
+      target$ = $('div#progress_container');
+      template$ = $('#templates .repetition_progress');
+      for (i = 0, _len = dates.length; i < _len; i++) {
+        date = dates[i];
+        progress = template$.clone();
+        progress.children('.date').text(this.chatty_date_format(date));
+        progress.data('day_shift', step_size_in_days * (i + 1));
+        progress.appendTo(target$);
+      }
+      return $('#progress_container .repetition_progress');
     };
     RepetitionAddingPage.prototype.add_repetitions = function(desired$) {
       return alert("add_");

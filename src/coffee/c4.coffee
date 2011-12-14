@@ -58,6 +58,9 @@ global.C4.DateUtils =
     else
       so_far
 
+  chatty_date_format: (date) ->
+    date.toDateString()
+
 global.C4.Textile =
   update_textile_divs_visibility: (duration) ->
     duration ?= 0
@@ -122,7 +125,16 @@ class global.C4.RepetitionAddingPage extends global.C4.Module
   #     @put_repetition(@reservation_id, new_starting_date, days_to_shift)
 
   populate_dates: (omitted_start, included_end, step_size_in_days) ->
-    alert("populate dates")
+    dates = @dates_within(omitted_start, included_end, step_size_in_days)
+    target$ = $('div#progress_container')
+    template$ = $('#templates .repetition_progress')
+    for date, i in dates
+      progress = template$.clone()
+      progress.children('.date').text(@chatty_date_format(date))
+      progress.data('day_shift', step_size_in_days * (i+1))
+      progress.appendTo(target$)
+
+    $('#progress_container .repetition_progress')
 
   add_repetitions: (desired$) ->
     alert("add_")
