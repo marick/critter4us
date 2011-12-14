@@ -27,7 +27,7 @@ class TaskUITests < RackTestTestCase
 
   context "scheduling further reservations by example" do
     context "GET" do 
-      should "produce a page containing the reservation" do 
+      should_eventually "produce a page containing the reservation" do 
         during {
           get Href::Reservation.repetition_adder_generator(@reservation.id)
         }.behold! {

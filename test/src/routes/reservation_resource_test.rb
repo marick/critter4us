@@ -34,8 +34,8 @@ class ReservationResourceTest < RackTestTestCase
   end
 
   context "scheduling further reservations by example" do
-    context "POST" do 
-      should "be able to copy reservations" do
+    context "POST" do
+      should_eventually "be able to copy reservations" do
         animal1 = Animal.random(:name => "animal 1 - in use")
         animal2 = Animal.random(:name => "animal 2 - blackout with procedure 2")
         animal3 = Animal.random(:name => "animal 3")
