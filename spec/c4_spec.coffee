@@ -141,19 +141,26 @@ describe 'RepetitionAddingPage', ->
     expect(@sut.populate_dates).toHaveBeenCalledWith(@arbitrary_date, chosen_date, 7)
     expect(@sut.add_repetitions).toHaveBeenCalledWith(["div1$", "div2$"])
 
-  it "can duplicate templates", ->
-    actual = @sut.populate_dates(@arbitrary_date, @sut.shift_week(@arbitrary_date, 2), 7)
+  describe "Duplicating a template", ->
+    beforeEach ->
+      @week_count = 2
+      two_weeks_later = @sut.shift_week(@arbitrary_date, @week_count)
+      @actual = @sut.populate_dates(@arbitrary_date, two_weeks_later, 7)
+      @instantiated$ = $("#progress_container .repetition_progress")
 
-    instantiated$ = $("#progress_container .repetition_progress")
-    expect(instantiated$.length).toEqual(2)
+    it "adds the right number of instantiated elements", ->
+      expect(@instantiated$.length).toEqual(@week_count)
 
-    dates = $('#progress_container .repetition_progress').
-            map(-> $.trim($(this).text())).
-            get()
-    expect(dates).toEqual([@sut.chatty_date_format(@sut.shift_week(@arbitrary_date, 1)),
-                           @sut.chatty_date_format(@sut.shift_week(@arbitrary_date, 2))])
-    shifts = instantiated$.map(-> $(this).data('day_shift')).get()
-    expect(shifts).toEqual([7, 14])
+    it "returns those elements", ->
+      expect(@actual).toEqual(@instantiated$)
 
-    expect(actual).toEqual(instantiated$)
+    it "puts the target date inside the appropriate paragraph (visibly)", ->
+      dates = $('#progress_container .repetition_progress').
+              map(-> $.trim($(this).text())).
+              get()
+      expect(dates).toEqual([@sut.chatty_date_format(@sut.shift_week(@arbitrary_date, 1)),
+                             @sut.chatty_date_format(@sut.shift_week(@arbitrary_date, 2))])
 
+    it "stashes the target date (as a date) where later functions can get at it.", ->
+      shifts = @instantiated$.map(-> $(this).data('day_shift')).get()
+      expect(shifts).toEqual([7, 14])
