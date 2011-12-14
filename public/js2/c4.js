@@ -172,6 +172,7 @@
     RepetitionAddingPage.prototype.chosen_date = function() {
       return this.weekly_end_date_input$.DatePickerGetDate(false);
     };
+    RepetitionAddingPage.prototype.ajax_duplicate = function() {};
     RepetitionAddingPage.prototype.populate_dates = function(omitted_start, included_end, step_size_in_days) {
       var date, dates, i, progress, target$, template$, _len;
       dates = this.dates_within(omitted_start, included_end, step_size_in_days);
@@ -187,7 +188,9 @@
       return $('#progress_container .repetition_progress');
     };
     RepetitionAddingPage.prototype.add_repetitions = function(desired$) {
-      return alert("add_");
+      if (desired$.length > 0) {
+        return this.ajax_duplicate(this.reservation_id, desired$.slice(0, 1).data('day_shift'), desired$.slice(1));
+      }
     };
     RepetitionAddingPage.prototype.initialize_jquery = function(reservation_id, reservation_date) {
       this.reservation_id = reservation_id;

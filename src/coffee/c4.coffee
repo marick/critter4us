@@ -123,6 +123,8 @@ class global.C4.RepetitionAddingPage extends global.C4.Module
   #   alert("#{new_starting_date} <= #{@chosen_date()}: #{new_starting_date <= @chosen_date()}")
   #   if new_starting_date <= @chosen_date()
   #     @put_repetition(@reservation_id, new_starting_date, days_to_shift)
+    #
+  ajax_duplicate: ->
 
   populate_dates: (omitted_start, included_end, step_size_in_days) ->
     dates = @dates_within(omitted_start, included_end, step_size_in_days)
@@ -137,8 +139,10 @@ class global.C4.RepetitionAddingPage extends global.C4.Module
     $('#progress_container .repetition_progress')
 
   add_repetitions: (desired$) ->
-    alert("add_")
-    # @put_repetition(@reservation_id, @reservation_date, 7)
+    if desired$.length > 0
+      @ajax_duplicate(@reservation_id,
+                      desired$.slice(0,1).data('day_shift'),
+                      desired$.slice(1))
 
 
   initialize_jquery: (reservation_id, reservation_date) ->

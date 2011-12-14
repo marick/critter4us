@@ -145,14 +145,14 @@ describe 'RepetitionAddingPage', ->
     beforeEach ->
       @week_count = 2
       two_weeks_later = @sut.shift_week(@arbitrary_date, @week_count)
-      @actual = @sut.populate_dates(@arbitrary_date, two_weeks_later, 7)
+      @actual$ = @sut.populate_dates(@arbitrary_date, two_weeks_later, 7)
       @instantiated$ = $("#progress_container .repetition_progress")
 
     it "adds the right number of instantiated elements", ->
       expect(@instantiated$.length).toEqual(@week_count)
 
     it "returns those elements", ->
-      expect(@actual).toEqual(@instantiated$)
+      expect(@actual$).toEqual(@instantiated$)
 
     it "puts the target date inside the appropriate paragraph (visibly)", ->
       dates = $('#progress_container .repetition_progress').
@@ -164,3 +164,34 @@ describe 'RepetitionAddingPage', ->
     it "stashes the target date (as a date) where later functions can get at it.", ->
       shifts = @instantiated$.map(-> $(this).data('day_shift')).get()
       expect(shifts).toEqual([7, 14])
+
+    describe "Sending repetitions", ->
+      beforeEach ->
+        spyOn(@sut, 'ajax_duplicate')
+
+      it "invokes the (untestable) ajax function", ->
+        @sut.add_repetitions(@actual$)
+
+        expect(@sut.ajax_duplicate).
+          toHaveBeenCalledWith("reservation_id",
+                               7, # first day shift
+                               @actual$.slice(1))  # remainder to be processed
+
+      it "does nothing when the wrapped elements are exhausted", ->
+        @sut.add_repetitions($())
+        expect(@sut.ajax_duplicate).not.toHaveBeenCalled()
+
+      # it "uses a callback to send the next request", ->
+      #   spyOn(@sut, 'ajax_duplicate').andCallFake(-> @sut.add_repetitions(@actual$.slice(1)))
+
+      #   @sut.add_repetitions(@actual$)
+
+      #   expect(@sut.ajax_duplicate).
+      #     toHaveBeenCalledWith("reservation_id",
+      #                          7, # first day shift
+      #                          @actual$.slice(1))
+
+
+
+
+
