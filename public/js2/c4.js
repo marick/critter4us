@@ -172,7 +172,20 @@
     RepetitionAddingPage.prototype.chosen_date = function() {
       return this.weekly_end_date_input$.DatePickerGetDate(false);
     };
-    RepetitionAddingPage.prototype.ajax_duplicate = function() {};
+    RepetitionAddingPage.prototype.ajax_duplicate = function(reservation_id, day_shift, continuation) {
+      return $.ajax({
+        type: 'PUT',
+        url: "/2/reservations/" + reservation_id + "/repetitions",
+        data: {
+          day_shift: day_shift
+        },
+        success: __bind(function(data, response) {
+          alert(data.blah);
+          return this.add_repetitions(continuation);
+        }, this),
+        dataType: 'json'
+      });
+    };
     RepetitionAddingPage.prototype.populate_dates = function(omitted_start, included_end, step_size_in_days) {
       var date, dates, i, progress, target$, template$, _len;
       dates = this.dates_within(omitted_start, included_end, step_size_in_days);

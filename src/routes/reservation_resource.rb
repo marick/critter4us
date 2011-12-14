@@ -11,7 +11,7 @@ class Controller
     @renderer.render_textile(reservation.note)
   end
 
-  post Href::Reservation.repetitions_match do |reservation_id|
+  put Href::Reservation.repetitions_match do |reservation_id|
     json_response
     puts reservation_id.inspect
     puts params.inspect

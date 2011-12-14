@@ -124,7 +124,16 @@ class global.C4.RepetitionAddingPage extends global.C4.Module
   #   if new_starting_date <= @chosen_date()
   #     @put_repetition(@reservation_id, new_starting_date, days_to_shift)
     #
-  ajax_duplicate: ->
+  ajax_duplicate: (reservation_id, day_shift, continuation) ->
+    $.ajax({
+      type: 'PUT',
+      url: "/2/reservations/#{reservation_id}/repetitions",
+      data: {day_shift: day_shift},
+      success: (data, response) =>
+        alert(data.blah)
+        @add_repetitions(continuation)
+      dataType: 'json'
+    });
 
   populate_dates: (omitted_start, included_end, step_size_in_days) ->
     dates = @dates_within(omitted_start, included_end, step_size_in_days)
