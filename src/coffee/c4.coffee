@@ -30,6 +30,9 @@ global.C4.TagUtils =
   hasStuff: (tag) ->
     !@isEmpty(tag)
 
+  uri_for: (relationship) ->
+    $("link[rel='#{relationship}']").attr('href')
+
 global.C4.DateUtils =
   next_month: (starting_date) ->
     starting_date = new Date() unless starting_date?
@@ -92,6 +95,7 @@ class global.C4.NoteEditingPage extends global.C4.Module
 
 class global.C4.RepetitionAddingPage extends global.C4.Module
   @include global.C4.DateUtils
+  @include global.C4.TagUtils
 
   make_date_picker_stasher: (input$) ->
     -> input$.val(input$.DatePickerGetDate('formatted')).DatePickerHide()
@@ -125,9 +129,10 @@ class global.C4.RepetitionAddingPage extends global.C4.Module
   #     @put_repetition(@reservation_id, new_starting_date, days_to_shift)
     #
   ajax_duplicate: (reservation_id, day_shift, continuation) ->
+    alert(@uri_for('adder'))
     $.ajax({
       type: 'PUT',
-      url: "/2/reservations/#{reservation_id}/repetitions",
+      url: @uri_for('adder'),
       data: {day_shift: day_shift},
       success: (data, response) =>
         alert(data.blah)

@@ -19,6 +19,10 @@ describe 'all of C4 modules', ->
       expect(@sut.isEmpty(tag)).toBeFalsy()
       expect(@sut.hasStuff(tag)).toBeTruthy()
 
+    it 'can find a url in a link tag', ->
+      setFixtures("<head><link href='/uri' rel='rel'/></head>")
+      expect(@sut.uri_for('rel')).toEqual('/uri')
+
   describe 'DateUtils', ->
     describe "next_month", ->
       it 'can move the date forward', ->

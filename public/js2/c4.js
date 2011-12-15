@@ -54,6 +54,9 @@
     },
     hasStuff: function(tag) {
       return !this.isEmpty(tag);
+    },
+    uri_for: function(relationship) {
+      return $("link[rel='" + relationship + "']").attr('href');
     }
   };
   global.C4.DateUtils = {
@@ -151,6 +154,7 @@
       RepetitionAddingPage.__super__.constructor.apply(this, arguments);
     }
     RepetitionAddingPage.include(global.C4.DateUtils);
+    RepetitionAddingPage.include(global.C4.TagUtils);
     RepetitionAddingPage.prototype.make_date_picker_stasher = function(input$) {
       return function() {
         return input$.val(input$.DatePickerGetDate('formatted')).DatePickerHide();
@@ -173,9 +177,10 @@
       return this.weekly_end_date_input$.DatePickerGetDate(false);
     };
     RepetitionAddingPage.prototype.ajax_duplicate = function(reservation_id, day_shift, continuation) {
+      alert(this.uri_for('adder'));
       return $.ajax({
         type: 'PUT',
-        url: "/2/reservations/" + reservation_id + "/repetitions",
+        url: this.uri_for('adder'),
         data: {
           day_shift: day_shift
         },

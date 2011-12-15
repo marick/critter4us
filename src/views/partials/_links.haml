@@ -1,3 +1,3 @@
 -data.each do |link_data|
-  %link{href: "#{link_data[:url]}", rel: "add_new"}
+  %link{href: "#{link_data[:url]}", rel: "#{link_data[:rel]}"}
 
