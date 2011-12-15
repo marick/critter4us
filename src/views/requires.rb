@@ -1,6 +1,7 @@
 require './src/views/partials'
 require './src/views/helpers'
 require './src/views/renderer'
+require './src/views/localizers'
 require 'bluecloth'
 require 'RedCloth'
 require 'haml'
