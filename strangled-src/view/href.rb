@@ -11,6 +11,9 @@ module Href
                  def #{subpart}_generator(reservation_id)
                    #{subpart}_raw(reservation_id)
                  end
+                 def #{subpart}_link(reservation_id, relationship)
+                   {:href => #{subpart}_generator(reservation_id), :rel => relationship}
+                 end
                }
      instance_eval(defs)
     end
