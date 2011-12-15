@@ -118,13 +118,13 @@ describe 'RepetitionAddingPage', ->
                    <div id='progress_container'/>
                    <div id='templates'>
                       <div class='repetition_progress'>
-                        <p class='date' om='f'>
+                        <p class='date'>
                       </div>
                    </div>
                  </div>")
     @sut = new global.C4.RepetitionAddingPage
     @arbitrary_date = new Date(2011, 5, 3)
-    @sut.initialize_jquery("reservation_id", @arbitrary_date)
+    @sut.initialize_jquery(@arbitrary_date)
 
   it "can stash dates that are picked", ->
     $(@sut.weekly_end_date_input$).DatePickerSetDate(new Date(2012, 6, 5))
@@ -177,8 +177,7 @@ describe 'RepetitionAddingPage', ->
         @sut.add_repetitions(@actual$)
 
         expect(@sut.ajax_duplicate).
-          toHaveBeenCalledWith("reservation_id",
-                               7, # first day shift
+          toHaveBeenCalledWith(7, # first day shift
                                @actual$.slice(1))  # remainder to be processed
 
       it "does nothing when the wrapped elements are exhausted", ->

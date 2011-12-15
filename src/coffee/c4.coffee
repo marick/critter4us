@@ -113,26 +113,10 @@ class global.C4.RepetitionAddingPage extends global.C4.Module
   chosen_date: ->
     @weekly_end_date_input$.DatePickerGetDate(false)
 
-  # put_repetition: (reservation_id, starting_date, days_to_shift) ->
-  #   $.post("/2/reservations/#{reservation_id}/repetitions",
-  #          {days_to_shift: days_to_shift},
-  #          ((data) =>
-  #            alert(data["blah"])
-  #            @next_repetition(starting_date, days_to_shift)),
-  #         "json")
-
-
-  # next_repetition: (starting_date, days_to_shift) ->
-  #   new_starting_date = @shift_day(starting_date, days_to_shift)
-  #   alert("#{new_starting_date} <= #{@chosen_date()}: #{new_starting_date <= @chosen_date()}")
-  #   if new_starting_date <= @chosen_date()
-  #     @put_repetition(@reservation_id, new_starting_date, days_to_shift)
-    #
-  ajax_duplicate: (reservation_id, day_shift, continuation) ->
-    alert(@uri_for('adder'))
+  ajax_duplicate: (day_shift, continuation) ->
     $.ajax({
       type: 'PUT',
-      url: @uri_for('adder'),
+      url: @uri_for('fulfillment'),
       data: {day_shift: day_shift},
       success: (data, response) =>
         alert(data.blah)
@@ -154,13 +138,11 @@ class global.C4.RepetitionAddingPage extends global.C4.Module
 
   add_repetitions: (desired$) ->
     if desired$.length > 0
-      @ajax_duplicate(@reservation_id,
-                      desired$.slice(0,1).data('day_shift'),
+      @ajax_duplicate(desired$.slice(0,1).data('day_shift'),
                       desired$.slice(1))
 
 
-  initialize_jquery: (reservation_id, reservation_date) ->
-    @reservation_id = reservation_id
+  initialize_jquery: (reservation_date) ->
     @weekly_end_date_input$ = $('#weekly_end_date')
     @describe_date_picker(@weekly_end_date_input$, reservation_date)
     $('#duplicate_by_week').click(=>

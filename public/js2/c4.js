@@ -176,11 +176,10 @@
     RepetitionAddingPage.prototype.chosen_date = function() {
       return this.weekly_end_date_input$.DatePickerGetDate(false);
     };
-    RepetitionAddingPage.prototype.ajax_duplicate = function(reservation_id, day_shift, continuation) {
-      alert(this.uri_for('adder'));
+    RepetitionAddingPage.prototype.ajax_duplicate = function(day_shift, continuation) {
       return $.ajax({
         type: 'PUT',
-        url: this.uri_for('adder'),
+        url: this.uri_for('fulfillment'),
         data: {
           day_shift: day_shift
         },
@@ -207,11 +206,10 @@
     };
     RepetitionAddingPage.prototype.add_repetitions = function(desired$) {
       if (desired$.length > 0) {
-        return this.ajax_duplicate(this.reservation_id, desired$.slice(0, 1).data('day_shift'), desired$.slice(1));
+        return this.ajax_duplicate(desired$.slice(0, 1).data('day_shift'), desired$.slice(1));
       }
     };
-    RepetitionAddingPage.prototype.initialize_jquery = function(reservation_id, reservation_date) {
-      this.reservation_id = reservation_id;
+    RepetitionAddingPage.prototype.initialize_jquery = function(reservation_date) {
       this.weekly_end_date_input$ = $('#weekly_end_date');
       this.describe_date_picker(this.weekly_end_date_input$, reservation_date);
       return $('#duplicate_by_week').click(__bind(function() {
