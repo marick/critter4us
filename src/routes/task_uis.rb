@@ -5,19 +5,29 @@ require './src/views/requires'
 
 class Controller
 
-  def desired_reservation
+  def with_reservation
     reservation_id = params[:reservation_id]
-    reservation_source[reservation_id]
+    yield reservation_source[reservation_id]
   end
 
-  get Href::Reservation.note_editor_match do 
-    @renderer.render_page(:reservation__note_editor, 
-                          :reservation => desired_reservation)
+  def render_with_reservation_fulfillment(page, fulfillment_link)
+    with_reservation do | reservation | 
+      link = Href::Reservation.send(fulfillment_link, reservation.id, "fulfillment")
+      @renderer.render_page(page,
+                            :reservation => reservation,
+                            :fulfillment => link)
+    end
+  end
+
+  get Href::Reservation.note_editor_match do
+    with_reservation do | reservation | 
+      @renderer.render_page(:reservation__note_editor, 
+                            :reservation => reservation)
+    end
   end
 
   get Href::Reservation.repetition_adder_match do
-    @renderer.render_page(:reservation__repetition_adder,
-                          :reservation => desired_reservation)
+    render_with_reservation_fulfillment(:reservation__repetition_adder, :repetitions_link)
   end
 end
 

@@ -25,17 +25,17 @@ class TaskUITests < RackTestTestCase
     end
   end
 
-  context "scheduling further reservations by example" do
-    context "GET" do 
-      should "produce a page containing the reservation" do 
-        during {
-          get Href::Reservation.repetition_adder_generator(@reservation.id)
-        }.behold! {
-          @renderer.should_receive(:render_page).once.
-          with(:reservation__repetition_adder, :reservation => @reservation)
-        }
-      end
+  context "replicating reservations" do
+    should "begin with a page containing the reservation and a next step" do 
+      during {
+        get Href::Reservation.repetition_adder_generator(@reservation.id)
+      }.behold! {
+        @renderer.should_receive(:render_page).once.
+        with(:reservation__repetition_adder,
+             :reservation => @reservation,
+             :fulfillment => Href::Reservation.repetitions_link(@reservation.id,
+                                                                "fulfillment"))
+      }
     end
-
   end
 end

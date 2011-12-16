@@ -23,10 +23,9 @@ module Localizers
               Pass_reservation_along,
               -> data do
                 reservation = data[:reservation]
-                adder = Href::Reservation.repetitions_link(reservation.id, "fulfillment")
                 {
                   start_date: reservation.first_date,
-                  rest_links: [ adder ]
+                  rest_links: [ data[:fulfillment] ]
                 }
               end)
     

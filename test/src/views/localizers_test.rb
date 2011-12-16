@@ -34,10 +34,10 @@ class LocalizerTests < Test::Unit::TestCase
     relevant_bits = OpenStruct.new(:id => "id",
                                    :first_date => Date.new(2001, 1, 2))
     actual = Localizers.locals_for_page(:reservation__repetition_adder,
-                                        :reservation => relevant_bits)
+                                        :reservation => relevant_bits,
+                                        :fulfillment => "a link")
     assert { actual[:start_date] == relevant_bits.first_date }
     assert { actual[:reservation] == relevant_bits } 
-    assert { actual[:rest_links] ==
-             [ Href::Reservation.repetitions_link("id", "fulfillment") ] }
+    assert { actual[:rest_links] == ["a link"] }
   end
 end
