@@ -34,6 +34,17 @@ class FunctionalTimesliceTest < FreshDatabaseTestCase
     assert { timeslice.time_bits == "010" }
   end
 
+  should "be able to shift by a number of days" do
+    original = FunctionalTimeslice.from_time_data(Date.new(2001, 1, 2),
+                                                  Date.new(2001, 1, 3),
+                                                  "110")
+    expected = FunctionalTimeslice.from_time_data(Date.new(2001, 1, 9),
+                                                  Date.new(2001, 1, 10),
+                                                  "110")
+    actual = original.shift_by_days(7)
+    assert { actual == expected }
+  end
+
   def prepopulate_with_timeslices(dataset)
       @earlier = dataset.insert(  # no conflict
                                 :first_date => Date.new(2001, 1, 1),
@@ -105,5 +116,6 @@ class FunctionalTimesliceTest < FreshDatabaseTestCase
 
       assert { Set.new(@timeslice.use_pairs_blacked_out) == Set.new([excluded_1, excluded_2]) }
     end
+
   end
 end

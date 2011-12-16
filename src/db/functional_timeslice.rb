@@ -22,6 +22,10 @@ class FunctionalTimeslice < DBHash
               :time_bits => time_bits)
   end
 
+  def shift_by_days(count)
+    self.class.from_time_data(self.first_date+count, self.last_date+count, self.time_bits)
+  end
+
   def overlaps(dataset)
     Fall(dataset.filter("(DATE ?, DATE ?) OVERLAPS (first_date, last_date+1)",
                         self.first_date, self.last_date+1).
