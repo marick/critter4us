@@ -1,13 +1,16 @@
 require './src/routes/requires'
+require './strangled-src/util/test-support'
 
 class Renderer
+  include TestSupport
 
   def initialize
-    @controller = Controller.actual_object
+    collaborators_start_as(:controller => Controller.actual_object,
+                           :localizer => Localizers)
   end
 
   def render_page(page, data_in_terms_of_app)
-    local_var_assignments = Localizers.locals_for_page(page, data_in_terms_of_app)
+    local_var_assignments = @localizer.locals_for_page(page, data_in_terms_of_app)
     @controller.haml(page, :locals => local_var_assignments)
   end
 
