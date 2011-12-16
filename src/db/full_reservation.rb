@@ -79,4 +79,12 @@ class FullReservation < DBHash
   def as_saved
     merge(self.class.resets(save!))
   end
+
+  def animal_names 
+    uses.collect(&:animal_name).uniq
+  end
+
+  def procedure_names 
+    uses.collect(&:procedure_name).uniq
+  end
 end

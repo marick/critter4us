@@ -43,6 +43,17 @@ class FullReservationTest < FreshDatabaseTestCase
     }
   end
 
+  context "data access" do
+    should "return animal names" do
+      assert { Set.new(@reservation.animal_names) == 
+               Set.new(["animal 1", "animal 2"]) }
+    end
+    should "return procedure names" do
+      assert { Set.new(@reservation.procedure_names) == 
+               Set.new(["procedure 1", "procedure 2"]) }
+    end
+  end
+
   context "changing the time" do 
     setup do
       timeslice = F(:first_date => @reservation.data.first_date + 1,
