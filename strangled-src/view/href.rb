@@ -1,5 +1,9 @@
 module Href
 
+  def self.link(uri, relationship)
+    {:href => uri, :rel => relationship}
+  end    
+
   module Reservation
     def self.uris(subpart)
       defs =  %Q{def #{subpart}_raw(interpolation)
@@ -12,7 +16,7 @@ module Href
                    #{subpart}_raw(reservation_id)
                  end
                  def #{subpart}_link(reservation_id, relationship)
-                   {:href => #{subpart}_generator(reservation_id), :rel => relationship}
+                   Href.link(#{subpart}_generator(reservation_id), relationship)
                  end
                }
      instance_eval(defs)
