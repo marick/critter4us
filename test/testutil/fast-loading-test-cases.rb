@@ -25,10 +25,12 @@ class ViewTestCase < FreshDatabaseTestCase
 
   def setup
     super
-    # This, behind the scenes, is needed for the renderer.
+    # In Sinatra, Controller.new doesn't actually give you the controller,
+    # so I hackishly assign it to the class. 
     # The assignment isn't strictly needed. It's there to keep you from
     # wondering "What about garbage collection?"
     @hack_to_objectify_views = Controller.new
+    @controller = Controller.actual_object
     @renderer = Renderer.new
   end
 
