@@ -15,12 +15,15 @@ class TaskUITests < RackTestTestCase
   end
 
   context "adding notes to reservations" do
-    should "GET should pass the reservation to a view" do
+    should "begin with a page containing the reservation and a next step" do
       during {
         get Href::Reservation.note_editor_generator(@reservation.id)
       }.behold! {
         @renderer.should_receive(:render_page).once.
-                  with(:reservation__note_editor, :reservation => @reservation)
+                  with(:reservation__note_editor,
+                       :reservation => @reservation,
+                       :fulfillment => Href::Reservation.note_link(@reservation.id,
+                                                                "fulfillment"))
       }
     end
   end

@@ -77,6 +77,7 @@ class global.C4.NoteEditingPage extends global.C4.Module
   @include global.C4.Textile
 
   describe_update_action: ->
+    $('#note_form').attr('action', @uri_for('fulfillment'))
     $('#note_form').ajaxForm {
                        target: '.textile'
                        success: =>

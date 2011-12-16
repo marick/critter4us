@@ -24,9 +24,12 @@ class LocalizerTests < Test::Unit::TestCase
     assert { actual == {:a => "up", :b => "2" } }
   end
 
-  should "be able to pass a reservation along for reservation_note_editor" do
-    actual = Localizers.locals_for_page(:reservation__note_editor, :reservation => "data")
-    assert { actual == {:reservation => "data" } } 
+  should "be able to localize reservation__note_editor" do
+    actual = Localizers.locals_for_page(:reservation__note_editor,
+                                        :reservation => "reservation",
+                                        :fulfillment => "a link")
+    assert { actual[:reservation] == "reservation" }
+    assert { actual[:rest_links] == ["a link"] }
   end
   
 

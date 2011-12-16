@@ -20,10 +20,7 @@ class Controller
   end
 
   get Href::Reservation.note_editor_match do
-    with_reservation do | reservation | 
-      @renderer.render_page(:reservation__note_editor, 
-                            :reservation => reservation)
-    end
+    render_with_reservation_fulfillment(:reservation__note_editor, :note_link)
   end
 
   get Href::Reservation.repetition_adder_match do

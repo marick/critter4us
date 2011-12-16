@@ -109,6 +109,21 @@ describe 'all of C4 modules', ->
       expect($('.textile')).toBeHidden()
 
 
+  describe 'NoteEditingPage', ->
+    beforeEach ->
+      setFixtures("<head>
+                     <link href='uri' rel='fulfillment' />
+                   </head>
+                   <body>
+                     <form id='note_form' action='to be filled in'>
+                     </form>
+                   </body>")
+      @sut = new global.C4.NoteEditingPage
+      @sut.initialize_jquery()
+
+    it "knows where to send the form", ->
+      expect($('#note_form').attr('action')).toEqual('uri')
+
 
   describe 'RepetitionAddingPage', ->
     beforeEach ->

@@ -132,6 +132,7 @@
     NoteEditingPage.include(global.C4.TagUtils);
     NoteEditingPage.include(global.C4.Textile);
     NoteEditingPage.prototype.describe_update_action = function() {
+      $('#note_form').attr('action', this.uri_for('fulfillment'));
       return $('#note_form').ajaxForm({
         target: '.textile',
         success: __bind(function() {

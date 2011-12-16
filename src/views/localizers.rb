@@ -19,17 +19,21 @@ module Localizers
     { reservation: data[:reservation] } 
   end
 
+  Pass_fulfillment_along = -> data do 
+    { rest_links: [ data[:fulfillment] ] }
+  end
+
   to_localize(:reservation__repetition_adder, 
               Pass_reservation_along,
+              Pass_fulfillment_along,
               -> data do
-                reservation = data[:reservation]
-                {
-                  start_date: reservation.first_date,
-                  rest_links: [ data[:fulfillment] ]
-                }
+                { start_date: data[:reservation].first_date }
               end)
+
     
-  to_localize(:reservation__note_editor, Pass_reservation_along)
+  to_localize(:reservation__note_editor,
+              Pass_reservation_along,
+              Pass_fulfillment_along)
 
 end
 
