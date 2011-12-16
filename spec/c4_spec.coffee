@@ -110,91 +110,78 @@ describe 'all of C4 modules', ->
 
 
 
-describe 'RepetitionAddingPage', ->
-  beforeEach ->
-    setFixtures("<div>
-                   <input type='text' id='weekly_end_date'/>
-                   <input id='duplicate_by_week' type='submit'/>
-                   <div id='progress_container'/>
-                   <div id='templates'>
-                      <div class='repetition_progress'>
-                        <p class='date'>
-                      </div>
-                   </div>
-                 </div>")
-    @sut = new global.C4.RepetitionAddingPage
-    @arbitrary_date = new Date(2011, 5, 3)
-    @sut.initialize_jquery(@arbitrary_date)
-
-  it "can stash dates that are picked", ->
-    $(@sut.weekly_end_date_input$).DatePickerSetDate(new Date(2012, 6, 5))
-    @sut.make_date_picker_stasher(@sut.weekly_end_date_input$)()
-    expect(@sut.weekly_end_date_input$).toHaveValue("2012-07-05")
-
-  it "can query chosen dates", ->
-    $(@sut.weekly_end_date_input$).DatePickerSetDate(@arbitrary_date)
-    expect(@sut.chosen_date()).toEqual(@arbitrary_date)
-
-  it "can respond to a button click by making and processing templates", ->
-    chosen_date = @sut.shift_week(@arbitrary_date, 2)
-    $(@sut.weekly_end_date_input$).DatePickerSetDate(chosen_date)
-
-    spyOn(@sut, 'populate_dates').andReturn(["div1$", "div2$"])
-    spyOn(@sut, 'add_repetitions')
-    $('#duplicate_by_week').click()
-    expect(@sut.populate_dates).toHaveBeenCalledWith(@arbitrary_date, chosen_date, 7)
-    expect(@sut.add_repetitions).toHaveBeenCalledWith(["div1$", "div2$"])
-
-  describe "Duplicating a template", ->
+  describe 'RepetitionAddingPage', ->
     beforeEach ->
-      @week_count = 2
-      two_weeks_later = @sut.shift_week(@arbitrary_date, @week_count)
-      @actual$ = @sut.populate_dates(@arbitrary_date, two_weeks_later, 7)
-      @instantiated$ = $("#progress_container .repetition_progress")
+      setFixtures("<div>
+                     <input type='text' id='weekly_end_date'/>
+                     <input id='duplicate_by_week' type='submit'/>
+                     <div id='progress_container'/>
+                     <div id='templates'>
+                        <div class='repetition_progress'>
+                          <p class='date'>
+                        </div>
+                     </div>
+                   </div>")
+      @sut = new global.C4.RepetitionAddingPage
+      @arbitrary_date = new Date(2011, 5, 3)
+      @sut.initialize_jquery(@arbitrary_date)
 
-    it "adds the right number of instantiated elements", ->
-      expect(@instantiated$.length).toEqual(@week_count)
+    it "can stash dates that are picked", ->
+      $(@sut.weekly_end_date_input$).DatePickerSetDate(new Date(2012, 6, 5))
+      @sut.make_date_picker_stasher(@sut.weekly_end_date_input$)()
+      expect(@sut.weekly_end_date_input$).toHaveValue("2012-07-05")
 
-    it "returns those elements", ->
-      expect(@actual$).toEqual(@instantiated$)
+    it "can query chosen dates", ->
+      $(@sut.weekly_end_date_input$).DatePickerSetDate(@arbitrary_date)
+      expect(@sut.chosen_date()).toEqual(@arbitrary_date)
 
-    it "puts the target date inside the appropriate paragraph (visibly)", ->
-      dates = $('#progress_container .repetition_progress').
-              map(-> $.trim($(this).text())).
-              get()
-      expect(dates).toEqual([@sut.chatty_date_format(@sut.shift_week(@arbitrary_date, 1)),
-                             @sut.chatty_date_format(@sut.shift_week(@arbitrary_date, 2))])
+    it "can respond to a button click by making and processing templates", ->
+      chosen_date = @sut.shift_week(@arbitrary_date, 2)
+      $(@sut.weekly_end_date_input$).DatePickerSetDate(chosen_date)
 
-    it "stashes the target date (as a date) where later functions can get at it.", ->
-      shifts = @instantiated$.map(-> $(this).data('day_shift')).get()
-      expect(shifts).toEqual([7, 14])
+      spyOn(@sut, 'populate_dates').andReturn(["div1$", "div2$"])
+      spyOn(@sut, 'add_repetitions')
+      $('#duplicate_by_week').click()
+      expect(@sut.populate_dates).toHaveBeenCalledWith(@arbitrary_date, chosen_date, 7)
+      expect(@sut.add_repetitions).toHaveBeenCalledWith(["div1$", "div2$"])
 
-    describe "Sending repetitions", ->
+    describe "Duplicating a template", ->
       beforeEach ->
-        spyOn(@sut, 'ajax_duplicate')
+        @week_count = 2
+        two_weeks_later = @sut.shift_week(@arbitrary_date, @week_count)
+        @actual$ = @sut.populate_dates(@arbitrary_date, two_weeks_later, 7)
+        @instantiated$ = $("#progress_container .repetition_progress")
 
-      it "invokes the (untestable) ajax function", ->
-        @sut.add_repetitions(@actual$)
+      it "adds the right number of instantiated elements", ->
+        expect(@instantiated$.length).toEqual(@week_count)
 
-        expect(@sut.ajax_duplicate).
-          toHaveBeenCalledWith(7, # first day shift
-                               @actual$.slice(1))  # remainder to be processed
+      it "returns those elements", ->
+        expect(@actual$).toEqual(@instantiated$)
 
-      it "does nothing when the wrapped elements are exhausted", ->
-        @sut.add_repetitions($())
-        expect(@sut.ajax_duplicate).not.toHaveBeenCalled()
+      it "puts the target date inside the appropriate paragraph (visibly)", ->
+        dates = $('#progress_container .repetition_progress').
+                map(-> $.trim($(this).text())).
+                get()
+        expect(dates).toEqual([@sut.chatty_date_format(@sut.shift_week(@arbitrary_date, 1)),
+                               @sut.chatty_date_format(@sut.shift_week(@arbitrary_date, 2))])
 
-      # it "uses a callback to send the next request", ->
-      #   spyOn(@sut, 'ajax_duplicate').andCallFake(-> @sut.add_repetitions(@actual$.slice(1)))
+      it "stashes the target date (as a date) where later functions can get at it.", ->
+        shifts = @instantiated$.map(-> $(this).data('day_shift')).get()
+        expect(shifts).toEqual([7, 14])
 
-      #   @sut.add_repetitions(@actual$)
+      describe "Sending repetitions", ->
+        beforeEach ->
+          spyOn(@sut, 'ajax_duplicate')
 
-      #   expect(@sut.ajax_duplicate).
-      #     toHaveBeenCalledWith("reservation_id",
-      #                          7, # first day shift
-      #                          @actual$.slice(1))
+        it "invokes the (untestable) ajax function", ->
+          @sut.add_repetitions(@actual$)
 
+          expect(@sut.ajax_duplicate).
+            toHaveBeenCalledWith(7, # first day shift
+                                 @actual$.slice(1))  # remainder to be processed
 
-
+        it "does nothing when the wrapped elements are exhausted", ->
+          @sut.add_repetitions($())
+          expect(@sut.ajax_duplicate).not.toHaveBeenCalled()
 
 
