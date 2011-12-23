@@ -185,7 +185,7 @@
           day_shift: day_shift
         },
         success: __bind(function(data, response) {
-          alert(data.blah);
+          alert("id: " + data.reservation_id + " and animals already in use " + data.animals_already_in_use.length + " and blacked-out pairs " + data.blacked_out_use_pairs.length);
           return this.add_repetitions(continuation);
         }, this),
         dataType: 'json'
