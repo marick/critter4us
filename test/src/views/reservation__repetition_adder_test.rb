@@ -25,7 +25,7 @@ class GetRepetitionAddingPageTest < ViewTestCase
   end
 
   should "include the fulfillment link" do
-    assert_text_has_attributes(@html, "link", href: "uri", rel: "fulfillment")
+    assert_text_has_attributes(@html, "head link", href: "uri", rel: "fulfillment")
   end
 
 end

@@ -33,23 +33,74 @@ class ReservationResourceTest < RackTestTestCase
     end
   end
 
-  context "scheduling further reservations by example" do
-    context "POST" do
-      should_eventually "be able to copy reservations" do
-        animal1 = Animal.random(:name => "animal 1 - in use")
-        animal2 = Animal.random(:name => "animal 2 - blackout with procedure 2")
-        animal3 = Animal.random(:name => "animal 3")
-        procedure1 = Procedure.random(:name => "procedure 1")
-        procedure2 = Procedure.random(:name => "procedure 2")
-        data = {
-          :timeslice => Timeslice.new(Date.new(2009, 7, 23),
-                                      Date.new(2009, 8, 24),
-                                      TimeSet.new(MORNING)),
-          :course => 'vm333',
-          :instructor => 'morin',
-          :groups => [ {:procedures => ['procedure 1'], :animals => [animal1.name, animal2.name] }, 
-                       {:procedures => ['procedure 2'], :animals => [animal1.name, animal2.name, animal3.name] } ]
-        }
+  context "making a repetition of a reservation" do
+
+    def stash_reservation(*groups)
+      constant_data = {
+        :timeslice => Timeslice.new(Date.new(2009, 7, 13),
+                                    Date.new(2009, 7, 14),
+                                    TimeSet.new(MORNING)),
+        :course => 'vm333',
+        :instructor => 'morin',
+      }
+      data = constant_data.merge(:groups => groups)
+      ReservationMaker.build_from(data)
+    end
+
+    def with_captured_json_data
+      captured = nil
+      during {
+        yield
+      }.behold! {
+        @renderer.should_receive(:render_json).once.
+                  with(on { | arg | captured = arg; true })
+      }
+      captured
+    end
+
+    should "just copy data in the ideal case" do
+      procedure = Procedure.random(:name => "procedure")
+      animal = Animal.random(:name => "animal")
+
+      existing_id = stash_reservation({:procedures => ['procedure'],
+                                       :animals => ['animal']}).id
+
+      captured = with_captured_json_data do 
+        put Href::Reservation.repetitions_generator(existing_id), "day_shift" => "7"
+      end
+
+      deny { captured.reservation_id == existing_id }
+      original_reservation = FullReservation.from_id(existing_id)
+      new_reservation = FullReservation.from_id(captured.reservation_id)
+      assert { new_reservation.data.instructor == "morin" }
+      assert { FunctionalTimeslice.from_reservation(new_reservation) == 
+               FunctionalTimeslice.from_reservation(original_reservation).shift_by_days(7) }
+
+      assert { new_reservation.animal_names == ["animal"] }
+      assert { new_reservation.procedure_names == ["procedure"] }
+
+      expected_json = {
+        animals_already_in_use: [],
+        blacked_out_use_pairs: [],
+        reservation_id: captured.reservation_id
+      }
+      assert { captured == expected_json }
+    end
+    
+=begin
+
+        :groups => [ {:procedures => ['procedure 1'],
+                       :animals => [@animal1.name, @animal2.name] }, 
+                     {:procedures => ['procedure 2'],
+                       :animals => [@animal1.name, @animal2.name, @animal3.name] } ]
+
+      @animal1 = Animal.random(:name => "animal 1 - in use")
+      @animal2 = Animal.random(:name => "animal 2 - blackout with procedure 2")
+      @animal3 = Animal.random(:name => "animal 3")
+      @procedure1 = Procedure.random(:name => "procedure 1")
+      @procedure2 = Procedure.random(:name => "procedure 2")
+
+
         old_style = ReservationMaker.build_from(data)
 
         new_timeslice = {
@@ -57,16 +108,17 @@ class ReservationResourceTest < RackTestTestCase
           :last_date => Date.new(2010, 2, 2),
           :times => ["morning"]
         }
+    end
 
-        ExcludedBecauseInUse.insert(:first_date => new_timeslice[:first_date],
-                                    :last_date => new_timeslice[:first_date],
-                                    :time_bits => "100",
-                                    :animal_id => animal1.id)
-        ExcludedBecauseOfBlackoutPeriod.insert(:first_date => new_timeslice[:last_date],
-                                               :last_date => new_timeslice[:last_date]+10,
-                                               :time_bits => "111",
-                                               :animal_id => animal2.id,
-                                               :procedure_id => procedure2.id)
+        # ExcludedBecauseInUse.insert(:first_date => new_timeslice[:first_date],
+        #                             :last_date => new_timeslice[:first_date],
+        #                             :time_bits => "100",
+        #                             :animal_id => animal1.id)
+        # ExcludedBecauseOfBlackoutPeriod.insert(:first_date => new_timeslice[:last_date],
+        #                                        :last_date => new_timeslice[:last_date]+10,
+        #                                        :time_bits => "111",
+        #                                        :animal_id => animal2.id,
+        #                                        :procedure_id => procedure2.id)
 
         data_to_render = nil
         during { 
@@ -97,5 +149,6 @@ class ReservationResourceTest < RackTestTestCase
           }}
       end
     end
+=end
   end
 end

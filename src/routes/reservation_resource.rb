@@ -13,12 +13,10 @@ class Controller
 
   put Href::Reservation.repetitions_match do |reservation_id|
     json_response
-    puts reservation_id.inspect
-    puts params.inspect
-    @renderer.render_json({:blah => ["1", "2", "3"]})
-    # reservation = FullReservation.from_id(reservation_id)
-    # timeslice = FunctionalTimeslice.from_browser(params[:timeslice])
-    # @renderer.render_json(Functionally.copy_to_timeslice(reservation, timeslice)) 
+    reservation = FullReservation.from_id(reservation_id)
+    old_timeslice = FunctionalTimeslice.from_reservation(reservation)
+    new_timeslice = old_timeslice.shift_by_days(params[:day_shift].to_i)
+    @renderer.render_json(Functionally.copy_to_timeslice(reservation, new_timeslice)) 
   end
 end
 
