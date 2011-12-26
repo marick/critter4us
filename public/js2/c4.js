@@ -177,7 +177,7 @@
     RepetitionAddingPage.prototype.chosen_date = function() {
       return this.weekly_end_date_input$.DatePickerGetDate(false);
     };
-    RepetitionAddingPage.prototype.ajax_duplicate = function(day_shift, continuation) {
+    RepetitionAddingPage.prototype.ajax_duplicate = function(day_shift, place_to_show_results, continuation) {
       return $.ajax({
         type: 'PUT',
         url: this.uri_for('fulfillment'),
@@ -186,10 +186,14 @@
         },
         success: __bind(function(data, response) {
           alert("id: " + data.reservation_id + " and animals already in use " + data.animals_already_in_use.length + " and blacked-out pairs " + data.blacked_out_use_pairs.length);
+          this.display_results(place_to_show_results, data.reservation_id, data.animals_already_in_use, data.blacked_out_pairs);
           return this.add_repetitions(continuation);
         }, this),
         dataType: 'json'
       });
+    };
+    RepetitionAddingPage.prototype.display_results = function(place_to_show_results, reservation_id, animals_already_in_use, blacked_out_pairs) {
+      return place_to_show_results.text("OK");
     };
     RepetitionAddingPage.prototype.populate_dates = function(omitted_start, included_end, step_size_in_days) {
       var date, dates, i, progress, target$, template$, _len;
@@ -206,8 +210,10 @@
       return $('#progress_container .repetition_progress');
     };
     RepetitionAddingPage.prototype.add_repetitions = function(desired$) {
+      var first_div$;
       if (desired$.length > 0) {
-        return this.ajax_duplicate(desired$.slice(0, 1).data('day_shift'), desired$.slice(1));
+        first_div$ = desired$.slice(0, 1);
+        return this.ajax_duplicate(first_div$.data('day_shift'), first_div$.find(".notes"), desired$.slice(1));
       }
     };
     RepetitionAddingPage.prototype.initialize_jquery = function(reservation_date) {

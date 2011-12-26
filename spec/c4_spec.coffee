@@ -133,7 +133,8 @@ describe 'all of C4 modules', ->
                      <div id='progress_container'/>
                      <div id='templates'>
                         <div class='repetition_progress'>
-                          <p class='date'>
+                          <p class='date'></p>
+                          <p class='notes'></p>
                         </div>
                      </div>
                    </div>")
@@ -193,6 +194,7 @@ describe 'all of C4 modules', ->
 
           expect(@sut.ajax_duplicate).
             toHaveBeenCalledWith(7, # first day shift
+                                 @actual$.first().find(".notes"), # place in the first element to make notes about success or failure.
                                  @actual$.slice(1))  # remainder to be processed
 
         it "does nothing when the wrapped elements are exhausted", ->
@@ -200,3 +202,9 @@ describe 'all of C4 modules', ->
           expect(@sut.ajax_duplicate).not.toHaveBeenCalled()
 
 
+
+    describe "displaying the results duplicating a single reservation", ->
+      it "puts OK in the note paragraph if all the animals could be reserved", ->
+        note_paragraph = $("<p/>")
+        @sut.display_results(note_paragraph, "irrelevant id", [], [])
+        expect(note_paragraph.text()).toBe("OK")

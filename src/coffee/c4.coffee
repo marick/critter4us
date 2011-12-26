@@ -114,16 +114,20 @@ class global.C4.RepetitionAddingPage extends global.C4.Module
   chosen_date: ->
     @weekly_end_date_input$.DatePickerGetDate(false)
 
-  ajax_duplicate: (day_shift, continuation) ->
+  ajax_duplicate: (day_shift, place_to_show_results, continuation) ->
     $.ajax({
       type: 'PUT',
       url: @uri_for('fulfillment'),
       data: {day_shift: day_shift},
       success: (data, response) =>
-        alert("id: #{data.reservation_id} and animals already in use #{data.animals_already_in_use.length} and blacked-out pairs #{data.blacked_out_use_pairs.length}")
+        # alert("id: #{data.reservation_id} and animals already in use #{data.animals_already_in_use.length} and blacked-out pairs #{data.blacked_out_use_pairs.length}")
+        @display_results(place_to_show_results, data.reservation_id, data.animals_already_in_use, data.blacked_out_pairs)
         @add_repetitions(continuation)
       dataType: 'json'
     });
+
+  display_results: (place_to_show_results, reservation_id, animals_already_in_use, blacked_out_pairs) ->
+       place_to_show_results.text("OK")
 
   populate_dates: (omitted_start, included_end, step_size_in_days) ->
     dates = @dates_within(omitted_start, included_end, step_size_in_days)
@@ -139,7 +143,9 @@ class global.C4.RepetitionAddingPage extends global.C4.Module
 
   add_repetitions: (desired$) ->
     if desired$.length > 0
-      @ajax_duplicate(desired$.slice(0,1).data('day_shift'),
+      first_div$ = desired$.slice(0, 1)
+      @ajax_duplicate(first_div$.data('day_shift'),
+                      first_div$.find(".notes"),
                       desired$.slice(1))
 
 
