@@ -1,3 +1,5 @@
+require 'stunted'
+
 module Functionally
 
   def self.copy_to_timeslice(reservation, timeslice)

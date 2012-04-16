@@ -3,11 +3,13 @@ require 'shoulda'
 require 'assert2'
 require 'flexmock'
 require 'ostruct'
+require 'stunted'
 require './admin/tables'
-require './src/functional/functional_hash'
 require './src/db/database_structure'
 
 class FreshDatabaseTestCase < Test::Unit::TestCase
+  include Stunted
+
   require './test/testutil/db-helpers'
   include DBHelpers
   include FHUtil
