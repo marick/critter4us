@@ -165,7 +165,45 @@ class FunctionalHashTest < Test::Unit::TestCase
         assert { actual == {:a => 1, :c => 3} }
       end
     end
-    
-
   end
 end
+
+module SomeFunctions
+  def with_b(value)
+    merge(:b => value)
+  end
+
+  def with_c(value)
+    merge(:c => value)
+  end
+end
+
+class Includer < FunctionalHash
+  include SomeFunctions
+end
+
+
+class ChainingTest < Test::Unit::TestCase
+  include FHUtil
+
+  def setup
+    @hash = Includer.new(:a => 1)
+  end
+
+  should "chain methods" do 
+    result =
+      @hash.
+      with_b("b").
+      fn(3) { | this | this.merge(:d => this[:b] + this[:c]) }.
+      with_c("c")
+
+    assert { result == {a: 1, b: "b", c: "c"} } 
+
+
+    flow.(@hash,
+          with_b,
+          ->(h) { h.merge(:d => this[:b] + this[:c]) },
+          with_c)
+           
+  end
+end         
