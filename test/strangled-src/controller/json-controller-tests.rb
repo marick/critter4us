@@ -218,15 +218,12 @@ class JsonControllerTests < RackTestTestCase
     reservation = flexmock("reservation")
     availability = flexmock('availability')
 
-    get_hash = {'number' => 'some_number', 'ignoring' => 'may be present'}
+    params = {'ignoring' => 'may be present'}
     during { 
-      # Although the number argument is described in the get_hash, and is 
-      # available in the params global in the controller, it has to 
-      # be passed here so that the route-matching works.
-      get '/json/reservation/some_number', get_hash
+      get '/json/reservation/some_number', params
     }.behold! {
       @internalizer.should_receive(:find_reservation).once.
-                    with(get_hash, 'number').
+                    with(on { | h | h['number'] == 'some_number'}, 'number').
                     and_return(reservation)
       @internalizer.should_receive(:integer_or_nil).once.
                     with('may be present').
