@@ -10,6 +10,7 @@ gem "json"
 gem "RedCloth"
 gem "bluecloth"
 gem "haml"
+gem "stunted"
 
 group :development, :test do
   gem "capybara"
