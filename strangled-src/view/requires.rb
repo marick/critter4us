@@ -1,6 +1,5 @@
 require './strangled-src/view/href'
 require './strangled-src/view/animal-list-view'
-require './strangled-src/view/reservation-list-view'
 require './strangled-src/view/reservation-view'
 require './strangled-src/view/procedure-partial'
 require './strangled-src/view/animals-with-pending-reservations-view'
