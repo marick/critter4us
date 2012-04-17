@@ -5,3 +5,6 @@ require './src/views/localizers'
 require 'bluecloth'
 require 'RedCloth'
 require 'haml'
+
+
+require_relative 'new_reservation_list_view'
