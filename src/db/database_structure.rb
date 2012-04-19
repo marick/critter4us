@@ -1,3 +1,5 @@
+require './src/shapes/requires'
+
 module DatabaseStructure
   ReservationTable = DB[:reservations]
   class << ReservationTable
