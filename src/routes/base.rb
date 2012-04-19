@@ -57,6 +57,7 @@ class Controller < Sinatra::Base
                            # The new, strangling code.
                            :renderer => Renderer.new,
                            :internalizer2 => Internalizer2.new(@internalizer),
+                           :reservation_table => DatabaseStructure::ReservationTable
                            )
   end
 end
