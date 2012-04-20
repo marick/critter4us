@@ -18,7 +18,9 @@ module DatabaseStructure
       hash_arrays = Fall(dataset.all).segregate_by_key(:pk)
       with_collapsed_elements = hash_arrays.collect do | reservation_rows |
         reservation_rows.collapse_and_aggregate(:animal_names, :procedure_names) do | a |
-          # TODO: why is there an array with NIL names?
+          # In the master database, there is some bad data because 
+          # /someone/ didn't prevent making reservations without animals
+          # or procedures. Hence the `compact`.
           a.compact.sort.uniq
         end
       end
