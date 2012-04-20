@@ -56,6 +56,12 @@ def db_url(name)
   "postgres://#{ENV['C4U_USER']}:#{ENV['C4U_PASS']}@localhost/#{name}"
 end
 
+desc "Print database URL"
+task "db_url" do 
+     puts db_url("name-here")
+end
+
+
 def app(name)
   "--app #{name} --confirm #{name}"
 end
