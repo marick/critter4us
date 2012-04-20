@@ -31,6 +31,11 @@ class Procedure  < Sequel::Model
     end
   end
 
+  def self.recalculate_exclusions
+    DB[:excluded_because_of_animal].delete
+    note_excluded_animals(Animal.all)
+  end
+
   # following are for testing
 
   def self.random(overrides = {})

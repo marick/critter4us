@@ -58,5 +58,24 @@ class ProcedureTests < FreshDatabaseTestCase
     assert(DB[:excluded_because_of_animal].filter(:procedure_id => cow_stays.pk).all.count > 0)
     assert(DB[:procedure_descriptions].filter(:procedure_id => cow_stays.pk).all.count > 0)
   end
+
+  should "be able to recreate exclusion table" do
+    bessie = Animal.random(:name => 'bessie', :procedure_description_kind => 'bovine')
+    frieda = Animal.random(:name => 'frieda', :procedure_description_kind => 'bovine')
+    floating = Procedure.random(:name => 'floating')
+    DB[:exclusion_rules].insert(:procedure_id => floating.id,
+                                :rule => 'HorsesOnly')
+    
+    Procedure.note_excluded_animals([bessie, frieda])
+    assert { DB[:excluded_because_of_animal].count == 2 }
+
+    DB[:excluded_because_of_animal].filter(:animal_id => bessie.pk).delete
+    assert { DB[:excluded_because_of_animal].count == 1 }
+
+    Procedure.recalculate_exclusions
+    assert { DB[:excluded_because_of_animal].count == 2 }
+  end
+
+
 end
 
