@@ -7,45 +7,6 @@ class HtmlControllerTests < RackTestTestCase
     @dummy_view = TestViewClass.new
   end
 
-  context "viewing reservations" do
-    setup do
-      real_controller.override(mocks(:date_source, :reservation_source))
-      real_controller.test_view_builder = @dummy_view
-      @today = Date.civil(2010, 4, 1)
-      @expected_reservation = Reservation.random(:first_date => @today,
-                                                 :last_date => @today,
-                                                 :animal => Animal.random,
-                                                 :procedure => Procedure.random)
-    end
-
-    should "require a specific number of days" do
-      during { 
-        get '/reservations/200'
-      }.behold! {
-        @date_source.should_receive(:today).once.and_return(@today)
-        @reservation_source.should_receive(:since).once.
-                            with(@today - 200).
-                            and_return([@expected_reservation])
-      }
-      assert { @dummy_view[:reservations].size == 1 }
-      actual_reservation = @dummy_view[:reservations].first
-      assert { actual_reservation == @expected_reservation }
-    end
-
-    should "also let words to denote 'forever'" do
-      during { 
-        get '/reservations/gazillions'
-      }.behold! {
-        @date_source.should_receive(:today).once.and_return(@today)
-        @reservation_source.should_receive(:since).once.
-                            with(@today - 3650).
-                            and_return([@expected_reservation])
-      }
-    end
-
-  end
-
-
   context "viewing animals" do
     setup do
       Animal.random(:name => 'bossy', :kind => 'cow', :procedure_description_kind => 'bovine')

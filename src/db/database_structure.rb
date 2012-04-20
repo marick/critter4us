@@ -1,5 +1,3 @@
-require './src/shapes/requires'
-
 module DatabaseStructure
   ReservationTable = DB[:reservations]
   class << ReservationTable
@@ -17,11 +15,14 @@ module DatabaseStructure
 
       dataset = yield(dataset) if block_given?
 
-      Fall(dataset.all).segregate_by_key(:pk).collect do | reservation_rows |
-        reservation_rows.collapse_and_aggregate(:animal_names, :procedure_names) do | a | 
-          a.sort.uniq
+      hash_arrays = Fall(dataset.all).segregate_by_key(:pk)
+      with_collapsed_elements = hash_arrays.collect do | reservation_rows |
+        reservation_rows.collapse_and_aggregate(:animal_names, :procedure_names) do | a |
+          # TODO: why is there an array with NIL names?
+          a.compact.sort.uniq
         end
       end
+      Fall(with_collapsed_elements)
     end
 
     def rows_back_to(date)

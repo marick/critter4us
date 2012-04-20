@@ -2,6 +2,7 @@ require 'rubygems'
 require 'sinatra/base'
 require 'json'
 require 'pp'
+require 'stunted'
 require './src/views/partials'
 require './src/views/helpers'
 require './strangled-src/util/test-support'
@@ -16,6 +17,9 @@ include Erector::Mixin
 # html controller instead of using includes with one controller.
 
 class Controller < Sinatra::Base  
+  extend Stunted::Defn
+  include Stunted::Stutils
+
   include TestSupport
   set :haml, :format => :html5
   helpers Sinatra::Partials, Helpers::Reservation

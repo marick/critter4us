@@ -22,14 +22,6 @@ class Controller
     redirect "/reservations/#{params[:days_to_display_after_deletion]}"
   end
 
-  get '/reservations/:days' do 
-    days = params[:days].to_i
-    days = 3650 if days == 0
-    reservations = @reservation_source.since(@date_source.today - days)
-    view(ReservationListView).new(:reservations => reservations,
-                                  :days_to_display_after_deletion => days).to_html
-  end
-
   get '/animals' do 
     view(AnimalListView).new(:animal_source => animal_source,
                              :date_source => DateSource.new).to_html

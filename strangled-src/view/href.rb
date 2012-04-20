@@ -26,6 +26,11 @@ module Href
     uris("repetitions")
     uris("note_editor")
     uris("repetition_adder")
+
+    # OLD
+    def self.list_match
+      '/reservations/:days'
+    end
   end
 
   # OLD
