@@ -6,11 +6,6 @@ NOTE="<span style='color:red'>NOTE:</span>"
 
 class Transabdominal2_19 < Sequel::Migration
 
-  def data
-    [ ["sheath cleaning (horses)", 0, "equine", "HorsesOnly", SHEATH_CLEANING]
-    ]
-  end
-
   def procedure
     Procedure[:name => "transabdominal ultrasonography"]
   end
