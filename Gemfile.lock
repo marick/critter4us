@@ -32,7 +32,9 @@ GEM
       multi_json (~> 1.0)
     ffi (1.1.5)
     flexmock (1.0.0)
-    haml (3.1.7)
+    haml (5.0.0)
+      temple (>= 0.8.0)
+      tilt
     hike (1.2.1)
     hoptoad_notifier (2.4.11)
       activesupport
@@ -98,6 +100,7 @@ GEM
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
     stunted (0.0.2)
+    temple (0.8.2)
     tilt (1.3.3)
     treetop (1.4.10)
       polyglot
