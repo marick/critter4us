@@ -58,7 +58,7 @@ GEM
     nokogiri (1.5.5)
     pg (0.14.0)
     polyglot (0.3.3)
-    rack (1.4.1)
+    rack (1.6.12)
     rack-coffee (1.0.0)
       coffee-script
       rack
